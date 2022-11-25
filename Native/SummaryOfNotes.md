@@ -117,10 +117,21 @@
                 表示声明一个内容为1,2,3,4的数组
         
     数组常见算法
+        求数组最大值, 最小值, 总和, 平均数
+        数组复制, 反转
+        数组元素冒泡排序
+
+    数组操作常见报错
+        ArrayIndexOutOfBoundsException(数组下标越界异常);
+            int[] arr = new int[3]
+            System.out.println(arr[4])
+        NullPointerException(空指针);
+            int[] arr = null;
+            System.out.println(arr[0])
+
+
+
+
+陆.面向对象(ObjectOriented)
     
-    P37 00:00
-
-
-
-
-
+    P39 00:00
