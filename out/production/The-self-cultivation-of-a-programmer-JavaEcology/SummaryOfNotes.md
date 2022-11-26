@@ -171,13 +171,6 @@
         应用类型  初始化  null
 
     类的访问机制
-        实例方法可以访问static属性
-        但static方法只能访问static属性
-
-    方法重载（Overload）
-    
-        P45 00:00
-        
-        
+        static方法只能访问static属性
         
  
