@@ -13,6 +13,5 @@ public class ObjectOriented {
         new ChangeableParam().printInfo1();
 
 
-
     }
 }

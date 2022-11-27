@@ -180,6 +180,69 @@
     方法形参可变（ChangeableParam）
         Java特有的...的方式传递可变个数的形参
         在使用时与数组的使用方式相同，并且如果没有参数可以不填
+        注意可变参数放置到形参的最后一位;
+            public void printInfo1(String s, String... args) {
+    
+    方法的参数传递
+        引用数据类型和基础数据类型
+        Java中方法的传递只有一种：值传递；
+        即将实际参数值的副本（拷贝品）传入方法内，而参数本身不受影响
+        JVM内存模型：
+            栈（Stack）：基础数据类型（对象的引用，对象的地址）
+            堆（Heap）：所有对象（包括自定义对象和字符串对象）
+            方法区（Method）：所有的class和static变量
+            
+        基础数据类型的值是保存在栈中的；
+        引用对象的值保存在堆中，栈中存的是对象在堆中的地址或者说是引用
+
+    软件包（StudyPackage.Animal）
+        关键字 package
+        1.package 语句作为Java源文件的第一条语句, 知名该文件中定义的类所在的包,若缺省改语句,则指定为无名包
+        2.包对应文件系统目录，package语句中用（.）来指定包的层次
+        3.包通常用小写单词，类名通常首字母大写。
+        
+        关键字 import
+        1.可以在类型声明中使用路径全名进行声明，如下：
+            StudyPackage.Animal.Dog dog = new StudyPackage.Animal.Dog();
+        2.可以使用import lee.* 语句，表示引入lee包下的所有类，但lee包下的sub子包内的类不会被引入
+            import StudyPackage.Animal.*;
+        
+        JDK中主要的包介绍：
+            所在位置：(JRE System Library ｜ External Libraries)；
+                java.lang       Java语言的核心类，如：String，Math，Integer，System和Thread等，提供常用功能；
+                java.net        包含执行与网络相关的操作的类和接口
+                java.io         包含能提供多种输入/输出功能的类
+                java.util       包含一些实用工具类，如：定义系统特性，接口的集合框架类，日期日历相关函数
+                java.text       包含了一些java格式化相关的类
+                java.sql        包含了java进行JDBC数据库编程的相关类和接口
+                java.awt        包含了构成抽象窗口工具集(abstract window toolkits)的多个类,这些类被用来构建和管理应用程序的图形用户界面(GUI)
+                java.applet     包含applet运行所需要的一些类
+        
+    封装和隐藏（StudyPrivate）
+
+    四种访问权限修饰符总结
+        
+        private     类内部
+        default     类内部 + 同一个包 (缺省)
+        protected   类内部 + 同一个包 + 子类
+        public      类内部 + 同一个包 + 子类 + 任何地方
+        
+        同个Java文件中写多个class时，只能有一个public，其他class只能是default；
+    
+    构造器（Constructor）
+        
+        特性：
+            具有与类名相同的名称
+            不声明返回值类型。（与声明为void不同）
+            不能被static final synchronized abstract, native修饰，不能有返回值
+        分类：
+            隐式默认无参构造器
+            显式定义一个或多个参数构造器
+        
+        构造器修饰是根据类的修饰符的
+            
+        
+        
     
         
         

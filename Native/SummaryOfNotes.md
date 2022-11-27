@@ -218,11 +218,97 @@
                 java.awt        包含了构成抽象窗口工具集(abstract window toolkits)的多个类,这些类被用来构建和管理应用程序的图形用户界面(GUI)
                 java.applet     包含applet运行所需要的一些类
         
-    封装和隐藏
+    封装和隐藏（StudyPrivate）
+
+    四种访问权限修饰符总结
         
-        P49 00:00
+        private     类内部
+        default     类内部 + 同一个包 (缺省)
+        protected   类内部 + 同一个包 + 子类
+        public      类内部 + 同一个包 + 子类 + 任何地方
         
+        同个Java文件中写多个class时，只能有一个public，其他class只能是default；
+    
+    构造器（Constructor）
         
+        特性：
+            具有与类名相同的名称
+            不声明返回值类型。（与声明为void不同）
+            不能被static final synchronized abstract, native修饰，不能有返回值
+        分类：
+            隐式默认无参构造器
+            显式定义一个或多个参数构造器
+        
+        构造器修饰是根据类的修饰符的
+        new对象实际上就是调用类的构造方法
+        
+    构造器重载（ConstructorOverload）
+        构造器也叫构造方法，既然是方法就可以重载
+
+    关键字this
+        this表示的是当前对象，可以调用类的属性，方法，和构造器
+        当在方法内部需要用到调用该方法的对象时就需要用到this；
+        指向：
+            1.在方法内部使用时，指向这个方法所属对象的引用；
+            2.在构造器中使用时，指向该构造器正在初始化的对象
+
+        疑问：构造方法中的age和name会编译报错
+            public class ConstructorInstance {
+                public ConstructorInstance (int age, String name) {
+                    name = name;
+                    age = age;
+                }
+                int age;
+                String name;
+            }
+        答案：此时引用this处理age和name错乱的问题
+            public class ConstructorInstance {
+                public ConstructorInstance (int age, String name) {
+                    this.name = name;
+                    this.age = age;
+                }
+                int age;
+                String name;
+            }
+
+        this()可以对构造方法进行调用；
+            public class Test {
+                public Test () {}
+                public Test (String name) {
+                    this();
+                }
+                public Test (int age) {
+                    this("李四");
+                }
+                public Test (int age, String name) {
+                    this(20);
+                }
+            }
+        this()的注意事项：
+            1。this()必须放到方法的首行使用；
+            2。两个构造器中不能相互用this()调用;
+            3。当前构造器中不能自己调用自己;
+        
+    JavaBean
+        JavaBean是一种Java语言写成的可重用组件
+        所谓JavaBean是指符合如下标准的Java类
+            类是公共的
+            有一个无参的公共构造器
+            有属性，且有对应的get，set方法
+        
+        JavaBean 示例：
+            public class BeanTest {
+                int age;
+                public void setAge (int age) {
+                    this.age = age;
+                }
+                public int getAge (int age) {
+                    return age;
+                }
+            }
+        
+
+    P56 00:11
         
     
         
