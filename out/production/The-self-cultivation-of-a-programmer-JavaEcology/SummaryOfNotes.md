@@ -240,14 +240,117 @@
             显式定义一个或多个参数构造器
         
         构造器修饰是根据类的修饰符的
+        new对象实际上就是调用类的构造方法
+        
+    构造器重载（ConstructorOverload）
+        构造器也叫构造方法，既然是方法就可以重载
+
+    关键字this
+        this表示的是当前对象，可以调用类的属性，方法，和构造器
+        当在方法内部需要用到调用该方法的对象时就需要用到this；
+        指向：
+            1.在方法内部使用时，指向这个方法所属对象的引用；
+            2.在构造器中使用时，指向该构造器正在初始化的对象
+
+        疑问：构造方法中的age和name会编译报错
+            public class ConstructorInstance {
+                public ConstructorInstance (int age, String name) {
+                    name = name;
+                    age = age;
+                }
+                int age;
+                String name;
+            }
+        答案：此时引用this处理age和name错乱的问题
+            public class ConstructorInstance {
+                public ConstructorInstance (int age, String name) {
+                    this.name = name;
+                    this.age = age;
+                }
+                int age;
+                String name;
+            }
+
+        this()可以对构造方法进行调用；
+            public class Test {
+                public Test () {}
+                public Test (String name) {
+                    this();
+                }
+                public Test (int age) {
+                    this("李四");
+                }
+                public Test (int age, String name) {
+                    this(20);
+                }
+            }
+        this()的注意事项：
+            1。this()必须放到方法的首行使用；
+            2。两个构造器中不能相互用this()调用;
+            3。当前构造器中不能自己调用自己;
+        
+    JavaBean
+        JavaBean是一种Java语言写成的可重用组件
+        所谓JavaBean是指符合如下标准的Java类
+            类是公共的
+            有一个无参的公共构造器
+            有属性，且有对应的get，set方法
+        
+        JavaBean 示例：
+            public class BeanTest {
+                int age;
+                public void setAge (int age) {
+                    this.age = age;
+                }
+                public int getAge (int age) {
+                    return age;
+                }
+            }
+        
+
+    继承（Inherit）
+        多个子类中存在相同的属性和行为时，将这些内容抽取到同一个类中，那么多个子类通过继承该类，就可以访问这些属性和方法
+        公用多个属性和方法的父类被成为（基类或超类）
+        子类不是父类的子集，而是对父类的扩展
+        类继承语法规则：
+            class SubClass extends SuperClass {}
+        
+        作用：
+            提高代码复用性
+            使类和类之间产生联系，提供多态的前提
+            不要仅为了获取其他类中的某一个功能而继承（要考虑逻辑关系，不能随意继承）
             
+        注意：
+            子类不能直接访问父类中私有的成员变量和方法；
+            Java只支持单继承，不允许多继承。
+                一个子类只能有一个父类
+                一个父类可以派生出多个子类
+                子类还可以被孙类再继承（多层继承）
+        
+        类继承的方法的重写 ：
+            子类重写父类的方法，只是重新编写方法体的代码
+            如果父类的方法是public时，子类重写的时候就不能使用缺省以下的修饰符
+            重写和被重写的方法需同时为static，或同时为非static。
+            
+        四种权限修饰符补充：
+            如果父类和子类在同一个包下，子类可以访问父类的 default，protected，public 修饰的属性
+            如果子类和父类不在同一个包下时，子类可以访问父类的 public和protected 修饰的属性
         
         
-    
-        
-        
-    
-        
+        Super（FatherSuper & SonSuper & SunSuper）
+
+            在Java类中使用super进行调用父类中的属性，方法和构造器
+            
+            如果当父子类中出现同名成员时，可以使用super进行区分
+            super的追溯不仅限于直接父类（对于多层继承来讲）
+                super可以调用所有的父类层级属性和方法；
+            super和this的用法相似，this代表本类的对象引用，super代表父类的内存空间的标识。
+            
+            调用父类的构造器：
+                子类中所有的构造器默认都会执行父类中空参数的构造器（默认构造器）
+                当父类中没有空参数构造器时，子类构造器必须通过this（参数列表）或super（参数列表）语句指定调用本类或父类中相应的构造器，且必须放在第一行
+                
+                
         
         
  
