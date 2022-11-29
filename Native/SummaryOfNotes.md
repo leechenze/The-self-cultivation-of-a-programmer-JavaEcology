@@ -487,9 +487,46 @@
 
     
 
-    包装类（Wrapper Class）
+    包装类（WrapperClass）
         
-        P69 00:00
+        包装类是针对八种基本数据类型的封装，又叫做封装类，并且有了类的特点，就可以调用类中的方法；
+        
+        基本数据类型：
+            boolean
+            byte
+            short
+            int
+            long
+            char
+            float
+            double
+        包装类：
+            Boolean
+            Byte
+            Short
+            Integer
+            Long
+            Character
+            Float
+            Double
+        
+        基本数据类型包装成包装类的实例（装箱）
+            通过包装类的构造器实现：
+                int i = 500;
+                Integer i = new Integer(i);
+            还可以通过字符串参数构造成包装类对象：
+                Float f = new Float("4.56");
+                Long l = new Long("asdf");      Number Format Exception
+        
+        获取包装类对象中包装的基本数据类型的变量（拆箱）
+            调用包装类的 xxxValue() 方法；
+            Integer i = new Integer(112);
+            int i1 = i.intValue();              112
+            
+            boolean b = new Boolean("false").booleanValue();
 
-
+        在JDK1.5之后，支持自动拆箱，自动装箱，但类型必须匹配；
+            
+            P69 06:30
+            
 
