@@ -527,6 +527,35 @@
 
         在JDK1.5之后，支持自动拆箱，自动装箱，但类型必须匹配；
             
-            P69 06:30
+            所谓自动装箱即是：
+            Integer i = new Integet(112);
+            Integer i = 112;
             
+            所谓自动拆箱即是：（省略xxxValue的过程）
+            Integer i = new Integer(112);
+            int i1 = i;
+            
+        字符串转成基本数据类型
+            通过parseXxx方式，如下示例：
+            int i = Integer.parseInt("123");
+            float f = Float.parseFloat("0.45");
+            boolean b = Boolean.parseBoolean("true");
+        基本类型转为字符串
+            String istr = String.valueOf(i);
+            String fstr = String.valueOf(f);
+            String bstr = String.valueOf(true);
+        
+        包装类作用：
+            基本数据类型和字符串的直接转化；
+        
+        toString()
+            实例化后会默认执行toString的方法，包括重写的toString方法；
+            也就是当打印实例对象时返回的是toString中的值；
+            toString是Object的方法（顶层方法）
+            如果不重写toString方法时，toString方法输出当前对象的内存地址
+            
+        static
+            
+            
+
 
