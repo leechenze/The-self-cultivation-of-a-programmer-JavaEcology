@@ -17,7 +17,7 @@ public class Person {
     // 静态代码块
     static {
         // 这里只能操作静态修饰的属性和方法
-        name = "";
+        // name = "";
         showAge();
         age = 1;
     }
