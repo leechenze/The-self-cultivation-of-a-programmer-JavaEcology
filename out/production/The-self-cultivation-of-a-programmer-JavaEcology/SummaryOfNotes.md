@@ -485,9 +485,138 @@
                 字面量的方式创建对象String比new构造的方式创建更省内存；但是两种方式的判断结果是不一样的；
                 
 
+    
 
+    包装类（WrapperClass）
+        
+        包装类是针对八种基本数据类型的封装，又叫做封装类，并且有了类的特点，就可以调用类中的方法；
+        
+        基本数据类型：
+            boolean
+            byte
+            short
+            int
+            long
+            char
+            float
+            double
+        包装类：
+            Boolean
+            Byte
+            Short
+            Integer
+            Long
+            Character
+            Float
+            Double
+        
+        基本数据类型包装成包装类的实例（装箱）
+            通过包装类的构造器实现：
+                int i = 500;
+                Integer i = new Integer(i);
+            还可以通过字符串参数构造成包装类对象：
+                Float f = new Float("4.56");
+                Long l = new Long("asdf");      Number Format Exception
+        
+        获取包装类对象中包装的基本数据类型的变量（拆箱）
+            调用包装类的 xxxValue() 方法；
+            Integer i = new Integer(112);
+            int i1 = i.intValue();              112
+            
+            boolean b = new Boolean("false").booleanValue();
 
+        在JDK1.5之后，支持自动拆箱，自动装箱，但类型必须匹配；
+            
+            所谓自动装箱即是：
+            Integer i = new Integet(112);
+            Integer i = 112;
+            
+            所谓自动拆箱即是：（省略xxxValue的过程）
+            Integer i = new Integer(112);
+            int i1 = i;
+            
+        字符串转成基本数据类型
+            通过parseXxx方式，如下示例：
+            int i = Integer.parseInt("123");
+            float f = Float.parseFloat("0.45");
+            boolean b = Boolean.parseBoolean("true");
+        基本类型转为字符串
+            String istr = String.valueOf(i);
+            String fstr = String.valueOf(f);
+            String bstr = String.valueOf(true);
+        
+        包装类作用：
+            基本数据类型和字符串的直接转化；
+        
+        toString()
+            实例化后会默认执行toString的方法，包括重写的toString方法；
+            也就是当打印实例对象时返回的是toString中的值；
+            toString是Object的方法（顶层方法）
+            如果不重写toString方法时，toString方法输出当前对象的内存地址
+            
+        static
+            声明静态属性和方法（类变量，非实例化变量）
+            如果想让一个类的所有实例共享数据，那么就用类变量（静态变量）
+            
+            类属性和类方法的设计思想：
+            
+            类属性作为该类各个对象之间共享的变量，在设计类时，如果希望有些属性不因实例对象不同而改变时，就用类属性；
+            如果方法和调用者无关，则这样的方法通常声明为类方法，由于不需要创建对象就可以调用类方法；也简化了方法的调用；
+            
+            适用范围：
+                在Java类中，可用static修饰属性，方法，代码块，内部类；
+                被修饰后的的成员具备以下特点：
+                    随着类的加载而加载
+                    优先于对象的存在
+                    修饰的成员，被所有对象所共享
+                    访问权限允许时，可不创建对象，直接被类调用
+            因为不需要实例就可以访问static方法，因此static方法内部不能有this 和 super
 
-
+        单例设计模式：
+            设计模式是在大量的实践中总结和理论化之后优选的代码结构,编程风格,以及解决问题的思考方式.
+            单例模式：只有一个实例化对象（只会new一次）；
+                
+            单例模式一：饿汉式（HungryMan）
+                
+            单例模式一：懒汉式（Sluggard）
+                最开始对象是null，知道有第一次调用时，才new一个对象；
+            
+            懒汉和饿汉的区别就在于对象是在什么时候创建的；（创建时机不同）；
+            
+            暂时懒汉式是存在线程安全的问题，到多线程章节会处理如何修复
+            
+            java.lang.Runtime是Java的一个内置方法，它是一个典型的单例模式的应用；
+        
+        再谈main方法
+            由于Java虚拟机需要调用类的main方法，所以该方法的访问权限必须是public。
+            又因为Java虚拟机在执行main方法时不必创建对象，所以mian方法必须是static的。
+            该方法接受一个String类型的数组参数，该数组中保存执行Java命令时传递给所有类的参数；
+            
+            public class TestMain {
+                public static void main (String[] args) {
+                    for(int i = 0; i < args.length; i++) {
+                        System.out.println(args[i]);
+                    }
+                }
+            }
+            保存为TestMain.java，然后在命令行执行：
+            >_ javac TestMain
+            >_ java TestMain abc 123 fff
+            >_ abc
+            >_ 123
+            >_ fff
+        
+        初始化块：(CodeBlock)
+            能够对Java对象进行初始化；
+            程序执行顺序：
+                1。声明成员变量的默认值；
+                2。显示初始化，多个初始化块依次被执行；
+                3。在执行构造方法，实例对象进行赋值操作；
+            
+                
+                
+            
+            
+            
 
 
