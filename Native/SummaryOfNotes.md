@@ -732,11 +732,51 @@
 
 
 
-捌.集合(Set)
+捌.集合(Collection)
     
-    P85T00:00
+    集合类存放在java.util包中，是一个用来存放对象的容器
+        1。集合只能存放对象
+            如果存入一个基本类型，会自动转换成包装类后存入，Java中每一种基本类型都有对应的引用类型（包装类）；
+        2。集合中存放的是多个对象的引用，对象本身还是存放在堆中
+        3。集合可以不同的类型，不限数量的数据类型
+    
+    Java集合可以分为Set，List和Map三大种类
+        Set：无序不可重复的集合
+        List：有序可重复的集合
+        Map：有映射关系的集合
+    在JDK5之后，增加了泛型，Java集合可以记住容器中对象的数据类型
+        加入泛型后，集合就不能存其他类型了
+    
 
+    Set集合
+        HashSet（HashSetColl）
+            继承关系：
+                HashSet ==> Set ==> Collection
+            HashSet是对Set接口的典型实现，大多数时候使用Set集合时都使用这个实现类。我们大多数时候说的Set集合指的都是HashSet
+            HashSet按Hash算法存储集合中元素，因此具有很好的存取和查好性能
+            HashSet具有一下特点：
+                不能保证元素的排列顺序
+                不可重复
+                    指的是hashCode不相同，而不是通过equals判断是否相同存入的
+                    一般equals结果为true时，hashCode值也会为true
+                HashSet不是线程安全的
+                集合元素可以存null
+            HashSet集合判断两个元素相等的标准：两个对象通过equals方法比较相等，并且两个对象的hashCode方法的返回值也相等。
 
+        TreeSet（TreeSetColl）
+            继承关系：
+                TreeSet ==> NavigableSet ==> SortedSet ==> Set ==> Collection
+            TreeSet是SortedSet接口的实现类，可以确保集合元素处于排序状态
+            TreeSet支持两种排序方法：
+                自然排序（默认排序）
+                    必须放入同样类型的对象，否则可能会发生类型转换异常的异常，使用泛型进行限制
+                定制排序
+                    定制排序需要在创建TreeSet集合对象时，提供一个Comparator接口的实现类对象
+                    由Comparator对象负责集合元素的排列逻辑
+                
+            
+    List集合
+        P87T00:00
 
 
 

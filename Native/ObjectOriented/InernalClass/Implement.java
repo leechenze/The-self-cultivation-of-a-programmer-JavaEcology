@@ -5,6 +5,5 @@ public class Implement {
         InernalClass iner = new InernalClass();
         iner.setInfo();
         iner.getInfo();
-
     }
 }
