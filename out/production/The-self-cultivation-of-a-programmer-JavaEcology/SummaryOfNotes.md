@@ -690,20 +690,43 @@
     内部类：（inernalClass）
         允许一个类定义与另一个类的内部，前者成为内部类，后者成为外部类，
         
+        内部类作为类成员
+            可以声明为final
+            和外部类不同，内部类可声明为 private 和 protected
+            内部类可以声明为static，但此时就只能使用外部类static的成员变量
+            内部类可以声明为abstract类，因此可以被其他内部类继承
+            
+        内部类作用（MultipleInherit)
+            解决Java不能多重继承的问题
 
+
+
+
+
+
+柒.异常(exception)
+    
+    异常用于处理非预期的情况，如网络错误，非法参数，路径错误等。。。
+    
+    Java程序运行过程中所发生的异常事件可分为两类
+        Error：JVM内部错误，资源耗尽等严重错误
+            VirtulMachineError
+                StackOverFlowError(栈溢出)
+                OutOfMemoryError(内存溢出)
+            AWTError
+                ...
+        Exception：其他因编程错误或偶然的外在因素导致的一般性问题
+            IOException(文件读写异常)
+            RuntimeException(运行时异常)
         
 
-
-
-
-
-
-
-
-
-
-
-
+    捕获异常
+        异常处理机制处理的事抓抛模型
+            Java程序的执行过程中如出现异常,会自动生成一个异常类对象该异常对象将被提交给Java运行时系统,这个过程称为抛出(throw)异常。
+            如果一个方法内抛出异常,该异常会被抛到调用方法中。如果异常没有在调用方法中处理,它继续被抛给这个调用方法的调用者这个过程将一直继续下去,直到异常被处理。这一过程称为捕获(catch)异常。
+        通常开发者处理Exception，对Error虚拟机异常无法处理
+        
+        
 
 
 
