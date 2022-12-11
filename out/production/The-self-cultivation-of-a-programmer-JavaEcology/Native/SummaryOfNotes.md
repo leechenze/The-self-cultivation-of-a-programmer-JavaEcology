@@ -748,9 +748,9 @@
         加入泛型后，集合就不能存其他类型了
     
 
-    Set
+    Set集合
         HashSet（HashSetColl）
-            继承关系：
+            接口继承关系：
                 HashSet ==> Set ==> Collection
             HashSet是对Set接口的典型实现，大多数时候使用Set集合时都使用这个实现类。我们大多数时候说的Set集合指的都是HashSet
             HashSet按Hash算法存储集合中元素，因此具有很好的存取和查好性能
@@ -764,7 +764,7 @@
             HashSet集合判断两个元素相等的标准：两个对象通过equals方法比较相等，并且两个对象的hashCode方法的返回值也相等。
 
         TreeSet（TreeSetColl）
-            继承关系：
+            接口继承关系：
                 TreeSet ==> NavigableSet ==> SortedSet ==> Set ==> Collection
             TreeSet是SortedSet接口的实现类，可以确保集合元素处于排序状态
             TreeSet支持两种排序方法：
@@ -774,9 +774,16 @@
                     定制排序需要在创建TreeSet集合对象时，提供一个Comparator接口的实现类对象
                     由Comparator对象负责集合元素的排列逻辑
                 
+    
+    
+    List集合
+        ArrayList（ArrayListColl）
+            接口继承关系
+                ArrayList ==> List ==> Collection
+            List代表一个元素有序，且可重复的集合，集合中的每个元素都有其对应的顺序索引
+            List允许使用重复元素
+            List默认按元素的添加顺序设置元素的索引
             
-            
-
 
 
 
