@@ -783,14 +783,52 @@
             List代表一个元素有序，且可重复的集合，集合中的每个元素都有其对应的顺序索引
             List允许使用重复元素
             List默认按元素的添加顺序设置元素的索引
+        Vector
+            Vector是一个古老的集合，建议使用ArrayList；
+            ArrayList是线程不安全的，Vector是线程安全的
+            即使为保证List结合的线程安全，也不推荐使用Vector
+    
+
+
+    Map集合
+        Map用于保存具有映射关系的数据，因此Map集合里保存了两组值，一组值用于保存Map中的key，另外一组用于保存Map中的value
+        Map中的key和value都可以是任何引用类型的数据
+        Map中的key不允许重复，
+        
+        HashMap （HashMapColl）
+            接口继承关系：
+                HashMap ==> Map
+            HashMap是典型的Map实现
+        Hashtable
+            Hashtable是一个古老的Map实现类，不建议使用
+            Hashtable是一个线程安全的Map实现类，HashMap是线程不安全的；
+        TreeMap（TreeMapColl）
+            TreeMap和Tree功能类似，可以根据key进行排序，保证所有键值对处于有序状态
+            TreeMap支持两种排序方法：
+                自然排序（默认排序）
+                    必须放入同样类型的对象，否则可能会发生类型转换异常的异常，使用泛型进行限制
+                定制排序
+                    定制排序需要在创建TreeMap集合对象时，提供一个Comparator接口的实现类对象
+                    由Comparator对象负责集合元素的排列逻辑
+                
+    Collections
+        Collections是一个操作Set，List，Map等集合的工具类
+        Collections中提供了大量方法对集合元素进行排序，查询和修改等操作，还提供了对集合对象设置不可变，实现同步控制等方法；
+        排序操作
+            reverse(List)   反转List
+            shuffle(List)   随机排序List
+            sort(List, Comparator)  根据指定的Comparator对List进行排序
+            swap(List,int,int) 指定List集合中的i处元素和j处元素进行交互
+        查找&替换
+            Collection.max(Collection): 根据元素的自然排序，返回给定元素中的最大元素
+            Collection.max(Collection, Comparator)：根据Comparator指定的排序方式，返回给定元素中的最大元素
+            Collection.min(Collection): 根据元素的自然排序，返回给定元素中的最小元素
+            Collection.min(Collection, Comparator)：根据Comparator指定的排序方式，返回给定元素中的最小元素
+            Collection.frequency(collection, key)：获取元素出现的次数
+            Collection.replaceAll(collection, oldVal, newVal)：使用新值替换collection对象的旧值
             
-
-
-
-
-
-
-
+            
+        
 
 
             
