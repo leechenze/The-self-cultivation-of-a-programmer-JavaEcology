@@ -826,15 +826,50 @@
             Collection.min(Collection, Comparator)：根据Comparator指定的排序方式，返回给定元素中的最小元素
             Collection.frequency(collection, key)：获取元素出现的次数
             Collection.replaceAll(collection, oldVal, newVal)：使用新值替换collection对象的旧值
-            
-            
+        同步控制
+            Collections类中提供了多个synchronizedXxx()方法，该方法可将指定集合包装成线程同步的集合，
+            从而解决多线程并发访问集合时的线程安全问题。目前做个了解，后续章节深入研究
+                synchronizedCollection()
+                synchronizedList()
+                synchronizedMap()
+                synchronizedSet()
+                synchronizedSortedMap()
+                synchronizedSrotedSet()
+
+
+
+
+
+
+玖.泛型（generic）
+    
+    泛型只在编译阶段有效，泛型信息不会进入到运行时阶段
+    泛型的使用：
+        1。泛型类
+        2。泛型方法
+        3。泛型接口
+        
+    泛型类
+        同样的类，在new对象时泛型指定不同的数据类型，这些对象不能互相赋值
         
 
 
-            
-        
-            
-        
-            
+
+
+
+
+
+
+拾.
+拾壹.
+拾贰.
+拾叁.
+拾肆.
+拾伍.
+拾陆.
+拾柒.
+拾捌.
+拾玖.
+
 
 
