@@ -9,8 +9,8 @@
       <sourceFolder url="file://$MODULE_DIR$/Native/Operator" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Native/ProcedureFlowControl" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Native/StudyArray" isTestSource="false" />
-      <sourceFolder url="file://$MODULE_DIR$" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Native/Collection" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Native/Generic" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
