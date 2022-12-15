@@ -10,7 +10,7 @@ class Cc<E> {
     private E e;
     public static void test3() {
         // 在静态方法中不能使用类定义的泛型,如果使用泛型，只能使用静态方法自己定义的泛型(如test4);
-        System.out.println(this.e);
+        // System.out.println(this.e);
     }
     // 静态方法的泛型方法
     public static <T> void test4(T t) {
