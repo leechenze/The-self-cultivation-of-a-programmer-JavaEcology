@@ -12,6 +12,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Native/Collection" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Native/Generic" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Native/Enum" isTestSource="false" />
+      <sourceFolder url="file://$MODULE_DIR$/Native/Annotation" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

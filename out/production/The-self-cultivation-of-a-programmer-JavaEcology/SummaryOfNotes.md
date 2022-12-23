@@ -876,35 +876,98 @@
 
 
 
-拾.枚举和注解
+拾.枚举
     
+    ```java
+        public class EnumSingleton {
+        public static void main(String[] args) {
+        // Season1.SPRING，这段执行就是获取一个Season对象
+        Season1 spring = Season1.SPRING;
+        spring.showInfo();
+        
+                Season1 spring1 = Season1.SPRING;
+                // 每次执行Season1.SPRING获得的都是相同的对象，证明枚举类中的每个枚举都是单例模式
+                System.out.println(spring.equals(spring1));
+                spring1.test();
+        
+            }
+        }
+        
+        enum Season1 implements iTest{
+        // 此处相当于在调用有参的私有构造函数: Season1
+        SPRING("春天", "春暖花开"),
+        SUMMER("夏天", "夏日炎炎"),
+        AUTUMN("秋天", "秋高气爽"),
+        WINTER("冬天", "寒风彻骨");
+        
+            private final String name;
+            private final String desc;
+        
+            private Season1 (String name, String desc) {
+                this.name = name;
+                this.desc = desc;
+            }
+        
+            public void showInfo() {
+                System.out.println(this.name + ": " + this.desc);
+            }
+        
+            @Override
+            public void test() {
+                System.out.println("这是实现的iTest的test的方法");
+            }
+        }
+        
+        interface iTest {
+        void test();
+        }
+    ```
+
+    枚举方法:
+        valueOf
+        toString
+        equals
+        hashCode
+        getDeclaringClass
+        name
+        ordinal
+        compareTo
+        clone
+        
+
+
+
     
+拾壹.注解
+
+    从JDK5.0开发，Java增加了对元数据(MetaData)的支持,也就是Annotation(注释)
     
+    @Override:          限定重写父类方法，只能用于方法
+    @Deprecated:        用于表示某个程序元素（类，方法）等已过时或已弃用
+    @SuppressWarnings:  抑制编译器警告
     
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-拾壹.
+    自定义注解：
+        使用@interface关键字声明
+        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 拾贰.
 拾叁.
 拾肆.
