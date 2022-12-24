@@ -19,5 +19,8 @@ public class FileClass {
         System.out.println(f.lastModified());
         System.out.println(f.length());
 
+        
+
+
     }
 }
