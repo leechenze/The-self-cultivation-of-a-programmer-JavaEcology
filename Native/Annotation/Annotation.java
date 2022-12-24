@@ -16,8 +16,8 @@ public class Annotation {
 /**
  * 自定义注解
  */
-@Target(ElementType.FIELD)// 表示给类的属性做注解
-@Retention(RententionPolicy.RUNTIME)// 定义注解的生命周期，RUNTIME表示整个程序运行周期
+//@Target(ElementType.FIELD)// 表示给类的属性做注解
+//@Retention(RententionPolicy.RUNTIME)// 定义注解的生命周期，RUNTIME表示整个程序运行周期
 @Documented // 表示注解放到Doc文档中
 @interface TestAnn {
     public int id() default 0;

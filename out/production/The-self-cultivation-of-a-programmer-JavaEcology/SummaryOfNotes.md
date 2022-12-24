@@ -949,6 +949,8 @@
     自定义注解：
         使用@interface关键字声明
         
+    做个了解，在未来如果能做一些底层的东西或开源项目时可以应用
+    
 
 
 
@@ -957,18 +959,62 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-拾贰.
+拾贰.IO
+    
+    java.io.file类的使用
+    IO原理及流的分类
+        通过程序把一个图放到一个文件夹中，把图片转化成一个数据集，把这些数据一点一点传到文件夹中，这个传递过程就类似于水的流动。
+        我们可以称这个整个的数据集是一个数据流。
+    文件流
+        特点：操作的都是文件，基于文件的操作
+        FileInputStream / FileOutputStream / FileReader / FileWriter
+    缓冲流
+        特点：基于内存的操作
+        BufferedInputStream / BufferedOutputStream / BufferedReader / BufferedWriter
+    转换流
+        InputStreamReader / OutputStreamWriter
+    标准输入/输出流
+    打印流（做个了解）
+        PrintStream /  PrintWriter
+    数据流（做个了解）
+        DataInputStream / DataOutputStream
+    对象流（涉及序列化/反序列化）把一个对象转化为一个数据流进行读写
+        ObjectInputStream / ObjectOutputStream
+    随机存取文件流
+        RandomAccessFile
+    
+    
+    File类
+        File类代表与平台无关的文件和目录。
+        File能新建，删除，重命名文件和目录，但File不能访问文件内容本身。如果需要访问文件内容本身，需要使用输入/输出流
+        访问文件名
+            getName()
+            getPath()
+            getAbsoluteFile()
+            getAbsolutePath()
+            getParent()
+            renameTo(File newName) 
+        文件检测
+            exists()            判断是否存在
+            canWrite()          是否可写
+            canRead()           是否可读
+            isFile()            是否是文件
+            isDirectory()       是否是目录
+        获取常规文件信息
+            lastModified()        文件最后修改时间，返回时间戳
+            length()            获取文件长度，返回字节数
+        文件相关操作
+            createNewFile()
+            delete()
+        目录操作相关
+            mkDir()
+            list()
+            listFiles()
+        
+    
+    
+    
+    
 拾叁.
 拾肆.
 拾伍.
