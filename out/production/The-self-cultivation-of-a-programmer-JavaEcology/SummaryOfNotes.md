@@ -1026,9 +1026,31 @@
     文件字节流
         文件字节输入流（FileBitInput）
         文件字节输出流（FileBitOutput）
-        
-        
+        文件字节流拷贝文件（Practice）
+        文字字节流很通用，可以用来操作字符的文档，还可以操作图片，压缩包等等类型的文件，因为字节流字节使用的是二进制
+
+    练习：将practice文件复制到src1文件夹下
+    注意：在写入一个文件时，如果目录下有同名文件将会被覆盖。
+            在读取文件时候，必须保证该文件是存在的，否则会抛出异常。
+
+    文件字符流
+        文件字符输入流（FileCharInput）
+        文件字符输出流（FileCharOutput）
+        文件字符流拷贝文件（Practice）
     
+    缓冲字节流
+        BufferedInputStream 和 BufferedOutputStream
+        缓冲字节输入流（BufferByteInput） 
+        缓冲字节输出流（BufferByteOutput）
+    缓冲字符流
+        BufferedReader 和 BufferedWriter
+
+    缓冲流和文件流区别：
+        缓冲流这是基于内存的，文件流是基于硬盘的。
+        文件流的计算是计算机和硬盘之间发生的IO操作，基于硬盘的读写速度是相对比价慢的，
+        读写速度受到硬盘的读写速度的制约，为了能够提供读写速度，一定程度上绕过硬盘的限制，java提供缓冲流的返回进行会实现；
+        缓冲流是先把数据缓冲进内存里，在内存中做IO操作，基于内存的IO操作比基于硬盘的IO操作快七万多倍。
+        
     
     
 拾叁.
