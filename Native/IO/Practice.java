@@ -44,19 +44,118 @@ public class Practice {
 
 
         /** =============缓冲字节流拷贝文件============== */
-        // 缓冲输入流
-        BufferedInputStream bin = new BufferedInputStream(new FileInputStream("/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Native/IO/src/Practice2.txt"));
-        // 缓冲输出流
-        BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream("/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Native/IO/src1/Practice2.txt"));
+//        // 缓冲输入流
+//        BufferedInputStream bin = new BufferedInputStream(new FileInputStream("/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Native/IO/src/Practice2.txt"));
+//        // 缓冲输出流
+//        BufferedOutputStream bout = new BufferedOutputStream(new FileOutputStream("/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Native/IO/src1/Practice2.txt"));
+//
+//        byte[] b = new byte[1024];
+//        int leg = 0;
+//        while ((leg = bin.read(b)) != -1) {
+//            bout.write(b, 0, leg);
+//        }
+//        bout.flush();
+//        bout.close();
+//        bin.close();
 
-        byte[] b = new byte[1024];
-        int leg = 0;
-        while ((leg = bin.read(b)) != -1) {
-            bout.write(b, 0, leg);
-        }
-        bout.flush();
-        bout.close();
-        bin.close();
+
+
+
+
+
+
+        /** =============缓冲字符流拷贝文件============== */
+//        BufferedReader br = new BufferedReader(new FileReader("/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Native/IO/src/Practice3.txt"));
+//        BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Native/IO/src1/Practice3.txt"));
+//        char[] c = new char[1024];
+//        int leg = 0;
+//        while ((leg = br.read(c)) != -1) {
+//            bw.write(c, 0, leg);
+//        }
+//        bw.flush();
+//        bw.close();
+//        br.close();
+
+
+
+
+
+
+
+        /** =============把控制台输入的内容写到指定的txt文件中，当接收到字符串exit时，就结束程序的运行============== */
+//        // 创建一个接收键盘输入的输入流
+//        InputStreamReader isr = new InputStreamReader(System.in);
+//        // 把输入流放到缓冲流里
+//        BufferedReader br = new BufferedReader(isr);
+//        // 定义输出流
+//        BufferedWriter bw = new BufferedWriter(new FileWriter("/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Native/IO/src/Practice4.txt"));
+//        String line = "";
+//        while ((line = br.readLine()) != null) {
+//            if (line.equals("exit")) {
+//                break;
+//            }
+//            // 读取的每一行都写到指定的txt文件中
+//            bw.write(line);
+//        }
+//        bw.flush();
+//        bw.close();
+//        br.close();
+//        isr.close();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

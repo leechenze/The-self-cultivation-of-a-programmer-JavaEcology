@@ -1052,8 +1052,52 @@
         文件流的计算是计算机和硬盘之间发生的IO操作，基于硬盘的读写速度是相对比价慢的，
         读写速度受到硬盘的读写速度的制约，为了能够提供读写速度，一定程度上绕过硬盘的限制，java提供缓冲流的返回进行会实现；
         缓冲流是先把数据缓冲进内存里，在内存中做IO操作，基于内存的IO操作比基于硬盘的IO操作快七万多倍。
-        
     
+    转换流：
+        转换流提供了一个字节流和字符流之间的转换。
+        javaAPI提供了两个转换流：
+            InputStreamReader 和 OutputStreamWriter
+        字节流中的数据都是字符时，转成字符流操作更高效
+        转换输入流：（TransInput）
+            InputStreamReader
+        转换输出流：（TransOutput）
+            OutputStreamWriter
+        
+    标准输入输出流：（
+        System.in和System.out分别代表了系统标准的输入和输出设备
+        默认输入设备是键盘，输出设备是显示器
+        System.in的类型是InputStream
+        System.out的类型是PrintStream，其是OutputStream的子类FilterOutputStream的子类
+        
+        
+        
+
+
+
+
+
+
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
     
 拾叁.
 拾肆.
