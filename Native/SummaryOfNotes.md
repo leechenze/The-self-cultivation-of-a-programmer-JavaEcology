@@ -1069,6 +1069,16 @@
         System.in的类型是InputStream
         System.out的类型是PrintStream，其是OutputStream的子类FilterOutputStream的子类
         
+    打印流：
+        在整个IO包中，打印流是输出信息最方便的类
+        PrintStream（字节打印流）和 PrintWriter（字符打印流）提供了一系列重载的print和println方法
+        用于多种数据类型的输出
+        PrintStream和PrintWriter的输出不会抛出异常，并且有自动flush功能。
+        System.out返回的是PrintStream的实例
+        
+    数据流：
+        用于读取和写入基本数据类型的数据
+        DataInputStream 和 DataOutputStream
         
         
 
