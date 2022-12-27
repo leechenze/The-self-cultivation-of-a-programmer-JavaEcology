@@ -1069,20 +1069,53 @@
         System.in的类型是InputStream
         System.out的类型是PrintStream，其是OutputStream的子类FilterOutputStream的子类
         
-    打印流：
+    打印流：(SystemInput)
         在整个IO包中，打印流是输出信息最方便的类
         PrintStream（字节打印流）和 PrintWriter（字符打印流）提供了一系列重载的print和println方法
         用于多种数据类型的输出
         PrintStream和PrintWriter的输出不会抛出异常，并且有自动flush功能。
         System.out返回的是PrintStream的实例
         
-    数据流：
+    数据流：（DataStreamInput)
         用于读取和写入基本数据类型的数据
         DataInputStream 和 DataOutputStream
         
+        用数据输出流写到文件按中的基本数据类型的数据是乱码的，不能直接辨认出来，需要数据的输入流进行读取
         
-
- 
+        读取时要保证和但是写的数据类型一致的类型进行读取
+        也就是说如果dataOut.writeDouble(1.35d)，就需要dataIn.readDouble()进行读取
+        如果dataOut.writeBoolean(true),就需要dataIn.readBoolean()进行读取
+        其实做个了解就行，后续很小几率会用
+    
+    对象流：（ObjectStream);
+        用于存储和读取对象的处理流，他的强大之处就是把Java中的对象写入到数据源中，也能把对象从数据源中还原回来;
+        序列化（Serialize）：用ObjectOutputStream类将一个Java对象写入IO流中。
+        反序列化（Deserialize）：用ObjectInputStream类从IO流中恢复该Java对象。
+        ObjectOutputStream和ObjectInputStream不能序列化static和transient修饰的成员变量；
+        序列化与反序列化都是针对的对象的各种属性，不包括类的属性（静态属性）；
+        场景一：
+            把对象存储到硬盘上，硬盘存储的基础是二进制，那就需要把对象转化为一个二进制字节流，把这个流保存到电脑上；
+            要使用这个对象时候，需要把流转化为对象才能使用
+        场景二：
+            把这个对象通过网络传递到另一个机器上，网络的通信基础也是二进制，也就是说需要把一个对象转化为二进制的数据流，把这个流通过网络进行传输；
+            在接收端，如果要使用接受的对象就得先把对象的流转化为对象才可以使用
+            正因为保存对象到硬盘（对象的持久化）和对象的网络传输这两件事，那么就产生了对象的输入和输出流
+            所以对象写入IO流时需要序列化，对象写入IO流被称为序列化
+            对象从IO流恢复成Java对象的过程叫做反序列化。
+        如果对象支持序列化机制，则必须让其类是可序列化的，为了让类是可序列化的，必须实现如下两个接口之一：
+            Serializable 或 Externalizable
+            一般使用的都是Serializable;
+        注意：对象的序列化和反序列化使用的类要严格一致，包名，类名，类结构等等所有的都要一致
+        
+    随机存取流：（RandomStream）；
+        RandomAccessFile类，支持"随机访问"的方式，程序可以直接跳到文件的任意地方来读，写文件；
+            支持只访问文件的部分内容
+            可以想已存在的文件后追加内容
+        RandomAccessFile 对象包含一个记录指针，用以标示当前读写处的位置；
+        RandomAccessFile 类对象可以自由移动记录指针；
+            long getFilePointer(): 获取文件记录指针的当前位置
+            void seek(long pos): 将文件记录指针定位到pos位置;
+        
     
 拾叁.
 拾肆.
