@@ -1161,7 +1161,12 @@
         java.lang.reflect.Constructor 代表类的构造方法
         等等......
     
-    
+    Class类（ReflectClass）
+        在Object类中定义了以下方法，此方法被所有子类继承
+            public final Class getClass()
+        以上的方法返回值的类型是一个class类，此类是Java反射的源头，实际上所谓反射从程序的运行结果来看很好理解
+        就是可以通过对象反射求出类的名称
+        
 
 
 

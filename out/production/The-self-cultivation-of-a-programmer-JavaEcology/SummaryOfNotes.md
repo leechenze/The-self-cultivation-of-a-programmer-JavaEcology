@@ -1105,6 +1105,24 @@
         如果对象支持序列化机制，则必须让其类是可序列化的，为了让类是可序列化的，必须实现如下两个接口之一：
             Serializable 或 Externalizable
             一般使用的都是Serializable;
+        注意：对象的序列化和反序列化使用的类要严格一致，包名，类名，类结构等等所有的都要一致
+        
+    随机存取流：（RandomStream）；
+        RandomAccessFile类，支持"随机访问"的方式，程序可以直接跳到文件的任意地方来读，写文件；
+            支持只访问文件的部分内容
+            可以想已存在的文件后追加内容
+        RandomAccessFile 对象包含一个记录指针，用以标示当前读写处的位置；
+        RandomAccessFile 类对象可以自由移动记录指针；
+            long getFilePointer(): 获取文件记录指针的当前位置
+            void seek(long pos): 将文件记录指针定位到pos位置;
+        
+        RandomAccessFile的构造有两个参数，参数1是文件路径，参数2是访问模式
+            访问模式：
+                r 只读（常用）
+                rw 读取和写入（常用）
+                rwd 读取和写入，同步文件内容的更新
+                rws 读取和写入，同步文件内容和元数据的更新
+            
         
     
 拾叁.
