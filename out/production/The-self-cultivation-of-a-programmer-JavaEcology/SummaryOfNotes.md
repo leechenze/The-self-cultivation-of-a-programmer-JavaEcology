@@ -1105,9 +1105,116 @@
         如果对象支持序列化机制，则必须让其类是可序列化的，为了让类是可序列化的，必须实现如下两个接口之一：
             Serializable 或 Externalizable
             一般使用的都是Serializable;
+        注意：对象的序列化和反序列化使用的类要严格一致，包名，类名，类结构等等所有的都要一致
         
+    随机存取流：（RandomStream）；
+        RandomAccessFile类，支持"随机访问"的方式，程序可以直接跳到文件的任意地方来读，写文件；
+            支持只访问文件的部分内容
+            可以想已存在的文件后追加内容
+        RandomAccessFile 对象包含一个记录指针，用以标示当前读写处的位置；
+        RandomAccessFile 类对象可以自由移动记录指针；
+            long getFilePointer(): 获取文件记录指针的当前位置
+            void seek(long pos): 将文件记录指针定位到pos位置;
+        
+        RandomAccessFile的构造有两个参数，参数1是文件路径，参数2是访问模式
+            访问模式：
+                r 只读（常用）
+                rw 读取和写入（常用）
+                rwd 读取和写入，同步文件内容的更新
+                rws 读取和写入，同步文件内容和元数据的更新
+            
+    流的应用小节：
+        流是用来处理数据的
+        处理数据时，一般先明确数据源和数据的目的地，数据源可以是文件，也可以是键盘；
+        数据的目的地可以是文件，显示器，或其他设备
+        而流只是在帮助数据进行传输，并对传输的数据进行处理，比如过滤处理，转换处理等。。。
     
-拾叁.
+
+
+
+
+
+
+
+拾叁.反射
+    
+    1。理解class类，并实例化class类对象
+    2。运行时创建类对象并获取类的完整结构
+    3。通过反射调用类的指定方法，指定属性
+    4。动态代理
+    
+    反射的前提：
+        已经加载过这个类，就可以通过类名来寻找到这个类的所有相关信息
+    
+    Reflection被视为动态语言的关键，反射机制允许程序在执行期间借助于ReflectionAPI取得任何类的内部信息
+        并能直接操作类的内部属性和方法；
+    Java反射机制提供的功能：
+        在运行时判断任意一个对象所属的类
+        在运行时构造任意一个类的对象
+        在运行时判断任意一个类所具有的成员变量和方法
+        在运行时调用任意一个对象的成员变量和方法
+        生成动态代理（反射的关键应用）
+    反射相关的主要API：
+        java.lang.Class 代表一个类
+        java.lang.reflect.Method 代表类的方法
+        java.lang.reflect.Field 代表类的成员变量
+        java.lang.reflect.Constructor 代表类的构造方法
+        等等......
+    
+    Class类（ReflectClass）
+        在Object类中定义了以下方法，此方法被所有子类继承
+            public final Class getClass()
+        以上的方法返回值的类型是一个class类，此类是Java反射的源头，实际上所谓反射从程序的运行结果来看很好理解
+        就是可以通过对象反射求出类的名称
+        
+        一个Class对象对应的是一个加载到JVM中的一个。class文件；
+        一个类在JVM中只会有一个class实例
+        每个类的实例都会记得自己是由哪个Class实例所生成的
+        通过Class可以完整的得到一个类中的完整结构
+        
+        Class类的常用方法
+            static Class forName        根据类的全类名，（包名+类名）获取class对象
+            Object newInstance()        创建目标类对象
+            getName()                   获取类的全名
+            getSuperclass()             获取所有父类的class对象
+            getInterface()              获取所有实现的接口
+            getClassLoader()            获取类的加载器
+            getConstructor()            获取所有的构造方法
+            getDeclaredFields()         获取所有的属性
+            getMethod()                 获取对应的方法
+        
+        实例化Class类对象的四种方法（详见ReflectClass)
+        1.Class clazz = String.class;
+        2.Class clazz = "www.xyd.com".getClass();
+        3.Class clazz = Class.forName("java.lang.String")
+        4.ClassLoader cl = this.getClass().getClassLoader();
+            Class clazz = cl.loadClass("类的全类名");
+        
+    反射获取一个类的父类和接口（ReflectSuperAndIFace）
+        interface是class的类型的一种
+    反射获取一个类的全部构造器（ReflectConstructors)
+        public Constructor<T>[] getConstructors()
+        返回此Class对象所表示的类的所有public构造方法
+        public Constructor<T>[] getDeclaredConstructors()
+        返回此Class对象表示的类声明的所有构造方法
+        
+        Constructor类中：
+            获取修饰符：public int getModifiers()
+            获取方法名称：public String getName()
+            获取参数的类型：public Class<?>[] getParameterTypes();
+            
+            
+        
+
+
+
+
+
+
+
+
+
+
 拾肆.
 拾伍.
 拾陆.

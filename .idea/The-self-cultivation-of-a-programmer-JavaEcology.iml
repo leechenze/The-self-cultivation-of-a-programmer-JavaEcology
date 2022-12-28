@@ -16,6 +16,7 @@
       <sourceFolder url="file://$MODULE_DIR$/Native/IO" isTestSource="false" />
       <sourceFolder url="file://$MODULE_DIR$/Native/IO/src" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/Native/IO/src1" type="java-resource" />
+      <sourceFolder url="file://$MODULE_DIR$/Native/Reflection" isTestSource="false" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

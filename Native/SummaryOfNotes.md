@@ -1161,9 +1161,50 @@
         java.lang.reflect.Constructor 代表类的构造方法
         等等......
     
-    
-
-
+    Class类（ReflectClass）
+        在Object类中定义了以下方法，此方法被所有子类继承
+            public final Class getClass()
+        以上的方法返回值的类型是一个class类，此类是Java反射的源头，实际上所谓反射从程序的运行结果来看很好理解
+        就是可以通过对象反射求出类的名称
+        
+        一个Class对象对应的是一个加载到JVM中的一个。class文件；
+        一个类在JVM中只会有一个class实例
+        每个类的实例都会记得自己是由哪个Class实例所生成的
+        通过Class可以完整的得到一个类中的完整结构
+        
+        Class类的常用方法
+            static Class forName        根据类的全类名，（包名+类名）获取class对象
+            Object newInstance()        创建目标类对象
+            getName()                   获取类的全名
+            getSuperclass()             获取所有父类的class对象
+            getInterface()              获取所有实现的接口
+            getClassLoader()            获取类的加载器
+            getConstructor()            获取所有的构造方法
+            getDeclaredFields()         获取所有的属性
+            getMethod()                 获取对应的方法
+        
+        实例化Class类对象的四种方法（详见ReflectClass)
+        1.Class clazz = String.class;
+        2.Class clazz = "www.xyd.com".getClass();
+        3.Class clazz = Class.forName("java.lang.String")
+        4.ClassLoader cl = this.getClass().getClassLoader();
+            Class clazz = cl.loadClass("类的全类名");
+        
+    反射获取一个类的父类和接口（ReflectSuperAndIFace）
+        interface是class的类型的一种
+    反射获取一个类的全部构造器（ReflectConstructors)
+        public Constructor<T>[] getConstructors()
+        返回此Class对象所表示的类的所有public构造方法
+        public Constructor<T>[] getDeclaredConstructors()
+        返回此Class对象表示的类声明的所有构造方法
+        
+        Constructor类中：
+            获取修饰符：public int getModifiers()
+            获取方法名称：public String getName()
+            获取参数的类型：public Class<?>[] getParameterTypes();
+            
+        
+        
 
 
 
