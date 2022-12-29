@@ -1197,12 +1197,39 @@
         返回此Class对象所表示的类的所有public构造方法
         public Constructor<T>[] getDeclaredConstructors()
         返回此Class对象表示的类声明的所有构造方法
-        
-        Constructor类中：
+        Constructor类中的方法：
             获取修饰符：public int getModifiers()
+                返回值为数字
+                    1：表示public
+                    2：表示private
             获取方法名称：public String getName()
             获取参数的类型：public Class<?>[] getParameterTypes();
-           
+    通过反射创建一个对象（ReflectConstructors.Test)
+    通过反射获取一个类的全部方法（ReflectMethods）
+        public Method[] getDeclaredMethods()
+        返回此Class对象所表示的类或接口的全部方法
+        public Method[] getMethods()
+        返回此Class对象所表示的类或接口的Public方法
+        Methods类中的方法：
+            获取返回值：public Class<?> getReturnType()
+            获取参数的类型：public Class<?>[] getParameterTypes()
+            获取修饰符: public int getModifiers();
+    通过反射获取一个类的全部属性（ReflectFields）
+        public Field[] getDeclaredFields()
+        返回此Class对象所表示的类或接口的全部属性
+        public Field[] getFields()
+        返回此Class对象所表示的类或接口的Public属性
+        Field类中的方法：
+            获取修饰符：public int getModifiers()
+            获取属性类型：public Class<?> getType()
+            获取属性名称: public String getName()
+    
+            
+        
+        
+        
+        
+        
          
         
         

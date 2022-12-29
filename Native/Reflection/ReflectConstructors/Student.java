@@ -1,18 +1,24 @@
 package ReflectConstructors;
 
-public class Student extends Person1 implements Move, Study {
-    String school;
-    public void showInfo() {
-        System.out.println("school is" + this.school);
+public class Student extends Person1 {
+    public String school;
+    public String name;
+    public int age;
+
+
+    public Student() {
+        System.out.println("调用的是 public Student()");
     }
 
-    @Override
-    public void moveType() {
-        System.out.println("Go to school by bicycle");
+    public Student(String school) {
+        this.school = school;
+        System.out.println("调用的是 public Student(String school)");
     }
 
-    @Override
-    public void studyInfo() {
-        System.out.println("Learning java");
+    private Student(String name, int age) {
+        this.name = name;
+        this.age = age;
+        System.out.println("调用的是 private Student(String name, int age)");
     }
+
 }
