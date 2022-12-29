@@ -1230,9 +1230,14 @@
             获取属性名称: public String getName()
             获取包名称: public String getName()
     反射机制调用类的指定方法和属性（ReflectCallMethodAndField）
-        调用指定方法：
-        调用指定属性:
-        
+        调用指定方法：（详见：ReflectCallMethodAndField.Test)
+            调用公有方法
+            调用私有方法
+            调用一个重载方法
+            有返回值的方法
+        调用指定属性：（详见：ReflectCallMethodAndField.Test)
+            
+            
         
         
         
