@@ -4,6 +4,8 @@ public class Student extends Person implements Study, Move {
 
 
     String school;
+    public String publicField;
+    private String privateField;
 
     @Override
     public void moveType() {

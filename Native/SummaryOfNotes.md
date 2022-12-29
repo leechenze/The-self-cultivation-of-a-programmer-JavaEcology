@@ -1214,18 +1214,24 @@
             获取返回值：public Class<?> getReturnType()
             获取参数的类型：public Class<?>[] getParameterTypes()
             获取修饰符: public int getModifiers();
-    通过反射获取一个类的全部属性（ReflectFields）
+    通过反射获取一个类的全部属性和包（ReflectMethods.Test）
+        public Package getPackage()
+        返回此Class类所在的包
         public Field[] getDeclaredFields()
-        返回此Class对象所表示的类或接口的全部属性
+        返回此Class对象所表示的类或接口的全部属性（只包含本类的属性）
         public Field[] getFields()
-        返回此Class对象所表示的类或接口的Public属性
+        返回此Class对象所表示的类或接口的Public属性（包含父类的属性）
         Field类中的方法：
             获取修饰符：public int getModifiers()
+                0：表示Default
+                1：表示public
+                2：表示private
             获取属性类型：public Class<?> getType()
             获取属性名称: public String getName()
-    
-            
-        
+            获取包名称: public String getName()
+    反射机制调用类的指定方法和属性（ReflectCallMethodAndField）
+        调用指定方法：
+        调用指定属性:
         
         
         
