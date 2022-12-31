@@ -1298,7 +1298,12 @@
                 getPriority()：返回线程优先级
                 getPriority(int newPriority): 设置线程优先级
                 线程创建时继承父线程的优先级
-            
+        static void yield(): 线程让步
+        join（）：阻塞调用线程，直到join线程执行完毕（join会先执行）
+        static void sleep（long millis）：指定时间（毫秒单位）后执行
+        stop（）：强制线程结束声明周期
+        boolean isAlive（）：返回boolean，判断线程是否还活着
+        
         
         
         
