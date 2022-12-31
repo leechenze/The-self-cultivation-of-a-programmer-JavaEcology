@@ -1249,8 +1249,63 @@
 
 拾肆.线程
     
-    
+    程序，进程和线程的概念；
+    Java中多线程的创建和应用
+        继承Thread类和实现Runnable接口
+        Thread类的主要方法
+        线程的调度与设置优先级
+    线程的生命周期
+    线程的同步
+    线程的通信
 
+    基本概念
+        程序，进程与线程
+        Program, Process And thread
+        
+    多线程的创建与启动
+        Jvm允许程序运行多个线程，他通过java.lang.Thread类来实现
+        Thread类的特性
+            每个线程都是通过某个特定Thread对象的run方法来完成操作的，经常把run方法的主体称为线程体
+            通过该对象的start方法来调用这个线程
+        构造方法：
+            Thread()：创建新的Thread对象
+            Thread(String threadname)：创建线程并指定线程实例名
+            Thread(Runnable target)：指定创建线程的目标对象，他实现了Runnabble接口中的run方法
+            Thread(Runnable target, String name)：创建新的Thread对象
+        
+        创建线程的方式一（继承Thread类）(inheritThread)：
+        创建线程的方式二（实现Runnable接口）（implementRunnable）
+            
+    继承Thread方式和实现Runnable接口方式的联系和区别
+        继承Thread的线程代码存放在Thread子类的run方法中（重写run方法）
+        实现Runnable的线程代码存放在接口的子类的run方法中（实现run方法）
+    
+    一般使用实现Runnable接口的方式在处理多线程应用，因为实现方法的好处：
+        避免了但继承的局限性（因为Java是单继承的，所以如果继承了Thread就无法继承别的基类，比较局限）
+        多个线程可以共享同一个接口实现类的对象，非常适合多个相同线程来处理同一份资源
+        
+    Thread类的相关方法（ThreadMethods)
+        void start()：启动线程，以执行对象的run方法
+        run(): 线程在被调度时所执行的操作
+        String getName（）：返回线程名称
+        void setName（String name）：设置该线程名称
+        static currentThread（）：返回当前线程
+        线程的优先级控制
+            MAX_PRIORITY(10);
+            MIN_PRIORITY(1);
+            NORM_PRIORITY(5);
+            涉及的方法
+                getPriority()：返回线程优先级
+                getPriority(int newPriority): 设置线程优先级
+                线程创建时继承父线程的优先级
+        static void yield(): 线程让步
+        join（）：
+        static void sleep（long millis）：指定时间（毫秒单位）
+        stop（）：强制线程结束声明周期
+        boolean isAlive（）：返回boolean，判断线程是否还活着
+        
+        
+        
 
 
 
