@@ -7,7 +7,7 @@ public class Test {
         Account a1 = new Account();
         // 定义多线程对象
         User u_wechat = new User(a, 2000);
-        User u_alipay = new User(a1, 2000);
+        User u_alipay = new User(a, 2000);
         Thread wechat = new Thread(u_wechat, "wechat");
         Thread alipay = new Thread(u_alipay, "alipay");
         wechat.start();
@@ -104,6 +104,31 @@ class Account {
         }
     }
 
+    public void drawing5(int m, Account a) throws InterruptedException {
+        // synchonized中的参数传入哪个对象就是给哪个对象加锁
+        synchronized (a) {
+            String name = Thread.currentThread().getName();
+
+            // 如果是微信操作先不执行，先让支付宝操作完，微信再操作
+            if (name.equals("wechat")) {
+                a.wait();
+            } else if (name.equals("alipay")) {
+                // a.notify();
+                a.notifyAll();
+            }
+
+            // 提款判断账户余额是否充足
+            if (money < m) {
+                System.out.println(name + "操作账户余额不足,剩余金额" + money);
+            } else {
+                System.out.println(name + "账号原有金额" + money);
+                System.out.println("取款金额" + m);
+                money = money - m;
+                System.out.println("剩余金额" + money);
+            }
+        }
+    }
+
 
 
 }
@@ -132,6 +157,12 @@ class User implements Runnable{
         // 使用synchronized锁一段代码块
         // account.drawing3(money);
         // 使用synchronized锁定代码块，根据不同的对象拥有不同的锁
-        account.drawing4(money, account);
+        // account.drawing4(money, account);
+        // 如果是微信操作先不执行，先让支付宝操作完，微信再操作
+        try {
+            account.drawing5(money, account);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }
