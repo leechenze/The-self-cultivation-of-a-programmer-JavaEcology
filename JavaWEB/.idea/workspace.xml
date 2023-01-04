@@ -4,19 +4,16 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/JavaWEB.iml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/libraries/mysql_connector_java_8_0_29.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/libraries/mysql_connector_java_8_0_29.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/modules.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/uiDesigner.xml" beforeDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P031T00:00">
+      <change afterPath="$PROJECT_DIR$/.idea/dataSources.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_DriverManager.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Native/.idea/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Native/.idea/misc.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Native/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Native/.idea/vcs.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Native/Native.iml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/jdbcPacker/src/com/lee/jdbc/JDBCPacker.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -55,6 +52,7 @@
   </component>
   <component name="PropertiesComponent">
     <property name="ASKED_ADD_EXTERNAL_FILES" value="true" />
+    <property name="DatabaseDriversLRU" value="mysql" />
     <property name="Downloaded.Files.Path.Enabled" value="false" />
     <property name="Repository.Attach.Annotations" value="false" />
     <property name="Repository.Attach.JavaDocs" value="false" />
@@ -74,7 +72,7 @@
       <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Application.JDBCPacket_DriverManager">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
       <module name="JavaWEB" />
@@ -82,6 +80,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="JDBCPacket_DriverManager" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_DriverManager" />
+      <module name="JavaWEB" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.JDBCPacket" />
+      <item itemvalue="Application.JDBCPacket_DriverManager" />
+    </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -92,8 +101,17 @@
       <option name="presentableId" value="Default" />
       <updated>1672755243610</updated>
       <workItem from="1672755247907" duration="848000" />
-      <workItem from="1672756142503" duration="797000" />
+      <workItem from="1672756142503" duration="1728000" />
+      <workItem from="1672840003135" duration="3048000" />
     </task>
+    <task id="LOCAL-00001" summary="P031T00:00">
+      <created>1672757054778</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1672757054778</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -109,5 +127,9 @@
         </entry>
       </map>
     </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="P031T00:00" />
+    <option name="LAST_COMMIT_MESSAGE" value="P031T00:00" />
   </component>
 </project>
