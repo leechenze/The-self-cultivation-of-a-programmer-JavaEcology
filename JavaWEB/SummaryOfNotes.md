@@ -33,9 +33,9 @@
 
 
 
-贰.API详解
+贰.JDBC API详解
     
-    Drivermanager
+    Drivermanager（JDBCPacket_DriverManager）
         DriverManager的作用：
             1。注册驱动
             2。获取数据库连接
@@ -49,13 +49,25 @@
             "jdbc:mysql://127.0.0.1:3306/jdbc_packer";
             "jdbc:mysql:///jdbc_packer";
     
-    Connection（数据库连接对象）
+    Connection（JDBCPacket_Connection）
+        数据库连接对象
         作用：
             1。获取执行SQL的对象
+                普通执行SQL对象
+                Statement createStatement()
+                预编译SQL的执行SQL对象：防止SQL注入
+                PreparedStatement prepareStatement(sql)
+                执行存储过程的对象（不多用）
+                CallableStatement prepareCall(sql)
+                
             2。管理事物
+                开启事务：setAutoCommit(boolean autoCommit)
+                    true为自动提交事务
+                    false为手动提交事务（即开启事务）
+                提交事务：commit()
+                回滚事务：rollback()
+            
         
-        
-
 
 
 叁.
