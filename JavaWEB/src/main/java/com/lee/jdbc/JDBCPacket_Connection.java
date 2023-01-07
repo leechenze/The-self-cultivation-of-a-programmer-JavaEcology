@@ -14,18 +14,30 @@ public class JDBCPacket_Connection {
         Connection conn = DriverManager.getConnection(url, userName, password);
         Statement stmt = conn.createStatement();
 
-        // 开启事务
+        try {
+            // 开启事务
+            conn.setAutoCommit(false);
+            String sql1 = "update account set money = 1000 where id = 1;";
+            int count1 = stmt.executeUpdate(sql1);
+            System.out.println(count1);
+
+            // 生成一条异常
+            int i = 3 / 0;
+
+            String sql2 = "update account set money = 1000 where id = 2;";
+            int count2 = stmt.executeUpdate(sql2);
+            System.out.println(count2);
+
+            System.out.println(3/0);
+            // 无异常时：提交事务
+            conn.commit();
+        } catch (Exception e) {
+            // 出现异常时：回滚事务
+            conn.rollback();
+            e.printStackTrace();
+        }
 
 
-        String sql1 = "update account set money = 9999 where id = 1;";
-        int count1 = stmt.executeUpdate(sql1);
-        System.out.println(count1);
-        String sql2 = "update account set money = 9999 where id = 2;";
-        int count2 = stmt.executeUpdate(sql2);
-        System.out.println(count2);
-        // 回滚事务
-
-        // 提交事务
 
         stmt.close();
         conn.close();

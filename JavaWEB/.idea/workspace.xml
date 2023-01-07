@@ -4,7 +4,11 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P032T06:02" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P032T06:02">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Connection.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -52,6 +56,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
@@ -63,9 +68,16 @@
       <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.JDBCPacket_DriverManager">
+  <component name="RunManager" selected="Application.JDBCPacket_Connection">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
+      <module name="JavaWEB" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JDBCPacket_Connection" type="Application" factoryName="Application">
+      <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_Connection" />
       <module name="JavaWEB" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -81,6 +93,7 @@
     <list>
       <item itemvalue="Application.JDBCPacket" />
       <item itemvalue="Application.JDBCPacket_DriverManager" />
+      <item itemvalue="Application.JDBCPacket_Connection" />
     </list>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
@@ -95,6 +108,7 @@
       <workItem from="1672756142503" duration="1728000" />
       <workItem from="1672840003135" duration="4133000" />
       <workItem from="1672927510219" duration="2375000" />
+      <workItem from="1673006715334" duration="2927000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -117,7 +131,14 @@
       <option name="project" value="LOCAL" />
       <updated>1672929446185</updated>
     </task>
-    <option name="localTasksCounter" value="4" />
+    <task id="LOCAL-00004" summary="P032T06:02">
+      <created>1673007639424</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1673007639424</updated>
+    </task>
+    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

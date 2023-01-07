@@ -61,12 +61,21 @@
                 CallableStatement prepareCall(sql)
                 
             2。管理事物
-                开启事务：setAutoCommit(boolean autoCommit)
-                    true为自动提交事务
-                    false为手动提交事务（即开启事务）
-                提交事务：commit()
-                回滚事务：rollback()
-            
+                MySql事务管理：
+                    开启事务：BEGIN;/ START TRANSACTION
+                        MySql默认自动提交事务
+                    提交事务：COMMIT
+                    回滚事务：ROLLBACK
+                JDBC事务管理：
+                    开启事务：setAutoCommit(boolean autoCommit)
+                        true为自动提交事务
+                        false为手动提交事务（即开启事务）
+                    提交事务：commit()
+                    回滚事务：rollback()
+    
+    Statement（JDBCPacket_Statement）
+        
+        
         
 
 
