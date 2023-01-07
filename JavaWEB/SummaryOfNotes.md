@@ -112,7 +112,15 @@
                     // 获取数据
                     rs.getXxx(参数)
                 }
+        练习：查询account账户表数据，封装为Account对象中，并存储到ArrayList集合中
+            创建pojo包（pojo一般是用来存放实体类的）
+                Account类
+                 
+    PreparedStatement（JDBCPacket_PreparedStatement)   
+        PreparedStatement 是继承自 Statement的
+        也是执行sql语句的对象，表示预编译sql语句的对象
         
+            
 
 叁.
 
