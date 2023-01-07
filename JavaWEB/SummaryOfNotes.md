@@ -75,9 +75,44 @@
     
     Statement（JDBCPacket_Statement）
         
+        Statement作用：执行sql语句；
+        执行Sql语句
+            int executeUpdate(sql)
+                DML：对数据的增删改操作
+                    返回的是受影响的行数，如果返回零则表示没有修改成功
+                DDL：对表和库的增删改查操作
+                    DDL可以对数据库和表进行一些增删改查，所以即使是成功创建或删除数据库都会返回零
+                    这就意味着我们无法通过 executeUpdate 的返回值进行判断是否操作成功
+                    所以一般对于DDL操作来说执行时不报异常就算成功
+            ResultSet executeQuery(sql)
+                DQL：对数据的查询操作
         
+    ResultSet（JDBCPacket_ResultSet)
+        结果集对象
+        ResultSet 就是 executeQuery 方法的返回值
         
-
+        boolean next()
+            作用：
+                1。将光标从当前位置向前移动一行
+                2。判断当前行是否为有效行
+            返回值：
+                true：有效行
+                false：无效行
+        xxx getXxx(): 获取数据
+            xxx：数据类型；如：int getInt（参数）； String getString（参数）
+            参数
+                1。int：列的编号，注意索引从1开始
+                2。String：列的名称
+            返回值：xxx；
+        使用步骤：
+            1。游标向下移动一行，并判断改行是否有数据：next（）
+            2。获取数据：getXxx（参数）
+            代码：
+                while(rs.next()){
+                    // 获取数据
+                    rs.getXxx(参数)
+                }
+        
 
 叁.
 

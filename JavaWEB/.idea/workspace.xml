@@ -5,8 +5,15 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P033T00:00">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_ResultSet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Statement.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_DriverManager.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_DriverManager.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Connection.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Connection.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Connection.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Connection.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -22,6 +29,14 @@
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
+  <component name="GitSEFilterConfiguration">
+    <file-type-list>
+      <filtered-out-file-type name="LOCAL_BRANCH" />
+      <filtered-out-file-type name="REMOTE_BRANCH" />
+      <filtered-out-file-type name="TAG" />
+      <filtered-out-file-type name="COMMIT_BY_MESSAGE" />
+    </file-type-list>
   </component>
   <component name="MarkdownSettingsMigration">
     <option name="stateVersion" value="1" />
@@ -67,7 +82,7 @@
       <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.JDBCPacket_Connection">
+  <component name="RunManager" selected="JUnit.JDBCPacket_Statement.testDDL">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
       <module name="JavaWEB" />
@@ -89,11 +104,61 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="JDBCPacket_Statement" type="Application" factoryName="Application">
+      <option name="ALTERNATIVE_JRE_PATH" value="1.8" />
+      <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
+      <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_Statement" />
+      <module name="JavaWEB" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JDBCPacket_Statement.testDDL" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="JavaWEB" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lee.jdbc.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lee.jdbc" />
+      <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_Statement" />
+      <option name="METHOD_NAME" value="testDDL" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="JDBCPacket_Statement.testDML" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="JavaWEB" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lee.jdbc.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lee.jdbc" />
+      <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_Statement" />
+      <option name="METHOD_NAME" value="testDML" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.JDBCPacket" />
       <item itemvalue="Application.JDBCPacket_DriverManager" />
       <item itemvalue="Application.JDBCPacket_Connection" />
+      <item itemvalue="Application.JDBCPacket_Statement" />
+      <item itemvalue="JUnit.JDBCPacket_Statement.testDML" />
+      <item itemvalue="JUnit.JDBCPacket_Statement.testDDL" />
     </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.JDBCPacket_Statement.testDDL" />
+        <item itemvalue="JUnit.JDBCPacket_Statement.testDML" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
@@ -108,7 +173,7 @@
       <workItem from="1672840003135" duration="4133000" />
       <workItem from="1672927510219" duration="2375000" />
       <workItem from="1673006715334" duration="2957000" />
-      <workItem from="1673057391171" duration="66000" />
+      <workItem from="1673057391171" duration="7257000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -145,7 +210,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673057351705</updated>
     </task>
-    <option name="localTasksCounter" value="6" />
+    <task id="LOCAL-00006" summary="P033T00:00">
+      <created>1673057476517</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1673057476517</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

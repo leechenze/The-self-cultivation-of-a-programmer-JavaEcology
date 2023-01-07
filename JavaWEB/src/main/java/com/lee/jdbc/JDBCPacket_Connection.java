@@ -28,7 +28,6 @@ public class JDBCPacket_Connection {
             int count2 = stmt.executeUpdate(sql2);
             System.out.println(count2);
 
-            System.out.println(3/0);
             // 无异常时：提交事务
             conn.commit();
         } catch (Exception e) {
