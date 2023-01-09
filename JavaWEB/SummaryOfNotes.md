@@ -116,10 +116,34 @@
             创建pojo包（pojo一般是用来存放实体类的）
                 Account类
                  
-    PreparedStatement（JDBCPacket_PreparedStatement)   
-        PreparedStatement 是继承自 Statement的
-        也是执行sql语句的对象，表示预编译sql语句的对象
-        
+    PreparedStatement（JDBCPacket_PreparedStatement) 
+        JDBCPacket_PreparedStatement.testLoginInject
+            PreparedStatement 是继承自 Statement的
+            也是执行sql语句的对象，表示预编译sql语句的对象
+            PreparedStatement作用：
+                预编译Sql语句并执行：预防Sql注入问题
+            Sql注入：
+                Sql注入就是通过操作输入来修改事先定义好的sql语句，用以达到执行代码就可以成功登录系统对服务器进行攻击的方法
+            为什么 （' or '1' = '1）这段代码可以成功代替密码登入数据库？
+                因为拼接后sql的结果是：
+                    select * from tb_user where name = 'george' and password = '' or '1' = '1'
+                而不是
+                    select * from tb_user where name = 'george' and password = 'xxx'
+                so 明白了，这就是所谓的（Sql注入就是通过操作输入来修改事先定义好的sql语句）
+                那么处理方法就是预编译sql语句（preparedStatement）
+
+        JDBCPacket_PreparedStatement.testLoginInject
+            1.sql语句中的参数值，使用 ？占位符进行代替
+                String sql = "select * from tb_user where name = ? and password = ?"
+                PreparedStatement pstmt = conn.preparedStatement(sql)
+            2.设置参数值
+                pstmt.setXxx(param1，param2）：给 ？赋值
+                Xxx:数据类型；如setInt(param1，param2）
+                参数：
+                    param1：？的位置编号，从1开始
+                    param2：？的值
+            3.执行Sql
+                executeUpdate();/executeQuery(); 不需要再传递sql
             
 
 叁.
