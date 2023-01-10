@@ -4,15 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P037T000000">
-      <change afterPath="$PROJECT_DIR$/.idea/libraries/druid_1_2_9.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Druid.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Practice.java" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P039T000000">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/pojo/Brand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/test/BrandTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_PreparedStatement.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_PreparedStatement.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_PreparedStatement.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_PreparedStatement.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Practice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Practice.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -194,11 +191,11 @@
       <item itemvalue="Application.JDBCPacket_DriverManager" />
       <item itemvalue="Application.JDBCPacket_Connection" />
       <item itemvalue="Application.JDBCPacket_Statement" />
+      <item itemvalue="Application.JDBCPacket_Druid" />
       <item itemvalue="JUnit.JDBCPacket_ResultSet.testResultSetToAccount" />
       <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testResultSet" />
       <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testLoginInject" />
       <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testPreparedStatement" />
-      <item itemvalue="Application.JDBCPacket_Druid" />
     </list>
     <recent_temporary>
       <list>
@@ -225,7 +222,8 @@
       <workItem from="1673006715334" duration="2957000" />
       <workItem from="1673057391171" duration="11469000" />
       <workItem from="1673264264573" duration="5459000" />
-      <workItem from="1673353088449" duration="5620000" />
+      <workItem from="1673353088449" duration="6132000" />
+      <workItem from="1673359249866" duration="1212000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -304,7 +302,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673310479240</updated>
     </task>
-    <option name="localTasksCounter" value="12" />
+    <task id="LOCAL-00012" summary="P039T000000">
+      <created>1673358733246</created>
+      <option name="number" value="00012" />
+      <option name="presentableId" value="LOCAL-00012" />
+      <option name="project" value="LOCAL" />
+      <updated>1673358733246</updated>
+    </task>
+    <option name="localTasksCounter" value="13" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -329,6 +334,7 @@
     <MESSAGE value="P034T000732" />
     <MESSAGE value="P035T000121" />
     <MESSAGE value="P037T000000" />
-    <option name="LAST_COMMIT_MESSAGE" value="P037T000000" />
+    <MESSAGE value="P039T000000" />
+    <option name="LAST_COMMIT_MESSAGE" value="P039T000000" />
   </component>
 </project>

@@ -176,6 +176,21 @@
         System.out.println(System.getProperty("user.dir"))
     
     练习（JDBCPacket_Practice）
+        准备环境
+            数据库表 tb_brand
+                执行sql脚本（lib/sql_script/tb_brand.sql）
+            实体类 Brand
+                创建实体类（pojo/Brand）
+                在实体类中基本数据类型建议使用包装类
+                以int为例，Integer默认值为null，int默认值为0，避免对业务产生影响；
+            测试用例（test/BrandTest）
+                在BrandTest测试类中编写测试方法
+        查询：查询所有数据
+        添加：添加品牌
+        修改：根据ID修改
+        删除：根据ID删除
+        
+                
         
 
 叁.
