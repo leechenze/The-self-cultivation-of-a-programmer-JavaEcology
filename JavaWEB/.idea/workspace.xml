@@ -4,12 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P039T000000">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/pojo/Brand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/test/BrandTest.java" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P040T000000">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Practice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Practice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/test/BrandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/test/BrandTest.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -223,7 +221,7 @@
       <workItem from="1673057391171" duration="11469000" />
       <workItem from="1673264264573" duration="5459000" />
       <workItem from="1673353088449" duration="6132000" />
-      <workItem from="1673359249866" duration="1212000" />
+      <workItem from="1673359249866" duration="2516000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -309,7 +307,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673358733246</updated>
     </task>
-    <option name="localTasksCounter" value="13" />
+    <task id="LOCAL-00013" summary="P040T000000">
+      <created>1673360486793</created>
+      <option name="number" value="00013" />
+      <option name="presentableId" value="LOCAL-00013" />
+      <option name="project" value="LOCAL" />
+      <updated>1673360486793</updated>
+    </task>
+    <option name="localTasksCounter" value="14" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -335,6 +340,7 @@
     <MESSAGE value="P035T000121" />
     <MESSAGE value="P037T000000" />
     <MESSAGE value="P039T000000" />
-    <option name="LAST_COMMIT_MESSAGE" value="P039T000000" />
+    <MESSAGE value="P040T000000" />
+    <option name="LAST_COMMIT_MESSAGE" value="P040T000000" />
   </component>
 </project>
