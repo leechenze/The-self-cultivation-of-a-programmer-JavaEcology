@@ -49,7 +49,7 @@ public class JDBCPacket_PreparedStatement {
     @Test
     public void testPreparedStatement() throws Exception {
 
-        String url = "jdbc:mysql:///jdbc_packer";
+        String url = "jdbc:mysql:///jdbc_packer?useServerPrepStmts=true&&useSSL=false";
         String userName = "root";
         String password = "lcz19930316";
         Connection conn = DriverManager.getConnection(url, userName, password);

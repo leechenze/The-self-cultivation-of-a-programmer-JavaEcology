@@ -144,7 +144,39 @@
                     param2：？的值
             3.执行Sql
                 executeUpdate();/executeQuery(); 不需要再传递sql
+            4.开启预编译
+                jdbc:mysql:///jdbc_packer?useServerPrepStmts=true
             
+    数据库连接池（JDBCPacket_Druid）
+        和线程池一样的作用，用来管理数据库连接的一个容器
+        Druid数据库连接池技术
+            开启一个数据库连接和关闭数据库连接都是非常耗时的工作
+            因为开启一个链接是要建立系统底层的资源进行TCP网络的连接等工作
+            而连接池技术会在系统启动之前初始化一个容器，就是一个集合，在集合中提前申请几个数据库的连接
+            提前创建好，如果有用户访问时，就从数据库取出一个连接给用户提供服务，当用户执行完事之后，
+            连接不会释放掉，而是要归还到容器中，进行资源复用
+            所以好处在于：资源复用，提升系统响应速度，同时避免数据库连接遗漏
+            连接遗漏意思是当容器中的连接用完之后，没了空闲连接后，会进行判断并对没有操作的用户进行断开连接
+            归还到容器中，避免空闲的资源占用。
+        常见的数据库连接池：
+            DBCP，C3PO，Druid
+        数据库连接池实现：
+            DataSource
+            由Sun公司提供的数据库连接池标准接口，由第三方组织实现此接口
+            Connection getConnection()
+            换言之，开发中就不用DriveManager获取数据库连接了，而是使用这个getConnection进行连接
+        Druid连接池是阿里巴巴开源的数据库连接池项目
+        Druid使用步骤：
+            导入Jar包 druid-1.1.12.jar
+            定义配置文件（druid.properties）
+            加载配置文件
+            获取数据库连接池对象
+            获取连接
+        获取当前目录
+        System.out.println(System.getProperty("user.dir"))
+    
+    练习（JDBCPacket_Practice）
+        
 
 叁.
 
