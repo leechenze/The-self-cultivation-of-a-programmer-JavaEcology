@@ -4,10 +4,12 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P040T000000">
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P041T000000">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Practice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Practice.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/pojo/Brand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/pojo/Brand.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/test/BrandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/test/BrandTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Druid.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Druid.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -76,7 +78,7 @@
       <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="Application.JDBCPacket_Druid">
+  <component name="RunManager" selected="JUnit.BrandTest.testSelectAll">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
       <module name="JavaWEB" />
@@ -116,6 +118,22 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_Statement" />
       <module name="JavaWEB" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BrandTest.testSelectAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="JavaWEB" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lee.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lee.test" />
+      <option name="MAIN_CLASS_NAME" value="com.lee.test.BrandTest" />
+      <option name="METHOD_NAME" value="testSelectAll" />
+      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -168,40 +186,24 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="JDBCPacket_ResultSet.testResultSetToAccount" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="JavaWEB" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lee.jdbc.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lee.jdbc" />
-      <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_ResultSet" />
-      <option name="METHOD_NAME" value="testResultSetToAccount" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <list>
       <item itemvalue="Application.JDBCPacket" />
       <item itemvalue="Application.JDBCPacket_DriverManager" />
       <item itemvalue="Application.JDBCPacket_Connection" />
       <item itemvalue="Application.JDBCPacket_Statement" />
       <item itemvalue="Application.JDBCPacket_Druid" />
-      <item itemvalue="JUnit.JDBCPacket_ResultSet.testResultSetToAccount" />
       <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testResultSet" />
       <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testLoginInject" />
       <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testPreparedStatement" />
+      <item itemvalue="JUnit.BrandTest.testSelectAll" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.BrandTest.testSelectAll" />
         <item itemvalue="Application.JDBCPacket_Druid" />
         <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testPreparedStatement" />
         <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testLoginInject" />
         <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testResultSet" />
-        <item itemvalue="JUnit.JDBCPacket_ResultSet.testResultSetToAccount" />
       </list>
     </recent_temporary>
   </component>
@@ -221,7 +223,8 @@
       <workItem from="1673057391171" duration="11469000" />
       <workItem from="1673264264573" duration="5459000" />
       <workItem from="1673353088449" duration="6132000" />
-      <workItem from="1673359249866" duration="2516000" />
+      <workItem from="1673359249866" duration="3041000" />
+      <workItem from="1673433920462" duration="3678000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -314,7 +317,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673360486793</updated>
     </task>
-    <option name="localTasksCounter" value="14" />
+    <task id="LOCAL-00014" summary="P040T000622">
+      <created>1673361795212</created>
+      <option name="number" value="00014" />
+      <option name="presentableId" value="LOCAL-00014" />
+      <option name="project" value="LOCAL" />
+      <updated>1673361795212</updated>
+    </task>
+    <option name="localTasksCounter" value="15" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -341,6 +351,8 @@
     <MESSAGE value="P037T000000" />
     <MESSAGE value="P039T000000" />
     <MESSAGE value="P040T000000" />
-    <option name="LAST_COMMIT_MESSAGE" value="P040T000000" />
+    <MESSAGE value="P040T000622" />
+    <MESSAGE value="P041T000000" />
+    <option name="LAST_COMMIT_MESSAGE" value="P041T000000" />
   </component>
 </project>
