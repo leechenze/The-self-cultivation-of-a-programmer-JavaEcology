@@ -6,10 +6,8 @@
   <component name="ChangeListManager">
     <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P041T000000">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Practice.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/jdbc/JDBCPacket_Practice.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/pojo/Brand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/pojo/Brand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/lee/test/BrandTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/lee/test/BrandTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Druid.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Druid.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -78,7 +76,7 @@
       <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.BrandTest.testSelectAll">
+  <component name="RunManager" selected="JUnit.BrandTest.testDelete">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
       <module name="JavaWEB" />
@@ -122,6 +120,38 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="BrandTest.testAdd" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="JavaWEB" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lee.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lee.test" />
+      <option name="MAIN_CLASS_NAME" value="com.lee.test.BrandTest" />
+      <option name="METHOD_NAME" value="testAdd" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="BrandTest.testDelete" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="JavaWEB" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lee.test.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lee.test" />
+      <option name="MAIN_CLASS_NAME" value="com.lee.test.BrandTest" />
+      <option name="METHOD_NAME" value="testDelete" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration name="BrandTest.testSelectAll" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="JavaWEB" />
       <extension name="coverage">
@@ -138,49 +168,17 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="JDBCPacket_PreparedStatement.testLoginInject" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="BrandTest.testUpdate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="JavaWEB" />
       <extension name="coverage">
         <pattern>
-          <option name="PATTERN" value="com.lee.jdbc.*" />
+          <option name="PATTERN" value="com.lee.test.*" />
           <option name="ENABLED" value="true" />
         </pattern>
       </extension>
-      <option name="PACKAGE_NAME" value="com.lee.jdbc" />
-      <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_PreparedStatement" />
-      <option name="METHOD_NAME" value="testLoginInject" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="JDBCPacket_PreparedStatement.testPreparedStatement" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="JavaWEB" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lee.jdbc.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lee.jdbc" />
-      <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_PreparedStatement" />
-      <option name="METHOD_NAME" value="testPreparedStatement" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="JDBCPacket_PreparedStatement.testResultSet" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="JavaWEB" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lee.jdbc.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lee.jdbc" />
-      <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_PreparedStatement" />
-      <option name="METHOD_NAME" value="testResultSet" />
+      <option name="PACKAGE_NAME" value="com.lee.test" />
+      <option name="MAIN_CLASS_NAME" value="com.lee.test.BrandTest" />
+      <option name="METHOD_NAME" value="testUpdate" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -192,18 +190,18 @@
       <item itemvalue="Application.JDBCPacket_Connection" />
       <item itemvalue="Application.JDBCPacket_Statement" />
       <item itemvalue="Application.JDBCPacket_Druid" />
-      <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testResultSet" />
-      <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testLoginInject" />
-      <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testPreparedStatement" />
       <item itemvalue="JUnit.BrandTest.testSelectAll" />
+      <item itemvalue="JUnit.BrandTest.testAdd" />
+      <item itemvalue="JUnit.BrandTest.testUpdate" />
+      <item itemvalue="JUnit.BrandTest.testDelete" />
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.BrandTest.testSelectAll" />
+        <item itemvalue="JUnit.BrandTest.testDelete" />
+        <item itemvalue="JUnit.BrandTest.testUpdate" />
+        <item itemvalue="JUnit.BrandTest.testAdd" />
         <item itemvalue="Application.JDBCPacket_Druid" />
-        <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testPreparedStatement" />
-        <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testLoginInject" />
-        <item itemvalue="JUnit.JDBCPacket_PreparedStatement.testResultSet" />
+        <item itemvalue="JUnit.BrandTest.testSelectAll" />
       </list>
     </recent_temporary>
   </component>
@@ -224,7 +222,9 @@
       <workItem from="1673264264573" duration="5459000" />
       <workItem from="1673353088449" duration="6132000" />
       <workItem from="1673359249866" duration="3041000" />
-      <workItem from="1673433920462" duration="3678000" />
+      <workItem from="1673433920462" duration="5364000" />
+      <workItem from="1674105989509" duration="2095000" />
+      <workItem from="1674820005952" duration="4303000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -324,7 +324,14 @@
       <option name="project" value="LOCAL" />
       <updated>1673361795212</updated>
     </task>
-    <option name="localTasksCounter" value="15" />
+    <task id="LOCAL-00015" summary="P041T000000">
+      <created>1673439745516</created>
+      <option name="number" value="00015" />
+      <option name="presentableId" value="LOCAL-00015" />
+      <option name="project" value="LOCAL" />
+      <updated>1673439745516</updated>
+    </task>
+    <option name="localTasksCounter" value="16" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">

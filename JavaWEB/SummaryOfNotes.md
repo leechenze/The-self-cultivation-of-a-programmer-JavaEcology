@@ -186,11 +186,13 @@
             测试用例（test/BrandTest）
                 在BrandTest测试类中编写测试方法
         查询：查询所有数据
-            
+            test/BrandTest.testSelectAll()
         添加：添加品牌
+            test/BrandTest.testAdd()
         修改：根据ID修改
+            test/BrandTest.testUpdate()
         删除：根据ID删除
-        
+            
                 
         
 

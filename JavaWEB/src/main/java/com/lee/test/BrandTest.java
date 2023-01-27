@@ -21,7 +21,6 @@ import java.util.Properties;
 public class BrandTest {
     /**
      * 查询所有
-     *
      */
     @Test
     public void testSelectAll() throws Exception {
@@ -74,9 +73,149 @@ public class BrandTest {
         pstmt.close();
         conn.close();
 
+    }
 
 
 
+
+    /**
+     * 添加数据
+     */
+    @Test
+    public void testAdd() throws Exception {
+        // 模拟接收页面提交的参数
+        String brandName = "香飘飘";
+        String companyName = "香飘飘";
+        int ordered = 1;
+        String description = "环绕地球一圈";
+        int status = 1;
+
+
+        // 获取connection连接对象
+        Properties prop = new Properties();
+
+        prop.load(new FileInputStream("src/druid.properties"));
+
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(prop);
+
+        Connection conn = dataSource.getConnection();
+
+        // 定义Sql
+        String sql = "insert into tb_brand(brand_name, company_name, ordered, description, status) value(?,?,?,?,?);";
+
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        // 设置参数
+        pstmt.setString(1, brandName);
+        pstmt.setString(2, companyName);
+        pstmt.setInt(3, ordered);
+        pstmt.setString(4, description);
+        pstmt.setInt(5, status);
+
+        // 执行sql
+        int count = pstmt.executeUpdate();
+        System.out.println(count > 0);
+
+        pstmt.close();
+        conn.close();
 
     }
+
+
+
+
+
+    /**
+     * 修改数据
+     */
+    @Test
+    public void testUpdate() throws Exception {
+        // 模拟接收页面提交的参数
+        String brandName = "香飘飘";
+        String companyName = "香飘飘";
+        int ordered = 10000;
+        String description = "环绕地球三圈";
+        int status = 1;
+        int id = 4;
+
+        // 获取connection连接对象
+        Properties prop = new Properties();
+
+        prop.load(new FileInputStream("src/druid.properties"));
+
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(prop);
+
+        Connection conn = dataSource.getConnection();
+
+        // 定义Sql
+        String sql = "" +
+                "update tb_brand\n" +
+                "set brand_name = ?,\n" +
+                "company_name = ?,\n" +
+                "ordered = ?,\n" +
+                "description = ?,\n" +
+                "status = ?\n" +
+                "where id = ?";
+
+        // 获取preparedStatement对象
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        // 设置参数
+        pstmt.setString(1, brandName);
+        pstmt.setString(2, companyName);
+        pstmt.setInt(3, ordered);
+        pstmt.setString(4, description);
+        pstmt.setInt(5, status);
+        pstmt.setInt(6, id);
+
+        // 执行sql
+        int count = pstmt.executeUpdate();
+        System.out.println(count > 0);
+
+        pstmt.close();
+        conn.close();
+
+    }
+
+
+
+
+
+
+
+    /**
+     * 删除数据
+     */
+    @Test
+    public void testDelete() throws Exception {
+        // 模拟接收页面提交的参数
+        int id = 4;
+
+        // 获取connection连接对象
+        Properties prop = new Properties();
+
+        prop.load(new FileInputStream("src/druid.properties"));
+
+        DataSource dataSource = DruidDataSourceFactory.createDataSource(prop);
+
+        Connection conn = dataSource.getConnection();
+
+        // 定义Sql
+        String sql = "delete from tb_brand where id = ?";
+
+        // 获取preparedStatement对象
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+
+        // 设置参数
+        pstmt.setInt(1, id);
+
+        // 执行sql
+        int count = pstmt.executeUpdate();
+        System.out.println(count > 0);
+
+        pstmt.close();
+        conn.close();
+    }
+
+
 }
