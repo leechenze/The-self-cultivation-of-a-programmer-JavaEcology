@@ -229,7 +229,7 @@
         通过 pom.xml 来管理项目的构建，报告和文档
         Maven 读取pom中的依赖，从仓库中查找相应的jar包，进行加载
             maven仓库：本地仓库，中央仓库，远程仓库（私服）。三种仓库作用均不一样
-            本地仓库：就是在本机上的maven目录中 mvn_resp 下所存放的所有jar包
+            本地仓库：就是在本机上的 .m2 目录中存放的所有jar包
             中央仓库：有maven团队维护的全球唯一的仓库，在中央仓库中存放了大部分的开源jar包
                 https://repo1.maven.org/maven2/
             远程仓库（私服）：一般由公司团队搭建的私有仓库
@@ -243,14 +243,34 @@
     Maven安装配置：
         1。解压 apache-maven-3.6.1.rar 即安装完成
         2。配置环境变量。
+            根据自己的系统自行google
         3。配置本地仓库。
             修改 conf/settings.xml
-                <localRepository/>标签为一个指定目录
+                <localRepository/> 标签为一个指定目录来覆盖Maven默认的本地仓库位置
+                本地maven默认本地仓库位置：/Users/lee/.m2/repository
         4。配置阿里云私服。
             修改 conf/settings.xml
-                <mirrors/>标签为一个指定目录
-        
+                <mirrors/>标签指定阿里云私服
+                 <mirror>
+                      <id>alimaven</id>
+                      <name>aliyun maven</name>
+                      <url>http://maven.aliyun.com/nexus/content/groups/public/</url>
+                      <mirrorOf>central</mirrorOf>
+                 </mirror>
     Maven基本使用：
+        Maven常用命令：
+            compile：编译
+                第一次执行compile时会进行下载编译插件的一个过程，如果有这个插件则没有步骤了。
+                生成 maven 项目中的 target 目录（其中都是编译生成的class文件）
+            clean：清理
+                删除 maven 项目中的 target 目录
+            test：测试
+                
+            package：打包
+            install：安装
+        Maven生命周期：
+            
+            
     IDEA配置Maven：
     依赖管理：
         
