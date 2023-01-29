@@ -290,7 +290,26 @@
                 清理和默认核心周期不在同一周期。
             
     IDEA配置Maven：
-        
+        IDEA配置 Maven 环境
+            settings 中搜索 Maven，根据自身情况执行设置，主要配置三项：
+                1。Maven home path   本地maven的根目录地址
+                2。User settings file    maven的settings.xml配置文件
+                3。Local repository      maven的本地仓库
+        Maven 坐标详解
+            坐标解释：（其实就是pom.xml中的依赖作用的标签）
+                Maven中的坐标指的是资源的唯一标识
+                使用坐标来定义项目或引入项目中需要的依赖
+            Maven坐标主要组成：
+                groupId：定义当前Maven项目隶属组织的名称（通常都是域名反写，比如：com.baidu）
+                artifactId：定义当前Maven项目的名称（模块名称）
+                version：定义当前项目的版本号
+        Idea创建Maven项目
+            简单，此处略过
+        Idea导入Maven项目
+            1。打开右侧Maven面板，找到一个加号（Add Maven Projects）
+            2。选择对应项目的pom.xml文件，双击即可导入
+            View ==> Appearance ==> Tool Window Bars
+        插件推荐：Maven Helper
         
     依赖管理：
         

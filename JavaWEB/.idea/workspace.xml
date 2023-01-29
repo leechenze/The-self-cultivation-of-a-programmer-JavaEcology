@@ -4,25 +4,10 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P044T000826">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/maven/HelloMaven.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/test/java/com/lee/HelloMavenTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P045T000000">
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Connection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_DriverManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Druid.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Practice.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_PreparedStatement.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_ResultSet.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Statement.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/pojo/Account.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/pojo/Brand.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/test/BrandTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -86,7 +71,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.runner" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -242,7 +227,8 @@
       <workItem from="1673359249866" duration="3041000" />
       <workItem from="1673433920462" duration="5364000" />
       <workItem from="1674105989509" duration="2095000" />
-      <workItem from="1674820005952" duration="19512000" />
+      <workItem from="1674820005952" duration="21439000" />
+      <workItem from="1674997509230" duration="111000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -370,7 +356,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674909800731</updated>
     </task>
-    <option name="localTasksCounter" value="19" />
+    <task id="LOCAL-00019" summary="P045T000000">
+      <created>1674995593827</created>
+      <option name="number" value="00019" />
+      <option name="presentableId" value="LOCAL-00019" />
+      <option name="project" value="LOCAL" />
+      <updated>1674995593827</updated>
+    </task>
+    <option name="localTasksCounter" value="20" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -402,6 +395,7 @@
     <MESSAGE value="P042T000000" />
     <MESSAGE value="P044T000037" />
     <MESSAGE value="P044T000826" />
-    <option name="LAST_COMMIT_MESSAGE" value="P044T000826" />
+    <MESSAGE value="P045T000000" />
+    <option name="LAST_COMMIT_MESSAGE" value="P045T000000" />
   </component>
 </project>
