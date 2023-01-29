@@ -4,9 +4,25 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P044T000037">
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P044T000826">
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/lee/maven/HelloMaven.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/lee/HelloMavenTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/jarRepositories.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Connection.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_DriverManager.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Druid.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Practice.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_PreparedStatement.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_ResultSet.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Statement.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/pojo/Account.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/pojo/Brand.class" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/test/BrandTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -43,6 +59,9 @@
       </MavenGeneralSettings>
     </option>
   </component>
+  <component name="MavenRunner">
+    <option name="delegateBuildToMaven" value="true" />
+  </component>
   <component name="ProjectId" id="2JorO6M2uqs1T4cUl24Yf2QZooe" />
   <component name="ProjectLevelVcsManager" settingsEditedManually="true">
     <ConfirmationsSetting value="2" id="Add" />
@@ -67,7 +86,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.2" />
-    <property name="settings.editor.selected.configurable" value="MavenSettings" />
+    <property name="settings.editor.selected.configurable" value="reference.settings.project.maven.runner" />
   </component>
   <component name="RecentsManager">
     <key name="CopyClassDialog.RECENTS_KEY">
@@ -75,7 +94,7 @@
       <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.BrandTest.testDelete">
+  <component name="RunManager" selected="JUnit.BrandTest.testUpdate">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
       <module name="JavaWEB" />
@@ -196,8 +215,8 @@
     </list>
     <recent_temporary>
       <list>
-        <item itemvalue="JUnit.BrandTest.testDelete" />
         <item itemvalue="JUnit.BrandTest.testUpdate" />
+        <item itemvalue="JUnit.BrandTest.testDelete" />
         <item itemvalue="JUnit.BrandTest.testAdd" />
         <item itemvalue="Application.JDBCPacket_Druid" />
         <item itemvalue="JUnit.BrandTest.testSelectAll" />
@@ -223,7 +242,7 @@
       <workItem from="1673359249866" duration="3041000" />
       <workItem from="1673433920462" duration="5364000" />
       <workItem from="1674105989509" duration="2095000" />
-      <workItem from="1674820005952" duration="12862000" />
+      <workItem from="1674820005952" duration="19512000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -344,7 +363,14 @@
       <option name="project" value="LOCAL" />
       <updated>1674906704398</updated>
     </task>
-    <option name="localTasksCounter" value="18" />
+    <task id="LOCAL-00018" summary="P044T000826">
+      <created>1674909800731</created>
+      <option name="number" value="00018" />
+      <option name="presentableId" value="LOCAL-00018" />
+      <option name="project" value="LOCAL" />
+      <updated>1674909800731</updated>
+    </task>
+    <option name="localTasksCounter" value="19" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -375,6 +401,7 @@
     <MESSAGE value="P041T000000" />
     <MESSAGE value="P042T000000" />
     <MESSAGE value="P044T000037" />
-    <option name="LAST_COMMIT_MESSAGE" value="P044T000037" />
+    <MESSAGE value="P044T000826" />
+    <option name="LAST_COMMIT_MESSAGE" value="P044T000826" />
   </component>
 </project>

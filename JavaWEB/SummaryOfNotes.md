@@ -258,20 +258,40 @@
                       <mirrorOf>central</mirrorOf>
                  </mirror>
     Maven基本使用：
-        Maven常用命令：
+        Maven常用命令(mvn)：
             compile：编译
                 第一次执行compile时会进行下载编译插件的一个过程，如果有这个插件则没有步骤了。
                 生成 maven 项目中的 target 目录（其中都是编译生成的class文件）
             clean：清理
                 删除 maven 项目中的 target 目录
-            test：测试
-                
             package：打包
+                java项目生成一个jar包
+                web项目生成一个war包
+                此配置在pom.xml文件中的 packaging 标签中设置
+                jar包或war包将生成到target目录下
+                packaging 默认为pom，如果为pom则无法生成target，所以必须指定war或jar
+                <packaging>jar</packaging>
+            test：测试
+                会自动执行test/java/com/xxx 下的测试用例的代码
             install：安装
+                会将当前项目生成的jar包, 安装到本机maven仓库，安装目录会打印在控制台信息中
         Maven生命周期：
-            
+            clear：清理生命周期
+            default：核心工作生命周期，例如：编译，测试，打包，安装等...
+            site：产生报告，发布站点等（不常用，因为一般不会使用maven发布项目，而是使用其他的工具发布项目）
+
+            清理周期：pre-clean， clean， post-clean
+            默认周期：compoile，test，package，install
+            发布周期：pre-site，site，post-site
+
+            特点：在同一生命周期内，执行后边的命令，前面的命令会自动执行
+            解释：在执行 install命令时，必然会执行compoile，test，package命令
+                并不会执行pre-clean，clean，post-clean周期。
+                清理和默认核心周期不在同一周期。
             
     IDEA配置Maven：
+        
+        
     依赖管理：
         
     
