@@ -7,8 +7,11 @@
 
     <groupId>org.example</groupId>
     <artifactId>JavaWEB</artifactId>
-    <packaging>jar</packaging>
+    <packaging>pom</packaging>
     <version>1.0-SNAPSHOT</version>
+    <modules>
+        <module>MyBatisModules</module>
+    </modules>
 
 
     <dependencies>

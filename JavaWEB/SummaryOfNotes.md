@@ -374,20 +374,47 @@
                 手动设置参数：sql语句中的？未知值等
                 手动封装结果集：遍历result，获取数据，创建对象，设置属性，装入集合。。。
         
-        MyBatis简化：
+        MyBatis简化了哪些：
             1。硬编码写入配置文件
                 数据库账号密码，sql语句写入到配置文件中，而不是在代码中写入
             2。繁琐操作：
                 List<User> users = sqlSession.selectList("test.selectByGender", "男")
                 MyBatis省去了几乎所有的JDBC代码以及设置的参数和获取结果集的工作
         
-        MyBatis快速入门：
-            
-        Mapper代理开发：
-        MyBatis核心配置文件：
-        配置文件完成增删改查：
-        注解完成增删改查：
-        动态SQL：
+        创建MyBatisModules模块
+            MyBatis快速入门：
+                查询User表中所有的数据：
+                    1。创建User表，添加数据
+                    2。创建模块，导入坐标
+                    3。编写MyBatis核心配置文件，替换连接信息，解决硬编码问题
+                        mybatis官网地址：https://mybatis.org/mybatis-3/getting-started.html
+                        可以全程按着官网进行配置
+                        在resources下新增：mybatis-config.xml（mybatis核心配置文件）
+                            路径：JavaWEB/MyBatisModules/src/main/resources/mybatis-config.xml
+                        在resources下新增：logback.xml（日志配置文件）
+                            路径：JavaWEB/MyBatisModules/src/main/resources/logback.xml
+                    4。编写SQL映射文件，统一管理sql语句，解决硬编码问题
+                        在resources下新增：UserMapper.xml
+                            路径：JavaWEB/MyBatisModules/src/main/resources/mybatis-config.xml
+                            说明：User是表名称，Mapper表示映射，意思为：user表的sql映射
+                                如果是Order表，就可以命名为OrderMapper.xml，以此类推
+                    5。编码
+                        1。定义POJO类
+                            创建一个User类
+                                路径：JavaWEB/MyBatisModules/src/main/java/com/lee1/pojo/User.java
+                            创建一个加载核心配置文件的MyBatis的Demo类
+                                路径：JavaWEB/MyBatisModules/src/main/java/com/lee1/MyBatisDemo.java
+                        2。加载核心配置文件，获取SqlSessionFactory对象
+                            详见：MyBatisDemo.java
+                        3。获取SqlSession对象，执行sql语句
+                            详见：MyBatisDemo.java
+                        4。释放资源
+                            详见：MyBatisDemo.java
+            Mapper代理开发：
+            MyBatis核心配置文件：
+            配置文件完成增删改查：
+            注解完成增删改查：
+            动态SQL：
     
 
 
