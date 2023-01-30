@@ -195,6 +195,12 @@
             
                 
         
+                        
+                
+        
+
+                
+        
 
 叁.Maven
     
@@ -312,17 +318,55 @@
         插件推荐：Maven Helper
         
     依赖管理：
+        使用坐标导入Jar包
+            1。在pom.xml中编写<dependencies>标签
+            2。在<dependencies>标签中使用<dependency>引入坐标
+            3。定义坐标的groupId，artifactId，version
+            4。刷新按钮使坐标生效
+            
+        settings ==> build tools ==> reload project after changes in the build scripts ==> any changes
+        配置pom.xml文件修改后自动生效，无需刷新
+        command + n 命令 ==> 选择dependency 选择本地仓库中的现有模块导入到pom.xml
         
+        依赖范围：
+            通过设置坐标的依赖范围（scope）：可以设置对应jar包的作用范围：编译环境，测试环境，运行环境
+            编译环境：只在project/src/main/ 目录下生效
+            测试环境：只在project/src/test/ 目录下生效
+            运行环境：导入的jar包在最终运行时生效
+            
+            compile
+                scope的默认值，在编译，测试，运行环境生效
+            test
+                只在测试环境生效
+            provided
+                在编译，测试环境生效
+            runtime
+                在测试，运行环境生效
+            system（用到不多，做个了解）
+                在编译，测试环境生效
+            import
+                用于引入DependencyManagement
+            
     
     
+                
+                
+        
+
+肆.MyBatis
+    
+    MyBatis简介：
+        MyBatis是一款优秀的持久层框架，用于简化JDBC开发
+        持久层：
+            负责将数据保存到数据库的那一层代码
+            JavaEE三层架构：表现层，业务层，持久层
+                表现层：页面展示
+                业务层：逻辑处理
+                持久层：对数据进行持久化，保存到数据库
+            
+                
     
     
-    
-    
-    
-    
-    
-肆.
 
 
 
