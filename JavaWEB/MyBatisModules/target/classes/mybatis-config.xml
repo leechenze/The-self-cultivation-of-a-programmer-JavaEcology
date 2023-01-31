@@ -16,7 +16,13 @@
         </environment>
     </environments>
     <mappers>
-         <!-- mappers 用于加载SQL映射文件 -->
-        <mapper resource="UserMapper.xml"/>
+        <!-- mappers 用于加载SQL映射文件 -->
+        <!--<mapper resource="com/lee1/mapper/UserMapper.xml"/>-->
+        <!--<mapper resource="com/lee1/mapper/OrderMapper.xml"/>-->
+        <!--<mapper resource="com/lee1/mapper/LoginMapper.xml"/>-->
+
+        <!--Mapper 包扫描的方式加载所有的SQL映射文件-->
+        <package name="com.lee1.mapper"/>
+
     </mappers>
 </configuration>

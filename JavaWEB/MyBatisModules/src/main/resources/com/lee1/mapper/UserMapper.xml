@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--
+    Mapper：映射标签
+        namespace：命名空间
+    select：定义查询语句的标签
+        id：sql语句的唯一标识，这里我查询所有，所以id为 selectAll。
+        resultType：对应的返回结果的类型，指向类型的类文件（com.lee1.pojo.User）
+    update：定义修改语句的标签
+    delete：定义删除语句的标签
+    insert：定义插入语句的标签
+
+ -->
+<mapper namespace="com.lee1.mapper.UserMapper">
+    <select id="selectAll" resultType="com.lee1.pojo.User">
+        select * from tb_user;
+    </select>
+</mapper>

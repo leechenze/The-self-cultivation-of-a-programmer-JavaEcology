@@ -411,7 +411,36 @@
                         4。释放资源
                             详见：MyBatisDemo.java
             Mapper代理开发：
+                在MyBatisDemo中：
+                    List<User> users = sqlSession.selectList("user.selectAll");
+                user.selectAll 这段根据名称空间选择的sql语句标识 又成为了硬编码；
+                Mapper代理开发解决的就是这个问题；
+                
+                使用Mapper：
+                    1。定义与SQL映射文件同名的Mapper接口，并将Mapper接口和Sql映射文件放置在统一目录下，
+                        在src/main/java/com/lee1下新建mapper包专门放置Mapper接口
+                        最优方案是在resource下创建和java目录下同样的路径com/lee1/mapper/UserMapper.xml
+                        以替换掉原UserMapper.xml配置文件，这样编译之后的目录就会置于同一目录下。
+                        注意在resource下创建的是目录而不是包，所以要用/而不能用.创建目录层级
+                    2。设置SQL映射文件的namespace属性为Mapper接口全限定名
+                        即是namespace="user" 替换为 namespace="com.lee1.mapper.UserMapper"
+                    3。在Mapper接口中定义方法，方法名就是SQL映射文件中sql语句的ID，并保持参数类型和返回值类型一致；
+                        public interface UserMapper {
+                            List<User> selectAll();
+                        }
+                        最终是一个User类型的集合，所以应该是 List<User>
+                    4。编码
+                        1。通过SqlSession 的 getMapper方法获取 Mapper接口的代理对象
+                        2。调用对应的方法完成sql执行
+                    5。mybatis-config.xml加载所有SQL映射文件
+                        <!-- ❌❌❌ mappers 用于加载SQL映射文件 -->
+                        <!--<mapper resource="com/lee1/mapper/UserMapper.xml"/>-->
+                        <!--<mapper resource="com/lee1/mapper/OrderMapper.xml"/>-->
+                        <!--<mapper resource="com/lee1/mapper/LoginMapper.xml"/>-->
+                        <!-- ✅✅✅ Mapper 包扫描的方式加载所有的SQL映射文件-->
+                        <package name="com.lee1.mapper"/>
             MyBatis核心配置文件：
+                .....etc
             配置文件完成增删改查：
             注解完成增删改查：
             动态SQL：

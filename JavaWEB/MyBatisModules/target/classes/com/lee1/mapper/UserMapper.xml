@@ -13,7 +13,7 @@
     insert：定义插入语句的标签
 
  -->
-<mapper namespace="user">
+<mapper namespace="com.lee1.mapper.UserMapper">
     <select id="selectAll" resultType="com.lee1.pojo.User">
         select * from tb_user;
     </select>
