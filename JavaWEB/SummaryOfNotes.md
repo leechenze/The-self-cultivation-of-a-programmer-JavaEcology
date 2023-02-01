@@ -440,8 +440,11 @@
                         <!-- ✅✅✅ Mapper 包扫描的方式加载所有的SQL映射文件-->
                         <package name="com.lee1.mapper"/>
             MyBatis核心配置文件：
-                .....etc
+                详见mybatis-config.xml中的注释
+                官网文档：https://mybatis.org/mybatis-3/configuration.html
+                细节：在配置时要严格遵守标签的前后顺序，详见官网文档
             配置文件完成增删改查：
+                
             注解完成增删改查：
             动态SQL：
     

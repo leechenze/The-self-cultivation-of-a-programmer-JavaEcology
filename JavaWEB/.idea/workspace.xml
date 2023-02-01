@@ -4,59 +4,11 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P048T002040">
-      <change afterPath="$PROJECT_DIR$/.idea/codeStyles/codeStyleConfig.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/MyBatisDemo01.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P051T000000">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/UserMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/mybatis-config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/MyBatisModules-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/MyBatisModules-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/classes/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/classes/mybatis-config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT.war" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/jdbc/JDBCPacket.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/jdbc/JDBCPacket_Connection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/jdbc/JDBCPacket_DriverManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/jdbc/JDBCPacket_Druid.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/jdbc/JDBCPacket_Practice.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/jdbc/JDBCPacket_PreparedStatement.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/jdbc/JDBCPacket_ResultSet.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/jdbc/JDBCPacket_Statement.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/maven/HelloMaven.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/pojo/Account.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/pojo/Brand.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/classes/com/lee/test/BrandTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/lib/druid-1.2.9.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/lib/hamcrest-core-1.3.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/lib/junit-4.12.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/lib/slf4j-api-1.6.6.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/JavaWEB-1.0-SNAPSHOT/WEB-INF/lib/slf4j-simple-1.6.6.jar" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Connection.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_DriverManager.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Druid.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Practice.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_PreparedStatement.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_ResultSet.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/jdbc/JDBCPacket_Statement.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/maven/HelloMaven.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/pojo/Account.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/pojo/Brand.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/classes/com/lee/test/BrandTest.class" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-com.lee.HelloMavenTest.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/surefire-reports/com.lee.HelloMavenTest.txt" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/target/test-classes/com/lee/HelloMavenTest.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -287,7 +239,7 @@
       <workItem from="1674105989509" duration="2095000" />
       <workItem from="1674820005952" duration="21439000" />
       <workItem from="1674997509230" duration="802000" />
-      <workItem from="1674998793868" duration="18457000" />
+      <workItem from="1674998793868" duration="22613000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -450,7 +402,21 @@
       <option name="project" value="LOCAL" />
       <updated>1675088977945</updated>
     </task>
-    <option name="localTasksCounter" value="24" />
+    <task id="LOCAL-00024" summary="P051T000000">
+      <created>1675174866922</created>
+      <option name="number" value="00024" />
+      <option name="presentableId" value="LOCAL-00024" />
+      <option name="project" value="LOCAL" />
+      <updated>1675174866922</updated>
+    </task>
+    <task id="LOCAL-00025" summary="P051T000000">
+      <created>1675174893860</created>
+      <option name="number" value="00025" />
+      <option name="presentableId" value="LOCAL-00025" />
+      <option name="project" value="LOCAL" />
+      <updated>1675174893860</updated>
+    </task>
+    <option name="localTasksCounter" value="26" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -487,6 +453,7 @@
     <MESSAGE value="P047T000000" />
     <MESSAGE value="P048T000000" />
     <MESSAGE value="P048T002040" />
-    <option name="LAST_COMMIT_MESSAGE" value="P048T002040" />
+    <MESSAGE value="P051T000000" />
+    <option name="LAST_COMMIT_MESSAGE" value="P051T000000" />
   </component>
 </project>
