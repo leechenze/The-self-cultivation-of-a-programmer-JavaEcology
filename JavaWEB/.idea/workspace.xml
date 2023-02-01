@@ -4,9 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P051T000000">
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P052T000000">
+      <change afterPath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/pojo/Brand.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MyBatisModules/src/test/java/com/lee1/pojo/MyBatisTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/UserMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/mybatis-config.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
     </list>
@@ -18,8 +19,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="Class" />
         <option value="Interface" />
+        <option value="Class" />
       </list>
     </option>
   </component>
@@ -75,7 +76,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.33103448" />
-    <property name="settings.editor.selected.configurable" value="preferences.sourceCode.XML" />
+    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -87,6 +88,7 @@
       <recent name="$PROJECT_DIR$/MyBatisModules/src/main/resources/com.lee1.mapper" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.lee1.pojo" />
       <recent name="com.lee1" />
       <recent name="com.lee.jdbc" />
       <recent name="jdbc" />
@@ -203,10 +205,10 @@
       <item itemvalue="Application.JDBCPacket_Connection" />
       <item itemvalue="Application.JDBCPacket_Statement" />
       <item itemvalue="Application.MyBatisDemo" />
+      <item itemvalue="Application.MyBatisDemo01" />
       <item itemvalue="JUnit.BrandTest.testAdd" />
       <item itemvalue="JUnit.BrandTest.testUpdate" />
       <item itemvalue="JUnit.BrandTest.testDelete" />
-      <item itemvalue="Application.MyBatisDemo01" />
     </list>
     <recent_temporary>
       <list>
@@ -239,7 +241,8 @@
       <workItem from="1674105989509" duration="2095000" />
       <workItem from="1674820005952" duration="21439000" />
       <workItem from="1674997509230" duration="802000" />
-      <workItem from="1674998793868" duration="22613000" />
+      <workItem from="1674998793868" duration="24215000" />
+      <workItem from="1675257477357" duration="1332000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -416,7 +419,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675174893860</updated>
     </task>
-    <option name="localTasksCounter" value="26" />
+    <task id="LOCAL-00026" summary="P052T000000">
+      <created>1675255864793</created>
+      <option name="number" value="00026" />
+      <option name="presentableId" value="LOCAL-00026" />
+      <option name="project" value="LOCAL" />
+      <updated>1675255864793</updated>
+    </task>
+    <option name="localTasksCounter" value="27" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -454,6 +464,7 @@
     <MESSAGE value="P048T000000" />
     <MESSAGE value="P048T002040" />
     <MESSAGE value="P051T000000" />
-    <option name="LAST_COMMIT_MESSAGE" value="P051T000000" />
+    <MESSAGE value="P052T000000" />
+    <option name="LAST_COMMIT_MESSAGE" value="P052T000000" />
   </component>
 </project>

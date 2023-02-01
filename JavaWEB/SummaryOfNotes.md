@@ -444,10 +444,30 @@
                 官网文档：https://mybatis.org/mybatis-3/configuration.html
                 细节：在配置时要严格遵守标签的前后顺序，详见官网文档
             配置文件完成增删改查：
-                
+                即：将sql语句写到配置文件上；
+                准备环境：
+                    数据库表：tb_brand
+                    实体类：main/java/com.lee1.pojo.Brand
+                    测试用例：test/java/com.lee1.pojo.MyBatisTest
+                    安装MyBatisX插件：助于快速开发mybatis
+                        需要注意这个插件会和mybatis的别名配置有冲突，导致resultType的值找不到配置的别名
+                需要完成的功能列表清单：
+                    1。查询：
+                        查询所有数据
+                        查看详情
+                        条件查询
+                    2。添加
+                    3。修改
+                        修改全部字段
+                        修改动态字段
+                    4。删除
+                        删除一个
+                        批量删除
+                    
+
             注解完成增删改查：
-            动态SQL：
-    
+                即：将sql语句写到注解上；
+                
 
 
 
