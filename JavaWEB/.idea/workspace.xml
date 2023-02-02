@@ -4,12 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P052T000000">
-      <change afterPath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/pojo/Brand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/MyBatisModules/src/test/java/com/lee1/pojo/MyBatisTest.java" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P053T000000">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/mybatis-config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -242,7 +238,7 @@
       <workItem from="1674820005952" duration="21439000" />
       <workItem from="1674997509230" duration="802000" />
       <workItem from="1674998793868" duration="24215000" />
-      <workItem from="1675257477357" duration="1332000" />
+      <workItem from="1675257477357" duration="1959000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -426,7 +422,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675255864793</updated>
     </task>
-    <option name="localTasksCounter" value="27" />
+    <task id="LOCAL-00027" summary="P053T000000">
+      <created>1675258820207</created>
+      <option name="number" value="00027" />
+      <option name="presentableId" value="LOCAL-00027" />
+      <option name="project" value="LOCAL" />
+      <updated>1675258820207</updated>
+    </task>
+    <option name="localTasksCounter" value="28" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -465,6 +468,7 @@
     <MESSAGE value="P048T002040" />
     <MESSAGE value="P051T000000" />
     <MESSAGE value="P052T000000" />
-    <option name="LAST_COMMIT_MESSAGE" value="P052T000000" />
+    <MESSAGE value="P053T000000" />
+    <option name="LAST_COMMIT_MESSAGE" value="P053T000000" />
   </component>
 </project>
