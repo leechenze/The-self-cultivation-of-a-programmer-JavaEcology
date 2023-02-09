@@ -469,8 +469,8 @@
                         结果：List<Brand>
                     2。编写SQL语句：SQL映射文件
                     3。执行对应的测试方法
+                        test/java/com.lee1.pojo/MyBatisTest.java
                         
-                
 
             注解完成增删改查：
                 即：将sql语句写到注解上；

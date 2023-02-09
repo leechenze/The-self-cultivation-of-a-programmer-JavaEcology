@@ -10,15 +10,15 @@
     <!--如果返回的是基础数据类型可以在resultType中字节指定，详见：https://mybatis.org/mybatis-3/configuration.html#typeAliases-->
     <typeAliases>
         <!--每一个进行单独指定别名-->
-        <!--<typeAlias alias="User" type="com.lee1.pojo.User"/>-->
-        <!--<typeAlias alias="Brand" type="com.lee1.pojo.Brand"/>-->
+        <typeAlias alias="User" type="com.lee1.pojo.User"/>
+        <typeAlias alias="Brand" type="com.lee1.pojo.Brand"/>
         <!--<typeAlias alias="Blog" type="domain.blog.Blog"/>-->
         <!--<typeAlias alias="Comment" type="domain.blog.Comment"/>-->
         <!--<typeAlias alias="Post" type="domain.blog.Post"/>-->
         <!--<typeAlias alias="Section" type="domain.blog.Section"/>-->
         <!--<typeAlias alias="Tag" type="domain.blog.Tag"/>-->
         <!--包扫描的方式配置包的全路径-->
-        <package name="com.lee1.pojo"/>
+        <!--<package name="com.lee1.pojo"/>-->
     </typeAliases>
 
     <!--配置数据库连接的环境信息，可配置多个environment，通过default切换不同的environment -->

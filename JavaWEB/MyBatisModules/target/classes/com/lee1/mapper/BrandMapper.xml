@@ -13,7 +13,7 @@
                 select id, brand_name as brandName, company_name as companyName, ordered, description, status from mybatis.tb_brand;
             2。抽离sql片段
 
-            3。resultMap(属性名和字段名的映射)
+            3。resultMap
 
      -->
 
@@ -39,10 +39,6 @@
 
     <!--解决方法三（resultMap）（推荐）-->
     <resultMap id="brandResultMap" type="com.lee1.pojo.Brand">
-        <!--
-            id 子标签完成主键字段的映射 (column & property)
-            result 子标签完成一般字段的映射 (column & property)
-        -->
         <result column="brand_name" property="brandName"></result>
         <result column="company_name" property="companyName"></result>
     </resultMap>

@@ -3,9 +3,41 @@
         PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
+    <!--别名配置，在UserMapper.xml中的select标签上有一项resultType的属性-->
+    <!--这个属性配置的就是结果类型，那么必须配置包路径全名加上类名，是比较麻烦的-->
+    <!--别名的配置就是用来指定包路径名称，那么这个包下的所有类都可以在resultType中直接指定类名，可以忽略包路径-->
+    <!--配置别名后，resultType指定类名还可以不用区分大小写，（别名来进行简化配置）-->
+    <!--如果返回的是基础数据类型可以在resultType中字节指定，详见：https://mybatis.org/mybatis-3/configuration.html#typeAliases-->
+    <typeAliases>
+        <!--每一个进行单独指定别名-->
+        <typeAlias alias="User" type="com.lee1.pojo.User"/>
+        <typeAlias alias="Brand" type="com.lee1.pojo.Brand"/>
+        <!--<typeAlias alias="Blog" type="domain.blog.Blog"/>-->
+        <!--<typeAlias alias="Comment" type="domain.blog.Comment"/>-->
+        <!--<typeAlias alias="Post" type="domain.blog.Post"/>-->
+        <!--<typeAlias alias="Section" type="domain.blog.Section"/>-->
+        <!--<typeAlias alias="Tag" type="domain.blog.Tag"/>-->
+        <!--包扫描的方式配置包的全路径-->
+        <!--<package name="com.lee1.pojo"/>-->
+    </typeAliases>
+
+    <!--配置数据库连接的环境信息，可配置多个environment，通过default切换不同的environment -->
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <!-- 数据库的连接信息 -->
+                <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
+                <property name="url" value="jdbc:mysql:///mybatis"/>
+                <property name="username" value="root"/>
+                <property name="password" value="lcz19930316"/>
+            </dataSource>
+        </environment>
+        <!--在开发中会有多个不同环境的库，正式库，测试库，其配置位置都是不同的，这就是environment配置的必要性-->
+        <environment id="test">
+            <!--事务的管理方式 这里用的是JDBC的事务，一般不会用mybatis管理事务，spring来处理这一操作-->
+            <transactionManager type="JDBC"/>
+            <!--数据库连接池，mybatis中默认数据库连接池就是POOLED，之后开发同样会被spring来处理-->
             <dataSource type="POOLED">
                 <!-- 数据库的连接信息 -->
                 <property name="driver" value="com.mysql.cj.jdbc.Driver"/>
