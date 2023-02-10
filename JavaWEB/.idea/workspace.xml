@@ -4,19 +4,8 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P053T000351">
-      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P054T000007">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/BrandMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/BrandMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/mybatis-config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/test/java/com/lee1/pojo/MyBatisTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/test/java/com/lee1/pojo/MyBatisTest.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/MyBatisModules-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/MyBatisModules-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/classes/com/lee1/mapper/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/classes/com/lee1/mapper/UserMapper.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/classes/mybatis-config.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/classes/mybatis-config.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -249,7 +238,7 @@
       <workItem from="1674997509230" duration="802000" />
       <workItem from="1674998793868" duration="24215000" />
       <workItem from="1675257477357" duration="11503000" />
-      <workItem from="1675947907801" duration="4741000" />
+      <workItem from="1675947907801" duration="5997000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -454,7 +443,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675345893053</updated>
     </task>
-    <option name="localTasksCounter" value="30" />
+    <task id="LOCAL-00030" summary="P054T000007">
+      <created>1675952849562</created>
+      <option name="number" value="00030" />
+      <option name="presentableId" value="LOCAL-00030" />
+      <option name="project" value="LOCAL" />
+      <updated>1675952849562</updated>
+    </task>
+    <option name="localTasksCounter" value="31" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -495,7 +491,8 @@
     <MESSAGE value="P052T000000" />
     <MESSAGE value="P053T000000" />
     <MESSAGE value="P053T000351" />
-    <option name="LAST_COMMIT_MESSAGE" value="P053T000351" />
+    <MESSAGE value="P054T000007" />
+    <option name="LAST_COMMIT_MESSAGE" value="P054T000007" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
