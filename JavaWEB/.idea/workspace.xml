@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P054T000007">
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P058T000000">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/mapper/BrandMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/mapper/BrandMapper.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/BrandMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/BrandMapper.xml" afterDir="false" />
@@ -15,7 +15,6 @@
       <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.MyBatisTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.MyBatisTest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.MyBatisTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.MyBatisTest.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/target/test-classes/com/lee1/pojo/MyBatisTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/test-classes/com/lee1/pojo/MyBatisTest.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -100,7 +99,7 @@
       <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MyBatisTest.testUpdate">
+  <component name="RunManager" selected="JUnit.MyBatisTest.testDeleteByIds">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
       <module name="JavaWEB" />
@@ -162,7 +161,7 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MyBatisTest.testSelectByCondition" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MyBatisTest.testDeleteById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="MyBatisModules" />
       <extension name="coverage">
         <pattern>
@@ -172,13 +171,13 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.lee1.pojo" />
       <option name="MAIN_CLASS_NAME" value="com.lee1.pojo.MyBatisTest" />
-      <option name="METHOD_NAME" value="testSelectByCondition" />
+      <option name="METHOD_NAME" value="testDeleteById" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MyBatisTest.testSelectById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+    <configuration name="MyBatisTest.testDeleteByIds" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="MyBatisModules" />
       <extension name="coverage">
         <pattern>
@@ -188,7 +187,7 @@
       </extension>
       <option name="PACKAGE_NAME" value="com.lee1.pojo" />
       <option name="MAIN_CLASS_NAME" value="com.lee1.pojo.MyBatisTest" />
-      <option name="METHOD_NAME" value="testSelectById" />
+      <option name="METHOD_NAME" value="testDeleteByIds" />
       <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
@@ -216,18 +215,18 @@
       <item itemvalue="Application.JDBCPacket_Connection" />
       <item itemvalue="Application.JDBCPacket_Statement" />
       <item itemvalue="JUnit.MyBatisTest" />
-      <item itemvalue="JUnit.MyBatisTest.testSelectById" />
-      <item itemvalue="JUnit.MyBatisTest.testSelectByCondition" />
       <item itemvalue="JUnit.MyBatisTest.testAdd" />
       <item itemvalue="JUnit.MyBatisTest.testUpdate" />
+      <item itemvalue="JUnit.MyBatisTest.testDeleteById" />
+      <item itemvalue="JUnit.MyBatisTest.testDeleteByIds" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.MyBatisTest.testDeleteByIds" />
+        <item itemvalue="JUnit.MyBatisTest.testDeleteById" />
         <item itemvalue="JUnit.MyBatisTest.testUpdate" />
         <item itemvalue="JUnit.MyBatisTest.testAdd" />
         <item itemvalue="JUnit.MyBatisTest" />
-        <item itemvalue="JUnit.MyBatisTest.testSelectByCondition" />
-        <item itemvalue="JUnit.MyBatisTest.testSelectById" />
       </list>
     </recent_temporary>
   </component>
@@ -254,7 +253,7 @@
       <workItem from="1674997509230" duration="802000" />
       <workItem from="1674998793868" duration="24215000" />
       <workItem from="1675257477357" duration="11503000" />
-      <workItem from="1675947907801" duration="21825000" />
+      <workItem from="1675947907801" duration="25188000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -473,7 +472,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676039172733</updated>
     </task>
-    <option name="localTasksCounter" value="32" />
+    <task id="LOCAL-00032" summary="P058T000000">
+      <created>1676102740365</created>
+      <option name="number" value="00032" />
+      <option name="presentableId" value="LOCAL-00032" />
+      <option name="project" value="LOCAL" />
+      <updated>1676102740365</updated>
+    </task>
+    <option name="localTasksCounter" value="33" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -515,7 +521,8 @@
     <MESSAGE value="P053T000000" />
     <MESSAGE value="P053T000351" />
     <MESSAGE value="P054T000007" />
-    <option name="LAST_COMMIT_MESSAGE" value="P054T000007" />
+    <MESSAGE value="P058T000000" />
+    <option name="LAST_COMMIT_MESSAGE" value="P058T000000" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

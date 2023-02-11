@@ -9,6 +9,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -191,9 +192,51 @@ public class MyBatisTest {
         sqlSession.close();
     }
 
+    /**
+     * 删除
+     */
+    @Test
+    public void testDeleteById() throws IOException {
+        // 假设这是接收的参数
+        int id = 10;
 
+        // 1.获取SqlSessionFactory对象
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory =
+                new SqlSessionFactoryBuilder().build(inputStream);
+        // 2.获取SqlSession对象（默认是false，即开启事务，传入true，以设置自动提交事务, 关闭事务）
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        // 3.获取Mapper接口代理对象
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        // 4.执行方法
+        brandMapper.deleteById(id);
+        // 5.释放资源
+        sqlSession.close();
+    }
 
+    /**
+     * 批量删除
+     */
+    @Test
+    public void testDeleteByIds() throws IOException {
+        // 假设这是接收的参数
+        int[] ids = {10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21};
 
+        // 1.获取SqlSessionFactory对象
+        String resource = "mybatis-config.xml";
+        InputStream inputStream = Resources.getResourceAsStream(resource);
+        SqlSessionFactory sqlSessionFactory =
+                new SqlSessionFactoryBuilder().build(inputStream);
+        // 2.获取SqlSession对象（默认是false，即开启事务，传入true，以设置自动提交事务, 关闭事务）
+        SqlSession sqlSession = sqlSessionFactory.openSession(true);
+        // 3.获取Mapper接口代理对象
+        BrandMapper brandMapper = sqlSession.getMapper(BrandMapper.class);
+        // 4.执行方法
+        brandMapper.deleteByIds(ids);
+        // 5.释放资源
+        sqlSession.close();
+    }
 
 
 

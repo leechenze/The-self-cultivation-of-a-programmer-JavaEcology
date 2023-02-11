@@ -1,6 +1,7 @@
 package com.lee1.mapper;
 
 import com.lee1.pojo.Brand;
+import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
 
@@ -56,6 +57,15 @@ public interface BrandMapper {
      */
     int update(Brand brand);
 
+    /**
+     * 删除
+     */
+    void deleteById(int id);
+
+    /**
+     * 批量删除
+     */
+    void deleteByIds(@Param("ids") int[] ids);
 
 
 }
