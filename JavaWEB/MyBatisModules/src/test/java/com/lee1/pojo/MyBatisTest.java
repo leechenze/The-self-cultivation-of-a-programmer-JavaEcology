@@ -237,12 +237,4 @@ public class MyBatisTest {
         // 5.释放资源
         sqlSession.close();
     }
-
-
-
-
-
-
-
-
 }

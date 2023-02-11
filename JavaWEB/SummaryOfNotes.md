@@ -518,12 +518,26 @@
                     2。编写SQL语句：SQL映射文件
                     3。执行对应的测试方法
                         test/java/com.lee1.pojo/MyBatisTest.java
-                        
 
             注解完成增删改查：
                 即：将sql语句写到注解上；
-                
 
+            参数传递：（UserMapperTest1.java, UserMapper1.java, ）
+                mybatis接口方法中可以接收各种各样的参数，Mybatis底层对于这些参数进行不同的封装处理
+                mybatis底层提供了ParamNameResolver 类来进行参数封装
+                单个参数：
+                    POJO类型
+                    Map集合
+                    Collection
+                    List
+                    Array
+                    其他类型
+                多个参数：
+                    需要使用 @Param 注解进行指定
+            
+            
+            
+                
 
 
 伍.

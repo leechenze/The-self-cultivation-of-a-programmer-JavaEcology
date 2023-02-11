@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+
+<mapper namespace="com.lee1.mapper.UserMapper1">
+    <select id="selectAll" resultType="com.lee1.pojo.User">
+        select * from mybatis.tb_user;
+    </select>
+    <select id="select" resultType="com.lee1.pojo.User">
+        select *
+        from mybatis.tb_user
+        <where>
+            <if test="arg0 != null and arg0 != ''">
+                username = #{arg0}
+            </if>
+            <if test="arg1 != null and arg1 != ''">
+                and password = #{arg1}
+            </if>
+        </where>
+    </select>
+</mapper>

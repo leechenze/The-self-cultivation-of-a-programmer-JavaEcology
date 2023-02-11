@@ -4,17 +4,22 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P058T000000">
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P059T000000">
+      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/mapper/UserMapper1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/UserMapper1.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/MyBatisModules/src/test/java/com/lee1/pojo/UserMapper1Test.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/mapper/BrandMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/mapper/BrandMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/BrandMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/BrandMapper.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/src/test/java/com/lee1/pojo/MyBatisTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/test/java/com/lee1/pojo/MyBatisTest.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/target/MyBatisModules-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/MyBatisModules-1.0-SNAPSHOT.jar" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/classes/com/lee1/mapper/BrandMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/classes/com/lee1/mapper/BrandMapper.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/target/classes/com/lee1/mapper/BrandMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/classes/com/lee1/mapper/BrandMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/maven-status/maven-compiler-plugin/testCompile/default-testCompile/inputFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.MyBatisTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.MyBatisTest.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.MyBatisTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.MyBatisTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/test-classes/com/lee1/pojo/MyBatisTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/test-classes/com/lee1/pojo/MyBatisTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -99,7 +104,7 @@
       <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MyBatisTest.testDeleteByIds">
+  <component name="RunManager" selected="JUnit.UserMapper1Test.testTestSelect">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
       <module name="JavaWEB" />
@@ -126,21 +131,6 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_Statement" />
       <module name="JavaWEB" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MyBatisTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="MyBatisModules" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lee1.pojo.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lee1.pojo" />
-      <option name="MAIN_CLASS_NAME" value="com.lee1.pojo.MyBatisTest" />
-      <option name="TEST_OBJECT" value="class" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -209,24 +199,40 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="UserMapper1Test.testTestSelect" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MyBatisModules" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lee1.pojo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lee1.pojo" />
+      <option name="MAIN_CLASS_NAME" value="com.lee1.pojo.UserMapper1Test" />
+      <option name="METHOD_NAME" value="testTestSelect" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.JDBCPacket" />
       <item itemvalue="Application.JDBCPacket_DriverManager" />
       <item itemvalue="Application.JDBCPacket_Connection" />
       <item itemvalue="Application.JDBCPacket_Statement" />
-      <item itemvalue="JUnit.MyBatisTest" />
       <item itemvalue="JUnit.MyBatisTest.testAdd" />
       <item itemvalue="JUnit.MyBatisTest.testUpdate" />
       <item itemvalue="JUnit.MyBatisTest.testDeleteById" />
       <item itemvalue="JUnit.MyBatisTest.testDeleteByIds" />
+      <item itemvalue="JUnit.UserMapper1Test.testTestSelect" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.UserMapper1Test.testTestSelect" />
         <item itemvalue="JUnit.MyBatisTest.testDeleteByIds" />
         <item itemvalue="JUnit.MyBatisTest.testDeleteById" />
         <item itemvalue="JUnit.MyBatisTest.testUpdate" />
         <item itemvalue="JUnit.MyBatisTest.testAdd" />
-        <item itemvalue="JUnit.MyBatisTest" />
       </list>
     </recent_temporary>
   </component>
@@ -253,7 +259,7 @@
       <workItem from="1674997509230" duration="802000" />
       <workItem from="1674998793868" duration="24215000" />
       <workItem from="1675257477357" duration="11503000" />
-      <workItem from="1675947907801" duration="25188000" />
+      <workItem from="1675947907801" duration="32299000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -479,7 +485,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676102740365</updated>
     </task>
-    <option name="localTasksCounter" value="33" />
+    <task id="LOCAL-00033" summary="P059T000000">
+      <created>1676108418429</created>
+      <option name="number" value="00033" />
+      <option name="presentableId" value="LOCAL-00033" />
+      <option name="project" value="LOCAL" />
+      <updated>1676108418429</updated>
+    </task>
+    <option name="localTasksCounter" value="34" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -497,7 +510,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="P031T00:00" />
     <MESSAGE value="P032T01:15" />
     <MESSAGE value="P032T06:02" />
     <MESSAGE value="P033T00:00" />
@@ -522,7 +534,8 @@
     <MESSAGE value="P053T000351" />
     <MESSAGE value="P054T000007" />
     <MESSAGE value="P058T000000" />
-    <option name="LAST_COMMIT_MESSAGE" value="P058T000000" />
+    <MESSAGE value="P059T000000" />
+    <option name="LAST_COMMIT_MESSAGE" value="P059T000000" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

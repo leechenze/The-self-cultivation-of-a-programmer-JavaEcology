@@ -1,6 +1,7 @@
 com/lee1/pojo/Brand.class
-com/lee1/mapper/UserMapper.class
-com/lee1/mapper/BrandMapper.class
 com/lee1/MyBatisDemo01.class
 com/lee1/pojo/User.class
+com/lee1/mapper/UserMapper1.class
+com/lee1/mapper/UserMapper.class
+com/lee1/mapper/BrandMapper.class
 com/lee1/MyBatisDemo.class

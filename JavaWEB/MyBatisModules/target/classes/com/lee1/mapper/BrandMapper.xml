@@ -215,7 +215,7 @@
     <!-- 7。批量删除 -->
     <!--
         mybatis会将数组参数，封装为一个Map集合
-            1。默认数组会置为 array 所以：<foreach collection="array" item="id">
+            1。默认情况下：key为array，值就是数组， 所以默认时：<foreach collection="array" item="id">
             2。可以使用@Param注解改变map集合的默认key的名称，即Mapper中指定的形参名 ids
         foreach:
             collection 指定遍历的集合
