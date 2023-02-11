@@ -519,10 +519,7 @@
                     3。执行对应的测试方法
                         test/java/com.lee1.pojo/MyBatisTest.java
 
-            注解完成增删改查：
-                即：将sql语句写到注解上；
-
-            参数传递：（UserMapperTest1.java, UserMapper1.java, ）
+            参数传递：（UserMapperTest1.java, UserMapper1.java ）
                 mybatis接口方法中可以接收各种各样的参数，Mybatis底层对于这些参数进行不同的封装处理
                 mybatis底层提供了ParamNameResolver 类来进行参数封装
                 单个参数：
@@ -535,9 +532,16 @@
                 多个参数：
                     需要使用 @Param 注解进行指定
             
-            
-            
+            注解完成增删改查：（UserMapperTest1.java, UserMapper1.java ）
+                即：将sql语句写到注解上；
+                使用注解开发会比使用配置文件开发更加方便
+                注解一般完成简单功能，配置文件完成复杂功能
+                    查询：@Select
+                    添加：@Insert
+                    修改：@Update
+                    删除：@Delete
                 
+
 
 
 伍.

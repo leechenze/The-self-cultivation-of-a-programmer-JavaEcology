@@ -2,6 +2,7 @@ package com.lee1.mapper;
 
 import com.lee1.pojo.User;
 import org.apache.ibatis.annotations.Param;
+import org.apache.ibatis.annotations.Select;
 
 import java.util.Collection;
 
@@ -21,7 +22,7 @@ public interface UserMapper1 {
      *      Array：封装为Map集合
      *          map.put("arg0",数组);
      *          map.put("array",数组);
-     *      其他类型：单个参数的其他类型，写什么都能够接收到，比如之前使用的 id。
+     *      其他类型：单个参数的其他类型，写什么都能够接收到，比如之前使用的 id，但还是推荐要用@Param指定参数名。
      *  多个参数：
      *      当有多个参数时 mybatis首先会封装为Map集合
      *      map.put("arg0")
@@ -41,5 +42,12 @@ public interface UserMapper1 {
      */
     // Collection
     User select(Collection collection);
+
+    /**
+     * sql注解
+     */
+    @Select("select * from mybatis.tb_user where id = #{id}")
+    User selectById(int id);
+
 
 }
