@@ -6,6 +6,7 @@
 
 <mapper namespace="com.lee1.mapper.BrandMapper">
 
+    <!-- 1.查询所有 -->
     <!--
         数据库表的字段名称 和 实体类的属性名称格式不一致，则不能自动封装，导致一些查询的结果为null
         解决方法：
@@ -13,7 +14,7 @@
                 select id, brand_name as brandName, company_name as companyName, ordered, description, status from mybatis.tb_brand;
             2。抽离sql片段
 
-            3。resultMap
+            3。resultMap(属性名和字段名的映射)
 
      -->
 
@@ -39,12 +40,168 @@
 
     <!--解决方法三（resultMap）（推荐）-->
     <resultMap id="brandResultMap" type="com.lee1.pojo.Brand">
+        <!--
+            id 子标签完成主键字段的映射 (column & property)
+            result 子标签完成一般字段的映射 (column & property)
+        -->
         <result column="brand_name" property="brandName"></result>
         <result column="company_name" property="companyName"></result>
     </resultMap>
     <select id="selectAll" resultMap="brandResultMap">
         select * from mybatis.tb_brand;
     </select>
+
+
+
+
+    <!-- 2.查询详情 -->
+    <!--
+        参数占位符：
+            where id = #{id} 将会替换为 where id = ? 为了放置sql注入
+            where id = ${id} 将会替换为 where id = 1 会存在sql注入问题
+            使用时机：参数传递时候都用 #{}，一般在表名或列名不固定的情况下可以使用${}
+        参数类型：
+            parameterType 指定#{id}的类型，一般省略不写，因为在Mapper中的selectById方法已经指定了参数类型
+        特殊字符处理：在xml中不能使用一些特殊字符比如：< 在xml中有特殊含义，可以使用&lt，或者CDATA
+            1。转义字符：
+                &lt;
+            2。CDATA区：
+                <![CDATA[
+                    <
+                ]]>
+    -->
+    <select id="selectById" resultMap="brandResultMap">
+        select *
+        from mybatis.tb_brand
+        where id
+            <![CDATA[
+                <=
+            ]]>
+         #{id};
+    </select>
+
+
+
+    <!--3。条件查询-->
+    <!--
+        动态sql：
+            if 判断如果有值时才会进行查询
+                test 逻辑表达式
+            问题：
+                如果没有status的值，sql将是：select * from tb_brand where and company_name like '%华为%'
+                这就导致了语法错误
+                解决方案：
+                    1。恒等式： where后面拼接 1=1 and 后面拼接sql条件
+                    2。mybatis提供的解决方案：<where></where> 替换 where
+
+    -->
+    <select id="selectByCondition" resultMap="brandResultMap">
+        select *
+        from mybatis.tb_brand
+        <where>
+              <if test="status != null">
+                  status = #{status}
+              </if>
+              <if test="companyName != null and companyName != ''">
+                  and company_name like #{companyName}
+              </if>
+              <if test="brandName != null and brandName != ''">
+                  and brand_name like #{brandName}
+              </if>
+        </where>
+    </select>
+
+
+
+
+
+    <!--3。单条件动态查询-->
+    <!--
+        动态sql：(只会执行其中的一个条件)
+            choose(when，otherwise) 类似于 switch
+                when 类似于 case
+                otherwise 类似于 default
+    -->
+    <select id="selectByConditionSingle" resultMap="brandResultMap">
+        select *
+        from mybatis.tb_brand
+        <where>
+            <choose>
+                <when test="status != null">
+                    status = #{status}
+                </when>
+                <when test="companyName != null and companyName != ''">
+                    company_name like #{companyName}
+                </when>
+                <when test="brandName != null and brandName != ''">
+                    brand_name like #{brandName}
+                </when>
+                <!--如果外层包裹一层where标签时，otherwise可以省略-->
+                <!--<otherwise>-->
+                <!--    1 = 1-->
+                <!--</otherwise>-->
+            </choose>
+        </where>
+    </select>
+
+
+
+
+
+    <!--4.添加-->
+    <!--
+        insert
+            useGeneratedKeys="true" 指定允许生成key
+            keyProperty="key" 指定生成哪个key
+                用以生成主键ID，如：MyBatisTest.java中
+                Integer id = brand.getId();
+                System.out.println(id);
+                不指定这两个属性无法获取id；
+    -->
+    <insert id="add" useGeneratedKeys="true" keyProperty="id">
+        insert into mybatis.tb_brand (brand_name, company_name, ordered, description, status)
+        values (#{brandName},#{companyName},#{ordered},#{description},#{status});
+    </insert>
+
+
+
+
+
+    <!--5。修改-->
+    <!-- 修改全部字段 -->
+    <!--<update id="update">-->
+    <!--    update mybatis.tb_brand-->
+    <!--    set brand_name = #{brandName},-->
+    <!--     company_name = #{companyName},-->
+    <!--     ordered = #{ordered},-->
+    <!--     description = #{description},-->
+    <!--     status = #{status}-->
+    <!--    where id = #{id};-->
+    <!--</update>-->
+    <!-- 修改动态字段-->
+    <update id="update">
+        update mybatis.tb_brand
+        <set>
+            <if test="brandName != null and brandName != ''">
+                brand_name = #{brandName},
+            </if>
+            <if test="companyName != null and companyName != ''">
+                company_name = #{companyName},
+            </if>
+            <if test="ordered != null">
+                ordered = #{ordered},
+            </if>
+            <if test="description != null and description != ''">
+                description = #{description},
+            </if>
+            <if test="status != null">
+                status = #{status}
+            </if>
+        </set>
+        where id = #{id};
+    </update>
+
+
 
 
 

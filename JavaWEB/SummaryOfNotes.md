@@ -454,9 +454,57 @@
                 需要完成的功能列表清单：
                     1。查询：
                         查询所有数据
+                            总结：
+                                数据库表的字段名称 和 实体类的属性名称格式不一致，则不能自动封装，导致一些查询的结果为null
+                                解决方法：
+                                    1。起别名
+                                        select id, brand_name as brandName, company_name as companyName, ordered, description, status from mybatis.tb_brand;
+                                    2。抽离sql片段
+                                    3。resultMap(属性名和字段名的映射)
                         查看详情
+                            总结：
+                                参数占位符：
+                                    where id = #{id} 将会替换为 where id = ? 为了放置sql注入
+                                    where id = ${id} 将会替换为 where id = 1 会存在sql注入问题
+                                    使用时机：参数传递时候都用 #{}，一般在表名或列名不固定的情况下可以使用${}
+                                参数类型：
+                                    parameterType 指定#{id}的类型，一般省略不写，因为在Mapper中的selectById方法已经指定了参数类型
+                                特殊字符处理：在xml中不能使用一些特殊字符比如：< 在xml中有特殊含义，可以使用&lt，或者CDATA
+                                    1。转义字符：
+                                        &lt;
+                                    2。CDATA区：
+                                        <![CDATA[
+                                            <
+                                        ]]>
                         条件查询
+                            总结： 
+                                1。散装参数
+                                2。对象参数
+                                3。map集合参数
+                                
+                                动态sql：(即sql语句会随着用户的输入或外部条件的变化而变化)
+                                    动态sql(多条件)：
+                                        if 判断如果有值时才会进行查询
+                                            test 逻辑表达式
+                                        问题：（第一个条件不需要逻辑运算符）
+                                            如果没有status的值，sql将是：select * from tb_brand where and company_name like '%华为%';
+                                            这就导致了语法错误
+                                            解决方案：
+                                                1。恒等式： where后面拼接 1=1 and 后面拼接sql条件
+                                                2。mybatis提供的解决方案：<where></where> 替换 where
+                                    动态sql(单条件)
+                                        choose(when，otherwise)
+                                            choose 类似于 switch
+                                            when 类似于 case
+                                            otherwise 类似于 default
                     2。添加
+                        insert
+                            useGeneratedKeys="true" 指定允许生成key
+                            keyProperty="key" 指定生成哪个key
+                                用以生成主键ID，如：MyBatisTest.java中
+                                Integer id = brand.getId();
+                                System.out.println(id);
+                                不指定这两个属性无法获取id；
                     3。修改
                         修改全部字段
                         修改动态字段

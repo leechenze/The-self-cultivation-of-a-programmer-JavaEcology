@@ -6,6 +6,16 @@
   <component name="ChangeListManager">
     <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P054T000007">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/mapper/BrandMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/java/com/lee1/mapper/BrandMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/BrandMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper/BrandMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/src/test/java/com/lee1/pojo/MyBatisTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/src/test/java/com/lee1/pojo/MyBatisTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/MyBatisModules-1.0-SNAPSHOT.jar" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/MyBatisModules-1.0-SNAPSHOT.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/classes/com/lee1/mapper/BrandMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/classes/com/lee1/mapper/BrandMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/classes/com/lee1/mapper/BrandMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/classes/com/lee1/mapper/BrandMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.MyBatisTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.MyBatisTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.MyBatisTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.MyBatisTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/test-classes/com/lee1/pojo/MyBatisTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/test-classes/com/lee1/pojo/MyBatisTest.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +100,7 @@
       <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="JUnit.MyBatisTest">
+  <component name="RunManager" selected="JUnit.MyBatisTest.testUpdate">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
       <module name="JavaWEB" />
@@ -121,64 +131,6 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration name="MyBatisDemo" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lee1.MyBatisDemo" />
-      <module name="MyBatisModules" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lee1.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MyBatisDemo01" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
-      <option name="MAIN_CLASS_NAME" value="com.lee1.MyBatisDemo01" />
-      <module name="MyBatisModules" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lee1.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="BrandTest.testDelete" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="JavaWEB" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lee.test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lee.test" />
-      <option name="MAIN_CLASS_NAME" value="com.lee.test.BrandTest" />
-      <option name="METHOD_NAME" value="testDelete" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="BrandTest.testUpdate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="JavaWEB" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lee.test.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lee.test" />
-      <option name="MAIN_CLASS_NAME" value="com.lee.test.BrandTest" />
-      <option name="METHOD_NAME" value="testUpdate" />
-      <option name="TEST_OBJECT" value="method" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
     <configuration name="MyBatisTest" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
       <module name="MyBatisModules" />
       <extension name="coverage">
@@ -194,24 +146,88 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
+    <configuration name="MyBatisTest.testAdd" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MyBatisModules" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lee1.pojo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lee1.pojo" />
+      <option name="MAIN_CLASS_NAME" value="com.lee1.pojo.MyBatisTest" />
+      <option name="METHOD_NAME" value="testAdd" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyBatisTest.testSelectByCondition" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MyBatisModules" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lee1.pojo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lee1.pojo" />
+      <option name="MAIN_CLASS_NAME" value="com.lee1.pojo.MyBatisTest" />
+      <option name="METHOD_NAME" value="testSelectByCondition" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyBatisTest.testSelectById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MyBatisModules" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lee1.pojo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lee1.pojo" />
+      <option name="MAIN_CLASS_NAME" value="com.lee1.pojo.MyBatisTest" />
+      <option name="METHOD_NAME" value="testSelectById" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="MyBatisTest.testUpdate" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="MyBatisModules" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.lee1.pojo.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.lee1.pojo" />
+      <option name="MAIN_CLASS_NAME" value="com.lee1.pojo.MyBatisTest" />
+      <option name="METHOD_NAME" value="testUpdate" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <list>
       <item itemvalue="Application.JDBCPacket" />
       <item itemvalue="Application.JDBCPacket_DriverManager" />
       <item itemvalue="Application.JDBCPacket_Connection" />
       <item itemvalue="Application.JDBCPacket_Statement" />
-      <item itemvalue="Application.MyBatisDemo" />
-      <item itemvalue="Application.MyBatisDemo01" />
-      <item itemvalue="JUnit.BrandTest.testUpdate" />
-      <item itemvalue="JUnit.BrandTest.testDelete" />
       <item itemvalue="JUnit.MyBatisTest" />
+      <item itemvalue="JUnit.MyBatisTest.testSelectById" />
+      <item itemvalue="JUnit.MyBatisTest.testSelectByCondition" />
+      <item itemvalue="JUnit.MyBatisTest.testAdd" />
+      <item itemvalue="JUnit.MyBatisTest.testUpdate" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JUnit.MyBatisTest.testUpdate" />
+        <item itemvalue="JUnit.MyBatisTest.testAdd" />
         <item itemvalue="JUnit.MyBatisTest" />
-        <item itemvalue="Application.MyBatisDemo01" />
-        <item itemvalue="Application.MyBatisDemo" />
-        <item itemvalue="JUnit.BrandTest.testUpdate" />
-        <item itemvalue="JUnit.BrandTest.testDelete" />
+        <item itemvalue="JUnit.MyBatisTest.testSelectByCondition" />
+        <item itemvalue="JUnit.MyBatisTest.testSelectById" />
       </list>
     </recent_temporary>
   </component>
@@ -238,7 +254,7 @@
       <workItem from="1674997509230" duration="802000" />
       <workItem from="1674998793868" duration="24215000" />
       <workItem from="1675257477357" duration="11503000" />
-      <workItem from="1675947907801" duration="5997000" />
+      <workItem from="1675947907801" duration="21825000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -450,7 +466,14 @@
       <option name="project" value="LOCAL" />
       <updated>1675952849562</updated>
     </task>
-    <option name="localTasksCounter" value="31" />
+    <task id="LOCAL-00031" summary="P054T000007">
+      <created>1676039172733</created>
+      <option name="number" value="00031" />
+      <option name="presentableId" value="LOCAL-00031" />
+      <option name="project" value="LOCAL" />
+      <updated>1676039172733</updated>
+    </task>
+    <option name="localTasksCounter" value="32" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
