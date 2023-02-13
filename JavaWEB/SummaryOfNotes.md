@@ -585,8 +585,36 @@
         官网：https://tomcat.apache.org/
         Tomcat：
             基本使用：安装，卸载，启动，关闭，配置，部署
-                
+                bin：核心目录（启动，关闭）
+                    sudo chmod +x *.sh（给予操作权限）
+                    sh startup.sh（启动）
+                    sh shutdown.sh（关闭）
+                    sh catalina.sh run（查看日志）
+                conf：配置目录（配置）
+                    logging.properties：日志信息相关配置（常用 encoding = GBK）解决日志输出信息中文乱码问题
+                    server.xml：服务运行配置，常用：Connector标签配置端口号
+                        注：HTTP协议默认端口号为80，将端口改为80，那么访问Tomcat时，可以直接输入 localhost进行访问
+                lib：tomcat运行过程中依赖的jar包
+                logs：日志文件
+                temp：运行过程中产生的临时文件
+                webapps：tomcat中的web核心项目，将来写的Web项目放置此处（部署）
+                    一般JavaWeb项目会打成一个war包，然后将war包放到webapps目录下，即完成部署，Tomcat会自动解压缩war文件。
+                work：运行过程中产生的临时数据
             IDEA中创建Maven Web项目
+                Web项目结构：
+                    开发中的项目：（和Maven Java项目结构一样，只不过在main下多了一个webapp目录）
+                        project
+                            src
+                                main
+                                    java
+                                    resources
+                                    webapp
+                                        html
+                                        WEB-INF
+                                            web.xml
+                                test
+                                pom.xml
+                    部署的JavaWeb项目结构：
             IDEA中使用Tomcat
     Servlet：
 
