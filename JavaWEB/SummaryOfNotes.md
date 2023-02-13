@@ -552,8 +552,43 @@
     
     JavaWEB中最重要的部分
     web核心介绍：
-        
-
+        JavaWeb技术栈：
+            B/S架构：Browser/Server，浏览器/服务器架构模式。
+    HTTP：
+        概念：HyperText Transfer Protocol，超文本传输协议。
+        请求格式(Request Headers)：
+            请求行：GET / HTTP/1.1
+                GET表示请求方式
+                /表示请求资源路径
+                HTTP/1.1表示协议版本
+            请求头：从第二行开始，格式为key：value形式
+                Host：请求的主机名
+                User-Agent：浏览器版本信息
+                Accept：表示浏览器能够接收的资源类型，如：text/*，image/* 或者 */* 表示所有；
+                Accept-Language：浏览器偏好语言，服务器可以根据此项返回不同语言的网页
+                Accept-Encoding：表示浏览器可以支持的压缩类型，例如：gzip，deflate等
+            请求体：POST特有的东西
+                参数在 和 Request Headers 同级的 Form Data中
+        响应格式（Response Headers）
+            响应行：HTTP/1.1 200 OK
+                HTTP/1.1表示协议版本，200表示响应的状态码，OK表示状态码描述
+            响应头：第二行开始，格式为Key：value形式
+                Content-Type：表示响应的内容类型，例如：text/html，image/jpeg；
+                Content-Length：表示该响应内容的长度（字节数）
+                Content-Encoding：表示该响应的压缩算法，例如gzip
+                Cache-Control：指示客户端该如何缓存，例如：max-age=300 表示最多可以缓存300秒
+            响应体：最后一部分，存放响应数据
+    Web服务器 - Tomcat：
+        Web服务器是一个应用程序，对HTTP协议的操作进行封装，使得开发者不必再直接对协议进行操作，专注于Web开发，主要功能就是"提供网上信息浏览服务"
+        简介：Tomcat也被成为Web容器，Servlet容器，Servlet需要依赖于Tomcat才能运行
+            是一个轻量级的Web服务器，支持Servlet/JSP少量的JavaEE规范。
+        官网：https://tomcat.apache.org/
+        Tomcat：
+            基本使用：安装，卸载，启动，关闭，配置，部署
+                
+            IDEA中创建Maven Web项目
+            IDEA中使用Tomcat
+    Servlet：
 
 
 陆.
