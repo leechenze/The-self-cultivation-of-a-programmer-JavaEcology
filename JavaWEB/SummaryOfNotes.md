@@ -644,11 +644,31 @@
                     <path>/</path>这里配置了访问路径为/，所以可以直接访问 http://localhost:8082/b.html
                     
                     缺点：这个插件只支持到tomcat7这个版本，更高的tomcat版本无法支持 
-    Servlet：
+    Servlet：（ServletModules）
         Servlet是Java提供的一门动态web资源开发技术
         Servlet就是JavaEE规范之一，其实就是一个接口，需要定义Servlet类实现Servlet接口，并由web服务器运行Servlet
-
+        Servlet快速入门
+            1。创建web项目，导入Servlet坐标（必须将scope指定为provided，否则将会报错）
+                <dependency>
+                    <groupId>javax.servlet</groupId>
+                    <artifactId>javax.servlet-api</artifactId>
+                    <version>3.1.0</version>
+                    <scope>provided</scope>
+                </dependency>
+            2。创建：定义一个类，实现Servlet接口，并重写接口中所有方法，并在service方法中输出一句话，以证明是否正确执行
+                ServletModules/src/main/java/com.lee.web.SerletDemo1
+                // 重写service方法
+                @Override
+                public void service(ServletRequest servletRequest, ServletResponse servletResponse) throws ServletException, IOException {
+                    System.out.println("hello servlet");
+                }
+            3。配置：在类上使用@WebServlet注解，配置该Servlet的访问路径
+                @WebServlet("/demo1")
+                public class ServletDemo1 implements Servlet {...}
+            4。访问：启动Tomcat，浏览器输入URL访问该Servlet
+                Running war on http://localhost:8080/ServletModules
         Servlet执行流程
+            Servlet的创建和方法调用都是由Web服务器Tomcat完成的
             
         Servlet生命周期
         Servlet体系结构

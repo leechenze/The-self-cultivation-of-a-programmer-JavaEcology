@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="MavenWebModules" />
         <module name="MyBatisModules" />
+        <module name="ServletModules" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

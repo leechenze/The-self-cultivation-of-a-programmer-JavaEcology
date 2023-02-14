@@ -12,6 +12,7 @@
     <modules>
         <module>MyBatisModules</module>
         <module>MavenWebModules</module>
+        <module>ServletModules</module>
     </modules>
 
 

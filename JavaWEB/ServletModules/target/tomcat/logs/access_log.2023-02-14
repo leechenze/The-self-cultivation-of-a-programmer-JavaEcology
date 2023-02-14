@@ -1,0 +1,5 @@
+0:0:0:0:0:0:0:1 - - [14/Feb/2023:22:37:17 +0800] "GET /ServletModules HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [14/Feb/2023:22:37:17 +0800] "GET /ServletModules/ HTTP/1.1" 404 981 http-bio-8080-exec-3 13
+0:0:0:0:0:0:0:1 - - [14/Feb/2023:22:37:17 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-4 0
+0:0:0:0:0:0:0:1 - - [14/Feb/2023:22:37:48 +0800] "GET /ServletModules/demo1 HTTP/1.1" 200 - http-bio-8080-exec-6 19
+0:0:0:0:0:0:0:1 - - [14/Feb/2023:22:37:48 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-8 0
