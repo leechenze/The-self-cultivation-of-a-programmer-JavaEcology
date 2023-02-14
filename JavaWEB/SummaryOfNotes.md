@@ -608,15 +608,53 @@
                                 main
                                     java
                                     resources
-                                    webapp
-                                        html
-                                        WEB-INF
-                                            web.xml
+                                    webapp      web项目特有目录
+                                        html    HTML文件目录
+                                        WEB-INF     Web项目核心目录
+                                            web.xml     Web项目配置文件
                                 test
                                 pom.xml
                     部署的JavaWeb项目结构：
+                        project
+                            html
+                            WEB-INF
+                                classes     Java字节码文件（对应main目录下的java和resource目录）
+                                lib         项目所需的依赖Jar包（对应pom.xml文件中的一些Jar包）
+                            web.xml     Web项目配置文件
+
+                创建：MavenWebModules模块
+                    使用骨架的方式：创建模块时勾选 create from archetype，选中 maven-archetype-webapp作为骨架
+                    使用非骨架的方式：直接创建模块不勾选 create from archetype，创建完成后project settings中的 Facets 中设置选择加号添加web项目... 无图难以解释，自行CSDN摸索
+                
             IDEA中使用Tomcat
+                方式1。集成本地Tomcat，即可在Idea中启动项目并且部署项目了
+                    edit configurations 点击 + 号，添加Tomcat服务，配置很简单，自行CSDN，不在详述。
+                方式2。Tomcat Maven插件
+                    在 pom.xml中：快捷键command + n 快速生成 插件模版
+                    启动：右键选择Run Maven：tomcat7:run
+                    <plugin>
+                        <groupId>org.apache.tomcat.maven</groupId>
+                        <artifactId>tomcat7-maven-plugin</artifactId>
+                        <version>2.2</version>
+                        <configuration>
+                            <port>8082</port>
+                            <path>/</path>
+                        </configuration>
+                    </plugin>
+                    <path>/</path>这里配置了访问路径为/，所以可以直接访问 http://localhost:8082/b.html
+                    
+                    缺点：这个插件只支持到tomcat7这个版本，更高的tomcat版本无法支持 
     Servlet：
+        Servlet是Java提供的一门动态web资源开发技术
+        Servlet就是JavaEE规范之一，其实就是一个接口，需要定义Servlet类实现Servlet接口，并由web服务器运行Servlet
+
+        Servlet执行流程
+            
+        Servlet生命周期
+        Servlet体系结构
+        Servlet urlPattern配置
+        XML配置方式编写Servlet
+        
 
 
 陆.
