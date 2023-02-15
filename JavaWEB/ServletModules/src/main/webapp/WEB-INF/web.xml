@@ -3,4 +3,17 @@
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
          version="4.0">
+
+
+
+    <!--配置Servlet全类名-->
+        <servlet>
+            <servlet-name>demo5</servlet-name>
+            <servlet-class>com.lee.web.ServletDemo5</servlet-class>
+        </servlet>
+    <!--Servlet的访问路径-->
+        <servlet-mapping>
+            <servlet-name>demo5</servlet-name>
+            <url-pattern>/demo5</url-pattern>
+        </servlet-mapping>
 </web-app>

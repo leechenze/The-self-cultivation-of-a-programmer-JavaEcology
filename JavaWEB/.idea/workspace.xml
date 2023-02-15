@@ -4,17 +4,18 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P094T000605">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/ServletModules_Web_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ServletModules/ServletModules.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ServletModules/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/ServletDemo1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P095T000337">
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/ServletDemo2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/ServletDemo3.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/ServletDemo4.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/ServletDemo5.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/ServletDemo6.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/webapp/ServletDemo3.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServletModules/src/main/webapp/WEB-INF/web.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +91,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.33103448" />
-    <property name="settings.editor.selected.configurable" value="SQL Dialects" />
+    <property name="settings.editor.selected.configurable" value="terminal" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -458,7 +459,7 @@
       <workItem from="1674997509230" duration="802000" />
       <workItem from="1674998793868" duration="24215000" />
       <workItem from="1675257477357" duration="11503000" />
-      <workItem from="1675947907801" duration="56547000" />
+      <workItem from="1675947907801" duration="66763000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -733,7 +734,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676383574744</updated>
     </task>
-    <option name="localTasksCounter" value="40" />
+    <task id="LOCAL-00040" summary="P095T000337">
+      <created>1676386088532</created>
+      <option name="number" value="00040" />
+      <option name="presentableId" value="LOCAL-00040" />
+      <option name="project" value="LOCAL" />
+      <updated>1676386088533</updated>
+    </task>
+    <option name="localTasksCounter" value="41" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -751,7 +759,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="P037T000000" />
     <MESSAGE value="P039T000000" />
     <MESSAGE value="P040T000000" />
     <MESSAGE value="P040T000622" />
@@ -776,7 +783,8 @@
     <MESSAGE value="P088T001814" />
     <MESSAGE value="P090T000111" />
     <MESSAGE value="P094T000605" />
-    <option name="LAST_COMMIT_MESSAGE" value="P094T000605" />
+    <MESSAGE value="P095T000337" />
+    <option name="LAST_COMMIT_MESSAGE" value="P095T000337" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

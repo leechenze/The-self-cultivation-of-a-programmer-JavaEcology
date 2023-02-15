@@ -669,13 +669,80 @@
                 Running war on http://localhost:8080/ServletModules
         Servlet执行流程
             Servlet的创建和方法调用都是由Web服务器Tomcat完成的
+        Servlet生命周期（ServletDemo2）
+            Servlet运行在Servlet容器中（web服务器），其生命周期由容器来管理，分为四个阶段：
+                1。加载和实例化阶段
+                    默认情况下，当Servlet第一次被访问时，由容器创建Servlet对象
+                    @WebServlet（urlPatterns = "/demo"，loadOnStartUp = -1）
+                    可以通过修改loadOnStartUp修改默认情况，默认值为-1
+                        负整数时：第一次被访问时创建Servlet对象
+                        0或正整数时：服务器启动时创建Servlet对象，数字越小优先级越高
+                2。初始化
+                    在Servlet实例化之后，容器调用init方法初始化这个对象，完成一些如加载配置文件，创建连接等初始化工作，该方法只调用一次
+                3。请求处理阶段
+                    每次请求Servlet时，Servlet容器都会调用Servlet的service方法对请求进行处理
+                4。服务终止阶段
+                    当需要释放内存或容器关闭时，容器就会调用Servlet实例的destory 方法完成资源释放，调用之后容器释放Servlet实例，该实例随后被Java垃圾收集器回收
+                    这里需要在命令行中使用 mvn tomcat7:run 命令启动 然后 control + c进行停止才会触发 destory方法
+                    idea中 stop 'Tomcat9.0.7' 的红色方块按钮不会触发，这个按钮等于直接拔电源
             
-        Servlet生命周期
-        Servlet体系结构
+            获取ServletConfig对象（一般返回一个任意字符串就行，没有用处）
+                ServletConfig getServletConfig()
+            获取Servlet信息
+                String getServletInfo()
+            
+        Servlet体系结构（ServletDemo3）
+            Servlet（根接口）
+                GenericServlet（抽象实现类）
+                HttpServlet（对HTTP协议封装的Servlet实现类）
+            开发B/S架构的Web项目，都是针对HTTP协议，所以我们自定义Servlet，会继承HttpServlet
+                复写 doGet 和 doPost方法
+                get请求会执行doGet，post请求会执行doPost 方法；
+            HttpServlet原理，获取请求方式，并根据不同的请求方式，调用不同的doXxx方法。
         Servlet urlPattern配置
-        XML配置方式编写Servlet
-        
-
+            Servlet想要被访问必须配置其访问路径（urlPattern）
+            1。一个Servlet，可以配置多个urlPattern（ServletDemo4）
+                @WebServlet(urlPattern = {"/demo1", "/demo2"})
+            2。urlPattern匹配规则
+                精确匹配
+                    配置路径：@WebServlet(urlPatterns = "/user/select")
+                    访问路径：localhost:8080/projectname/user/select
+                目录匹配
+                    配置路径：@WebServlet(urlPatterns = "/user/*")
+                    访问路径：localhost:8080/projectname/aaa
+                    访问路径：localhost:8080/projectname/bbb
+                扩展名匹配
+                    配置路径：@WebServlet(urlPatterns = "*.html")
+                    访问路径：localhost:8080/projectname/aaa.html
+                    访问路径：localhost:8080/projectname/bbb.html
+                任意匹配
+                    配置路径：@WebServlet(urlPatterns = "/")
+                    配置路径：@WebServlet(urlPatterns = "/*")
+                    访问路径：localhost:8080/projectname/aaa
+                    访问路径：localhost:8080/projectname/aaa/bbb
+                    / 和 /*的区别：（两者都谨慎使用）
+                        /：tomcat中默认的路径DefaultServlet，当其他url-pattern都匹配不上时，会走这个Servlet
+                            所以会导致一个问题就是所有的静态资源都无法访问：比如在浏览器输入 a.html会跳转到urlPattern为/的这个Servlet中
+                        /*：意味匹配任意访问路径
+        XML配置方式编写Servlet（ServletDemo5）
+            Servlet从3.0版本之后开始支持注解配置，3.0版本之前只支持xml配置文件进行配置
+            1。编写Servlet类
+            2。在web.xml中配置该Servlet
+                <!--配置Servlet全类名-->
+                    <servlet>
+                        <servlet-name>demo5</servlet-name>
+                        <servlet-class>com.lee.web.ServletDemo5</servlet-class>
+                    </servlet>
+                <!--Servlet的访问路径-->
+                    <servlet-mapping>
+                        <servlet-name>demo5</servlet-name>
+                        <url-pattern>/demo5</url-pattern>
+                    </servlet-mapping>
+        Request & Response的介绍和继承体系（ServletDemo6）
+            Request继承体系
+                
+            Request获取请求数据
+            Request请求转发
 
 陆.
 
