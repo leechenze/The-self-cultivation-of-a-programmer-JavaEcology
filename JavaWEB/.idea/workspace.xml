@@ -4,11 +4,15 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P100T001510">
-      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/RequestDemo2.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/RequestDemo3.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/webapp/RequestDemo2.html" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P102T000312">
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/RequestDemo4.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/RequestDemo5.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/ResponseDemo1.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/ResponseDemo2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/webapp/RequestDemo3.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/RequestDemo3.java" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/RequestDemo3.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServletModules/target/classes/com/lee/web/RequestDemo2.class" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/target/classes/com/lee/web/RequestDemo2.class" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ServletModules/target/tomcat/logs/access_log.2023-02-16" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/target/tomcat/logs/access_log.2023-02-16" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
@@ -456,7 +460,7 @@
       <workItem from="1674997509230" duration="802000" />
       <workItem from="1674998793868" duration="24215000" />
       <workItem from="1675257477357" duration="11503000" />
-      <workItem from="1675947907801" duration="74663000" />
+      <workItem from="1675947907801" duration="81668000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -752,7 +756,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676549692838</updated>
     </task>
-    <option name="localTasksCounter" value="43" />
+    <task id="LOCAL-00043" summary="P102T000312">
+      <created>1676552918769</created>
+      <option name="number" value="00043" />
+      <option name="presentableId" value="LOCAL-00043" />
+      <option name="project" value="LOCAL" />
+      <updated>1676552918769</updated>
+    </task>
+    <option name="localTasksCounter" value="44" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -770,7 +781,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="P040T000622" />
     <MESSAGE value="P041T000000" />
     <MESSAGE value="P042T000000" />
     <MESSAGE value="P044T000037" />
@@ -795,7 +805,8 @@
     <MESSAGE value="P095T000337" />
     <MESSAGE value="P099T000515" />
     <MESSAGE value="P100T001510" />
-    <option name="LAST_COMMIT_MESSAGE" value="P100T001510" />
+    <MESSAGE value="P102T000312" />
+    <option name="LAST_COMMIT_MESSAGE" value="P102T000312" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

@@ -770,8 +770,68 @@
                     相关模版配置：
                         File and code template
                             Other ==> Web ==> Servlet Annotated Class.java
-            Request请求转发
+                中文乱码问题：（RequestDemo3 & RequestDemo3.html）
+                    // post请求方式解决乱码：设置字符输入流编码为UTF-8，因为post底层是走的getReader() 获取字符输入流
+                    request.setCharacterEncoding("UTF-8");
+                    // get请求方式解决乱码：tomcat进行url解码默认字符集是 iso-8859-1的方式
+                    // 1。先对乱码数据进行编码：转为字节数组
+                    String username = request.getParameter("username");
+                    System.out.println("解决乱码前的username" + username);
+                    byte[] bytes = username.getBytes(StandardCharsets.ISO_8859_1);
+                    // 2。对字节数组解码
+                    username = new String(bytes, StandardCharsets.UTF_8);
+                    System.out.println("解决乱码后的username" + username);
+                    提醒：
+                    在Tomcat8.0之后已将默认编码方式设为UTF-8，这就意味着在Tomcat8之后的版本都不存在乱码问题了
+            Request请求转发（RequestDemo4 & RequestDemo5）
+                Forward：一种在服务器内部的资源跳转方式，大白话就是在demo4中触发demo5中的逻辑
+                实现方式：
+                    request.getRequestDispatcher("资源路径").forward(request,response);
+                请求转发资源间共享数据：使用request对象
+                    void setAttribute(String name, Object o):存储数据到request域中
+                    Object getAttribute(String name): 根据Key，获取值
+                    void removeAttribute(String name): 根据Key，删除该键值对
+                请求转发的特点：
+                    浏览器地址栏路径不会发生变化
+                    只能转发当前服务器的内部资源（请求转发无需加虚拟目录）
+                    一次请求，可以在转发的资源间使用request共享数据
+            Response设置响应数据
+                响应行
+                    HTTP/1.1 200 OK
+                    void setStatus(int sc): 设置响应状态码
+                响应头
+                    Content-Type: text/html
+                    void setHeader(String name, String value): 设置响应头键值对
+                响应体
+                    PrintWriter gerWriter(): 获取字符输出流
+                    ServletOutputStream getOutputStream(): 获取字节输出流
+            Response完成重定向（ResponseDemo1 & ResponseDemo2）
+                Redirect：一种资源跳转的方式，类似于Request请求转发Forward，但两者有很大的区别。
+                场景:
+                    资源A：客户端来请求，无法处理这次请求，但是资源B可以处理，然后响应给客户端302状态码和资源B的路径
+                    资源B：接收请求进行请求处理
+                实现方式：
+                    response.setStatus(302);
+                    response.setHeader("location","资源路径")
+                重定向特点：
+                    浏览器地址栏路径会发生变化
+                    可以重定向到任意位置的资源（服务器内部，外部均可，如果内部重定向注意需要加上虚拟目录）
+                    两次请求，不能在多个资源使用request共享数据
+                路径问题：
+                    重定向和请求转发两者关于路径的问题：
+                        一般给浏览器使用时都需要加上根目录（虚拟路径）
+                        给服务端使用时则无需加虚拟目录
+                    固定路径（不推荐）
+                        response.sendRedirect("/ServletModules/ResponseDemo2");
+                    动态路径（推荐）
+                        String contextPath = request.getContextPath();
+                        response.sendRedirect(contextPath + "/ResponseDemo2");
+            Response响应字符数据
                 
+            Response响应字节数据
+            
+
+
 陆.
 
 
