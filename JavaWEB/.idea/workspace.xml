@@ -4,11 +4,13 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P099T000515">
-      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/RequestDemo1.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/webapp/RequestDemo.html" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P100T001510">
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/RequestDemo2.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/RequestDemo3.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/webapp/RequestDemo2.html" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServletModules/target/tomcat/logs/access_log.2023-02-16" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/target/tomcat/logs/access_log.2023-02-16" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -85,7 +87,7 @@
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.33103448" />
-    <property name="settings.editor.selected.configurable" value="terminal" />
+    <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
@@ -454,7 +456,7 @@
       <workItem from="1674997509230" duration="802000" />
       <workItem from="1674998793868" duration="24215000" />
       <workItem from="1675257477357" duration="11503000" />
-      <workItem from="1675947907801" duration="71433000" />
+      <workItem from="1675947907801" duration="74663000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -743,7 +745,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676473935824</updated>
     </task>
-    <option name="localTasksCounter" value="42" />
+    <task id="LOCAL-00042" summary="P100T001510">
+      <created>1676549692838</created>
+      <option name="number" value="00042" />
+      <option name="presentableId" value="LOCAL-00042" />
+      <option name="project" value="LOCAL" />
+      <updated>1676549692838</updated>
+    </task>
+    <option name="localTasksCounter" value="43" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -761,7 +770,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="P040T000000" />
     <MESSAGE value="P040T000622" />
     <MESSAGE value="P041T000000" />
     <MESSAGE value="P042T000000" />
@@ -786,7 +794,8 @@
     <MESSAGE value="P094T000605" />
     <MESSAGE value="P095T000337" />
     <MESSAGE value="P099T000515" />
-    <option name="LAST_COMMIT_MESSAGE" value="P099T000515" />
+    <MESSAGE value="P100T001510" />
+    <option name="LAST_COMMIT_MESSAGE" value="P100T001510" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />

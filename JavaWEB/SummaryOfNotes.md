@@ -757,6 +757,19 @@
                     只有post参数才有请求体
                     ServletInputStream getInputStream(): 获取字节输入流，一般用于读取字节数据（比如文件上传）
                     BufferedReader getReader(): 获取字符输入流，一般用于读取文本数据
+            Request通用方式获取请求参数：(RequestDemo2 & RequestDemo2.html)
+                请求参数获取方式
+                    Get方式：getQueryString()
+                    Post方式：BufferedReader getReader()
+                思考：如果能够提供一种统一的获取请求参数的方式，从而就可以统一doGet和doPost方法内的代码
+                    Map<String,String[]> getParameterMap()：获取所有所有参数Map集合
+                    String[] getParameterValues(String name)：根据名称获取参数值（数组）
+                    String getParameter(String name)：根据名称获取参数值（单个）
+                工具：（RequestDemo3）
+                    创建时可以右键 New ==> Servlet
+                    相关模版配置：
+                        File and code template
+                            Other ==> Web ==> Servlet Annotated Class.java
             Request请求转发
                 
 陆.
