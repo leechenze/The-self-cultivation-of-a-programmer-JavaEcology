@@ -1,0 +1,16 @@
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:14:16:37 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-2 0
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:14:16:50 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-5 0
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:14:19:13 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-8 0
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:14:22:43 +0800] "GET / HTTP/1.1" 404 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:19:57:33 +0800] "GET / HTTP/1.1" 404 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:19:57:34 +0800] "GET /req HTTP/1.1" 404 - http-bio-8080-exec-2 0
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:19:57:53 +0800] "GET /ServletModules/req HTTP/1.1" 200 - http-bio-8080-exec-4 33
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:19:57:53 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-5 0
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:19:58:13 +0800] "GET /ServletModules/req/username=trump HTTP/1.1" 404 1017 http-bio-8080-exec-6 22
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:19:58:24 +0800] "GET /ServletModules/req?username=trump HTTP/1.1" 200 - http-bio-8080-exec-7 9
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:20:08:48 +0800] "GET /ServletModules/RequestDemo HTTP/1.1" 404 1003 http-bio-8080-exec-9 10
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:20:08:53 +0800] "GET /ServletModules/RequestDemo.html HTTP/1.1" 200 310 http-bio-8080-exec-1 17
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:20:09:03 +0800] "POST /ServletModules/req HTTP/1.1" 405 1067 http-bio-8080-exec-1 10
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:20:12:16 +0800] "GET /ServletModules/RequestDemo.html HTTP/1.1" 304 - http-bio-8080-exec-1 52
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:20:12:22 +0800] "POST /ServletModules/req HTTP/1.1" 200 - http-bio-8080-exec-3 21
+0:0:0:0:0:0:0:1 - - [16/Feb/2023:20:12:41 +0800] "POST /ServletModules/req HTTP/1.1" 200 - http-bio-8080-exec-4 6

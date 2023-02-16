@@ -740,10 +740,25 @@
                     </servlet-mapping>
         Request & Response的介绍和继承体系（ServletDemo6）
             Request继承体系
-                
-            Request获取请求数据
+                ServletRequest：Java提供的请求对象根接口
+                HttpServletRequest：Java提供的对Http协议封装的请求对象接口
+                RequestFacade：Tomcat定义的实现类
+            Request获取请求数据（RequestDemo1 和 RequestDemo.html）
+                请求行
+                    GET /request-demo/req1?username=trump HTTP/1.1
+                    String getMethod()：获取请求方式
+                    String getContextPath()：获取虚拟目录（即项目的访问路径的根路径：request-demo）
+                    StringBuffer getRequestURL()：获取URL（统一资源定位符）：http://localhost:8080/request-demo/req1
+                    String getRequestURI()：获取URL（统一资源标识符）：request-demo/req1
+                    String getQuerySring()：获取请求参数（GET方式）：username=trump&password=123
+                请求头
+                    String getHeader(String name)：根据请求头的名称获取值
+                请求体
+                    只有post参数才有请求体
+                    ServletInputStream getInputStream(): 获取字节输入流，一般用于读取字节数据（比如文件上传）
+                    BufferedReader getReader(): 获取字符输入流，一般用于读取文本数据
             Request请求转发
-
+                
 陆.
 
 
