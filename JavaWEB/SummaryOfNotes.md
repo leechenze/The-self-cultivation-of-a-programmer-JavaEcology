@@ -826,11 +826,19 @@
                     动态路径（推荐）
                         String contextPath = request.getContextPath();
                         response.sendRedirect(contextPath + "/ResponseDemo2");
-            Response响应字符数据
-                
+            Response响应字符数据（ResponseDemo3）
+                1。通过Response获取字符输出流
+                    PrintWriter writer = response.getWriter();
+                2。写数据
+                    writer.write("aaa");
+                细节：writer 写入流不需要关闭，因为write是随着response对象获取出来的，所以响应完毕之后response对象会被销毁，销毁之后这个流会自动被关掉，不在需要手动调用close方法
             Response响应字节数据
-            
-
+                1。通过Response对象获取字节输出流
+                    ServletOutputStream outputStream = response.getOutputStream();
+                2。写数据
+                    outputStream.write("字节数据")
+                工具：commons-io 2.6 是apache提供的一个io相关的工具类，非常好用，其中有提供对应的拷贝的方法
+                
 
 陆.
 
