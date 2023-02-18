@@ -857,8 +857,11 @@
                     问题：
                         1。代码重复：工具类
                         2。SqlSessionFactory工厂即然是个工厂方法，那么只能创建一次，不能重复创建（封装到静态代码块中）
-        JSP: 本质上就是一个Servlet，JSP在被访问时，由于JSP容器（Tomcat）将其转换为Java文件（Servlet），在由JSP容器将其编译，
-            所有jsp文件最终都会编译为 _jsp.class 的文件，最终对外提供服务的就是这个字节码文件（class）
+        JSP: （没有具体示例，做个了解）
+            简介：
+                本质上就是一个Servlet，JSP在被访问时，由于JSP容器（Tomcat）将其转换为Java文件（Servlet），在由JSP容器将其编译，
+                所有jsp文件最终都会编译为 _jsp.class 的文件，最终对外提供服务的就是这个字节码文件（class）
+            使用：pom.xml中导入相关JSP的坐标，具体自行csdn搜索具体坐标
             JSP脚本分类：
                 <%...%>：内容会直接放到_jspService()方法中；
                     <%
@@ -888,7 +891,34 @@
                     page > request > session > application
             JSTL标签
                 JSP标准标签库（Jsp Standarded Tag Library），使用标签取代JSP页面上的Java代码
-                
+                导入JSTL的相关坐标，具体csdn自行搜索
+                常用标签：
+                    <c:if test="${status == 1}"> 启用 </c:if>
+                    <c:if test="true"> <h1>true</h1> </c:if>
+                    <c:if test="false"> <h1>false</h1> </c:if>
+                    <c:forEach items="${brands}" var="brand" varStatus="brandIndex"> ...code... </c:forEach>
+                        brandIndex.index 从0开始
+                        brandIndex.count 从1开始
+                        类同于：for(Brand brand : brands)
+                    <c:forEach begin="0" end="10" step="1" var="1"> ...code... </c:forEach>
+                        begin 从几开始
+                        end   到几结束
+                        step  步长
+                        var   定义的变量
+                        类同于：for(int i = 0; i <= 10; i++)
+            MVC模式和三层架构：
+                MVC是一种分层开发的模式：
+                    M：Model，业务模型，处理业务（泛指pojo中的定义的模型类，JavaBean充当模型）
+                    V：View，视图，界面展示（JSP充当视图）
+                    C：Controller，控制器，处理请求，调用模型和视图（Servlet充当控制器）
+                三层架构：
+                    表现层：接收请求，封装数据，调用业务逻辑层，响应数据，其实就是Servlet和JSP的层面
+                        一般表现层包命名 com.lee.web 或者 com.lee.controller
+                    业务逻辑层：对业务逻辑进行封装，组合数据访问层的基本中的CRUD基本功能，形成复杂的业务逻辑功能
+                        一般业务逻辑层的包命名 com.lee.service
+                    数据访问层：对数据库的CRUD基本操作
+                        一般数据访问层的包命名 com.lee.dao 或者 com.lee.mapper
+                        mapper是因为mybatis中都叫mapper，不过不用mybatis时就命名为dao包
                 
 陆.
 

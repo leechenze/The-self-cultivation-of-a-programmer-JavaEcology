@@ -4,10 +4,9 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P111T000723">
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P115T000616">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/target/classes/com/lee/web/LoginServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/classes/com/lee/web/LoginServlet.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -866,7 +865,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676709436309</updated>
     </task>
-    <option name="localTasksCounter" value="48" />
+    <task id="LOCAL-00048" summary="P115T000616">
+      <created>1676712318285</created>
+      <option name="number" value="00048" />
+      <option name="presentableId" value="LOCAL-00048" />
+      <option name="project" value="LOCAL" />
+      <updated>1676712318285</updated>
+    </task>
+    <option name="localTasksCounter" value="49" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -884,7 +890,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="P044T000826" />
     <MESSAGE value="P045T000000" />
     <MESSAGE value="P046T000000" />
     <MESSAGE value="P047T000000" />
@@ -909,7 +914,8 @@
     <MESSAGE value="P107T000458" />
     <MESSAGE value="P108T001456" />
     <MESSAGE value="P111T000723" />
-    <option name="LAST_COMMIT_MESSAGE" value="P111T000723" />
+    <MESSAGE value="P115T000616" />
+    <option name="LAST_COMMIT_MESSAGE" value="P115T000616" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
