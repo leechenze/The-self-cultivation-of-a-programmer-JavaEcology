@@ -857,7 +857,39 @@
                     问题：
                         1。代码重复：工具类
                         2。SqlSessionFactory工厂即然是个工厂方法，那么只能创建一次，不能重复创建（封装到静态代码块中）
-
+        JSP: 本质上就是一个Servlet，JSP在被访问时，由于JSP容器（Tomcat）将其转换为Java文件（Servlet），在由JSP容器将其编译，
+            所有jsp文件最终都会编译为 _jsp.class 的文件，最终对外提供服务的就是这个字节码文件（class）
+            JSP脚本分类：
+                <%...%>：内容会直接放到_jspService()方法中；
+                    <%
+                        System.out.println("hello jsp");
+                        int i = 3;
+                    %>
+                <%=...%>：内容放到out.print()中，作为out.print()的参数；
+                    <%="hello jsp"%>
+                    <%= i %>
+                <%!...%>：内容放到_jspService()方法之外，被类直接包涵
+                    <%!
+                        void show(){}
+                        String name = "trump"
+                    %>
+            EL表达式：主要用于获取数据
+                servlet1.java
+                    request.setAttribute("brands",brands);
+                    request.getRequestDispatcher("/jsp1.jsp").forward(request,response)
+                jsp1.jsp
+                    ${brands}
+                以上例子演示的是从request域中存储和获取数据，但是JavaWeb中有四大域对象
+                    1。page对象：当前页面有效（不常用，范围太小）
+                    2。request对象：当前请求有效（常用）
+                    3。session对象：当前会话有效（常用）
+                    4。application对象：当前引用有效（不常用，范围太大）
+                el表达式获取数据时，会依次从这4个域中寻找，直到找到为止；
+                    page > request > session > application
+            JSTL标签
+                JSP标准标签库（Jsp Standarded Tag Library），使用标签取代JSP页面上的Java代码
+                
+                
 陆.
 
 

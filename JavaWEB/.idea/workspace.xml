@@ -4,28 +4,10 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P109T001901">
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/utils/SqlSessionFactoryUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/web/RegisterServlet.java" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P111T000723">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MavenWebModules/target/MavenWebModules-1.0-SNAPSHOT.war" beforeDir="false" afterPath="$PROJECT_DIR$/MavenWebModules/target/MavenWebModules-1.0-SNAPSHOT.war" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MavenWebModules/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/MavenWebModules/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.MyBatisTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.MyBatisTest.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.UserMapper1Test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.UserMapper1Test.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.MyBatisTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.MyBatisTest.txt" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.UserMapper1Test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.UserMapper1Test.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/mapper/UserMapper.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/web/LoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/web/LoginServlet.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/src/main/webapp/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/target/classes/com/lee/mapper/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/classes/com/lee/mapper/UserMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT.war" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT.war" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/WEB-INF/classes/com/lee/mapper/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/WEB-INF/classes/com/lee/mapper/UserMapper.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/WEB-INF/classes/com/lee/web/LoginServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/WEB-INF/classes/com/lee/web/LoginServlet.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/register.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/maven-archiver/pom.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/login-example-modules/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/target/classes/com/lee/web/LoginServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/classes/com/lee/web/LoginServlet.class" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -877,7 +859,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676645163275</updated>
     </task>
-    <option name="localTasksCounter" value="47" />
+    <task id="LOCAL-00047" summary="P111T000723">
+      <created>1676709436309</created>
+      <option name="number" value="00047" />
+      <option name="presentableId" value="LOCAL-00047" />
+      <option name="project" value="LOCAL" />
+      <updated>1676709436309</updated>
+    </task>
+    <option name="localTasksCounter" value="48" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -895,7 +884,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="P044T000037" />
     <MESSAGE value="P044T000826" />
     <MESSAGE value="P045T000000" />
     <MESSAGE value="P046T000000" />
@@ -920,7 +908,8 @@
     <MESSAGE value="P102T000312" />
     <MESSAGE value="P107T000458" />
     <MESSAGE value="P108T001456" />
-    <option name="LAST_COMMIT_MESSAGE" value="P108T001456" />
+    <MESSAGE value="P111T000723" />
+    <option name="LAST_COMMIT_MESSAGE" value="P111T000723" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
