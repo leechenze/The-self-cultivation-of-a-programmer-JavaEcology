@@ -4,29 +4,28 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P108T001456">
-      <change afterPath="$PROJECT_DIR$/.idea/artifacts/login_example_modules_Web_exploded.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/login-example-modules.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/mapper/UserMapper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/pojo/User.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/web/LoginServlet.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/resources/com/lee/mapper/UserMapper.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/resources/mybatis-config.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/css/login.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/css/register.css" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/imgs/Desert.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/imgs/reg_bg_min.jpg" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/login.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/register.html" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/req.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P109T001901">
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/utils/SqlSessionFactoryUtil.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/web/RegisterServlet.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MavenWebModules/target/MavenWebModules-1.0-SNAPSHOT.war" beforeDir="false" afterPath="$PROJECT_DIR$/MavenWebModules/target/MavenWebModules-1.0-SNAPSHOT.war" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MavenWebModules/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/MavenWebModules/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.MyBatisTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.MyBatisTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.UserMapper1Test.xml" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/TEST-com.lee1.pojo.UserMapper1Test.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.MyBatisTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.MyBatisTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.UserMapper1Test.txt" beforeDir="false" afterPath="$PROJECT_DIR$/MyBatisModules/target/surefire-reports/com.lee1.pojo.UserMapper1Test.txt" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/mapper/UserMapper.java" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/mapper/UserMapper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/web/LoginServlet.java" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/web/LoginServlet.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/src/main/webapp/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/target/classes/com/lee/mapper/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/classes/com/lee/mapper/UserMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT.war" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT.war" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/WEB-INF/classes/com/lee/mapper/UserMapper.class" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/WEB-INF/classes/com/lee/mapper/UserMapper.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/WEB-INF/classes/com/lee/web/LoginServlet.class" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/WEB-INF/classes/com/lee/web/LoginServlet.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/register.html" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/login-example-modules-1.0-SNAPSHOT/register.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/login-example-modules/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -224,7 +223,7 @@
       <method v="2" />
     </configuration>
     <configuration name="LoginExampleModules" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.71" ALTERNATIVE_JRE_ENABLED="false">
-      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8082/login_example_modules/login.html" />
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8082/login-example-modules/login.html" />
       <option name="UPDATING_POLICY" value="restart-server" />
       <deployment>
         <artifact name="login-example-modules:war">

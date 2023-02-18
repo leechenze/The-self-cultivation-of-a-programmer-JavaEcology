@@ -1,3 +1,5 @@
 com/lee/web/LoginServlet.class
 com/lee/pojo/User.class
 com/lee/mapper/UserMapper.class
+com/lee/web/RegisterServlet.class
+com/lee/utils/SqlSessionFactoryUtil.class

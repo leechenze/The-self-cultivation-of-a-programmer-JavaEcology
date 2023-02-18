@@ -2,6 +2,7 @@ package com.lee.web;
 
 import com.lee.mapper.UserMapper;
 import com.lee.pojo.User;
+import com.lee.utils.SqlSessionFactoryUtil;
 import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
@@ -22,11 +23,12 @@ public class LoginServlet extends HttpServlet {
         String username = request.getParameter("username");
         String password = request.getParameter("password");
 
-        // 获取sqlSessionFactory对象
-        String resource = "mybatis-config.xml";
-        InputStream inputStream = Resources.getResourceAsStream(resource);
-        SqlSessionFactory sqlSessionFactory =
-                new SqlSessionFactoryBuilder().build(inputStream);
+        // 获取sqlSessionFactory对象（抽取为一个工具类）
+        // String resource = "mybatis-config.xml";
+        // InputStream inputStream = Resources.getResourceAsStream(resource);
+        // SqlSessionFactory sqlSessionFactory =
+        //         new SqlSessionFactoryBuilder().build(inputStream);
+        SqlSessionFactory sqlSessionFactory = SqlSessionFactoryUtil.getSqlSessionFactory();
 
         // 获取sqlSession对象
         SqlSession sqlSession = sqlSessionFactory.openSession();

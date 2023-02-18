@@ -1,3 +1,5 @@
 /Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/JavaWEB/login-example-modules/src/main/java/com/lee/pojo/User.java
 /Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/JavaWEB/login-example-modules/src/main/java/com/lee/mapper/UserMapper.java
 /Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/JavaWEB/login-example-modules/src/main/java/com/lee/web/LoginServlet.java
+/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/JavaWEB/login-example-modules/src/main/java/com/lee/web/RegisterServlet.java
+/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/JavaWEB/login-example-modules/src/main/java/com/lee/utils/SqlSessionFactoryUtil.java

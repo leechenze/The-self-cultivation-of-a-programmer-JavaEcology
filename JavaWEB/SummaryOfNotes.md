@@ -847,7 +847,16 @@
                 创建mybatis-config.xml核心配置文件，UserMapper.xml映射文件，UserMapper接口
             用户登录：（LoginServlet）
             用户注册：（RegisterServlet）
-                
+            代码优化：
+                SqlSessionFactory工具类抽取
+                以下代码块：
+                    String resource = "mybatis-config.xml";
+                    InputStream inputStream = Resources.getResourceAsStream(resource);
+                    SqlSessionFactory sqlSessionFactory =
+                            new SqlSessionFactoryBuilder().build(inputStream);
+                    问题：
+                        1。代码重复：工具类
+                        2。SqlSessionFactory工厂即然是个工厂方法，那么只能创建一次，不能重复创建（封装到静态代码块中）
 
 陆.
 
