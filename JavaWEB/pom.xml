@@ -13,6 +13,7 @@
         <module>MyBatisModules</module>
         <module>MavenWebModules</module>
         <module>ServletModules</module>
+        <module>login-example-modules</module>
     </modules>
 
 

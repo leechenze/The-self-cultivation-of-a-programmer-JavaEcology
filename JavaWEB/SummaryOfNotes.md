@@ -838,6 +838,15 @@
                 2。写数据
                     outputStream.write("字节数据")
                 工具：commons-io 2.6 是apache提供的一个io相关的工具类，非常好用，其中有提供对应的拷贝的方法
+        案例：（Login-example-modules）
+            详见 Login-example-modules 这个模块
+            准备环境：
+                创建静态页面到项目的webapp项目目录下
+                创建login_db数据库，创建tb_user表，创建User实体类
+                导入MyBatis坐标，MySql驱动坐标
+                创建mybatis-config.xml核心配置文件，UserMapper.xml映射文件，UserMapper接口
+            用户登录：（LoginServlet）
+            用户注册：（RegisterServlet）
                 
 
 陆.

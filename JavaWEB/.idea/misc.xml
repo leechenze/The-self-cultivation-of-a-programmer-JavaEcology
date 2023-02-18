@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ExternalStorageConfigurationManager" enabled="true" />
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/login-example-modules" />
     <file type="web" url="file://$PROJECT_DIR$/MavenWebModules" />
     <file type="web" url="file://$PROJECT_DIR$/ServletModules" />
   </component>

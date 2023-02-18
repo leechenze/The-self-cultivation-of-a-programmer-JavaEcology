@@ -4,13 +4,29 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P107T000458">
-      <change afterPath="$PROJECT_DIR$/ServletModules/src/main/java/com/lee/web/ResponseDemo3.java" afterDir="false" />
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P108T001456">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/login_example_modules_Web_exploded.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/login-example-modules.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/mapper/UserMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/pojo/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/web/LoginServlet.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/resources/com/lee/mapper/UserMapper.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/resources/mybatis-config.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/css/login.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/css/register.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/imgs/Desert.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/imgs/reg_bg_min.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/login.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/register.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/webapp/req.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dataSources/6ef781cf-187e-4244-9500-9232b40b6af0.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServletModules/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/ServletModules/target/maven-status/maven-compiler-plugin/compile/default-compile/inputFiles.lst" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -20,9 +36,9 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
         <option value="Interface" />
         <option value="Class" />
-        <option value="HTML File" />
       </list>
     </option>
   </component>
@@ -81,15 +97,19 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/login-example-modules/src/main/resources/com/lee/mapper" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Modules" />
+    <property name="project.structure.last.edited" value="Facets" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.33103448" />
     <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/login-example-modules/src/main/resources/com/lee/mapper" />
+      <recent name="$PROJECT_DIR$/login-example-modules/src/main/resources" />
+      <recent name="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/pojo" />
+      <recent name="$PROJECT_DIR$/login-example-modules/src/main/webapp" />
       <recent name="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
@@ -105,7 +125,7 @@
       <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="JavaScript Debug.ServletModules">
+  <component name="RunManager" selected="Tomcat Server.LoginExampleModules">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
       <module name="JavaWEB" />
@@ -203,16 +223,93 @@
     <configuration name="ServletModules" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:8080/ServletModules">
       <method v="2" />
     </configuration>
-    <configuration default="true" type="TomeeConfiguration" factoryName="Local" ALTERNATIVE_JRE_ENABLED="false">
-      <deployment />
-      <server-settings />
+    <configuration name="LoginExampleModules" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.71" ALTERNATIVE_JRE_ENABLED="false">
+      <option name="OPEN_IN_BROWSER_URL" value="http://localhost:8082/login_example_modules/login.html" />
+      <option name="UPDATING_POLICY" value="restart-server" />
+      <deployment>
+        <artifact name="login-example-modules:war">
+          <settings>
+            <option name="CONTEXT_PATH" value="/login-example-modules" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="b6b86351-b739-4b4b-9e86-e589ffd7568b" />
+        <option name="HTTP_PORT" value="8082" />
+      </server-settings>
       <predefined_log_file enabled="true" id="Tomcat" />
       <predefined_log_file enabled="true" id="Tomcat Catalina" />
       <predefined_log_file id="Tomcat Manager" />
       <predefined_log_file id="Tomcat Host Manager" />
       <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="51926" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Profile">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
       <method v="2">
         <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="login-example-modules:war" />
+        </option>
       </method>
     </configuration>
     <configuration name="Tomcat 9.0.71" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.71" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
@@ -415,12 +512,13 @@
       <item itemvalue="Application.JDBCPacket_DriverManager" />
       <item itemvalue="Application.JDBCPacket_Connection" />
       <item itemvalue="Application.JDBCPacket_Statement" />
+      <item itemvalue="JavaScript Debug.ServletModules" />
       <item itemvalue="JUnit.MyBatisTest.testDeleteById" />
       <item itemvalue="JUnit.MyBatisTest.testDeleteByIds" />
       <item itemvalue="JUnit.UserMapper1Test.testTestSelect" />
       <item itemvalue="JUnit.UserMapper1Test.testTestSelectById" />
+      <item itemvalue="Tomcat Server.LoginExampleModules" />
       <item itemvalue="Tomcat Server.Tomcat 9.0.71" />
-      <item itemvalue="JavaScript Debug.ServletModules" />
     </list>
     <recent_temporary>
       <list>
@@ -455,7 +553,8 @@
       <workItem from="1674997509230" duration="802000" />
       <workItem from="1674998793868" duration="24215000" />
       <workItem from="1675257477357" duration="11503000" />
-      <workItem from="1675947907801" duration="89168000" />
+      <workItem from="1675947907801" duration="90840000" />
+      <workItem from="1676691554660" duration="5735000" />
     </task>
     <task id="LOCAL-00001" summary="P031T00:00">
       <created>1672757054778</created>
@@ -772,7 +871,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676560348800</updated>
     </task>
-    <option name="localTasksCounter" value="46" />
+    <task id="LOCAL-00046" summary="P108T001456">
+      <created>1676645163275</created>
+      <option name="number" value="00046" />
+      <option name="presentableId" value="LOCAL-00046" />
+      <option name="project" value="LOCAL" />
+      <updated>1676645163275</updated>
+    </task>
+    <option name="localTasksCounter" value="47" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -790,7 +896,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="P042T000000" />
     <MESSAGE value="P044T000037" />
     <MESSAGE value="P044T000826" />
     <MESSAGE value="P045T000000" />
@@ -815,7 +920,8 @@
     <MESSAGE value="P100T001510" />
     <MESSAGE value="P102T000312" />
     <MESSAGE value="P107T000458" />
-    <option name="LAST_COMMIT_MESSAGE" value="P107T000458" />
+    <MESSAGE value="P108T001456" />
+    <option name="LAST_COMMIT_MESSAGE" value="P108T001456" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
