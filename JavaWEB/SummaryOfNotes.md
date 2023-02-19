@@ -1065,6 +1065,8 @@
                 String jsonStr = JSON.toJSONString(obj);
             JSON字符串转Java对象
                 User user = JSON.parseObject(jsonStr, User.class);
+    综合案例：(comprehensive)
+        综合知识点，之前都有记录，此处略过，启动项目，不懂的地方结合断点仔细阅读代码。
 陆.
 
 

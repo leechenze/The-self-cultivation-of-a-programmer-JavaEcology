@@ -7,11 +7,12 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="login-example-modules" />
+        <module name="ServletModules" />
         <module name="cookieSessionModules" />
         <module name="MavenWebModules" />
         <module name="MyBatisModules" />
         <module name="filter-modules" />
-        <module name="ServletModules" />
+        <module name="comprehensive" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>

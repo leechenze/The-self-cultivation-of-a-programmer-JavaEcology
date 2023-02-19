@@ -9,7 +9,7 @@
         </encoder>
     </appender>
 
-    <logger name="com.itheima" level="DEBUG" additivity="false">
+    <logger name="com.lee1" level="DEBUG" additivity="false">
         <appender-ref ref="Console"/>
     </logger>
 

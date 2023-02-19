@@ -16,6 +16,7 @@
         <module>login-example-modules</module>
         <module>cookieSessionModules</module>
         <module>filter-modules</module>
+        <module>comprehensive</module>
     </modules>
 
 
