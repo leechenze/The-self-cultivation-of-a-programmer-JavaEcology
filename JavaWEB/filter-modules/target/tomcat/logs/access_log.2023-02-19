@@ -1,0 +1,10 @@
+0:0:0:0:0:0:0:1 - - [19/Feb/2023:18:42:05 +0800] "GET /filter-modules HTTP/1.1" 302 - http-bio-8080-exec-1 0
+0:0:0:0:0:0:0:1 - - [19/Feb/2023:18:42:05 +0800] "GET /filter-modules/ HTTP/1.1" 200 - http-bio-8080-exec-3 13
+0:0:0:0:0:0:0:1 - - [19/Feb/2023:18:42:05 +0800] "GET /favicon.ico HTTP/1.1" 404 - http-bio-8080-exec-4 0
+0:0:0:0:0:0:0:1 - - [19/Feb/2023:18:42:19 +0800] "GET /filter-modules/ HTTP/1.1" 200 - http-bio-8080-exec-6 16
+0:0:0:0:0:0:0:1 - - [19/Feb/2023:18:43:08 +0800] "GET /filter-modules/hello.jsp HTTP/1.1" 200 - http-bio-8080-exec-1 39
+0:0:0:0:0:0:0:1 - - [19/Feb/2023:18:43:47 +0800] "GET /filter-modules/hello.jsp HTTP/1.1" 200 95 http-bio-8080-exec-1 658
+0:0:0:0:0:0:0:1 - - [19/Feb/2023:18:43:50 +0800] "GET /filter-modules/hello.jsp HTTP/1.1" 200 95 http-bio-8080-exec-3 5
+0:0:0:0:0:0:0:1 - - [19/Feb/2023:18:49:34 +0800] "GET /filter-modules/hello.jsp HTTP/1.1" 200 100 http-bio-8080-exec-1 653
+0:0:0:0:0:0:0:1 - - [19/Feb/2023:19:46:23 +0800] "GET /filter-modules/hello.jsp HTTP/1.1" 200 100 http-bio-8080-exec-5 22
+0:0:0:0:0:0:0:1 - - [19/Feb/2023:19:46:42 +0800] "GET /filter-modules/hello.jsp HTTP/1.1" 200 100 http-bio-8080-exec-1 82

@@ -919,8 +919,154 @@
                     数据访问层：对数据库的CRUD基本操作
                         一般数据访问层的包命名 com.lee.dao 或者 com.lee.mapper
                         mapper是因为mybatis中都叫mapper，不过不用mybatis时就命名为dao包
-                
+                三大框架：（SSM）
+                    表现层：SpringMVC（spring整体框架下的一个子项目）
+                    业务逻辑层：Spring
+                    数据访问层：MyBatis
+    Cookie和Session(cookieSessionModules)
+        cookie：客户端会话技术（将数据保存在客户端）
+            cookie基本使用：
+                发送Cookie：（AServlet）
+                    创建cookie，设置数据
+                        Cookie cookie = new Cookie("key","value");
+                    使用response对象发送cookie到客户端
+                        response.addCookie(cookie);
+                获取Cookie：（BServlet）
+                    获取客户端携带的所有Cookie，使用request对象
+                        Cookie[] cookies = request.getCookies();
+                    遍历数组，获取每一个Cookie对象，for循环
+                    使用cookie对象方法获取数据
+                        cookie.getName();
+                        cookie.getValue();
+            cookie原理：
+                cookie的实现是基于http协议的
+                    响应头：set-cookie
+                    请求头：cookie
+            cookie使用细节：
+                cookie存活时间：
+                    默认情况下，cookie存放在浏览器的内存中，当浏览器关闭，内存释放，cookie就会销毁掉
+                    setMaxAge(int seconds):设置cookie存活时间
+                        整数：将Cookie写入浏览器所在的电脑硬盘，做到持久化存储。到时间自动删除
+                        负数：默认值，即默认情况
+                        零：删除对应的Cookie
+                cookie存储中文：
+                    URL编码,以存储中文
+                        URLEncoder.encode("特朗普", "UTF-8");
+                    URL解码
+                        URLDecoder.decode("特朗普", "UTF-8");
+        session：服务端会话技术（将服务保存在服务端）
+            session基本使用：
+                JavaEE提供HttpSession接口，来实现一次会话的多次请求间数据共享功能
+                获取Session对象
+                    HttpSession session = request.getSession();
+                Session对象对应的功能
+                    void setAttribute(String name, Object o):   存储数据到session域中
+                    Object getAttribute(String name):   根据Key，获取值
+                    void removeAttribute(String name):  根据Key，删除该键值对
+            session原理：
+                Sesssion是基于Cookie实现的
+                实际上也是在Cookie中存储JSESSION为前缀的的一个唯一ID值进行设值和获取，在客户端可以看到一个JSESSION-xxx的ID信息
+            session使用细节：
+                Session钝化，活化：
+                    服务器即使正常重启session的数据也不会丢失的，原因就是session的钝化和活化
+                    钝化：在服务器正常关闭后，Tomcat会自动的将Session数据写入到硬盘中（SESSIONS.ser）
+                    活化：再次启动服务器后，从文件中加载数据到Session中，并把SESSIONS.ser文件删除
+                    注意：客户端浏览器一旦关闭，那么就相当于关闭了session会话，session域发生改变从而无法获取之前session域中存储的数据
+                Session销毁：
+                    默认情况下，无任何操作，30分钟自动销毁掉
+                    web.xml中设置：（单位为分钟)
+                        <session-config>
+                            <session-timeout>30</session-timeout>
+                        </session-config>
+                    调用session对象的invalidate()方法，可以触发session销毁
+                        session.invalidate()
+        总结：
+            存储位置：cookie是将数据存储在客户端，session是存储在服务端
+            安全性：Cookie不安全，session安全
+            数据存储大小：cookie最大3KB数据，Session没有大小限制
+            存储时间：Cookie可以长期储存，Sessino默认30分钟
+            服务器性能：cookie因为存在客户端所以不占用服务器资源，session是存储在服务端所以会占用服务器的资源
+    Filter(filter-modules)
+        概念：Filter表示过滤器，是JavaWeb三大组件之一（Servlet，Filter，Listener）之一；
+            过滤器可以把对资源的请求拦截下来，从而实现一些特殊的功能。
+            过滤器一般完成一些通用的操作，比如：权限控制，统一编码处理，敏感字符处理等等。。。
+        Filter快速入门：
+            定义类，实现Filter接口，并重写其所有方法。
+                public class FilterDemo implements Filter{
+                    public void init(FilterConfig filterConfig)
+                    public void doFilter(ServletRequest request,ServletResponse response,FilterChain filterChain)
+                        doFilter是核心方法，每次执行过滤器都会执行这个方法
+                    public void destroy()
+                }
+            配置Filter拦截资源的路径：在类上定义@WebFilter注解
+                // /* 表示连接任何资源
+                @WebFilter("/*")
+                public class FilterDemo implements Filter{...}
+            在doFilter中输出一句话，并放行；
+                public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain){
+                    chain.doFilter(request,response)
+                }
+        Filter执行流程：
+            执行放行前逻辑判断（处理request中的数据） ==> 放行 ==> 访问资源 ==> 回到Filter中执行放行后逻辑（处理response中的数据）
+        Filter使用细节：
+            Filter拦截路径的配置
+                拦截具体资源：/index.jsp   访问index.jsp时会被拦截
+                目录拦截：/user/*    user目录下所有资源都会被拦截
+                后缀名拦截：*.jsp     拦截后缀名为jsp的文件
+                拦截所有：/*     对所有资源进行拦截（常用）
+            过滤器链
+                指web引用中会存在多个过滤器，这多个过滤器被称之为过滤器链
+                Filter1执行前逻辑 ==> Filter2执行前逻辑 ==> Web资源逻辑执行（jsp，html，servlet） ==> Filter2执行后逻辑 ==> Filter1执行后逻辑
+            过滤器优先级（AFilterDemo&BFilterDemo）
+                注解配置的Filter，优先级按着过滤器的类名（字符串）自然排序
+                BFilter > AFilter
+            注意：假如放行登录页，那么登录页的相关css，img等资源都要放行，否则访问的页面将不会有样式
+    Listener（使用不多，简单了解）
+        概念：
+            Listener表示监听器，是JavaWeb三大组件之一（Servlet，Filter，Listener）。
+            监听器用于监听在application，session，request三个对象创建，销毁或者往其中添加修改删除属性时自动执行代码的功能组件
+        Listener分类，JavaWeb中提供了8个监听器
+            监听 ServletContext：
+                ServletContextListener
+                    对ServletContext对象进行监听（创建，销毁）
+                ServletContextAttributeListener
+                    对Servlet对象中属性的监听（属性的增删改）
+            监听 Session：
+                HttpSessionListener
+                    对Session对象的整体状态的监听（创建，销毁）
+                HttpSessionAttributeListener
+                    对Session对象中属性的监听（属性的增删改）
+                HttpSessionBindingListener
+                    对Session对象的绑定和解除的监听
+                HttpSessionActivationListener
+                    对Session数据的钝化和活化进行监听
+            监听 Request：
+                ServletRequestListener
+                    对Request对象进行监听（创建，销毁）
+                ServletRequestAttributeListener
+                    对Request对象中属性的监听（属性的增删改）
+        使用：这里只介绍可能会用到的一个：ServletContextListener
+            1.定义类，实现ServletContextListener接口
+                public class ListenerDemo implements ServletContextListener{
+                    
+                }
+            2.在类上添加@WebListener的注解
+                不用配任何路径，因为是监听的思想，所以注解是自动执行的
+    JSON相关：
+        JSON数据和Java对象转换：
+            FastJson是阿里巴巴提供的一个Java语言编写的高性能功能完善的JSON库，目前是Java生态中最快的Json库
+        使用：
+            导入坐标
+                dependency
+                    groupId:    com.alibaba
+                    artifactId:     fastjson    
+                    version:    1.2.62    
+            Java对象转JSON
+                String jsonStr = JSON.toJSONString(obj);
+            JSON字符串转Java对象
+                User user = JSON.parseObject(jsonStr, User.class);
 陆.
+
 
 
 

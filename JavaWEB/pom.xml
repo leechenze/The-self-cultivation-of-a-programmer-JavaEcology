@@ -14,6 +14,8 @@
         <module>MavenWebModules</module>
         <module>ServletModules</module>
         <module>login-example-modules</module>
+        <module>cookieSessionModules</module>
+        <module>filter-modules</module>
     </modules>
 
 

@@ -4,9 +4,30 @@
     <option name="autoReloadType" value="ALL" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P115T000616">
+    <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P117T001013">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/cookieSessionModules_Web_exploded.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/filter_modules_Web_exploded.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cookieSessionModules/cookieSessionModules.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cookieSessionModules/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cookieSessionModules/src/main/java/com/lee/web/ACookie.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cookieSessionModules/src/main/java/com/lee/web/ASession.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cookieSessionModules/src/main/java/com/lee/web/BCookie.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cookieSessionModules/src/main/java/com/lee/web/BSession.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/cookieSessionModules/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/filter-modules/filter-modules.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/filter-modules/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/filter-modules/src/main/java/com/lee/filter/AFilterDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/filter-modules/src/main/java/com/lee/filter/BFilterDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/filter-modules/src/main/java/com/lee/filter/FilterDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/filter-modules/src/main/java/com/lee/listener/ListenerDemo.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/filter-modules/src/main/webapp/WEB-INF/web.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/filter-modules/src/main/webapp/hello.jsp" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/utils/CheckCodeUtil.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/SummaryOfNotes.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -18,6 +39,7 @@
       <list>
         <option value="HTML File" />
         <option value="Interface" />
+        <option value="Jsp File" />
         <option value="Class" />
       </list>
     </option>
@@ -77,20 +99,20 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/login-example-modules/src/main/resources/com/lee/mapper" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/filter-modules/src/main/java" />
     <property name="nodejs_package_manager_path" value="npm" />
-    <property name="project.structure.last.edited" value="Facets" />
+    <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
     <property name="project.structure.side.proportion" value="0.33103448" />
     <property name="settings.editor.selected.configurable" value="fileTemplates" />
   </component>
   <component name="RecentsManager">
     <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/filter-modules/src/main/java" />
+      <recent name="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/utils" />
       <recent name="$PROJECT_DIR$/login-example-modules/src/main/resources/com/lee/mapper" />
       <recent name="$PROJECT_DIR$/login-example-modules/src/main/resources" />
       <recent name="$PROJECT_DIR$/login-example-modules/src/main/java/com/lee/pojo" />
-      <recent name="$PROJECT_DIR$/login-example-modules/src/main/webapp" />
-      <recent name="$PROJECT_DIR$/MyBatisModules/src/main/resources/com/lee1/mapper" />
     </key>
     <key name="MoveFile.RECENT_KEYS">
       <recent name="$PROJECT_DIR$/ServletModules/src/main/webapp" />
@@ -99,13 +121,14 @@
       <recent name="$PROJECT_DIR$/MyBatisModules/src/main/resources/com.lee1.mapper" />
     </key>
     <key name="CopyClassDialog.RECENTS_KEY">
+      <recent name="com.lee.filter" />
+      <recent name="com.lee.web" />
       <recent name="com.lee1.pojo" />
       <recent name="com.lee1" />
       <recent name="com.lee.jdbc" />
-      <recent name="jdbc" />
     </key>
   </component>
-  <component name="RunManager" selected="Tomcat Server.LoginExampleModules">
+  <component name="RunManager" selected="JavaScript Debug.filter-modules">
     <configuration name="JDBCPacket" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket" />
       <module name="JavaWEB" />
@@ -132,22 +155,6 @@
       <option name="ALTERNATIVE_JRE_PATH_ENABLED" value="true" />
       <option name="MAIN_CLASS_NAME" value="com.lee.jdbc.JDBCPacket_Statement" />
       <module name="JavaWEB" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration name="MyBatisTest.testDeleteById" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
-      <module name="MyBatisModules" />
-      <extension name="coverage">
-        <pattern>
-          <option name="PATTERN" value="com.lee1.pojo.*" />
-          <option name="ENABLED" value="true" />
-        </pattern>
-      </extension>
-      <option name="PACKAGE_NAME" value="com.lee1.pojo" />
-      <option name="MAIN_CLASS_NAME" value="com.lee1.pojo.MyBatisTest" />
-      <option name="METHOD_NAME" value="testDeleteById" />
-      <option name="TEST_OBJECT" value="method" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
@@ -201,6 +208,9 @@
       </method>
     </configuration>
     <configuration name="ServletModules" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:8080/ServletModules">
+      <method v="2" />
+    </configuration>
+    <configuration name="filter-modules" type="JavascriptDebugType" temporary="true" nameIsGenerated="true" uri="http://localhost:8080/filter-modules">
       <method v="2" />
     </configuration>
     <configuration name="LoginExampleModules" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.71" ALTERNATIVE_JRE_ENABLED="false">
@@ -493,20 +503,20 @@
       <item itemvalue="Application.JDBCPacket_Connection" />
       <item itemvalue="Application.JDBCPacket_Statement" />
       <item itemvalue="JavaScript Debug.ServletModules" />
-      <item itemvalue="JUnit.MyBatisTest.testDeleteById" />
       <item itemvalue="JUnit.MyBatisTest.testDeleteByIds" />
       <item itemvalue="JUnit.UserMapper1Test.testTestSelect" />
       <item itemvalue="JUnit.UserMapper1Test.testTestSelectById" />
       <item itemvalue="Tomcat Server.LoginExampleModules" />
       <item itemvalue="Tomcat Server.Tomcat 9.0.71" />
+      <item itemvalue="JavaScript Debug.filter-modules" />
     </list>
     <recent_temporary>
       <list>
+        <item itemvalue="JavaScript Debug.filter-modules" />
         <item itemvalue="JavaScript Debug.ServletModules" />
         <item itemvalue="JUnit.UserMapper1Test.testTestSelectById" />
         <item itemvalue="JUnit.UserMapper1Test.testTestSelect" />
         <item itemvalue="JUnit.MyBatisTest.testDeleteByIds" />
-        <item itemvalue="JUnit.MyBatisTest.testDeleteById" />
       </list>
     </recent_temporary>
   </component>
@@ -872,7 +882,14 @@
       <option name="project" value="LOCAL" />
       <updated>1676712318285</updated>
     </task>
-    <option name="localTasksCounter" value="49" />
+    <task id="LOCAL-00049" summary="P117T001013">
+      <created>1676715834108</created>
+      <option name="number" value="00049" />
+      <option name="presentableId" value="LOCAL-00049" />
+      <option name="project" value="LOCAL" />
+      <updated>1676715834108</updated>
+    </task>
+    <option name="localTasksCounter" value="50" />
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
@@ -890,7 +907,6 @@
     </option>
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="P045T000000" />
     <MESSAGE value="P046T000000" />
     <MESSAGE value="P047T000000" />
     <MESSAGE value="P048T000000" />
@@ -915,7 +931,8 @@
     <MESSAGE value="P108T001456" />
     <MESSAGE value="P111T000723" />
     <MESSAGE value="P115T000616" />
-    <option name="LAST_COMMIT_MESSAGE" value="P115T000616" />
+    <MESSAGE value="P117T001013" />
+    <option name="LAST_COMMIT_MESSAGE" value="P117T001013" />
   </component>
   <component name="XSLT-Support.FileAssociations.UIState">
     <expand />
