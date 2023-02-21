@@ -115,7 +115,36 @@
             BookDao bookDao = (BookDao) ctx.getBean("bookDao");
             // 执行方法...
             bookDao.save();
-    DI入门案例：(DI)
-        
-        
+    DI入门案例：(IoC)
+        1。取消业务层中使用new的方式创建dao对象（BookServiceImpl）
+            private BookDao bookDao = new BookDaoImpl();
+            改为：
+            private BookDao bookDao;
+        2。提供依赖对象对应的setter方法进行对bookDao的赋值（setter方式是由容器执行的）
+            public void setBookDao(BookDao bookDao) {
+                this.bookDao = bookDao;
+            }
+        3。配置service与dao的关系（applicationContext.xml)
+            <bean id="bookService" class="com.lee.service.impl.BookServiceImpl">
+                <!-- property标签表示配置当前bean的属性 -->
+                <!--name属性表示配置具体哪一个属性（private BookDao bookDao）-->
+                <!--ref属性表示参照哪一个bean（property标签上 name="bookDao"）-->
+                <property name="bookDao" ref="bookDao"></property>
+            </bean>
+            
+    bean基础配置
+        基本配置
+            
+        别名配置
+        作用范围配置
+            
+            
+            
+            
+            
+            
+            
+            
+            
+            
             
