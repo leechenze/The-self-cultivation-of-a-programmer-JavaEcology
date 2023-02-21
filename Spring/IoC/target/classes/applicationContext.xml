@@ -7,19 +7,13 @@
     <!--标签：bean-->
     <!--    属性id：标示Bean名称-->
     <!--    属性class：表示给Bean定义类型-->
-    <bean id="bookDao" class="com.lee.dao.impl.BookDaoImpl"></bean>
-    <bean id="bookService" class="com.lee.service.impl.BookServiceImpl">
+    <bean id="bookDao" class="com.lee.dao.impl.BookDaoImpl" scope="prototype"></bean>
+    <bean id="bookService" class="com.lee.service.impl.BookServiceImpl" scope="prototype">
         <!--配置service与dao的关系-->
+        <!--    property标签表示配置当前bean的属性 -->
+        <!--    name属性表示配置具体哪一个属性-->
+        <!--    ref属性表示参照哪一个bean（bean id的指引）-->
         <property name="bookDao" ref="bookDao"></property>
-        <!-- property标签表示配置当前bean的属性 -->
-        <!--name属性表示配置具体哪一个属性-->
-        <!--ref属性表示参照哪一个bean（bean id的指引）-->
     </bean>
-
-
-
-
-
-
 
 </beans>

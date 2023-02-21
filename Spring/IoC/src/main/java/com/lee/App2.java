@@ -11,9 +11,15 @@ public class App2 {
         ApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
         // 获取Bean
         BookDao bookDao = (BookDao) ctx.getBean("bookDao");
+        BookDao bookDao1 = (BookDao) ctx.getBean("bookDao");
         BookService bookService = (BookService) ctx.getBean("bookService");
         // 执行save();
         bookDao.save();
         bookService.save();
+
+
+        System.out.println(bookDao);
+        System.out.println(bookDao1);
+
     }
 }
