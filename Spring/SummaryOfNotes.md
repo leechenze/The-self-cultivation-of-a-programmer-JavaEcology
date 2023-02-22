@@ -271,6 +271,7 @@
                     <bean id="bookDao" class="com.lee.dao.impl.BookDaoImpl"></bean>
         构造器（构造方法）注入：
             简单类型：
+                
             引用类型：
         
 
