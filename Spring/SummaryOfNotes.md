@@ -249,7 +249,7 @@
     DI依赖注入            
         Setter注入：
             简单类型：(细节配置中的value，（value="10"）spring会自动识别类型的)
-                在bean中定义简单类型属性并提供可访问的set方法
+                在bean中定义简单类型属性并提供可访问的setterÏ方法
                     private int connectionNumber;
                     public void setConnectionNumber(int connectNumber) {
                         this.connectionNumber = connectNumber;
@@ -259,7 +259,7 @@
                         <property name="connectionNumber" value="10"></property>
                     </bean>
             引用类型：
-                在bean中提供定义引用类型属性并提供可访问的set方法；
+                在bean中提供定义引用类型属性并提供可访问的setter方法；
                     private BookDao bookDao;
                     public void setBookDao(BookDao bookDao) {
                         this.bookDao = bookDao;
@@ -271,11 +271,36 @@
                     <bean id="bookDao" class="com.lee.dao.impl.BookDaoImpl"></bean>
         构造器（构造方法）注入：
             简单类型：
-                
+                在bean中定义简单类型属性并提供可访问的setter方法；
+                    private int connectionNumber;
+                    public void setConnetionNumber(int connectionNumber) {
+                        this.connectionNumber = connectionNumber;
+                    }
+                配置中使用 constructor-arg 标签和value属性注入简单类型对象
+                    <bean id="bookService" class="com.lee.dao.impl.BookDaoImpl">
+                        <constructor-arg name="connectionNumber" value="10"></constructor-arg>
+                        OR（通过参数类型指定，以解决形参名称高耦合的问题）
+                        <constructor-arg type="int" value="10"></constructor-arg>
+                        OR（通过参数索引指定，以解决多个同类型参数的问题）
+                        <constructor-arg index="0" value="10"></constructor-arg>
+                    </bean>
             引用类型：
-        
+                在bean中定义引用类型属性并提供可访问的构造方法；
+                    private BookDao bookDao;
+                    public void BookServiceImpl(BookDao bookDao) {
+                        this.bookDao = bookDao;
+                    }
+                配置中使用 constructor-arg 标签和ref属性注入引用类型对象
+                    <bean id="bookService" class="com.lee.service.impl.BookServiceImpl">
+                        <constructor-arg name="bookDao" ref="bookDao"></constructor-arg>
+                    </bean>
+                    <bean id="bookDao" class="com.lee.dao.impl.BookDaoImpl"></bean>
 
-
+        依赖注入方式选择：
+            自己开发的模块使用setter注入，别使用构造器，别给自己找麻烦；
+        依赖自动装配：
+            
+            
 
 
 
