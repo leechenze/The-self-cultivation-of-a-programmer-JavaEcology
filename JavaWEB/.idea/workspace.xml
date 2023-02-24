@@ -5,7 +5,26 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P163T000239">
+      <change afterPath="$PROJECT_DIR$/../Spring/.idea/libraries/Maven__c3p0_c3p0_0_9_1_2.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/.idea/libraries/Maven__com_alibaba_druid_1_2_9.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/.idea/libraries/Maven__com_google_protobuf_protobuf_java_3_19_4.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/.idea/libraries/Maven__mysql_mysql_connector_java_8_0_29.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/datasource/datasource.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/datasource/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/datasource/src/main/java/com/lee/App.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/datasource/src/main/java/com/lee/dao/User.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/datasource/src/main/resources/applicationContext.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/MavenWebModules/MavenWebModules.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/ServletModules/ServletModules.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/cookieSessionModules/cookieSessionModules.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/filter-modules/filter-modules.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/login-example-modules/login-example-modules.iml" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/.idea/modules.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/IoC/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/IoC/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/SummaryOfNotes.md" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -77,7 +96,7 @@
     <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="com.intellij.openapi.externalSystem.service.settings.ExternalSystemGroupConfigurable" value="ALL" />
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/comprehensive/src/main/webapp" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="nodejs_package_manager_path" value="npm" />
     <property name="project.structure.last.edited" value="Modules" />
     <property name="project.structure.proportion" value="0.15" />
@@ -526,6 +545,7 @@
       <workItem from="1676691554660" duration="5735000" />
       <workItem from="1676819204506" duration="310000" />
       <workItem from="1676852977326" duration="3856000" />
+      <workItem from="1677248601102" duration="892000" />
     </task>
     <task id="LOCAL-00003" summary="P032T06:02">
       <created>1672929446185</created>

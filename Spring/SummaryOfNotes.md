@@ -299,8 +299,125 @@
         依赖注入方式选择：
             自己开发的模块使用setter注入，别使用构造器，别给自己找麻烦；
         依赖自动装配：
+            IoC容器根据bean所依赖的资源在容器中查找并注入到bean中的过程为自动装配
+            自动装配方式
+                按类型（byType）（常用）
+                按名称（byName）
+                按构造方法（constructor）（不常用）
+                默认（default）
+                不自动装配（no）
+            配置：(自动装配省去 property和constructor的标签的定义)
+                之前：
+                    <bean id="bookService" class="com.lee.service.impl.BookServiceImpl">
+                        <constructor-arg name="bookDao" ref="bookDao"></constructor-arg>
+                    </bean>
+                    <bean id="bookDao" class="com.lee.dao.impl.BookDaoImpl"></bean>
+                现在：
+                    <bean id="bookService" class="com.lee.service.impl.BookServiceImpl" autoWrite="byType"></bean>
+                    <bean id="bookDao" class="com.lee.dao.impl.BookDaoImpl"></bean>
+            依赖自动装配的特征：
+                自动装配用于引用类型的依赖注入，不能对简单类型进行操作
+                使用按类型装配时（byType）必须保障容器中相同类型的bean唯一，推荐使用
+                使用按名称装配时（byName）必须保障容器中具有指定名称的bean（及setter方法名去掉set前缀后的首字母小写），因变量名与配置耦合，不推荐使用
+                自动装配优先级低于setter注入与构造器注入，同时出现时自动装配配置将失效
+                
+        集合注入：
+            Array，List，Set，Map，Properties
+
+            BookDaoImpl：
+                public class BookDaoImpl implements BookDao{
+                    private int[] array;
+                    private List<String> list;
+                    private Set<String> set;
+                    private Map<String, String> map;
+                    private Properties properties;
+    
+                    public void setArray (int[] array) { this.array = array; }
+                    public void setList (List<String> list) { this.list = list; }
+                    public void setSet (Set<String> set) { this.set = set; }
+                    public void setMap (Map<String,String> map) { this.map = map; }
+                    public void setProperties (Properties properties) { this.properties = properties; }
+                    
+                    public void save() {
+                        System.out.println("Array" + Array.toString(array));
+                        System.out.println("List" + list);
+                        System.out.println("Set" + set);
+                        System.out.println("Map" + map);
+                        System.out.println("Properties" + properties);
+                    }
+                }
+
+            配置：
+                <bean name="bookDao" class="com.lee.dao.impl.BookDaoImpl">
+                    注入Array对象：
+                        <property name="array">
+                            <array>
+                                <value>100</value>
+                                <value>200</value>
+                                <value>300</value>
+                            </array>
+                        </property>
+                    注入List对象：
+                        <property name="list">
+                            <list>
+                                <value>100</value>
+                                <value>200</value>
+                                <value>300</value>
+                            </list>
+                        </property>
+                    注入Set对象：
+                        <property name="set">
+                            <set>
+                                <value>trump</value>
+                                <value>obama</value>
+                                <value>lincoln</value>
+                            </set>
+                        </property>
+                    注入Map对象：
+                        <property name="map">
+                            <map>
+                                <entry key="country" value="china" />
+                                <entry key="province" value="shanxi" />
+                                <entry key="city" value="xian" />
+                            </map>
+                        </property>
+                    注入Properties对象：
+                        <property name="map">
+                            <props>
+                                <prop key="country">china</prop>
+                                <prop key="province">shanxi</prop>
+                                <prop key="city">xian</prop>
+                            </props>
+                        </property>
+                </bean>
+             
+        数据源对象管理：（datasource）
+            查找maven坐标：mvnrepository.com
+            第三方资源配置管理：这里以druid 和 一个比较陌生的c3p0为例。
+            详见 datasource模块，这个章节 管理第三方bean 就是为了使你拿到第三方模块应该会去思考模块，和查阅该Bean的使用资料
+        加载properties文件：
             
             
+            
+                
+            
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 

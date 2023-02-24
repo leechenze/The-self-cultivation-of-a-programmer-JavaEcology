@@ -7,9 +7,11 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="IoC" />
+        <module name="datasource" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="datasource" target="1.5" />
       <module name="IoC" target="1.5" />
     </bytecodeTargetLevel>
   </component>
