@@ -395,8 +395,44 @@
             查找maven坐标：mvnrepository.com
             第三方资源配置管理：这里以druid 和 一个比较陌生的c3p0为例。
             详见 datasource模块，这个章节 管理第三方bean 就是为了使你拿到第三方模块应该会去思考模块，和查阅该Bean的使用资料
+
         加载properties文件：
-            
+            1。开启context的命名空间
+                原来配置：
+                    <beans xmlns="http://www.springframework.org/schema/beans"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xsi:schemaLocation="
+                                http://www.springframework.org/schema/beans
+                                http://www.springframework.org/schema/beans/spring-beans.xsd
+                    ">...</bean>
+                修改后的配置：
+                    <beans xmlns="http://www.springframework.org/schema/beans"
+                           xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+                           xmlns:context="http://www.springframework.org/schema/context"    新增行✅✅✅
+                           xsi:schemaLocation="
+                                http://www.springframework.org/schema/beans
+                                http://www.springframework.org/schema/beans/spring-beans.xsd
+                                http://www.springframework.org/schema/context    新增行✅✅✅
+                                http://www.springframework.org/schema/context/spring-context.xsd    新增行✅✅✅
+                    ">...</bean>
+            2。使用context空间加载proerties文件
+                location会读取resources目录下的文件和java源码下的文件
+                不加载系统环境变量的属性
+                    <context:property-placeholder location="jdbc.properties" system-properties-mode="NEVER" />
+                加载多个properties文件
+                    <context:property-placeholder location="jdbc.properties,msg.properties" />
+                加载所有properties文件
+                    <context:property-placeholder location="*.properties" />
+                加载properties文件标准格式
+                    <context:property-placeholder location="classpath:*.properties" />
+                从类路径和jar包中搜索并加载properties文件
+                    <context:property-placeholder location="classpath*:*.properties" />
+                
+            3。使用属性占位符${}读取properties文件中的属性
+                <bean id="userDao" class="com.lee.dao.impl.UserDaoImpl">
+                    <property name="name" value="${jdbc.driver}"/>
+                </bean>
+                
             
             
                 

@@ -1,22 +1,42 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <beans xmlns="http://www.springframework.org/schema/beans"
        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+       xmlns:context="http://www.springframework.org/schema/context"
+       xsi:schemaLocation="
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans.xsd
+            http://www.springframework.org/schema/context
+            http://www.springframework.org/schema/context/spring-context.xsd
+">
+    <!--使用context空间加载proerties文件-->
+    <context:property-placeholder location="jdbc.properties" system-properties-mode="NEVER"/>
+    <bean class="com.alibaba.druid.pool.DruidDataSource">
+        <property name="driverClassName" value="${jdbc.driver}"/>
+        <property name="url" value="${jdbc.url}"/>
+        <property name="username" value="${jdbc.username}"/>
+        <property name="password" value="${jdbc.password}"/>
+    </bean>
+
+    <bean id="userDao" class="com.lee.dao.impl.UserDaoImpl">
+        <property name="name" value="${jdbc.driver}"/>
+    </bean>
 
     <!--管理DruidDataSource对象-->
-    <bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource">
-        <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="url" value="jdbc:mysql:///mybatis"/>
-        <property name="username" value="root"/>
-        <property name="password" value="lcz19930316"/>
-    </bean>
+    <!--<bean id="druidDataSource" class="com.alibaba.druid.pool.DruidDataSource">-->
+    <!--    <property name="driverClassName" value="com.mysql.cj.jdbc.Driver"/>-->
+    <!--    <property name="url" value="jdbc:mysql:///spring_db"/>-->
+    <!--    <property name="username" value="root"/>-->
+    <!--    <property name="password" value="lcz19930316"/>-->
+    <!--</bean>-->
 
     <!--管理c3p0对象-->
-    <bean id="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>
-        <property name="jdbcUrl" value="jdbc:mysql:///mybatis"/>
-        <property name="user" value="root"/>
-        <property name="password" value="lcz19930316"/>
-    </bean>
+    <!--<bean id="c3p0DataSource" class="com.mchange.v2.c3p0.ComboPooledDataSource">-->
+    <!--    <property name="driverClass" value="com.mysql.cj.jdbc.Driver"/>-->
+    <!--    <property name="jdbcUrl" value="jdbc:mysql:///spring_db"/>-->
+    <!--    <property name="user" value="root"/>-->
+    <!--    <property name="password" value="lcz19930316"/>-->
+    <!--</bean>-->
+
+
 
 </beans>
