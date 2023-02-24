@@ -5,19 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P163T000239">
-      <change afterPath="$PROJECT_DIR$/../Spring/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/datasource/src/main/java/com/lee/dao/UserDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/datasource/src/main/java/com/lee/dao/impl/UserDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/datasource/src/main/resources/jdbc.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/datasource/src/main/resources/msg.properties" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Spring/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/SummaryOfNotes.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Spring/datasource/src/main/java/com/lee/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/datasource/src/main/java/com/lee/App.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Spring/datasource/src/main/java/com/lee/dao/User.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Spring/datasource/src/main/resources/applicationContext.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/datasource/src/main/resources/applicationContext.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Spring/datasource/target/classes/applicationContext.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/datasource/target/classes/applicationContext.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Spring/datasource/target/classes/com/lee/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/datasource/target/classes/com/lee/App.class" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../Spring/datasource/target/classes/com/lee/dao/User.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
