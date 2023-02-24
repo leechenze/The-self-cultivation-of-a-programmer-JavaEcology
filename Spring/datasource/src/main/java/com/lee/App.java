@@ -3,6 +3,7 @@ package com.lee;
 import com.lee.dao.UserDao;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
+import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 import javax.sql.DataSource;
 

@@ -433,10 +433,29 @@
                     <property name="name" value="${jdbc.driver}"/>
                 </bean>
                 
-            
-            
+    IoC容器补充（对之前内容的补充）
+        创建容器
+            方式一：类路径加载配置文件
+                ApplicationContext applicationContext = new ClassPathXmlApplicationContext("applicationContext.xml");
+            方式二：文件路径加载文件
+                ApplicationContext applicationContext = new FileSystemXmlApplicationContext("绝对路径/applicationContext.xml");
+            加载多个配置文件
+                ApplicationContext applicationContext = new ClassPathXmlApplicationContext("bean.xml","bean.xml");
+        获取bean
+            方式一：
+                UserDao userDao = (UserDao) applicationContext.getBean("userDao");
+            方式二：
+                UserDao userDao = applicationContext.getBean("userDao", UserDao.class);
+            方式三：（直接使用bean类型获取,问题：UserDao类型的bean只能有一个，多个将会报错）
+                UserDao userDao = applicationContext.getBean(UserDao.class);
                 
+        容器类的层次结构:
+            BeanFactory 是所有容器类的顶层接口，ApplicationContext 所集成的父类就是继承自它，当然中间有很多层继承关系
+            早期spring是用 BeanFactory 来加载容器的，初始化BeanFactory对象时，加载的bean是有延迟的
+            现在ApplicationContext 接口是Spring容器的核心接口，初始化时bean是立即加载的，可以通过配置进行更改延迟加载（lazy-init="true"）
             
+    注解开发定义Bean
+        
 
 
 

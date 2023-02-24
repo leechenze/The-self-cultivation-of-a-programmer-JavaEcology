@@ -5,6 +5,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P163T000239">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/SummaryOfNotes.md" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Spring/datasource/src/main/java/com/lee/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/datasource/src/main/java/com/lee/App.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
