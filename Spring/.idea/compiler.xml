@@ -8,9 +8,11 @@
         <outputRelativeToContentRoot value="true" />
         <module name="IoC" />
         <module name="datasource" />
+        <module name="annotation_bean" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
+      <module name="annotation_bean" target="1.5" />
       <module name="datasource" target="1.5" />
       <module name="IoC" target="1.5" />
     </bytecodeTargetLevel>

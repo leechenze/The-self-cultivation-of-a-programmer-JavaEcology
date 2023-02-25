@@ -454,9 +454,24 @@
             早期spring是用 BeanFactory 来加载容器的，初始化BeanFactory对象时，加载的bean是有延迟的
             现在ApplicationContext 接口是Spring容器的核心接口，初始化时bean是立即加载的，可以通过配置进行更改延迟加载（lazy-init="true"）
             
-    注解开发定义Bean
-        
+    注解开发定义Bean（annotation）
+        spring2.0开始逐步提供了各种个样的注解，到2.5时注解就比较完善了，到3.0时可以完全纯注解开发
+        配置：
+            使用@Component定义bean
+                @Component
+                public class BookServiceImpl implements BookService {}
+                @Component("bookDao")
+                public class BookDaoImpl implements BookDao {}
+            在核心配置文件通过组件扫描加载bean
+                <context:component-scan base-package="com.lee"/>
+        Spring提供了三个@Component注解的衍生注解：
+            @Controller：用于表现层bean定义
+            @Service：用于业务层bean定义
+            @Repository：用于数据层bean定义
+            以上三个和Component使用完全一样，区别只是在不同层面是 更加具有语义化帮助理解
 
+    纯注解开发零配置
+        
 
 
 

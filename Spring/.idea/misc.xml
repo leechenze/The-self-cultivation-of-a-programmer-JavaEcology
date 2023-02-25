@@ -5,6 +5,7 @@
       <list>
         <option value="$PROJECT_DIR$/IoC/pom.xml" />
         <option value="$PROJECT_DIR$/datasource/pom.xml" />
+        <option value="$PROJECT_DIR$/annotation_bean/pom.xml" />
       </list>
     </option>
   </component>
