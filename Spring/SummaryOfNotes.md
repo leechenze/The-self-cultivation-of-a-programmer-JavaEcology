@@ -570,7 +570,7 @@
     
     Spring整合mybatis思路分析
         结论：mybatis应该管理的对象是SqlSessionFactory
-    
+        
     
         
         

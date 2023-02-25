@@ -6,6 +6,7 @@
         <sourceOutputDir name="target/generated-sources/annotations" />
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
+        <module name="spring_mybatis" />
         <module name="IoC" />
         <module name="datasource" />
         <module name="annotation_di" />
@@ -17,6 +18,7 @@
       <module name="annotation_di" target="1.5" />
       <module name="datasource" target="1.5" />
       <module name="IoC" target="1.5" />
+      <module name="spring_mybatis" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
