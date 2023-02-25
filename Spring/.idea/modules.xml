@@ -5,6 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/IoC/IoC.iml" filepath="$PROJECT_DIR$/IoC/IoC.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Spring.iml" filepath="$PROJECT_DIR$/.idea/Spring.iml" />
       <module fileurl="file://$PROJECT_DIR$/annotation_bean/annotation_bean.iml" filepath="$PROJECT_DIR$/annotation_bean/annotation_bean.iml" />
+      <module fileurl="file://$PROJECT_DIR$/annotation_di/annotation_di.iml" filepath="$PROJECT_DIR$/annotation_di/annotation_di.iml" />
       <module fileurl="file://$PROJECT_DIR$/datasource/datasource.iml" filepath="$PROJECT_DIR$/datasource/datasource.iml" />
     </modules>
   </component>

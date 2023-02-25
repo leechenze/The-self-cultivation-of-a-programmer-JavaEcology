@@ -454,7 +454,7 @@
             早期spring是用 BeanFactory 来加载容器的，初始化BeanFactory对象时，加载的bean是有延迟的
             现在ApplicationContext 接口是Spring容器的核心接口，初始化时bean是立即加载的，可以通过配置进行更改延迟加载（lazy-init="true"）
             
-    注解开发定义Bean（annotation）
+    注解开发定义Bean（annotation_bean）
         spring2.0开始逐步提供了各种个样的注解，到2.5时注解就比较完善了，到3.0时可以完全纯注解开发
         配置：
             使用@Component定义bean
@@ -471,6 +471,110 @@
             以上三个和Component使用完全一样，区别只是在不同层面是 更加具有语义化帮助理解
 
     纯注解开发零配置
+        在Spring3.0开启的纯注解零配置的开发模式，使用Java类代替Spring核心配置文件
+            @Configuration注解用于设定当前类为配置类
+            @ComponentScan注解用于设定扫描路径，此注解只能添加一次，多个数据格式请用数组格式
+                @ComponentScan({"com.lee.dao","com.lee.service"})
+                @ComponentScan("com.lee")
+        读取Java配置类初始化容器对象
+            ApplicationContext applicationContext = new AnnotationConfigApplicationContext(SpringConfig.class);
+        
+        @Scope定义Bean作用范围
+            @Scope("singleton")
+            public class BookDaoImpl implements BookDao{}
+        @PostConstruct, @PreDestroy定义bean生命周期
+            @Scope("singleton")
+            public class BookDaoImpl implements BookDao{
+                public BookDaoImpl() { System.out.println("book dao constructor") }
+                
+                @PostConstruct
+                public void init() { System.out.println("book init ...") }
+                
+                @PreDestroy
+                public void destroy() { System.out.println("book destroy ...") }
+            }
+        注解开发依赖注入：（annotation_di)
+            @AutoWrited注解开启自动装配（默认按类型）
+                @Service
+                public class BookServiceImpl implements BookService {
+                    @Autowired
+                    private BookDao bookDao;
+                    
+                    public void save() {
+                        System.out.println("book service save");
+                        bookDao.save();
+                    }
+                }
+                注意：自动装配基于反射设计创建对象并暴力反射对应属性为私有属性初始化数据，因此无需提供setter方法
+            @Qualifier注解开启指定名称装配bean
+                即如果有多个相同类型的实现类，那么就需要使用@Qualifier指定名称，以告诉程序该加载哪个（如：BookDaoImpl和BookDaoImpl1）
+                @Service
+                public class BookServiceImpl implements BookService {
+                    @Autowired
+                    // @Qualifier("bookDao1")
+                    private BookDao bookDao;
+                
+                    public void save() {
+                        System.out.println("book service save");
+                        bookDao.save();
+                    }
+                }
+                注意：@Qualifier无法单独使用，必须配合@AutoWrited注解一块使用
+            @Value用于对简单类型进行注入
+            @PropertySource注解加载properties文件
+                @PropertySource("jdbc.properties")
+                @PropertySource({"jdbc.properties", "jdbc1.properties"})
+                @PropertySource("classpath:jdbc.properties")
+                注意：路径仅支持单一文件配置，多文件使用数组的格式，不允许使用通配符*
+            
+        注解开发管理第三方
+            @Bean表示声明当前方法的返回值是一个Bean
+            @Import手动加入配置类到核心配置，此注解只能添加一次，多个数据用数组格式{}进行添加
+                主要是在核心的SpringConfig配置类中导入其他一些独立的配置类所用的
+            在第三方Bean中注入简单类型：
+                @Value("${jdbc.driver}")
+                private String driver;
+                @Value("${jdbc.url}")
+                private String url;
+                @Value("${jdbc.username}")
+                private String username;
+                @Value("${jdbc.password}")
+                private String password;
+            
+                @Bean
+                public DataSource dataSource(BookDao bookDao) {
+                    DruidDataSource dds = new DruidDataSource();
+                    dds.setDriverClassName(driver);
+                    dds.setUrl(url);
+                    dds.setUsername(username);
+                    dds.setPassword(password);
+                    return dds;
+                }
+            在第三方Bean中注入引用类型：
+                @Bean
+                public DataSource dataSource(BookDao bookDao) {
+                    // 假如DataSource这个第三方Bean需要依赖 BookDao
+                    System.out.println(bookDao);
+                    
+                    DruidDataSource dds = new DruidDataSource();
+                    dds.setDriverClassName(driver);
+                    dds.setUrl(url);
+                    dds.setUsername(username);
+                    dds.setPassword(password);
+                    return dds;
+                }
+    注解开发总结：
+        XML配置与注解配置比较：
+            执行在网上搜索差异进行比较，此处不在罗列
+
+    
+    Spring整合mybatis思路分析
+        结论：mybatis应该管理的对象是SqlSessionFactory
+    
+    
+        
+        
+        
         
 
 
@@ -478,16 +582,13 @@
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
+贰.
+叁.
+肆.
+伍.
+陆.
+柒.
+捌.
+玖.
+拾.
 

@@ -1,4 +1,4 @@
-package lee.com.service;
+package com.lee.service;
 
 public interface BookService {
 }

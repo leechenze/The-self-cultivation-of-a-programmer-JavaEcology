@@ -5,19 +5,22 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e3e9874b-477e-4bb8-9c92-af7d0c985940" name="Changes" comment="P163T000239">
-      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/annotation_bean.iml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/App.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/dao/BookDao.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/dao/impl/BookDaoImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/service/impl/BookServiceImpl.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/lee/com/service/BookService.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/resources/applicationContext.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/AppForAnnotation.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/config/SpringConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/service/BookService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/annotation_di/annotation_di.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../Spring/annotation_di/pom.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Spring/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/.idea/compiler.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Spring/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Spring/.idea/modules.xml" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/.idea/modules.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Spring/SummaryOfNotes.md" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/SummaryOfNotes.md" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/App.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/App.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/service/impl/BookServiceImpl.java" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/com/lee/service/impl/BookServiceImpl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/annotation_bean/src/main/java/lee/com/service/BookService.java" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/annotation_bean/target/classes/com/lee/App.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/annotation_bean/target/classes/com/lee/App.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/annotation_bean/target/classes/com/lee/service/impl/BookServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/../Spring/annotation_bean/target/classes/com/lee/service/impl/BookServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Spring/annotation_bean/target/classes/lee/com/service/BookService.class" beforeDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
