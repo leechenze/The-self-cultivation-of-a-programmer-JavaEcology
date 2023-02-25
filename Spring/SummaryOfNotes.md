@@ -568,10 +568,9 @@
             执行在网上搜索差异进行比较，此处不在罗列
 
     
-    Spring整合mybatis思路分析
-        结论：mybatis应该管理的对象是SqlSessionFactory
+    Spring整合mybatis
         
-    
+        待记录。。。
         
         
         
