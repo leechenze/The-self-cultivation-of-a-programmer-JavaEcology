@@ -569,11 +569,48 @@
 
     
     Spring整合mybatis
-        
-        待记录。。。
-        
-        
-        
+        原SqlMapConfig.xml：
+            <configuration>
+                <properties resource="jdbc.properties"></properties>
+                <typeAliases>
+                    <package name="com.lee.domain"/>
+                </typeAliases>
+                <environments default="mysql">
+                    <environment id="mysql">
+                        <transactionManager type="JDBC"></transactionManager>
+                        <dataSource type="POOLED">
+                            <property name="driver" value="${jdbc.driver}"></property>
+                            <property name="url" value="${jdbc.url}"></property>
+                            <property name="username" value="${jdbc.username}"></property>
+                            <property name="password" value="${jdbc.password}"></property>
+                        </dataSource>
+                    </environment>
+                </environments>
+                <mappers>
+                    <package name="com.lee.dao"></package>
+                </mappers>
+            </configuration>
+            <typeAliases>
+                <package name="com.lee.domain"/>
+            </typeAliases>
+        整合后：
+            MyBatisConfig.java
+                @Bean
+                public SqlSessionFactoryBean sqlSessionFactory(DataSource dataSource) {
+                    SqlSessionFactoryBean ssfb = new SqlSessionFactoryBean();
+                    // 原typeAliases标签配置
+                    ssfb.setTypeAliasesPackage("com.lee.domain");
+                    // 原environments标签配置：
+                    ssfb.setDataSource(dataSource);
+                    return ssfb;
+                }
+                // 原mappers标签的相关配置（数据源扫描相关）
+                @Bean
+                public MapperScannerConfigurer mapperScannerConfigurer() {
+                    MapperScannerConfigurer msc = new MapperScannerConfigurer();
+                    msc.setBasePackage("com.lee.dao");
+                    return msc;
+                }
         
 
 
