@@ -14,4 +14,11 @@ public class BookDaoImpl implements BookDao {
     public void update() {
         System.out.println("book dao update ...");
     }
+
+    public int select() {
+        System.out.println("book dao select ...");
+        // 异常代码段
+        // int i = 1/0;
+        return 100;
+    }
 }

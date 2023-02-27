@@ -715,7 +715,45 @@
                 .. 表示可以没有或者有多个，*表示至少有一个或多个
 
         AOP通知类型：
+            AOP通知共分为5中类型
+                前置通知
+                    // @Before("pt()")
+                    public void before() {
+                        System.out.println("before advice ...");
+                    }
+                后置通知
+                    // @After("pt()")
+                    public void after() {
+                        System.out.println("after advice ...");
+                    }
+                环绕通知（重点）
+                    // @Around("pt()")
+                    public Object around(ProceedingJoinPoint pjp) throws Throwable {
+                        System.out.println("around before advice ...");
+                        Object res = pjp.proceed();
+                        System.out.println("around after advice ...");
+                        return res;
+                    }
+                    注意事项：
+                        ProceedingJoinPoint是一个必须依赖的形参，表示对原始方法的调用
+                        对原始方法的调用可以不接收返回值，通知方法设置成void即可，如果接收返回值，必须设定为Object类型
+                        因为原始方法的调用无法预期是否有异常，所以要先强制抛出异常
+                返回后通知（了解）
+                    // @AfterReturning("pt()")
+                    public void afterReturning() {
+                        System.out.println("afterReturning advice ...");
+                    }
+                    细节：和After的区别在于 AfterReturning 只有在没有异常并顺利走完的情况下才会执行
+                抛出异常后通知（了解）
+                    @AfterThrowing("pt()")
+                    public void afterThrowing() {
+                        System.out.println("afterThrowing advice ...");
+                    }
+                    只有在有异常的情况下才会执行
+        业务层接口执行效率：
+            测试业务层接口万次执行效率
             
+                
 
 
 贰.
