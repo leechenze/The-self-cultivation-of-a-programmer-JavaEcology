@@ -626,7 +626,95 @@
 
 
     AOP
-        简介：
+        简介：Aspect Oriented Programming 面向切面编程，一种编程范式，知道开发者如何组织程序结构
+        作用：在不惊动原始设计的基础上为其进行功能增强，这是Spring倡导的一个理念：无侵入式编程/无入侵式编程
+        AOP核心概念：
+            连接点（JoinPoint）：程序执行过程中的任意位置，粒度为执行方法，抛出异常，设置变量等
+                在SpringAOP中，理解为方法的执行
+            切入点（PointCut）：匹配连接点的式子
+                在SpringAOP中，一个切入点可以描述一个具体方法，也可以匹配多个方法
+            通知（Advice）：在切入点处执行的操作，也就是共性功能（通知类）
+                在SpringAOP中，功能最终以方法的形式呈现
+            切面（Aspect）：描述通知与切入点的对应关系
+        
+        AOP入门案例：(AOP)
+            AOP坐标导入：
+                aop的坐标默认是被依赖的
+                <dependency>
+                    <groupId>org.aspectj</groupId>
+                    <artifactId>aspectjweaver</artifactId>
+                    <version>1.9.4</version>
+                </dependency>
+            制作连接点方法：
+                BookDaoImple.java
+            定义通知类：
+                com.lee.aop.MyAdvice
+            制作共性功能方法：
+                com.lee.aop.MyAdvice
+                    public void method() {
+                        System.out.println(System.currentTimeMillis());
+                    }
+            定义切入点：
+                com.lee.aop.MyAdvice
+                    依托一个不具有实际意义的方法进行, 即无参数, 无返回值, 方法体无实际逻辑
+                    @Pointcut("execution(void com.lee.dao.BookDao.update())")
+                    private void pt() {}
+            绑定切入点与通知关系（切面）：
+                com.lee.aop.MyAdvice
+                    @Component // 这里指定为Spring的bean，受到Spring容器的管理
+                    @Aspect // 指定这是个AOP类，才会读取@Pointcut 和 @Before两个注解
+                    public class MyAdvice {
+                        // 切入点
+                        @Pointcut("execution(void com.lee.dao.BookDao.update())")
+                        private void pt() {}
+    
+                        // 共性功能方法
+                        @Before("pt()")
+                        public void method() {
+                            System.out.println(System.currentTimeMillis());
+                        }
+                    }
+            开启Spring对AOP注解式驱动支持
+                ...
+                @EnableAspectJAutoProxy
+                public class SpringConfig {}
+
+        AOP工作流程：
+            1。Spring容器启动
+            2。读取所有切面配置了的切入点
+            3。初始化Bean，判定bean对应的类中的方法是否匹配到已配置了的切入点
+            4。匹配成功后，创建原始对象的代理对象
+            5。获取的bean是代理对象时，根据代理对象的运行模式运行原始方法与增强内容，完成操作。
+            结论：SpringAOP本质就是代理模式（目标对象，代理对象）
+        AOP切入点表达式：
+            语法格式：
+                切入点表达式描述的标准格式：
+                    execution(public User com.lee.service.UserService.findByInt(int))
+
+                    1。访问修饰符（public，private等，可以省略）
+                    2。返回值（User）
+                    3。包（com.lee.service）
+                    4。类或者接口（UserService）
+                    5。方法名（findById）
+                    6。参数（int）
+                    7。异常名（方法定义中抛出指定异常，可以省略）
+            通配符：
+                可以使用通配符描述切入点，快速描述
+                    *：单个独立的任意符号，可以独立出现，也可以作为前缀或后缀的匹配符出现
+                        execution(public * com.lee.*.UserService.find*(*))
+                    ..：多个连续的任意符号，可以独立出现，常用语简化包名与参数的书写
+                        execution(public User com..UserService.findById(..))
+                    +：专用于匹配子类类型（写在类或接口的后面）
+                        execution(* *..*Service+.*(..))
+                通配所有的：（这是最宽容的写法，但是开发中不会有这么写的）
+                    (* *..*(..)) 
+            注意事项：
+                描述切入点通常描述接口，而不描述实现类，因为描述道实现类就不符合（Spring提倡的降低耦合的规范）
+                包名书写尽量不要使用..效率太低，并且容易被同事打死
+                通常不使用异常作为匹配规则
+                .. 表示可以没有或者有多个，*表示至少有一个或多个
+
+        AOP通知类型：
             
 
 

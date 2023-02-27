@@ -2,6 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
+      <module fileurl="file://$PROJECT_DIR$/AOP/AOP.iml" filepath="$PROJECT_DIR$/AOP/AOP.iml" />
       <module fileurl="file://$PROJECT_DIR$/IoC/IoC.iml" filepath="$PROJECT_DIR$/IoC/IoC.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Spring.iml" filepath="$PROJECT_DIR$/.idea/Spring.iml" />
       <module fileurl="file://$PROJECT_DIR$/annotation_bean/annotation_bean.iml" filepath="$PROJECT_DIR$/annotation_bean/annotation_bean.iml" />

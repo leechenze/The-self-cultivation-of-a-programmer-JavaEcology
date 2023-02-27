@@ -8,10 +8,11 @@
         <option value="$PROJECT_DIR$/annotation_bean/pom.xml" />
         <option value="$PROJECT_DIR$/annotation_di/pom.xml" />
         <option value="$PROJECT_DIR$/spring_mybatis/pom.xml" />
+        <option value="$PROJECT_DIR$/AOP/pom.xml" />
       </list>
     </option>
   </component>
-  <component name="ProjectRootManager">
+  <component name="ProjectRootManager" version="2" languageLevel="JDK_1_8" default="true" project-jdk-name="azul-1.8" project-jdk-type="JavaSDK">
     <output url="file://$PROJECT_DIR$/out" />
   </component>
 </project>
