@@ -568,7 +568,7 @@
             执行在网上搜索差异进行比较，此处不在罗列
 
     
-    Spring整合mybatis
+    Spring整合mybatis（spring_mybatis）
         原SqlMapConfig.xml：
             <configuration>
                 <properties resource="jdbc.properties"></properties>
@@ -611,11 +611,23 @@
                     msc.setBasePackage("com.lee.dao");
                     return msc;
                 }
+        mybatis整合配置总结
+            SqlSessionFactoryBean
+            MapperScannerConfigurer
+        
+    Srping整合Junit
+        @Runwith(SpringJUnit4ClassRunner.class)
+            设定类运行器（类加载器）
+        @ContextConfiguration(classes = SpringConfig.class)
+            设定Spring的配置类
+        @Autowired
+            然后要测哪个模块，就把哪个模块自动装配（Autowired）一下就行了
         
 
 
-
-
+    AOP
+        简介：
+            
 
 
 贰.

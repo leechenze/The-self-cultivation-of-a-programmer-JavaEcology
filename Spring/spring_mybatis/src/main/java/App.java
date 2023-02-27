@@ -8,7 +8,7 @@ public class App {
     public static void main(String[] args) {
         ApplicationContext ctx = new AnnotationConfigApplicationContext(SpringConfig.class);
         AccountService accountService = ctx.getBean(AccountService.class);
-        Account ac = accountService.findById(2);
+        Account ac = accountService.findById(3);
         System.out.println(ac);
     }
 }
