@@ -750,7 +750,7 @@
                         System.out.println("afterThrowing advice ...");
                     }
                     只有在有异常的情况下才会执行
-        业务层接口执行效率：
+        业务层接口执行效率：(AOP_runspeed)
             测试业务层接口万次执行效率
                 获取signature对象
                 Signature signature = pjp.getSignature();
@@ -760,7 +760,11 @@
                 String methodName = signature.getName();
                 拼接打印
                 System.out.println("业务层接口执行万次效率: " + className + "." + methodName + " ==> " + (end - start) + "ms");
-        
+        AOP通知获取数据(AOP_advice_data)
+            获取参数
+            获取返回值
+            获取异常
+            
 
 
 贰.

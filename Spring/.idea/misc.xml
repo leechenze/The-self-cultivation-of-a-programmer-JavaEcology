@@ -10,6 +10,7 @@
         <option value="$PROJECT_DIR$/spring_mybatis/pom.xml" />
         <option value="$PROJECT_DIR$/AOP/pom.xml" />
         <option value="$PROJECT_DIR$/AOP_runspeed/pom.xml" />
+        <option value="$PROJECT_DIR$/AOP_advice_data/pom.xml" />
       </list>
     </option>
   </component>

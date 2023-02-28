@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/AOP/AOP.iml" filepath="$PROJECT_DIR$/AOP/AOP.iml" />
+      <module fileurl="file://$PROJECT_DIR$/AOP_advice_data/AOP_advice_data.iml" filepath="$PROJECT_DIR$/AOP_advice_data/AOP_advice_data.iml" />
       <module fileurl="file://$PROJECT_DIR$/AOP_runspeed/AOP_runspeed.iml" filepath="$PROJECT_DIR$/AOP_runspeed/AOP_runspeed.iml" />
       <module fileurl="file://$PROJECT_DIR$/IoC/IoC.iml" filepath="$PROJECT_DIR$/IoC/IoC.iml" />
       <module fileurl="file://$PROJECT_DIR$/.idea/Spring.iml" filepath="$PROJECT_DIR$/.idea/Spring.iml" />

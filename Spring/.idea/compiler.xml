@@ -7,6 +7,7 @@
         <sourceTestOutputDir name="target/generated-test-sources/test-annotations" />
         <outputRelativeToContentRoot value="true" />
         <module name="AOP" />
+        <module name="AOP_advice_data" />
         <module name="datasource" />
         <module name="annotation_bean" />
         <module name="spring_mybatis" />
@@ -19,6 +20,7 @@
       <module name="annotation_bean" target="1.5" />
       <module name="annotation_di" target="1.5" />
       <module name="AOP" target="1.5" />
+      <module name="AOP_advice_data" target="8" />
       <module name="AOP_runspeed" target="8" />
       <module name="datasource" target="1.5" />
       <module name="IoC" target="1.5" />
