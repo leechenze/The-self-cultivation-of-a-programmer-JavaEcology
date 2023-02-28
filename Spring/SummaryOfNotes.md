@@ -752,8 +752,15 @@
                     只有在有异常的情况下才会执行
         业务层接口执行效率：
             测试业务层接口万次执行效率
-            
-                
+                获取signature对象
+                Signature signature = pjp.getSignature();
+                获取类名
+                String className = signature.getDeclaringTypeName();
+                获取方法名
+                String methodName = signature.getName();
+                拼接打印
+                System.out.println("业务层接口执行万次效率: " + className + "." + methodName + " ==> " + (end - start) + "ms");
+        
 
 
 贰.
