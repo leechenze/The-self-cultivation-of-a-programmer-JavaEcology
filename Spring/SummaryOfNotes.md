@@ -762,9 +762,68 @@
                 System.out.println("业务层接口执行万次效率: " + className + "." + methodName + " ==> " + (end - start) + "ms");
         AOP通知获取数据(AOP_advice_data)
             获取参数
+                Around：
+                    ProceedJoinPoint pjp
+                    Object[] args = pjp.getArgs();
+                After：
+                Before：
+                AfterReturning：
+                AfterThrowing：
+                    JoinPoint jp
+                    Object[] args = jp.getArgs();
             获取返回值
-            获取异常
-            
+                Around：
+                    ProceedJoinPoint pjp
+                    Object res = pjp.proceed(args);
+                After：
+                Before：
+                AfterReturning：
+                    @AfterReturning(value = "pc()", returning = "ret")
+                    public void afterReturning(Object ret) {
+                        System.out.println("afterReturning advice ..." + ret);
+                    }
+                AfterThrowing：
+            获取异常（了解）
+                Around：
+                    try {
+                        res = pjp.proceed(args);
+                    } catch (Throwable e) {
+                        e.printStackTrace();
+                        System.out.println(e);
+                    }
+                After：
+                Before：
+                AfterReturning：
+                AfterThrowing：
+                    @AfterThrowing(value = "pc()",throwing = "t")
+                    public void afterThrowing(Throwable t) {
+                        System.out.println("afterThrowing advice ..." + t);
+                    }
+    
+    事务
+        事务作用：在数据层保障一系列的数据库操作同成功同失败
+        Spring事务作用：在数据层或业务层保障一系列的数据库操作同成功同失败
+        案例：账户转账（case_transfer）
+            1。在业务层接口上开启Spring事务管理（AccountService.java）
+                @Transactional
+                public void transfer(String out, String in, Double money);
+            2。设置平台事务管理器（JdbcConfig.java）
+                @Bean
+                public PlatformTransactionManager transactionManager(DataSource dataSource){
+                    DataSourceTransactionManager transactionManager = new DataSourceTransactionManager();
+                    transactionManager.setDataSource(dataSource);
+                    return transactionManager;
+                }
+            3。开启注解式事务驱动（SpringConfig.java）
+                @EnableTransactionManagement
+                public class SpringConfig {
+                }
+        事务角色：
+            事务管理员：
+                
+            事务协调员：
+
+
 
 
 贰.
