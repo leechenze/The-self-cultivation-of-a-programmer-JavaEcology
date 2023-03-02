@@ -820,11 +820,23 @@
                 }
         事务角色：
             事务管理员：
-                
+                发起事务方：在Spring中通常指代业务层开启事务的方法
+                    @Transactional
+                    public void transfer(String out, String in, Double money);
             事务协调员：
-
-
-
+                加入事务方：在Spring中通常指代数据层方法，也可以是业务层方法，业务层也可以在业务层相互调用
+                    public interface AccountDao {
+                        @Update("update transfer_account set money = money + #{money} where name = #{name}")
+                        void inMoney(@Param("name") String name, @Param("money") Double money);
+                        @Update("update transfer_account set money = money - #{money} where name = #{name}")
+                        void outMoney(@Param("name") String name, @Param("money") Double money);
+                    }
+            注意：
+                MybatisConfig下的sqlSessionFactory 和 JdbcConfig下的transactionManager 两个方法的参数都是dataSource
+                必须这俩参数是同一个，才能完成统一管理
+        事务属性：
+            事务相关配置：
+                
 
 贰.
 叁.
