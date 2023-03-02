@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart" />
+  </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
       <list>
@@ -12,6 +15,7 @@
         <option value="$PROJECT_DIR$/AOP_runspeed/pom.xml" />
         <option value="$PROJECT_DIR$/AOP_advice_data/pom.xml" />
         <option value="$PROJECT_DIR$/case_transfer/pom.xml" />
+        <option value="$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart/pom.xml" />
       </list>
     </option>
   </component>

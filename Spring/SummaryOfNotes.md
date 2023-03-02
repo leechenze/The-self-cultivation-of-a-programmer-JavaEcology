@@ -836,9 +836,119 @@
                 必须这俩参数是同一个，才能完成统一管理
         事务属性：
             事务相关配置：
+            案例：转账业务追加日志（事务传播行为）
+                能够处理回滚的异常：
+                    Error异常，不多见，比如内存溢出
+                    运行时异常 
+                除了运行时异常之外的其他异常都不会进行回滚，比如IOException这种异常是不会回滚的
+                而处理这种异常就需要在注解@Transactional中指定参数：@Transactional(rollbackFor = IOException.class)，即遇到IOException就进行回滚
+            事务传播行为：
+                核心：@Transactional(propagation = Propagation.REQUIRES_NEW)
+                现在要求追加日志的功能要求无论是否执行成功都要执行日志的业务层调用
+                但是由于日志业务和账户业务使用的是同一个事务，所以事务的同成功同失败原则就导致了账户操作失败时，日志也同时失败了
+                处理方法就是为日志的业务层事务设置事务传播行为：Propagation.REQUIRES_NEW
+                    public interface LogService {
+                        @Transactional(propagation = Propagation.REQUIRES_NEW)
+                        void log(String out, String in, Double money);
+                    }
+                
                 
 
-贰.
+
+贰.SpringMVC
+    
+    SpringMVC概述：
+        SpringMVC技术与Servlet技术功能等同，均属于web层开发技术，但是SpringMVC开发中更简便
+        章节内容：
+            请求与响应
+            REST风格
+            SSM整合
+            拦截器
+        章节目标：
+            掌握基于SpringMVC获取请求参数与响应json数据操作
+            熟练应用基于REST风格的请求路径设置与参数传递
+            能够根据实际业务建立前后端开发通信协议并进行实现
+            基于SSM整合技术开发任意业务模块功能
+        简介：
+            SpringMVC是一种基于Java实现MVC模型的轻量级Web框架，用于进行表现层功能开发的表现层框架技术
+    入门案例：（springmvc_quickstart）
+        四个步骤：
+            1。导入SpringMVC坐标与Servlet坐标
+                <!--servlet坐标-->
+                <dependency>
+                  <groupId>javax.servlet</groupId>
+                  <artifactId>javax.servlet-api</artifactId>
+                  <version>3.1.0</version>
+                  <scope>provided</scope>
+                </dependency>
+                <!--springmvc坐标-->
+                <dependency>
+                  <groupId>org.springframework</groupId>
+                  <artifactId>spring-webmvc</artifactId>
+                  <version>5.2.10.RELEASE</version>
+                </dependency>
+            2。创建SpringMVC控制器类（等同于Servlet功能）
+                @Controller
+                    因为是Spring技术，所以必须要定义为一个bean（@Component）
+                    在表现层中的bean使用的是 @Controller 注解
+                @RequestMapping("url")    
+                    定义接收请求的名称
+                @ResponseBody
+                    设置当前控制器方法响应内容为当前响应体反馈给浏览器
+
+            3。初始化SpringMVC环境（同Spring环境），设定SpringMVC加载对应的Bean
+                @Configuration
+                @ComponentScan("com.lee.controller")
+                public class SpringMvcConfig {}
+
+            4。初始化Servlet容器，加载SpringMVC环境，并设置SpringMVC技术处理的请求
+                // 定义servlet容器启动的配置类，继承的类是固定的，来进行加载spring的配置
+                public class ServletContainerInitConfig extends AbstractDispatcherServletInitializer {
+                    // 加载SpringMVC容器配置
+                    @Override
+                    protected WebApplicationContext createServletApplicationContext() {
+                        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+                        ctx.register(SpringMvcConfig.class);
+                        return ctx;
+                    }
+                
+                    // 设置哪些请求归属SpringMVC处理
+                    @Override
+                    protected String[] getServletMappings() {
+                        // String[]{"/"} 表示所有请求归SpringMVC处理
+                        return new String[]{"/"};
+                    }
+                    
+                    // 加载Spring容器配置，因为现在只有SpringMVC容器，没有Spring容器，所以直接Return null即可；
+                    @Override
+                    protected WebApplicationContext createRootApplicationContext() {
+                        return null;
+                    }
+                }
+        四个步骤总结：（1+N）
+            一次性工作：
+                创建工程，设置服务器，加载工程
+                导入坐标
+                创建web容器启动类，加载SpringMVC配置，并设置SpringMVC请求拦截路径
+                SpringMVC核心配置类（设置配置类，扫描controller包，加载Controller控制器bean）
+            多次工作
+                定义处理请求的控制器类
+                定义处理请求的控制器方法，并配置映射路径（@RequestMapping）与返回json数据（@ResponseBody）
+        工作流程分析：
+            
+            
+
+
+
+
+
+
+
+
+
+
+
+
 叁.
 肆.
 伍.

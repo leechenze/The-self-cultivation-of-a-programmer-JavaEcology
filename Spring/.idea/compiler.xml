@@ -9,6 +9,7 @@
         <module name="AOP" />
         <module name="AOP_advice_data" />
         <module name="case_transfer" />
+        <module name="springmvc_quickstart" />
         <module name="datasource" />
         <module name="annotation_bean" />
         <module name="spring_mybatis" />
@@ -27,6 +28,7 @@
       <module name="datasource" target="1.5" />
       <module name="IoC" target="1.5" />
       <module name="spring_mybatis" target="1.5" />
+      <module name="springmvc_quickstart" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

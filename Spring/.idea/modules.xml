@@ -12,6 +12,7 @@
       <module fileurl="file://$PROJECT_DIR$/case_transfer/case_transfer.iml" filepath="$PROJECT_DIR$/case_transfer/case_transfer.iml" />
       <module fileurl="file://$PROJECT_DIR$/datasource/datasource.iml" filepath="$PROJECT_DIR$/datasource/datasource.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring_mybatis/spring_mybatis.iml" filepath="$PROJECT_DIR$/spring_mybatis/spring_mybatis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart/springmvc_quickstart.iml" filepath="$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart/springmvc_quickstart.iml" />
     </modules>
   </component>
 </project>
