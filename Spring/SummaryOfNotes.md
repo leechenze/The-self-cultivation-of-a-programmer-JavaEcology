@@ -911,7 +911,7 @@
                         ctx.register(SpringMvcConfig.class);
                         return ctx;
                     }
-                
+                    
                     // 设置哪些请求归属SpringMVC处理
                     @Override
                     protected String[] getServletMappings() {
@@ -935,8 +935,82 @@
                 定义处理请求的控制器类
                 定义处理请求的控制器方法，并配置映射路径（@RequestMapping）与返回json数据（@ResponseBody）
         工作流程分析：
-            
-            
+            启动服务器初始化过程：
+                服务器启动，执行ServletContainerInitConfig类，初始化web容器
+                执行createServletApplicationContext方法，创建了WebApplicationContext对象
+                加载SpringMvcConfig
+                执行@ComponentScan加载对应的Bean
+                加载UserController，每个@RequestMapping的名称对应一个具体方法
+                执行getServletMapping方法，定义所有请求都通过SpringMVC处理
+        加载Bean控制
+            Controller加载控制与Bean加载控制
+                SpringMVC加载的Bean
+                    表现层Bean（Controller）
+                Spring加载的Bean
+                    业务Bean（Service）
+                    功能Bean（DataSource）等
+            问题：Spirng不能加载SpringMVC表现层的Bean
+            解决：加载Srping控制的bean的时候排除掉SpringMVC控制的Bean
+                方式一：Spring加载的Bean设定扫描范围为com.lee,排除掉Controller包内的bean
+                    @ComponentScan(value = "com.lee",
+                        excludeFilters = @ComponentScan.Filter(
+                            type = FilterType.ANNOTATION,
+                            classes = Controller.class
+                        )
+                    )
+                    注意这种加载方式，需要将SpringMvcConfig中的 @Configuration 给去掉，否则过滤掉之后，再次读取到SpringMvcConfig
+                    中的@Configuration 又给com.lee.controller扫描进来了，所以需要注掉。
+                方式二：Spring加载的Bean设定扫描范围为精准范围，例如：service包，dao包等
+                    @ComponentScan({"com.lee.service", "com.lee.dao"})
+                方式三：不区分Spring与SpringMVC的环境，加载到同一个环境中
+
+                    // 方式一：
+                    // 定义servlet容器启动的配置类，继承的类是固定的，来进行加载spring的配置
+                    public class ServletContainerInitConfig extends AbstractDispatcherServletInitializer {
+                    // 加载SpringMVC容器配置
+                    @Override
+                    protected WebApplicationContext createServletApplicationContext() {
+                        AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+                            ctx.register(SpringMvcConfig.class);
+                            return ctx;
+                        }
+                    
+                        // 加载Spring容器配置
+                        @Override
+                        protected WebApplicationContext createRootApplicationContext() {
+                            AnnotationConfigWebApplicationContext ctx = new AnnotationConfigWebApplicationContext();
+                            ctx.register(SpringConfig.class);
+                            return ctx;
+                        }
+                    
+                        // 设置哪些请求归属SpringMVC处理
+                        @Override
+                        protected String[] getServletMappings() {
+                            // String[]{"/"} 表示所有请求归SpringMVC处理
+                            return new String[]{"/"};
+                        }
+                    }
+                    
+                    // 方式二：简化开发，方式一的封装版
+                    public class ServletContainerInitConfig extends AbstractAnnotationConfigDispatcherServletInitializer{
+                    
+                        @Override
+                        protected Class<?>[] getRootConfigClasses() {
+                            return new Class[]{SpringConfig.class};
+                        }
+                    
+                        @Override
+                        protected Class<?>[] getServletConfigClasses() {
+                            return new Class[]{SpringMvcConfig.class};
+                        }
+                    
+                        @Override
+                        protected String[] getServletMappings() {
+                            return new String[]{"/"};
+                        }
+                    }
+                    
+                
 
 
 
