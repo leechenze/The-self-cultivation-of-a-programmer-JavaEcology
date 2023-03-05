@@ -34,6 +34,13 @@
       <version>5.2.10.RELEASE</version>
     </dependency>
 
+    <!-- jackson坐标 -->
+    <dependency>
+      <groupId>com.fasterxml.jackson.core</groupId>
+      <artifactId>jackson-databind</artifactId>
+      <version>2.9.0</version>
+    </dependency>
+
   </dependencies>
 
   <build>

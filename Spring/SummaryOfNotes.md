@@ -1079,12 +1079,64 @@
                         System.out.println("集合类型参数" + likes);
                         return "集合类型参数";
                     }
-                JSON数据传递参数
-                    
-        响应JSON数据
+                JSON数据传递参数（详见：JackSonController）
+                    导入jackson坐标
+                        <!-- jackson坐标 -->
+                        <dependency>
+                          <groupId>com.fasterxml.jackson.core</groupId>
+                          <artifactId>jackson-databind</artifactId>
+                          <version>2.9.0</version>
+                        </dependency>
+                    开启JSON对象自动转换的支持
+                        SpringMvcConfig中：
+                        @EnableWebMvc // 开启JSON数据转换对象的功能
+                    注意接收参数时需要注解声明 @RequestBody 注意不是 @RequestParam
+                        // 集合参数的JSON格式
+                        @RequestMapping("/jsonlist")
+                        @ResponseBody
+                        public String jsonlist(@RequestBody List<String> likes) {
+                            System.out.println("集合参数的JSON格式" + likes);
+                            return "集合参数的JSON格式";
+                        }
+                日期类型传递参数（详见：JackSonController）
+                    日期类型的格式参数可以自动转换，如果需要设置格式，通过：@DateTimeFormat 这个注解
+                    // 日期参数
+                    @RequestMapping("/dateParam")
+                    @ResponseBody
+                    public String dateParam(@DateTimeFormat(pattern = "yyyy/MM/dd HH:mm:ss") Date date) {
+                        System.out.println("日期参数" + date);
+                        return "日期参数";
+                    }
+        响应参数：（ResponseController）
+            响应页面/页面跳转
+            响应文本
+            响应Json数据
+            响应Json集合数据
+            
+            重新解读@ResponseBody：你的控制器方法返回值是什么 ResponseBody就指定返回的响应体是什么类型
 
+    RESTful
+        rest风格/简介
+            REST（Representational State Transfer）表现形式状态转换，白话：访问网络资源的格式
+            传统风格资源描述形式
+                http://localhost/users/getById?id=1
+                http://localhost/users/saveUser
+            REST风格描述形式
+                http://localhost/users/1
+                http://localhost/users/
+            优点：
+                书写简化
+                隐藏资源的访问行为，无法通过地址得知对资源是何种操作
+            按照REST风格访问资源时使用行为动作区分对资源进行了何种操作
+                http://localhost/users                  查询全部用户信息（GET）
+                http://localhost/users/1                查询指定用户信息（GET）
+                http://localhost/users                  添加用户信息（POST）
+                http://localhost/users                  修改用户信息（PUT）
+                http://localhost/users/1                删除用户信息（DELETE）
+            根据REST风格对资源进行访问称为RESTful
 
-
+        入门案例
+            
 
 
 
