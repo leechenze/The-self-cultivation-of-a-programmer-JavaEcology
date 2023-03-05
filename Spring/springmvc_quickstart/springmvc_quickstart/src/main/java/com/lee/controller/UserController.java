@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 // 定义为Bean
 @Controller
+@RequestMapping("/user")
 public class UserController {
     // 设置当前操作的访问路径
     @RequestMapping("/save")

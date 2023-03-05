@@ -1,7 +1,10 @@
+com/lee/domain/Address.class
 com/lee/service/UserService.class
 com/lee/config/SpringMvcConfig.class
 com/lee/config/ServletContainerInitConfig.class
 com/lee/controller/UserController.class
+com/lee/domain/Book.class
+com/lee/controller/BookController.class
 com/lee/config/SpringConfig.class
 com/lee/dao/UserDao.class
 com/lee/service/impl/UserServiceImpl.class

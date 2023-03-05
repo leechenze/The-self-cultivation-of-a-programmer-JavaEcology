@@ -1010,8 +1010,78 @@
                         }
                     }
                     
-                
-
+    Web请求与响应：       
+        请求映射路径    
+            @RequestMapping    
+                这个注解可以加到方法上，也可以加载到类上    
+                在类上表示：整个模块的访问前缀    
+                在方法上表示：具体名称    
+                代码片段：
+                    // 定义为Bean
+                    @Controller
+                    @RequestMapping("/user")
+                    public class UserController {
+                        // 设置当前操作的访问路径
+                        @RequestMapping("/save")
+                        // 设置当前操作的返回值类型
+                        @ResponseBody
+                        public String save() {
+                            System.out.println("user save ...");
+                            return "{'module':'springmvc'}";
+                        }
+                    }
+        请求参数（BookController）
+            代码片段
+                public String save(String name, int age) {
+                    System.out.println(name);
+                    System.out.println(age);
+                    return "{'module':'book save'}";
+                }
+            Post请求中文参数乱码处理：
+                @Override
+                protected Filter[] getServletFilters() {
+                    CharacterEncodingFilter filter = new CharacterEncodingFilter();
+                    filter.setEncoding("UTF-8");
+                    return new Filter[]{filter};
+                }
+            参数类型（详见：BookController）
+                普通参数
+                    @RequestMapping("/save")
+                    @ResponseBody
+                    public String save(String name, int age) {
+                        System.out.println(name);
+                        System.out.println(age);
+                        return "{'module':'book save'}";
+                    }
+                POJO类型参数
+                    // POJO参数
+                    @RequestMapping("/pojo")
+                    @ResponseBody
+                    public String pojo(Book book) {
+                        System.out.println("POJO参数" + book);
+                        return "POJO参数";
+                    }
+                嵌套POJO类型参数
+                    同上
+                数组类型参数
+                    // 数组类型参数
+                    @RequestMapping("/arrayParam")
+                    @ResponseBody
+                    public String arrayParam(String[] likes) {
+                        System.out.println("数组类型参数" + Arrays.toString(likes));
+                        return "数组类型参数";
+                    }
+                集合类型参数
+                    // 集合类型参数
+                    @RequestMapping("/listParam")
+                    @ResponseBody
+                    public String listParam(@RequestParam List<String> likes) {
+                        System.out.println("集合类型参数" + likes);
+                        return "集合类型参数";
+                    }
+                JSON数据传递参数
+                    
+        响应JSON数据
 
 
 
