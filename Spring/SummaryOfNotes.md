@@ -1136,14 +1136,71 @@
             根据REST风格对资源进行访问称为RESTful
 
         入门案例
-            
+            设定http请求动作
+                添加：
+                    @RequestMapping(value = "/users",method = RequestMethod.POST)
+                    @ResponseBody
+                    public String save(){
+                        System.out.println("user save...");
+                        return "{'module':'user save'}";
+                    }
+                更新：
+                    @RequestMapping(value = "/users",method = RequestMethod.PUT)
+                    @ResponseBody
+                    public String update(@RequestBody User user){
+                        System.out.println("user update..."+user);
+                        return "{'module':'user update'}";
+                    }
+            设定请求参数：（路径变量）
+                @RequestMapping(value = "/users/{id}",method = RequestMethod.DELETE)
+                @ResponseBody
+                public String delete(@PathVariable Integer id){
+                    System.out.println("user delete..." + id);
+                    return "{'module':'user delete'}";
+                }
+            @RequestBody：接收请求体参数的
+            @RequestParam：接收路径参数和表单参数
+            @pathVariable：接收路径变量
+        快速开发/简化开发  
+            @RestController
+                等同于 @Controller 与 @ResponseBody 的组合功能
+            @GetMapping
+            @PostMapping
+            @PutMapping
+            @DeleteMapping
+                用于替代 @RequestMapping 注解
+        案例：（springmvc_restful_case）
+            注意点：设置对静态资源的访问放行（config.SpringMvcSupport）
+                @Configuration
+                public class SpringMvcSupport extends WebMvcConfigurationSupport {
+                    //设置静态资源访问过滤，当前类需要设置为配置类，并被扫描加载
+                    @Override
+                    protected void addResourceHandlers(ResourceHandlerRegistry registry) {
+                        //当访问/pages/????时候，从/pages目录下查找内容
+                        registry.addResourceHandler("/pages/**").addResourceLocations("/pages/");
+                        registry.addResourceHandler("/js/**").addResourceLocations("/js/");
+                        registry.addResourceHandler("/css/**").addResourceLocations("/css/");
+                        registry.addResourceHandler("/plugins/**").addResourceLocations("/plugins/");
+                    }
+                }
+        
 
 
-
-
-
-
-
+    SSM整合
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
+        
 
 叁.
 肆.

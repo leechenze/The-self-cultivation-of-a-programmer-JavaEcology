@@ -4,4 +4,4 @@ com/lee/domain/User.class
 com/lee/controller/UserController.class
 com/lee/domain/Book.class
 com/lee/controller/BookController.class
-BookController2.class
+com/lee/controller/BookController1.class

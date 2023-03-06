@@ -3,6 +3,7 @@
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart" />
     <file type="web" url="file://$PROJECT_DIR$/springmvc_restful" />
+    <file type="web" url="file://$PROJECT_DIR$/springmvc_restful_case" />
   </component>
   <component name="MavenProjectsManager">
     <option name="originalFiles">
@@ -18,6 +19,7 @@
         <option value="$PROJECT_DIR$/case_transfer/pom.xml" />
         <option value="$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart/pom.xml" />
         <option value="$PROJECT_DIR$/springmvc_restful/pom.xml" />
+        <option value="$PROJECT_DIR$/springmvc_restful_case/pom.xml" />
       </list>
     </option>
   </component>
