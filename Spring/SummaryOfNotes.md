@@ -1187,10 +1187,25 @@
 
 
     SSM整合
-        
-        
-        
-        
+        Spring
+            SpringConfig
+        Mybatis
+            MybatisConfig
+            JdbcConfig
+            jdbc.properties
+        SpringMVC
+            ServletConfig
+            SpringMvcConfig
+        功能模块
+            表与实体类
+            Dao（接口+自动代理）
+            service（接口+实现类）
+                业务层接口测试（整合Junit）
+            controller
+                表现层接口测试（PostMan）
+            
+        整合配置（springmvc_ssm）
+            
         
         
         

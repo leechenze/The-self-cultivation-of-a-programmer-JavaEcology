@@ -8,16 +8,17 @@
         <outputRelativeToContentRoot value="true" />
         <module name="AOP" />
         <module name="AOP_advice_data" />
+        <module name="annotation_bean" />
+        <module name="springmvc_restful" />
+        <module name="annotation_di" />
+        <module name="springmvc_restful_case" />
+        <module name="springmvc_ssm" />
         <module name="case_transfer" />
         <module name="springmvc_quickstart" />
         <module name="datasource" />
-        <module name="annotation_bean" />
         <module name="spring_mybatis" />
-        <module name="springmvc_restful" />
         <module name="AOP_runspeed" />
         <module name="IoC" />
-        <module name="annotation_di" />
-        <module name="springmvc_restful_case" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
@@ -33,6 +34,7 @@
       <module name="springmvc_quickstart" target="1.8" />
       <module name="springmvc_restful" target="1.5" />
       <module name="springmvc_restful_case" target="1.5" />
+      <module name="springmvc_ssm" target="1.5" />
     </bytecodeTargetLevel>
   </component>
 </project>
