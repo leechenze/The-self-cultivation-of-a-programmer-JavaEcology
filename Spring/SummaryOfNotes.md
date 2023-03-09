@@ -1203,20 +1203,55 @@
                 业务层接口测试（整合Junit）
             controller
                 表现层接口测试（PostMan）
-            
-        整合配置（springmvc_ssm）
-            
-            
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+
+        表现层与前端数据传输协议规定：(springmvc_result)
+            表现层数据封装：
+                设置统一数据返回结果类
+                    public class Result {
+                        private Object data;
+                        private Integer code;
+                        private String message;
+                    }
+                设置统一数据返回结果编码
+                    public class Code {
+                        /**
+                        * 成功状态码定义
+                        * 200 + 操作码(1,2,3,4) + 成功与否(0,1)
+                        */
+                        public static final Integer SAVE_OK = 20011;
+                        public static final Integer DELETE_OK = 20021;
+                        public static final Integer UPDATE_OK = 20031;
+                        public static final Integer GET_OK = 20041;
+
+                        /**
+                         * 失败状态码定义
+                         * 200 + 操作码(1,2,3,4) + 成功与否(0,1)
+                         */
+                        public static final Integer SAVE_ERR = 20010;
+                        public static final Integer DELETE_ERR = 20020;
+                        public static final Integer UPDATE_ERR = 20030;
+                        public static final Integer GET_ERR = 20040;
+                    }
+                根据实际情况设定合理的result
+                    @GetMapping
+                    public Result getAll(){
+                        List<Book> books = bookService.getAll();
+                        Integer code = books != null ? Code.GET_OK : Code.GET_ERR;
+                        String message = books != null ? "" : "数据查询失败，请重试";
+                        return new Result(code, books, message);
+                    }
+                
+
+
+
+
+
+
+
+
+
+
+
 
 叁.
 肆.

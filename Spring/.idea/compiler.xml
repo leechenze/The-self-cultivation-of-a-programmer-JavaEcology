@@ -10,6 +10,7 @@
         <module name="AOP_advice_data" />
         <module name="annotation_bean" />
         <module name="springmvc_restful" />
+        <module name="springmvc_result" />
         <module name="annotation_di" />
         <module name="springmvc_restful_case" />
         <module name="springmvc_ssm" />
@@ -34,6 +35,7 @@
       <module name="springmvc_quickstart" target="1.8" />
       <module name="springmvc_restful" target="1.5" />
       <module name="springmvc_restful_case" target="1.5" />
+      <module name="springmvc_result" target="1.8" />
       <module name="springmvc_ssm" target="1.8" />
     </bytecodeTargetLevel>
   </component>
