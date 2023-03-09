@@ -35,6 +35,9 @@ public class BookController {
 
     @GetMapping("/{id}")
     public Result getById(@PathVariable Integer id) {
+
+        int exception = 1 / 0;
+
         Book book = bookService.getById(id);
         Integer code = book != null ? Code.GET_OK : Code.GET_ERR;
         String message = book != null ? "" : "数据查询失败，请重试";

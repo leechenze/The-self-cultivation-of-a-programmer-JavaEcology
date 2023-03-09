@@ -1240,9 +1240,38 @@
                         String message = books != null ? "" : "数据查询失败，请重试";
                         return new Result(code, books, message);
                     }
-                
-
-
+            异常处理器
+                在程序开发者不可避免会遇到异常现象
+                出现异常现象的常见位置与原因：
+                    框架内部抛异常：因使用不合规导致（如：mybatis配置文件写错）
+                    数据层抛异常：因外部服务器故障导致（如：sql语句写错）
+                    业务层抛异常：因业务逻辑书写错误导致，最常遇见的异常，通常是代码异常
+                    表现层抛异常：因收集数据，校验数据等规则导致，也最常遇见的异常，通常是代码异常
+                    工具类抛出异常：因为工具类书写不严谨不够健壮导致，（如：必要释放的连接，长期未能释放）
+                各个层级均出现异常，异常处理代码书写在哪一层？
+                    1。数据层异常抛到业务层，业务层异常抛到表现层，然后统一在表现层处理所以层级抛出的异常
+                    2。异常还需要分类处理，不同的层级抛出的异常类别不同
+                    3。异常要使用AOP的思想进行处理
+                Spring异常类
+                    Spring提供的异常类就涵盖了以上的三点特性
+                        /**
+                        * 表现层的异常处理类
+                        */
+                        @RestControllerAdvice
+                        public class ProjectExceptionAdvice {
+                            @ExceptionHandler(Exception.class)
+                            public Result doException(Exception exception) {
+                                System.out.println(exception);
+                                String message = exception.toString();
+                                return new Result(500, null, message);
+                            }
+                        }
+                    @RestControllerAdvice / @ControllerAdvice：
+                        声明异常处理器，表示该类是做异常处理的，因为目前是Rest风格开发，所以使用 @RestControllerAdvice
+                    @ExceptionHandler(Exception.class)
+                        用以声明在方法上，表示此方法是接收异常用的，表示用来处理哪种异常。并且异常类型是Exception.class
+                业务层和数据层的异常如何交到声明在表现层的这个异常处理器中呢？
+                    
 
 
 

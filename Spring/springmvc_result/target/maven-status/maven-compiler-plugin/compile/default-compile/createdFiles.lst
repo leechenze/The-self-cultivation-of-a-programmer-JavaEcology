@@ -5,6 +5,7 @@ com/lee/config/SpringMvcConfig.class
 com/lee/config/ServletConfig.class
 com/lee/domain/Book.class
 com/lee/config/SpringConfig.class
+com/lee/controller/ProjectExceptionAdvice.class
 com/lee/service/BookService.class
 com/lee/controller/BookController.class
 com/lee/config/MyBatisConfig.class
