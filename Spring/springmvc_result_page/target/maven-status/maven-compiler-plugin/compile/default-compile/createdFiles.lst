@@ -12,4 +12,5 @@ com/lee/controller/ProjectExceptionAdvice.class
 com/lee/service/BookService.class
 com/lee/controller/Result.class
 com/lee/controller/BookController.class
+com/lee/config/SpringMvcSupport.class
 com/lee/config/MyBatisConfig.class

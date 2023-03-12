@@ -23,7 +23,7 @@ public class BookController {
 
     @PutMapping
     public Result update(@RequestBody  Book book) {
-        boolean flag = bookService.save(book);
+        boolean flag = bookService.update(book);
         return new Result(flag ? Code.UPDATE_OK : Code.UPDATE_ERR, flag);
     }
 

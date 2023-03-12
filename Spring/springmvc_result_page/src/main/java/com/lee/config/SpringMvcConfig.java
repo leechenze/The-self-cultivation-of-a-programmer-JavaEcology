@@ -6,7 +6,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.EnableWebMvc;
 
 @Configuration
-@ComponentScan("com.lee.controller")
+@ComponentScan({"com.lee.controller", "com.lee.config"})
 @EnableWebMvc
 public class SpringMvcConfig {
 

@@ -19,20 +19,17 @@ public class BookServiceImpl implements BookService {
 
     @Override
     public boolean save(Book book) {
-        bookDao.save(book);
-        return true;
+        return bookDao.save(book) > 0;
     }
 
     @Override
     public boolean update(Book book) {
-        bookDao.update(book);
-        return true;
+        return bookDao.update(book) > 0;
     }
 
     @Override
     public boolean delete(Integer id) {
-        bookDao.delete(id);
-        return true;
+        return bookDao.delete(id) > 0;
     }
 
     @Override
