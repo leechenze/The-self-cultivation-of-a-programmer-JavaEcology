@@ -20,6 +20,7 @@
         <module name="spring_mybatis" />
         <module name="AOP_runspeed" />
         <module name="IoC" />
+        <module name="springmvc_result_page" />
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel target="8">
@@ -36,6 +37,8 @@
       <module name="springmvc_restful" target="1.5" />
       <module name="springmvc_restful_case" target="1.5" />
       <module name="springmvc_result" target="1.8" />
+      <module name="springmvc_result (1)" target="1.8" />
+      <module name="springmvc_result_page" target="1.8" />
       <module name="springmvc_ssm" target="1.8" />
     </bytecodeTargetLevel>
   </component>

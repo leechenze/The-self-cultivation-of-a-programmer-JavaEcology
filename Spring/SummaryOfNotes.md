@@ -1275,20 +1275,83 @@
                         规范的用户行为产生的异常
                         不规范的用户行为操纵产生的异常
                         处理方式：发送对应消息给客户端，提醒用户规范操作
-                    系统异常：(Sys)
+                    系统异常：(SystemException)
                         项目运行过程中可预计但无法避免的异常
                         处理方式：
                             发送固定消息传递给用户，安抚用户
                             发送特定消息给运维人员，提醒维护，同时记录日志
-                    其他异常：()
+                    其他异常：(Exception)
                         开发人员未预期的异常
                         处理方式：
                             发送固定消息传递给用户，安抚用户
                             发送特定消息给发开人员，进行排错，且记录日志
-                    
-                    
+                代码片段：
+                    自定义系统级异常：exception.SystemException
+                    自定义业务级异常：exception.BusinessException
+                    自定义异常编码：controller.Code
+                    触发自定义异常：BookServiceImpl
+                        @Override
+                        public Book getById(Integer id) {
+                            // 业务异常模拟
+                            if (id < 0) {
+                                throw new BusinessException(Code.BUSINESS_ERR, "id异常，请重试");
+                            }
+                            // 系统异常模拟
+                            // 将可能出现的异常进行包装，转换成自定义异常（try catch）
+                            try {
+                                int i = 1 / 0;
+                            } catch (Exception exception) {
+                                throw new SystemException(Code.SYSTEM_ERR, "服务器异常，请重试");
+                            }
+                            return bookDao.getById(id);
+                        }
+                    拦截并处理异常：controller.ProjectExceptionAdvice
+                        /**
+                        * 表现层的异常处理类
+                        */
+                        @RestControllerAdvice
+                        public class ProjectExceptionAdvice {
+                            /**
+                            * 处理系统异常
+                            */
+                            @ExceptionHandler(SystemException.class)
+                            public Result doSystemException(SystemException systemException) {
+                                // 记录日志
+                                // 发送消息给运维
+                                // 发送邮件给开发
+                                return new Result(systemException.getCode(), null, systemException.getMessage());
+                            }
                         
+                            /**
+                            * 处理业务异常
+                            */
+                            @ExceptionHandler(BusinessException.class)
+                            public Result doBusinessException(BusinessException businessException) {
+                                return new Result(businessException.getCode(), null, businessException.getMessage());
+                            }
                         
+                            /**
+                            * 处理其他异常（其实走到这个异常中，作为开发者是理亏的）
+                            * @param exception
+                            * @return
+                            */
+                            @ExceptionHandler(Exception.class)
+                            public Result doException(Exception exception) {
+                                // 记录日志
+                                // 发送消息给运维
+                                // 发送邮件给开发
+                                System.out.println(exception);
+                                String message = exception.toString();
+                                return new Result(Code.OTHER_ERR, null, "系统繁忙，请重试！");
+                            }
+                        } 
+        前后端协议联调：(springmvc_result_page)
+            
+
+
+
+
+
 
 
 

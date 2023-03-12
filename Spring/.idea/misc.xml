@@ -5,6 +5,7 @@
     <file type="web" url="file://$PROJECT_DIR$/springmvc_restful" />
     <file type="web" url="file://$PROJECT_DIR$/springmvc_restful_case" />
     <file type="web" url="file://$PROJECT_DIR$/springmvc_result" />
+    <file type="web" url="file://$PROJECT_DIR$/springmvc_result_page" />
     <file type="web" url="file://$PROJECT_DIR$/springmvc_ssm" />
   </component>
   <component name="MavenProjectsManager">
@@ -24,6 +25,7 @@
         <option value="$PROJECT_DIR$/springmvc_restful_case/pom.xml" />
         <option value="$PROJECT_DIR$/springmvc_ssm/pom.xml" />
         <option value="$PROJECT_DIR$/springmvc_result/pom.xml" />
+        <option value="$PROJECT_DIR$/springmvc_result_page/pom.xml" />
       </list>
     </option>
   </component>
