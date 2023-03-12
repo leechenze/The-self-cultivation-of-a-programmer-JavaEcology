@@ -8,6 +8,7 @@
         <outputRelativeToContentRoot value="true" />
         <module name="AOP" />
         <module name="AOP_advice_data" />
+        <module name="springmvc_interceptor" />
         <module name="annotation_bean" />
         <module name="springmvc_restful" />
         <module name="springmvc_result" />
@@ -33,6 +34,7 @@
       <module name="datasource" target="1.5" />
       <module name="IoC" target="1.5" />
       <module name="spring_mybatis" target="1.5" />
+      <module name="springmvc_interceptor" target="8" />
       <module name="springmvc_quickstart" target="1.8" />
       <module name="springmvc_restful" target="1.5" />
       <module name="springmvc_restful_case" target="1.5" />

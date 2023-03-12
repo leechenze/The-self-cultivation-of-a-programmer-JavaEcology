@@ -1346,7 +1346,137 @@
                             }
                         } 
         前后端协议联调：(springmvc_result_page)
-    拦截器：（xxx）
+    拦截器：
+        拦截器概念：
+            拦截器（interceptor）是一种动态拦截方法调用的机制，在SpringMVC中动态拦截控制器的方法
+        作用：
+            在指定的方法调用前后执行预先设定的代码
+            阻止原始方法的执行
+        拦截器与过滤器的区别：
+            归属不同：Filter属于servlet的技术，Interceptor属于SpringMVC的技术
+            拦截内容不同：Filter对所有访问增强，Interceptor仅针对SpringMVC的访问进行增强
+        入门案例：（springmvc_interceptor）
+            声明拦截器的bean，并实现HandlerInterceptor接口（注意：扫描加载bean）
+                controller.interceptor.ProjectInterceptor
+                    @Component
+                    public class ProjectInterceptor implements HandlerInterceptor {
+                        @Override
+                        public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+                            System.out.println("preHandle......");
+                            // 如果返回值为false时，将拦截掉原始操作，同时后续postHandle和afterCompletion操作都将被拦截停止执行
+                            return true;
+                        }
+                    
+                        @Override
+                        public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+                            System.out.println("postHandle......");
+                        }
+                    
+                        @Override
+                        public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+                            System.out.println("afterCompletion......");
+                        }
+                    }
+            定义配置类，继承WebMvcConfigurationSupport，实现addInterceptors方法（注意扫描加载配置）
+                config.SpringMVCSupport
+                    @Configuration
+                    public class SpringMvcSupport extends WebMvcConfigurationSupport {
+                        @Autowired
+                        private ProjectInterceptor projectInterceptor;
+                        
+                        @Override
+                        protected void addInterceptors(InterceptorRegistry registry) {
+                            //配置拦截器
+                            registry.addInterceptor(projectInterceptor).addPathPatterns("/books","/books/*");
+                        }
+                    }
+            添加拦截器并设定拦截的访问路径,路径可以通过可变参数设置多个
+                registry.addInterceptor(projectInterceptor).addPathPatterns("/books","/books/*");
+            此外，还可以实现WebMvcConfigurer接口可以简化开发，但具有一定的侵入性
+            侵入性指的是SpringMvcConfig这个类通过实现Spring的方法（WebMvcConfigurer），导致这个类和Spring强绑定了，大白话就是这个类和Spring的API关联在一起了，不太好
+                config.SpringMvcConfig
+                public class SpringMvcConfig implements WebMvcConfigurer {
+                @Autowired
+                private ProjectInterceptor projectInterceptor;
+                
+                    @Override
+                    public void addInterceptors(InterceptorRegistry registry) {
+                        registry.addInterceptor(projectInterceptor).addPathPatterns("/books", "/books/*");
+                    }
+                }
+        拦截器参数：
+            前置处理：
+                @Override
+                public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+                    System.out.println("preHandle......");
+            
+                    // request和response两个参数不解释了，handler参数指代的就是原始执行的对象
+                    HandlerMethod hm = (HandlerMethod) handler;
+                    // 获取原始执行的对象
+                    hm.getMethod();
+            
+                    // 如果返回值为false时，将拦截掉原始操作，同时后续postHandle和afterCompletion操作都将被拦截停止执行
+                    return true;
+                }
+                参数：
+                    request：请求对象
+                    response：响应对象
+                    handler：被调用的处理器对象，本质上是一个方法对象，对反射技术中的Method对象进行了再包装
+                返回值：
+                    boolean， 如果返回值为false，那被拦截的处理器将不在执行
+            后置处理：
+                @Override
+                public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+                    // modelAndView 封装了一些页面间跳转的相关数据 ModelAndView 指的就是MVC中的M和V
+                    System.out.println("postHandle......");
+                }
+                参数：
+                    modelAndView：如果处理器执行完成具有返回结果，可以读取到对应数据与页面信息，并进行调整
+            完成后处理：
+                @Override
+                public void afterCompletion(HttpServletRequest request, HttpServletResponse response, Object handler, Exception ex) throws Exception {
+                    // Exception 对象可以捕获原始程序执行过程中出现的异常，但是程序中有统一异常处理机制，所以对exception参数也就没有特别大的需求了
+                    System.out.println("afterCompletion......");
+                }
+                参数：
+                    exception：如果处理器执行过程中出现异常现象，可以针对异常情况进行单独处理
+        拦截器链配置：
+            当配置多个拦截器时，形成拦截器链
+            拦截器的运行顺序以拦截器添加时的顺序为标准
+            prehandler运行顺序是正常的，但是posthandler和afterCompletion运行顺序是正好反着的。（这里标准是穿脱原则）
+                顺序如下：
+                    1。prehandler1执行
+                    2。prehandler2执行
+                    3。posthandler2执行
+                    4。posthandler1执行
+            如果都prehandler1 返回false时，那么prehandler2也将不在执行了
+            拦截器链的具体运行顺序可以CSDN，这里不在详述，一般情况下一个拦截器就够用了，所以拦截器链了解即可
+            拦截器的底层就是AOP
+            
+
+
+
+
+
+
+
+
+叁.Maven进阶
+    
+    分模块开发与设计
+    依赖管理
+    聚合与继承
+    属性管理
+    多环境配置与应用
+    私服
+    
+    分模块开发的意义：
+        将原始模块按照功能拆分成若干个子模块，方便模块间的相互调用，接口共享
+        比如：我们可以将com.lee.domain拆成独立的模块，那么domain的模型就可以被公用，
+        或者也可以将com.lee.service拆成独立模块，那么别人使用我的业务层接口就可以直接调用
+        所以controller, dao, domain, service这些模块都可以进行拆分
+    
+    
 
 
 
@@ -1362,7 +1492,17 @@
 
 
 
-叁.
+
+
+
+
+
+
+
+
+
+
+
 肆.
 伍.
 陆.
