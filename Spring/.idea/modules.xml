@@ -11,6 +11,9 @@
       <module fileurl="file://$PROJECT_DIR$/annotation_di/annotation_di.iml" filepath="$PROJECT_DIR$/annotation_di/annotation_di.iml" />
       <module fileurl="file://$PROJECT_DIR$/case_transfer/case_transfer.iml" filepath="$PROJECT_DIR$/case_transfer/case_transfer.iml" />
       <module fileurl="file://$PROJECT_DIR$/datasource/datasource.iml" filepath="$PROJECT_DIR$/datasource/datasource.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven_01_all/maven_01_all.iml" filepath="$PROJECT_DIR$/maven_01_all/maven_01_all.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven_01_dao/maven_01_dao.iml" filepath="$PROJECT_DIR$/maven_01_dao/maven_01_dao.iml" />
+      <module fileurl="file://$PROJECT_DIR$/maven_01_pojo/maven_01_pojo.iml" filepath="$PROJECT_DIR$/maven_01_pojo/maven_01_pojo.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring_mybatis/spring_mybatis.iml" filepath="$PROJECT_DIR$/spring_mybatis/spring_mybatis.iml" />
       <module fileurl="file://$PROJECT_DIR$/springmvc_interceptor/springmvc_interceptor.iml" filepath="$PROJECT_DIR$/springmvc_interceptor/springmvc_interceptor.iml" />
       <module fileurl="file://$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart/springmvc_quickstart.iml" filepath="$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart/springmvc_quickstart.iml" />

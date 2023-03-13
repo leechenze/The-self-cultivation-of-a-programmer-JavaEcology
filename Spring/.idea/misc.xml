@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="FrameworkDetectionExcludesConfiguration">
+    <file type="web" url="file://$PROJECT_DIR$/maven_01_all" />
     <file type="web" url="file://$PROJECT_DIR$/springmvc_interceptor" />
     <file type="web" url="file://$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart" />
     <file type="web" url="file://$PROJECT_DIR$/springmvc_restful" />
@@ -28,6 +29,9 @@
         <option value="$PROJECT_DIR$/springmvc_result/pom.xml" />
         <option value="$PROJECT_DIR$/springmvc_result_page/pom.xml" />
         <option value="$PROJECT_DIR$/springmvc_interceptor/pom.xml" />
+        <option value="$PROJECT_DIR$/maven_01_all/pom.xml" />
+        <option value="$PROJECT_DIR$/maven_01_pojo/pom.xml" />
+        <option value="$PROJECT_DIR$/maven_01_dao/pom.xml" />
       </list>
     </option>
   </component>

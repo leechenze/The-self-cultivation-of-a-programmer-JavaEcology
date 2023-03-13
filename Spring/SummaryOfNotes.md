@@ -1476,11 +1476,18 @@
         或者也可以将com.lee.service拆成独立模块，那么别人使用我的业务层接口就可以直接调用
         所以controller, dao, domain, service这些模块都可以进行拆分
     
-    入门案例：（maven_01_all, maven_01_pojo, maven_01_dao）
-        这里就拆分掉了原有模块domain和dao来进行演示了
-        创建自己的独立模块：
-            创建maven_01_pojo和maven_01_dao模块，把all中的pojo（domain）和dao模块删掉
-        书写模块代码：
+        入门案例：（maven_01_all, maven_01_pojo, maven_01_dao）
+            这里拆分掉了原有模块domain和dao来进行演示
+            创建自己的独立模块：
+                创建maven_01_pojo和maven_01_dao模块，把all中的pojo（domain）和dao模块删掉
+            书写对应的模块代码
+                这里是将pojo，和dao模块拆出来了，实际开发中是domain功能单独写，dao功能单独写，
+                当然这是横向拆分（功能拆分），还有根据模块拆分（订单和商品模块）的等，然后给定坐标引入相对应模块即可
+            通过maven指令安装模块到本地仓库中（maven install指令）
+                因为maven是通过本地的maven仓库中读取的，而不是通过idea读取的
+        
+    依赖管理：
+        
             
     
 
