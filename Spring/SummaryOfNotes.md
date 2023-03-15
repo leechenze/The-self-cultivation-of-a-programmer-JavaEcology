@@ -1487,7 +1487,34 @@
                 因为maven是通过本地的maven仓库中读取的，而不是通过idea读取的
         
     依赖管理：
-        
+        依赖传递：
+            依赖具有传递性：
+                传递性表示：项目中可以直接使用间接依赖的资源
+                直接依赖：在当前项目中通过依赖配置建立的依赖关系
+                间接依赖：被直接依赖的资源所依赖的第三资源称为间接依赖
+        依赖冲突：
+            声明优先：当同级配置了相同资源的不同版本时，后配置的将覆盖先配置的
+            路径优先：当依赖中出现相同资源时，层级越深，优先级越低，层级越浅，优先级越高
+            注意：如果相同层级的资源出现冲突时，那么将遵循声明优先的原则
+            工具：maven工具栏中show dependencies，可以查看资源依赖关系
+        可选依赖与排除依赖：
+            可选依赖：是隐藏当前工程所依赖的资源，隐藏的资源将不具有传递性（<optional>false</optional>）
+            排除依赖：指隐藏直接依赖资源中的依赖资源。不用指定版本，因为整个一套资源都不依赖了。
+                <dependency>
+                  <groupId>com.lee</groupId>
+                  <artifactId>maven_01_dao</artifactId>
+                  <version>1.0-SNAPSHOT</version>
+                      <exclusions>
+                        <exclusion>
+                          <groupId>com.lee</groupId>
+                          <artifactId>maven_01_pojo</artifactId>
+                        </exclusion>
+                      </exclusions>
+                </dependency>
+            两者区别：
+                可选依赖是在子级依赖中操作，使得父级无法依赖子级的依赖。
+                排除依赖是在父级依赖中操作，使得父级无法依赖子级的依赖。
+        继承与聚合：
             
     
 

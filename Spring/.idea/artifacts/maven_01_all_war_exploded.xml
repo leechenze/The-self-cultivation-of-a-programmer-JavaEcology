@@ -14,11 +14,11 @@
           <element id="module-output" name="maven_01_all" />
         </element>
         <element id="directory" name="lib">
-          <element id="archive" name="maven_01_pojo-1.0-SNAPSHOT.jar">
-            <element id="module-output" name="maven_01_pojo" />
-          </element>
           <element id="archive" name="maven_01_dao-1.0-SNAPSHOT.jar">
             <element id="module-output" name="maven_01_dao" />
+          </element>
+          <element id="archive" name="maven_01_pojo-1.0-SNAPSHOT.jar">
+            <element id="module-output" name="maven_01_pojo" />
           </element>
           <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.2.10.RELEASE" />
           <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.2.10.RELEASE" />
