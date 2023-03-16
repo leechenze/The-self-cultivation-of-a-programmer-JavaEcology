@@ -37,6 +37,7 @@
       <module name="datasource" target="1.5" />
       <module name="IoC" target="1.5" />
       <module name="maven_01_all" target="1.8" />
+      <module name="maven_01_all_polymerization" target="1.5" />
       <module name="maven_01_dao" target="8" />
       <module name="maven_01_pojo" target="8" />
       <module name="spring_mybatis" target="1.5" />

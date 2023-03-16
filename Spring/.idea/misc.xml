@@ -32,6 +32,7 @@
         <option value="$PROJECT_DIR$/maven_01_all/pom.xml" />
         <option value="$PROJECT_DIR$/maven_01_pojo/pom.xml" />
         <option value="$PROJECT_DIR$/maven_01_dao/pom.xml" />
+        <option value="$PROJECT_DIR$/maven_01_all_polymerization/pom.xml" />
       </list>
     </option>
   </component>

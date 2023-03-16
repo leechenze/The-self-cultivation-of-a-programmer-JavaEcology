@@ -1515,16 +1515,116 @@
                 可选依赖是在子级依赖中操作，使得父级无法依赖子级的依赖。
                 排除依赖是在父级依赖中操作，使得父级无法依赖子级的依赖。
         继承与聚合：
-            
-    
-
-
-
-
-
-
-
-
+            聚合：就是将多个模块组织成一个整体，同时进行项目构建的过程叫做聚合
+                聚合工程：通常是一个不具有业务功能的空工程，而且仅有一个pom文件（maven_01_all_polymerization）
+                作用：使用聚合功能可以将多个工程编组，通过对聚合工程进行构建，实现对所包含的模块进行同步构建
+                    当工程中某个模块发生更新（变更）时，必须保障工程中与已更新模块关联的模块同步更新，此时可以使用聚合工程解决批量模块同步构建的问题
+                    
+                步骤：
+                    创建全新的空模块，设置打包类型为pom：
+                        打包方式既不是war也不是jar 而是pom：<packaging>pom</packaging>，代表该模块用来管理其他模块的工程
+                        此时 compile 编译 maven_01_all_polymerization 工程时，将同时编译该工程下的管理的所有工程，其他操作同理（安装，测试，打包）。。。
+                    设置当前模块所包含或所管理的子模块名称：
+                        <!--设置管理的模块名称-->
+                        <modules>
+                            <module>../maven_01_all</module>
+                            <module>../maven_01_dao</module>
+                            <module>../maven_01_pojo</module>
+                        </modules>
+            继承：描述两个工程的关系，子工程中可以继承父工程中的配置信息，常用于依赖关系的继承
+                作用：简化配置，减少资源版本冲突
+                步骤：
+                    创建全新的空模块，设置打包类型为pom：
+                        打包方式既不是war也不是jar 而是pom：<packaging>pom</packaging>，代表该模块用来管理其他模块的工程
+                        此时 compile 编译 maven_01_all_polymerization 工程时，将同时编译该工程下的管理的所有工程，其他操作同理（安装，测试，打包）。。。
+                    在父工程中配置子工程要用的依赖：
+                        <dependencies>
+                            <dependency>
+                                。。。
+                            </dependency>
+                            。。。
+                        </dependencies>
+                    在父工程中配置子工程可选的依赖：
+                        <dependencyManagement>
+                            <dependencies>
+                                <dependency>
+                                    <groupId>junit</groupId>
+                                    <artifactId>junit</artifactId>
+                                    <version>4.12</version>
+                                    <scope>test</scope>
+                                </dependency>
+                            </dependencies>
+                        </dependencyManagement>
+                    在子工程中定义继承自哪个父工程：
+                      <parent>
+                        <groupId>com.lee</groupId>
+                        <artifactId>maven_01_all_polymerization</artifactId>
+                        <version>1.0-SNAPSHOT</version>
+                        <!--填写父工程的pom文件路径，省略也可以用-->
+                        <relativePath>../maven_01_all_polymerization/pom.xml</relativePath>
+                      </parent>
+                    在子工程中可使用父工程的所有依赖，同时可以选择父工程中配置的可选依赖
+                        注：父工程中的可选依赖不能配版本号：
+                            <!--没有版本就表示继承自父级的依赖管理-->
+                            <dependency>
+                              <groupId>junit</groupId>
+                              <artifactId>junit</artifactId>
+                              <scope>test</scope>
+                            </dependency>
+            聚合和继承的区别：
+                聚合是在当前模块配置关系，聚合可以感知到参与聚合的模块有哪些
+                继承是在子模块中配置关系，父模块无法感知到哪些子模块继承了自己
+                聚合用于快速构建项目
+                继承用于快速配置
+                相同点：打包方式（packaging）都是 pom，可以将两种关系制作在同一个pom文件中，并且，两者均属于设计型模块，并无实际的模块内容
+        属性：
+            定义属性：
+                <properties>
+                    <!--自定义标签 spring.version -->
+                    <spring.version>5.2.10.RELEASE</spring.version>
+                    <mybatis.version>3.5.6</mybatis.version>
+                    <junit.version>4.12</junit.version>
+                </properties>
+            引用属性：
+                <dependency>
+                    <groupId>org.springframework</groupId>
+                    <artifactId>spring-webmvc</artifactId>
+                    <version>${spring.version}</version>
+                </dependency>
+            配置文件加载属性：
+                resources资源目录下的资源文件使用maven中配置的属性：
+                    定义属性（不解释了，看上一章节）
+                        <properties>
+                            <!--jdbc.properties 相关配置-->
+                            <jdbc.url>jdbc:mysql:///springmvc_ssm</jdbc.url>
+                        </properties>
+                    配置资源文件中引用属性：（jdbc.properties）
+                        jdbc.url=${jdbc.url}
+                    在pom.xml插件中开启资源文件目录加载的相关配置
+                        <build>
+                            <resources>
+                                <resource>
+                                    <directory>${project.basedir}/src/main/resources</directory>
+                                    <filtering>true</filtering>
+                                </resource>
+                            </resources>
+                        </build>
+                        这一步作用就是指定路径为${project.basedir}/src/main/resources的目录可以使用pom.xml中配置的属性
+                        filtering作用是为了能够在jdbc.properties中解析${jdbc.url}这个符号
+                属性读取：
+                    ${project.basedir}：表示读取maven中内置的系统属性
+                    其他属性：    
+                        在终端运行指令：mvn help:system
+                        可以看到：
+                            自定义属性
+                            内置属性
+                            Setting属性
+                            Java系统属性
+                            环境变量属性
+                        根据 ${} 括号内写入  mvn help:system 指令读取到的 key（=之前的值）即可读取具体值
+            版本管理：        
+                
+                
 
 
 
