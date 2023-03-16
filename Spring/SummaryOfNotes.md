@@ -1623,8 +1623,166 @@
                             环境变量属性
                         根据 ${} 括号内写入  mvn help:system 指令读取到的 key（=之前的值）即可读取具体值
             版本管理：        
-                
-                
+                工程版本：
+                    SNAPSHOT：（快照版本）
+                        快照版本会随着开发的进展不断更新（在开发版本）
+                    RELEASE：（发布版本）
+                        已经上线的版本
+        多环境配置和应用：
+            多环境开发：（maven_01_all_polymerization）
+                maven提供配置多种环境的设定，帮助开发者在使用过程中快速切换环境
+                    比如：本地开发环境，生产环境，测试环境，每个环境的数据库是不同的，jdbc.url对应相应的配置
+                定义多环境
+                    <!--配置多环境-->
+                    <profiles>
+                        <profile>
+                            <!--定义开发环境-->
+                            <id>env_dep</id>
+                            <properties>
+                                <jdbc.url>jdbc:mysql:///springmvc_ssm</jdbc.url>
+                            </properties>
+                            <!--设定是否为默认启动的环境-->
+                            <activation>
+                                <activeByDefault>true</activeByDefault>
+                            </activation>
+                        </profile>
+                        <profile>
+                            <!--定义生产环境-->
+                            <id>env_pro</id>
+                            <properties>
+                                <jdbc.url>jdbc:mysql://10.10.167.47/springmvc_ssm</jdbc.url>
+                            </properties>
+                        </profile>
+                        <profile>
+                            <!--定义测试环境-->
+                            <id>env_test</id>
+                            <properties>
+                                <jdbc.url>jdbc:mysql://10.10.167.21/springmvc_ssm</jdbc.url>
+                            </properties>
+                        </profile>
+                    </profiles>
+                使用多环境：
+                    操作按钮：
+                        maven工具栏中点击 Execute Maven Goal
+                    mvn 指令 -P 环境定义ID
+                        mvn install -P pro_env
+            跳过测试：
+                应用场景：
+                    1。功能更新中并没有开发完毕
+                    2。快速打包
+                1.指令：
+                    mvn 指令 -D skipTests
+                    mvn package -D skipTests
+                2.操作按钮：
+                    maven工具栏中点击 Toggle Skip Tests Mode
+                    此时 maven生命周期中的test就会置灰
+                3.细粒度控制跳过测试（maven_01_all_polymerization）
+                    <!--跳过测试-->
+                    <plugins>
+                        <plugin>
+                            <artifactId>maven-surefire-plugin</artifactId>
+                            <version>2.12.4</version>
+                            <configuration>
+                                <!--true：跳过测试，等同于点击 Toggle Skip Tests Mode -->
+                                <!--<skipTests>true</skipTests>-->
+
+                                <!--false：不跳过测试-->
+                                <skipTests>false</skipTests>
+                                <!--排除掉不参与测试的内容-->
+                                <excludes>
+                                    <exclude>**/BookServiceTest.java</exclude>
+                                </excludes>
+                            </configuration>
+                        </plugin>
+                    </plugins>
+        私服：
+            简介：
+                私服就是应用于公司内部或开发团队内部的一个"中央仓库"
+                私服就是一台服务器，用于解决团队内部资源共享和资源同步的问题
+                私服产品：
+                    Nexus：
+                        Sonatype公司出的一款maven私服产品
+                        下载地址：https://help.sonatype.com/repomanager3/product-information/download
+
+                    自行CSDN搜索安装使用：
+                        https://blog.csdn.net/weixin_44190513/article/details/122127042?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522167897525516800213032248%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=167897525516800213032248&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-122127042-null-null.142^v74^control_1,201^v4^add_ask,239^v2^insert_chatgpt&utm_term=mac%20%E5%AE%89%E8%A3%85nexus&spm=1018.2226.3001.4187
+                    启动：
+                        进入到/Users/lee/Library/nexus-3.49.0-02-mac/nexus-3.49.0-02/bin 下：
+                            ./nexus start
+                            ./nexus stop
+                            运行后稍等一下可以进入页面：localhost:8081/
+                        页面运行信息：可以在nexus/etc/nexus-default.properties进行配置
+                        服务器运行信息：可以在nexus/bin/nexus.vmoptions进行配置
+
+            私服仓库分类：
+                宿主仓库：（hosted）
+                    功能：保存自主研发+第三方资源
+                    关联操作：上传
+                代理仓库：（proxy）
+                    功能：代理连接中央仓库（一般不允许上传，一般只是下载资源用）
+                    关联操作：下载
+                仓库组：（group）
+                    功能：给仓库编组简化下载操作，相当于一个仓库集合，里面有含有多个仓库（纯下载用）
+                    关联操作：下载
+            资源上传与下载：
+                本地仓库访问私服权限设置：
+                    配置位置：（/apache-maven-3.6.3/conf/settings.xml）
+                        <!-- 为了使本地仓库能访问私服 -->
+                        <!-- 访问私服权限的相关配置 -->
+                        <server>
+                          <id>lee-release</id>
+                          <username>admin</username>
+                          <password>lcz19930316</password>
+                        </server>
+                        <server>
+                          <id>lee-snapshot</id>
+                          <username>admin</username>
+                          <password>lcz19930316</password>
+                        </server>
+                本地仓库访问私服地址配置：
+                    配置位置：（/apache-maven-3.6.3/conf/settings.xml）
+                         <!-- 私服访问路径的映射(镜像)配置 -->
+                         <mirror>
+                          <!-- 仓库组的ID -->
+                          <id>maven-public</id>
+                          <!-- 表示 具体什么资源来自于 maven-public, 这里就用*,表示所有的东西,这样不管进行什么操作,都能对私服访问了  -->
+                          <mirrorOf>*</mirrorOf>
+                          <!-- 地址映射的配置 -->
+                          <url>http://127.0.0.1:8099/repository/maven-public/</url>
+                         </mirror>
+                工程上传到私服服务器配置：
+                    配置位置：（工程pom文件中）
+                        <!--配置当前工程保存到私服的具体位置-->
+                        <distributionManagement>
+                            <!--发布到正式版的仓库中（release）-->
+                            <repository>
+                                <id>lee-release</id>
+                                <url>http://127.0.0.1:8099/repository/lee-release/</url>
+                            </repository>
+                            <!--发布到快照版的仓库中（snapshot）-->
+                            <snapshotRepository>
+                                <id>lee-snapshot</id>
+                                <url>http://127.0.0.1:8099/repository/lee-snapshot/</url>
+                            </snapshotRepository>
+                        </distributionManagement>
+                    发布命令：mvn deploy
+                        <version>1.0-SNAPSHOT</version>
+                            SNAPSHOT关键字的将会发布到 Version policy 为 snapshot的仓库中
+                        <version>1.0-RELEASE</version>
+                            RELEASE关键字的将会发布到 Version policy 为 release的仓库中
+                私服访问中央服务器设置：
+                    配置位置：（nexus服务页面设置）
+                        Server按钮点击：Repository ==> Repositories ==> type为proxy的仓库 ==> remote storage中进行配置
+
+
+
+
+
+
+
+肆.SpringBoot
+
+    简介：
 
 
 
@@ -1643,7 +1801,7 @@
 
 
 
-肆.
+
 伍.
 陆.
 柒.

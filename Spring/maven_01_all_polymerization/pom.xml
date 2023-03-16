@@ -6,7 +6,8 @@
 
     <groupId>com.lee</groupId>
     <artifactId>maven_01_all_polymerization</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <!--<version>1.0-SNAPSHOT</version>-->
+    <version>1.0-RELEASE</version>
     <packaging>pom</packaging>
 
 
@@ -26,7 +27,8 @@
         <junit.version>4.12</junit.version>
 
         <!--jdbc.properties 相关配置-->
-        <jdbc.url>jdbc:mysql:///springmvc_ssm</jdbc.url>
+        <!--这行配置在多环境配置中(profiles)声明-->
+        <!--<jdbc.url>jdbc:mysql:///springmvc_ssm</jdbc.url>-->
     </properties>
 
 
@@ -101,15 +103,74 @@
         </dependencies>
     </dependencyManagement>
 
+    <!--配置多环境-->
+    <profiles>
+        <profile>
+            <!--定义开发环境-->
+            <id>env_dep</id>
+            <properties>
+                <jdbc.url>jdbc:mysql:///springmvc_ssm</jdbc.url>
+            </properties>
+            <!--设定是否为默认启动的环境-->
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+        </profile>
+        <profile>
+            <!--定义生产环境-->
+            <id>env_pro</id>
+            <properties>
+                <jdbc.url>jdbc:mysql://10.10.167.47/springmvc_ssm</jdbc.url>
+            </properties>
+        </profile>
+        <profile>
+            <!--定义测试环境-->
+            <id>env_test</id>
+            <properties>
+                <jdbc.url>jdbc:mysql://10.10.167.21/springmvc_ssm</jdbc.url>
+            </properties>
+        </profile>
+    </profiles>
 
     <build>
+        <!--定义pom的配置对哪些资源目录生效-->
         <resources>
             <resource>
                 <directory>${project.basedir}/src/main/resources</directory>
                 <filtering>true</filtering>
             </resource>
         </resources>
+        <!--跳过测试-->
+        <plugins>
+            <plugin>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>2.12.4</version>
+                <configuration>
+                    <!--true：跳过测试-->
+                    <!--<skipTests>true</skipTests>-->
+                    <!--false：不跳过测试-->
+                    <skipTests>false</skipTests>
+                    <!--排除掉不参与测试的内容-->
+                    <excludes>
+                        <exclude>**/BookServiceTest.java</exclude>
+                    </excludes>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 
+    <!--配置当前工程保存到私服的具体位置-->
+    <distributionManagement>
+        <!--发布到正式版的仓库中（release）-->
+        <repository>
+            <id>lee-release</id>
+            <url>http://127.0.0.1:8099/repository/lee-release/</url>
+        </repository>
+        <!--发布到快照版的仓库中（snapshot）-->
+        <snapshotRepository>
+            <id>lee-snapshot</id>
+            <url>http://127.0.0.1:8099/repository/lee-snapshot/</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

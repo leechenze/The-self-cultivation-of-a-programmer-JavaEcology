@@ -13,7 +13,7 @@
   <parent>
     <groupId>com.lee</groupId>
     <artifactId>maven_01_all_polymerization</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0-RELEASE</version>
     <!--填写父工程的pom文件-->
     <relativePath>../maven_01_all_polymerization/pom.xml</relativePath>
   </parent>
