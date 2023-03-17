@@ -1774,7 +1774,7 @@
                     配置位置：（nexus服务页面设置）
                         Server按钮点击：Repository ==> Repositories ==> type为proxy的仓库 ==> remote storage中进行配置
 
-
+            
 
 
 
@@ -1783,7 +1783,7 @@
 肆.SpringBoot
 
     简介：
-
+        
 
 
 
