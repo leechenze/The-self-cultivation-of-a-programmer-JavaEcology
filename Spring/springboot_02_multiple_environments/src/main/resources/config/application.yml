@@ -13,7 +13,7 @@ spring:
 
 # 开发
 server:
-  port: 81
+  port: 8081
 # 不过时的写法
 spring:
   config:
@@ -23,7 +23,7 @@ spring:
 
 # 生产
 server:
-  port: 82
+  port: 8082
 # 已过时的写法
 spring:
   profiles: pro
@@ -33,7 +33,7 @@ spring:
 
 # 测试
 server:
-  port: 83
+  port: 8083
 # 已过时的写法
 spring:
   profiles: test

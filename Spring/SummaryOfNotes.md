@@ -1665,7 +1665,7 @@
                     操作按钮：
                         maven工具栏中点击 Execute Maven Goal
                     mvn 指令 -P 环境定义ID
-                        mvn install -P pro_env
+                        mvn install -P env_pro
             跳过测试：
                 应用场景：
                     1。功能更新中并没有开发完毕
@@ -2073,15 +2073,71 @@
                 格式：java -jar springboot.jar --spring.profiles.active=pro --server.port=88
                     比如：java -jar springboot_02_multiple_environments-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro --server.port=88
         多环境开发控制：
+            当Maven和SpringBoot同时都配置了多环境时，那么打出来的jar包是受maven控制的，因为是maven执行的打包。
+            Maven中设置多环境属性
+                <!--Maven多环境配置-->
+                <profiles>
+                    <profile>
+                        <id>dev_env</id>
+                        <properties>
+                            <profile.active>dev</profile.active>
+                        </properties>
+                    </profile>
+                    <profile>
+                        <id>pro_env</id>
+                        <properties>
+                            <profile.active>pro</profile.active>
+                        </properties>
+                    </profile>
+                    <profile>
+                        <id>test_env</id>
+                        <properties>
+                            <profile.active>test</profile.active>
+                        </properties>
+                        <activation>
+                            <activeByDefault>true</activeByDefault>
+                        </activation>
+                    </profile>
+                </profiles>
+            对资源文件开启对默认占位符的解析
+                这一步操作是为了能够让 application.yaml 读取并解析到 pom.xml 配置中 profiles的相关配置（在pom.xml中配置一个插件）
+                <!--对资源文件进行解析的插件-->
+                <plugin>
+                    <groupId>org.apache.maven.plugins</groupId>
+                    <artifactId>maven-resources-plugin</artifactId>
+                    <configuration>
+                        <encoding>UTF-8</encoding>
+                        <useDefaultDelimiters>true</useDefaultDelimiters>
+                    </configuration>
+                </plugin>
+            SpringBoot中引用Maven属性（application.yml）
+                # 设置启用环境
+                spring:
+                profiles:
+                active: ${profile.active}
+                注意：${profile.active} 读取的是 <profile.active>pro</profile.active>
             
+        配置文件分类
+            SpringBoot中的四级文件配置
+                1级：target/springboot.jar/BOOT-INF/classes/config/application.yml
+                2级：target/springboot.jar/BOOT-INF/classes/application.yml
+                3级：resource/config/application.yml
+                4级：resource/application.yml
+            作用：
+                1级和2级用于系统打包后的配置
+                3级和4级用于开发阶段的配置
+                所以一般我们把application.yml文件复制一份到jar包的根目录，既可以省去掉 java -jar springboot.jar --xxx.xxx=xxx等一系列属性
+                后面跟的这些命令行中的参数都可以从jar包根目录中的application.yml配置文件中进行读取，如果要更高的层级那就在application.yml外层加一层config目录即可
+            springboot2.5版本的Bug：
+                springboot 2.5版本打包后会有一个报错。大概信息为：
+                    no subdirectories found for mandatory directory location "file:./config/*/".
+                    解决方案就是在config目录下随便再创建一个任意名称的目录，把application.yml放到该目录下即可
+                了解即可，后面版本已经将这个bug修复了。
+    SpringBoot整合第三方技术：
+        整合JUnit：
             
+        基于SpringBoot实现SSM整合：
             
-            
-
-
-
-
-
 
 
 
