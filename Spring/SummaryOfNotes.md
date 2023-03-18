@@ -2014,9 +2014,70 @@
                             <optional>true</optional>
                         </dependency>
             多环境开发配置：
-                
-
+                yaml格式：
+                    logging:
+                     level:
+                      root: info
+                    
+                    ---
+                    
+                    # 设置启用环境
+                    spring:
+                     profiles:
+                      active: pro
+                    ---
+                    
+                    # 开发
+                    server:
+                     port: 81
+                    # 不过时的写法
+                    spring:
+                     config:
+                      activate:
+                       on-profile: dev
+                    ---
+                    
+                    # 生产
+                    server:
+                     port: 82
+                    # 已过时的写法
+                    spring:
+                     profiles: pro
+                    
+                    
+                    ---
+                    
+                    # 测试
+                    server:
+                     port: 83
+                    # 已过时的写法
+                    spring:
+                     profiles: test
+                properties格式：（早期时的方式）
+                    主启动配置文件：application.properties：
+                        #设置启用的环境
+                        spring.profiles.active=pro
+                    生产环境分类配置文件：application-dev.properties：
+                        server.port=8081
+                    生产环境分类配置文件：application-pro.properties：
+                        server.port=8080
+        多环境命令行启动参数设置：
+            启动jar包时，通过命令行配置参数即可指定启动哪个环境，并不需要每次打包之前都在yaml配置中手动指定环境了
+            建议在执行package之前，首先执行下clean
+            yaml配置中难免会有中文注释，这样在打包时会报错，需要修改配置：
+                preferences ==> search(file encoding) ==> project Encoding ==> UTF-8
             
+            带参数启动springboot：
+                格式：java -jar springboot.jar --spring.profiles.active=pro
+                    比如：java -jar springboot_02_multiple_environments-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro
+                格式：java -jar springboot.jar --spring.profiles.active=pro --server.port=88
+                    比如：java -jar springboot_02_multiple_environments-0.0.1-SNAPSHOT.jar --spring.profiles.active=pro --server.port=88
+        多环境开发控制：
+            
+            
+            
+            
+
 
 
 

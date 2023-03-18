@@ -35,6 +35,7 @@
         <option value="$PROJECT_DIR$/maven_01_dao/pom.xml" />
         <option value="$PROJECT_DIR$/maven_01_all_polymerization/pom.xml" />
         <option value="$PROJECT_DIR$/springboot_01_quickstart/pom.xml" />
+        <option value="$PROJECT_DIR$/springboot_02_multiple_environments/pom.xml" />
       </list>
     </option>
   </component>

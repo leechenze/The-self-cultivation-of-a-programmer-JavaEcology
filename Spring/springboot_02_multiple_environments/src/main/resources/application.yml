@@ -1,0 +1,39 @@
+logging:
+  level:
+    root: info
+
+---
+
+# 设置启用环境
+spring:
+  profiles:
+    active: pro
+---
+
+# 开发
+server:
+  port: 81
+# 不过时的写法
+spring:
+  config:
+    activate:
+      on-profile: dev
+---
+
+# 生产
+server:
+  port: 82
+# 已过时的写法
+spring:
+  profiles: pro
+
+
+---
+
+# 测试
+server:
+  port: 83
+# 已过时的写法
+spring:
+  profiles: test
+
