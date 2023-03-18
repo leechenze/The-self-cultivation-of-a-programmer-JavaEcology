@@ -12,6 +12,7 @@
         <sourceRoots>
           <root url="file://$MODULE_DIR$/src/main/java" />
           <root url="file://$MODULE_DIR$/src/main/resources" />
+          <root url="file://$MODULE_DIR$/../maven_01_all_polymerization/src/main/resources" />
         </sourceRoots>
       </configuration>
     </facet>
@@ -27,6 +28,9 @@
       <sourceFolder url="file://$MODULE_DIR$/src/main/resources" type="java-resource" />
       <sourceFolder url="file://$MODULE_DIR$/src/test/java" isTestSource="true" />
       <excludeFolder url="file://$MODULE_DIR$/target" />
+    </content>
+    <content url="file://$MODULE_DIR$/../maven_01_all_polymerization/src/main/resources">
+      <sourceFolder url="file://$MODULE_DIR$/../maven_01_all_polymerization/src/main/resources" type="java-resource" />
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />

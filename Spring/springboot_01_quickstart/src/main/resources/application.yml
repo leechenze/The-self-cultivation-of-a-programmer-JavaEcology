@@ -1,0 +1,15 @@
+server:
+  port: 82
+logging:
+  level:
+    root: warn
+
+lesson: SpringBoot
+
+enterprise:
+  name: lee
+  age: 10
+  subject:
+    - java
+    - python
+    - c/c++

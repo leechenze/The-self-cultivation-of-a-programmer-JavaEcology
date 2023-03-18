@@ -2,6 +2,7 @@
 <project version="4">
   <component name="FrameworkDetectionExcludesConfiguration">
     <file type="web" url="file://$PROJECT_DIR$/maven_01_all" />
+    <file type="web" url="file://$PROJECT_DIR$/maven_01_all_polymerization/src/main/resources" />
     <file type="web" url="file://$PROJECT_DIR$/springmvc_interceptor" />
     <file type="web" url="file://$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart" />
     <file type="web" url="file://$PROJECT_DIR$/springmvc_restful" />
@@ -33,6 +34,7 @@
         <option value="$PROJECT_DIR$/maven_01_pojo/pom.xml" />
         <option value="$PROJECT_DIR$/maven_01_dao/pom.xml" />
         <option value="$PROJECT_DIR$/maven_01_all_polymerization/pom.xml" />
+        <option value="$PROJECT_DIR$/springboot_01_quickstart/pom.xml" />
       </list>
     </option>
   </component>

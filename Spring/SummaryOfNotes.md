@@ -1783,10 +1783,240 @@
 肆.SpringBoot
 
     简介：
+        springboot 是由pivotal团队提供的全新框架，其设计目的是用来简化Srping应用的初始搭建和开发过程
         
+        核心文件：
+            pom.xml文件
+                <parent>
+                    <groupId>org.springframework.boot</groupId>
+                    <artifactId>spring-boot-starter-parent</artifactId>
+                    <version>2.7.9</version>
+                    <relativePath/> <!-- lookup parent from repository -->
+                </parent>
+                <groupId>com.lee</groupId>
+                <artifactId>springboot_01_quickstart</artifactId>
+                <version>0.0.1-SNAPSHOT</version>
+                <properties>
+                    <java.version>1.8</java.version>
+                </properties>
+                <!-- 初始化Boot项目时，勾选Spring web 的结果 -->
+                <dependencies>
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-web</artifactId>
+                    </dependency>
+                </dependencies>
+            application类
+                @SpringBootApplication
+                public class Application {
+                    public static void main(String[] args) {
+                        SpringApplication.run(Application.class, args);
+                    }
+                }
+    Spring程序和SpringBoot程序对比
+        spring
+            pom文件中的坐标：手工添加
+            web3.0配置类：手工制作
+            Spring/SpringMVC配置类：手工制作
+            控制器：手工制作
+        springBoot
+            pom文件中的坐标：勾选添加
+            web3.0配置类：无
+            Spring/SpringMVC配置类：无
+            控制器：手工制作
+        Spring官网：https://spring.io/
+            可以通过：https://start.spring.io/ 在官网中进行构建项目
+    SpringBoot快速启动
+        对于SpringBoot项目打包：
+            执行Maven构建指令package
+        执行启动指令：
+            java -jar springboot.jar
+            这个jar包能够直接执行就是因为依赖了 pom.xml中的（spring-boot-maven-plugin）这个插件
+            spring-boot-maven-plugin：这个插件就是用来打一个可直接运行的jar包的
+    起步依赖：
+        Spring缺点：
+            配置繁琐
+            依赖设置繁琐
+        SpringBoot优点：
+            自动配置
+            起步依赖（简化依赖配置）
+                starter
+                    只要是配置中有starter关键字的，一定是起步依赖的东西
+                    比如：
+                        <parent>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-starter-parent</artifactId>
+                            <version>2.7.9</version>
+                        </parent>
+                        <dependencies>
+                            <dependency>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot-starter-web</artifactId>
+                            </dependency>
+                    
+                            <dependency>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot-starter-test</artifactId>
+                                <scope>test</scope>
+                            </dependency>
+                        </dependencies>
+                parent
+                    pom.xml中可见，所有SpringBoot项目要继承的项目，定义了若干个坐标版本号。
+                    之后在项目开发中，如果要使用Spring5.2.10的版本，那么就要查5.2.10对应的Boot的版本是多少
+                    然后用对应的Boot版本，而不是一律都使用最新的springBoot版本
+            辅助功能（内置服务器Tomcat...）
+                Jetty和tomcat一样，相比Tomcat更加轻量，可扩展性更强，谷歌应用引擎（GAE）已经全面替换为Jetty了
+                <dependencies>
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-web</artifactId>
+                        <!--在web起步依赖环境中，排除tomcat起步依赖-->
+                        <exclusions>
+                            <exclusion>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot-starter-tomcat</artifactId>
+                            </exclusion>
+                        </exclusions>
+                    </dependency>
+                    <!--添加jetty起步依赖（以替换tomcat服务器），版本由springboot的starter控制-->
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-jetty</artifactId>
+                    </dependency>
+            
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-test</artifactId>
+                        <scope>test</scope>
+                    </dependency>
+                </dependencies>
+    基础配置：
+        修改服务器端口：
+            三种配置文件格式：
+                application.properties:
+                    server.port=81
+                application.yml:
+                    server:
+                        port: 82
+                    # 配置哪些打印哪些日志，默认值为info。可选值：warn，debug。
+                    logging:
+                        level:
+                            root: warn
+                application.yaml:
+                    server:
+                    port: 83
+            优先级：properties > yml > yaml
+                 以后中配置主要是用yml这种文件
+        ymal：一种数据序列化格式
+            优点：
+                容易阅读
+                容易与脚本语言交互
+                以数据为核心，重数据轻格式
+            yaml文件扩展名：
+                .yml（主流）
+                .yaml
+            yaml语法规则：
+                大小写敏感
+                属性层级关系使用多行描述，每行结尾使用冒号结束
+                使用缩进表示层级关系，同层级左侧对齐，只允许使用空格（不允许使用tab键）
+                属性值前面添加空格（属性值与属性名之间使用冒号+空格作为分隔符）
+                # 表示注释
+            yaml数组数据
+                enterprise:
+                    name: leechenze
+                    age: 16
+                    subject:
+                        - java
+                        - golang
+                        - python
+            yaml数据读取方式：
+                BookController：
+                    public class BookController {
+                        // 读取方式一
+                        @Value("${lesson}")
+                        private String lesson;
+                        @Value("${server.port}")
+                        private String port;
+                        @Value("${enterprise.subject[0]}")
+                        private String subject0;
+                    
+                        // 读取方式二
+                        @Autowired
+                        private Environment environment;
+                    
+                        // 读取方式三
+                        @Autowired
+                        private Enterprise enterprise;
+                    
+                        @GetMapping("/{id}")
+                        public String getById(@PathVariable Integer id) {
+                            System.out.println("id ==> " + id);
+                            System.out.println("===============================");
+                            System.out.println("lesson ==> " + lesson);
+                            System.out.println("port ==> " + port);
+                            System.out.println("subject0 ==> " + subject0);
+                            System.out.println("===============================");
+                            System.out.println("lesson ==> " + environment.getProperty("lesson"));
+                            System.out.println("port ==> " + environment.getProperty("server.port"));
+                            System.out.println("subject0 ==> " + environment.getProperty("enterprise.subject[0]"));
+                            System.out.println("===============================");
+                            System.out.println("enterprise.toString() ==> " + enterprise.toString());
+                            return "hello spring boot";
+                        }
+                    }
+                Enterprise：
+                    @Component
+                    @ConfigurationProperties(prefix = "enterprise")
+                    public class Enterprise {
+                        private String name;
+                        private Integer age;
+                        private String[] subject;
+                    
+                        @Override
+                        public String toString() {
+                            return "Enterprise{" +
+                                    "name='" + name + '\'' +
+                                    ", age=" + age +
+                                    ", subject=" + Arrays.toString(subject) +
+                                    '}';
+                        }
+                    
+                        public String getName() {
+                            return name;
+                        }
+                    
+                        public void setName(String name) {
+                            this.name = name;
+                        }
+                    
+                        public Integer getAge() {
+                            return age;
+                        }
+                    
+                        public void setAge(Integer age) {
+                            this.age = age;
+                        }
+                    
+                        public String[] getSubject() {
+                            return subject;
+                        }
+                    
+                        public void setSubject(String[] subject) {
+                            this.subject = subject;
+                        }
+                    }
+                Enterprise实体类中的警告问题解决：
+                    pom.xml:
+                        <!--解决yaml文件读取的实体类中的警告-->
+                        <dependency>
+                            <groupId>org.springframework.boot</groupId>
+                            <artifactId>spring-boot-configuration-processor</artifactId>
+                            <optional>true</optional>
+                        </dependency>
+            多环境开发配置：
+                
 
-
-
+            
 
 
 

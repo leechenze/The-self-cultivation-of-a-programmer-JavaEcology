@@ -17,6 +17,7 @@
         <module name="annotation_di" />
         <module name="springmvc_restful_case" />
         <module name="springmvc_ssm" />
+        <module name="springboot_01_quickstart" />
         <module name="case_transfer" />
         <module name="springmvc_quickstart" />
         <module name="datasource" />
@@ -41,6 +42,7 @@
       <module name="maven_01_dao" target="8" />
       <module name="maven_01_pojo" target="8" />
       <module name="spring_mybatis" target="1.5" />
+      <module name="springboot_01_quickstart" target="1.8" />
       <module name="springmvc_interceptor" target="8" />
       <module name="springmvc_quickstart" target="1.8" />
       <module name="springmvc_restful" target="1.5" />
@@ -50,5 +52,10 @@
       <module name="springmvc_result_page" target="1.8" />
       <module name="springmvc_ssm" target="1.8" />
     </bytecodeTargetLevel>
+  </component>
+  <component name="JavacSettings">
+    <option name="ADDITIONAL_OPTIONS_OVERRIDE">
+      <module name="springboot_01_quickstart" options="-parameters" />
+    </option>
   </component>
 </project>
