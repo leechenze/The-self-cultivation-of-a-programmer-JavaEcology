@@ -25,6 +25,7 @@
         <module name="datasource" />
         <module name="maven_01_dao" />
         <module name="springboot_02_multiple_environments" />
+        <module name="springboot_05_page" />
         <module name="spring_mybatis" />
         <module name="AOP_runspeed" />
         <module name="IoC" />
@@ -49,6 +50,7 @@
       <module name="springboot_02_multiple_environments" target="1.8" />
       <module name="springboot_03_junit" target="1.8" />
       <module name="springboot_04_mybatis" target="1.8" />
+      <module name="springboot_05_page" target="1.8" />
       <module name="springmvc_interceptor" target="8" />
       <module name="springmvc_quickstart" target="1.8" />
       <module name="springmvc_restful" target="1.5" />
@@ -65,6 +67,7 @@
       <module name="springboot_02_multiple_environments" options="-parameters" />
       <module name="springboot_03_junit" options="-parameters" />
       <module name="springboot_04_mybatis" options="-parameters" />
+      <module name="springboot_05_page" options="-parameters" />
     </option>
   </component>
 </project>

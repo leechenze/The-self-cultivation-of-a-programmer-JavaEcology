@@ -38,6 +38,7 @@
         <option value="$PROJECT_DIR$/springboot_02_multiple_environments/pom.xml" />
         <option value="$PROJECT_DIR$/springboot_03_junit/pom.xml" />
         <option value="$PROJECT_DIR$/springboot_04_mybatis/pom.xml" />
+        <option value="$PROJECT_DIR$/springboot_05_page/pom.xml" />
       </list>
     </option>
   </component>

@@ -1,0 +1,13 @@
+
+server:
+  port: 80
+
+# TODO 数据源相关配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql:///springboot_ssm
+    username: root
+    password: lcz19930316
+

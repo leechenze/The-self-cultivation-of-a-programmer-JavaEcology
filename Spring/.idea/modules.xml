@@ -20,6 +20,7 @@
       <module fileurl="file://$PROJECT_DIR$/springboot_02_multiple_environments/springboot_02_multiple_environments.iml" filepath="$PROJECT_DIR$/springboot_02_multiple_environments/springboot_02_multiple_environments.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot_03_junit/springboot_03_junit.iml" filepath="$PROJECT_DIR$/springboot_03_junit/springboot_03_junit.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot_04_mybatis/springboot_04_mybatis.iml" filepath="$PROJECT_DIR$/springboot_04_mybatis/springboot_04_mybatis.iml" />
+      <module fileurl="file://$PROJECT_DIR$/springboot_05_page/springboot_05_page.iml" filepath="$PROJECT_DIR$/springboot_05_page/springboot_05_page.iml" />
       <module fileurl="file://$PROJECT_DIR$/springmvc_interceptor/springmvc_interceptor.iml" filepath="$PROJECT_DIR$/springmvc_interceptor/springmvc_interceptor.iml" />
       <module fileurl="file://$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart/springmvc_quickstart.iml" filepath="$PROJECT_DIR$/springmvc_quickstart/springmvc_quickstart/springmvc_quickstart.iml" />
       <module fileurl="file://$PROJECT_DIR$/springmvc_restful/springmvc_restful.iml" filepath="$PROJECT_DIR$/springmvc_restful/springmvc_restful.iml" />

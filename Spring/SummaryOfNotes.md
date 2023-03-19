@@ -2188,7 +2188,7 @@
                         System.out.println(book);
                     }
                 }
-    基于SpringBoot的SSM案例
+    基于SpringBoot的SSM案例（springboot_05_page）
         大概步骤：
             pom.xml
                 配置起步依赖，导入必要的资源坐标
@@ -2201,8 +2201,9 @@
                 数据层一定要通过 @Mapper 将dao声明为代理类
             测试类
             页面
+                boot工程中的页面在resources下的static目录下（原来mvc目录是和resources同级的webapp目录下）
+
         
-        
 
 
 
@@ -2210,10 +2211,6 @@
 
 
 
-伍.
-陆.
-柒.
-捌.
-玖.
-拾.
-
+伍.MyBatisPlus
+    
+    
