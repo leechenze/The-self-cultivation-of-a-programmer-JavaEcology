@@ -2134,15 +2134,75 @@
                     解决方案就是在config目录下随便再创建一个任意名称的目录，把application.yml放到该目录下即可
                 了解即可，后面版本已经将这个bug修复了。
     SpringBoot整合第三方技术：
-        整合JUnit：
-            
-        基于SpringBoot实现SSM整合：
-            
-
-
-
-
-
+        整合JUnit：（springboot_03_junit）
+            // @SpringBootTest(classes = Springboot03JunitApplication.class)
+            @SpringBootTest
+            class Springboot03JunitApplicationTests {
+                @Autowired
+                private BookService bookService;
+                @Test
+                public void save() {
+                    bookService.save();
+                }
+            } 
+            @SpringBootTest：springboot的测试类注解
+                作用：设置Junit加载的SpringBoot启动类
+                相关属性：classes 设置SpringBoot启动类
+                注意：如果测试类在SpringBoot的包或子包中，可以省略启动类的设置，也就是可以省略掉classes的设定
+        基于SpringBoot实现SSM整合：（springboot_04_mybatis）
+            在创建boot工程时选择需要的技术集（MyBatis Framework，MySql Drive）
+            在application.yml中配置数据源
+                spring:
+                 datasource:
+                  driver-class-name: com.mysql.cj.jdbc.Driver
+                  url: jdbc:mysql:///springboot_ssm
+                  username: root
+                  password: lcz19930316
+                  type: com.alibaba.druid.pool.DruidDataSource
+                注意：
+                    boot版本低于2.4.3时，mysql版本大于8.0时，需要在url连接串中配置时区
+                        url: jdbc:mysql:///springboot_ssm?serverTimezone=TUC
+            定义数据层接口与映射配置
+                @Mapper
+                public interface BookDao {
+                    @Select("select * from tb_book where id = #{id}")
+                    public Book getById(Integer id);
+                }
+                解释：
+                    @Mapper注解之前章节讲过，在这里用来代替原自动代理的相关代码，如下：
+                        @Bean
+                        public MapperScannerConfigurer mapperScannerConfigurer() {
+                            MapperScannerConfigurer msc = new MapperScannerConfigurer();
+                            msc.setBasePackage("com.lee.dao");
+                            return msc;
+                        }
+                    以上代码是原Spring整合mybatis时的相关配置，但是现在boot配置是还原了之前@Mapper的注解。以声明为代理类（BookDao）
+            测试类中注入Dao接口，测试功能
+                @SpringBootTest
+                class Springboot04MybatisApplicationTests {
+                    @Autowired
+                    private BookDao bookDao;
+                    @Test
+                    public void getById() {
+                        Book book = bookDao.getById(3);
+                        System.out.println(book);
+                    }
+                }
+    基于SpringBoot的SSM案例
+        大概步骤：
+            pom.xml
+                配置起步依赖，导入必要的资源坐标
+                    这里导入的都是一些boot工程初始化时没继承的一些资源，比如druid，boot已有资源在创建项目是勾选配置即可
+            application.yml
+                设置数据源，端口等
+            配置类
+                全部删除，boot工程中无需配这些繁琐的配置类了
+            dao
+                数据层一定要通过 @Mapper 将dao声明为代理类
+            测试类
+            页面
+        
+        
 
 
 
