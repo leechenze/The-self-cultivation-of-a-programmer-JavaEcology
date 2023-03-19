@@ -2315,14 +2315,57 @@
         
     条件查询的三种格式：
         DQL编程控制
-            条件查询方式
+            条件查询方式（Mybatisplus02DqlApplicationTests.java）
                 mybatisplus将书写复杂的sql查询条件进行了封装，使用编程的形式完成查询条件的组合
                 Wrapper这个接口参数就是用来封装查询条件的
-                
+                    // 方式一：按条件查询对应的操作
+                    // QueryWrapper queryWrapper = new QueryWrapper();
+                    // queryWrapper.lt("age", 9);
+                    // List<User> userList = userDao.selectList(queryWrapper);
+                    // System.out.println(userList);
+            
+                    // 方式二：lambda表达式按条件查询
+                    // QueryWrapper<User> queryWrapper = new QueryWrapper<User>();
+                    // queryWrapper.lambda().lt(User::getAge, 9);
+                    // List<User> userList = userDao.selectList(queryWrapper);
+                    // System.out.println(userList);
+            
+                    // 方式三：lambda表达式按条件查询
+                    LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>();
+                    // 支持链式调用（年龄小于10 或者 年龄大于6的，也就是全部数据）
+                    // 如果没有.or()的调用，那么就是并且的关系
+                    lambdaQueryWrapper.lt(User::getAge, 10).or().gt(User::getAge, 6);
+                    List<User> userList = userDao.selectList(lambdaQueryWrapper);
+                    System.out.println(userList);
+                条件查询null值的处理：（Mybatisplus02DqlApplicationTests1.java）
+                    Mybatisplus02DqlApplicationTests1.java
+                        @Test
+                        void getAll() {
+                            // 模拟前端传递来的查询参数的
+                            UserQuery userQuery = new UserQuery();
+                            userQuery.setAge(1);
+                            userQuery.setAge2(10);
+                            // null判定（如果写成if，else判断很不友好，此时可以使用queryWrapper提供的方法，其中的参数）
+                            LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>();
+                            lambdaQueryWrapper
+                                    .lt(null != userQuery.getAge2(), User::getAge, userQuery.getAge2())
+                                    .gt(null != userQuery.getAge(), User::getAge, userQuery.getAge());
+                            List<User> userList = userDao.selectList(lambdaQueryWrapper);
+                            System.out.println(userList);
+                        }
+                    UserQuery.java
+                        @Data
+                        public class UserQuery extends User {
+                            // 一般数值型的一般会有上下限，比如价格，还有日期型也会有上下限，字符串类型的是不会有上下限的
+                            // 继承自User那么User所有的属性都会有，再声明个具有上限的age2属性
+                            private Integer age2;
+                        }
+
             查询投影
+                
             查询条件设定
             字段映射与表明映射
-    
+                
     
     
     

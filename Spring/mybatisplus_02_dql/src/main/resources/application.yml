@@ -1,0 +1,23 @@
+
+server:
+  port: 80
+
+# TODO 数据源相关配置
+spring:
+  datasource:
+    type: com.alibaba.druid.pool.DruidDataSource
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql:///mybatisplus_db
+    username: root
+    password: lcz19930316
+  # 关闭Spring在控制台中的banner
+  main:
+    banner-mode: off
+
+mybatis-plus:
+  # 开启mybatisplus的日志输出（输出到控制台的日志）（调试时打开，开发时就关掉了，信息太多了）
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+  # 关闭mybatisplus在控制台中的banner
+  global-config:
+    banner: false
