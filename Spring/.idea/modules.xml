@@ -15,6 +15,7 @@
       <module fileurl="file://$PROJECT_DIR$/maven_01_all_polymerization/maven_01_all_polymerization.iml" filepath="$PROJECT_DIR$/maven_01_all_polymerization/maven_01_all_polymerization.iml" />
       <module fileurl="file://$PROJECT_DIR$/maven_01_dao/maven_01_dao.iml" filepath="$PROJECT_DIR$/maven_01_dao/maven_01_dao.iml" />
       <module fileurl="file://$PROJECT_DIR$/maven_01_pojo/maven_01_pojo.iml" filepath="$PROJECT_DIR$/maven_01_pojo/maven_01_pojo.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mybatisplus_01_quickstart/mybatisplus_01_quickstart.iml" filepath="$PROJECT_DIR$/mybatisplus_01_quickstart/mybatisplus_01_quickstart.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring_mybatis/spring_mybatis.iml" filepath="$PROJECT_DIR$/spring_mybatis/spring_mybatis.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot_01_quickstart/springboot_01_quickstart.iml" filepath="$PROJECT_DIR$/springboot_01_quickstart/springboot_01_quickstart.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot_02_multiple_environments/springboot_02_multiple_environments.iml" filepath="$PROJECT_DIR$/springboot_02_multiple_environments/springboot_02_multiple_environments.iml" />

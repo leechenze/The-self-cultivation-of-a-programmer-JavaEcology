@@ -2213,4 +2213,118 @@
 
 伍.MyBatisPlus
     
+    简介
+    标准数据层开发
+    DQL控制
+    DML控制
+    快速开发
+    
+
+    MyBatisPlus概述：
+        MP是基于MyBatis框架基础上开发的增强型工具，旨在简化开发，提高效率
+        官网：
+            https://mp.baomidou.com/        （官方的）
+            https://mybatis.plus/           （热心开发者捐赠的域名）
+    入门案例：（mybatisplus_01_quickstart）
+        创建工程勾选 MySQL Driver 配置（注意这里不要 Mybatis framework了）
+        手动添加mp起步依赖
+            因为初始化boot工程时没有 关于 mybatisplus的相关依赖，所以要手动导入mybatisplus的依赖坐标
+            <dependency>
+                <groupId>com.baomidou</groupId>
+                <artifactId>mybatis-plus-boot-starter</artifactId>
+                <version>3.4.2</version>
+            </dependency>
+                
+            <dependency>
+                <groupId>com.alibaba</groupId>
+                <artifactId>druid</artifactId>
+                <version>1.2.9</version>
+            </dependency>
+        设置JDBC参数（application.yml）
+            server:
+            port: 80
+            
+            # TODO 数据源相关配置
+            spring:
+            datasource:
+            type: com.alibaba.druid.pool.DruidDataSource
+            driver-class-name: com.mysql.cj.jdbc.Driver
+            url: jdbc:mysql:///mybatisplus_db
+            username: root
+            password: lcz19930316
+        实体类和表
+        定义数据接口，继承BaseMapper<User>
+            @Mapper
+            public interface UserDao extends BaseMapper<User> {
+            
+            }
+        在测试类中注入dao接口，测试功能
+            @SpringBootTest
+            class Mybatisplus01QuickstartApplicationTests {
+                @Autowired
+                private UserDao userDao;
+                @Test
+                void testGetAll() {
+                    List<User> userList = userDao.selectList(null);
+                    System.out.println(userList);
+                }
+            }
+        
+    标准CURD制作：（mybatisplus_01_quickstart）
+        详见：Mybatisplus01QuickstartApplicationTests
+        关于使用MP增删改查的一些操作
+        工具介绍：
+            lombok:
+                一个Java类库，提供了一组简化POJO实体类开发的注解
+            坐标：
+                <dependency>
+                    <groupId>org.projectlombok</groupId>
+                    <artifactId>lombok</artifactId>
+                    <scope>provided</scope>
+                </dependency>
+            详见：User实体类（domain.User）
+    分页功能：
+        设置分页拦截器作为Spring管理的bean：（config.MyBatisPlusConfig.java）
+            @Configuration
+            public class MyBatisPlusConfig {
+                @Bean
+                public MybatisPlusInterceptor mybatisPlusInterceptor() {
+                    // 1.创建mybatisplus的拦截器。
+                    MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+                    // 2.给示例添加具体的拦截器
+                    mybatisPlusInterceptor.addInnerInterceptor(new PaginationInnerInterceptor());
+                    return mybatisPlusInterceptor;
+                }
+            }
+        执行分页查询：（Mybatisplus01QuickstartApplicationTests.getByPage()）
+            @Test
+            void getByPage(){
+                IPage page = new Page(1, 2);
+                userDao.selectPage(page, null);
+                System.out.println("当前页码值：" + page.getCurrent());
+                System.out.println("每页显示的条数：" + page.getSize());
+                System.out.println("总共多少页：" + page.getPages());
+                System.out.println("总共多少条：" + page.getTotal());
+                System.out.println("数据：" + page.getRecords());
+            }
+        开启日志，这一步不是必须的，做个了解后续会用到：（application.yml）
+            # 开启mybatisplus的日志输出（输出到控制台的日志）（调试时打开，开发时就关掉了，信息太多了）
+            #mybatis-plus:
+            #  configuration:
+            #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+        
+    条件查询的三种格式：
+        DQL编程控制
+            条件查询方式
+                mybatisplus将书写复杂的sql查询条件进行了封装，使用编程的形式完成查询条件的组合
+                Wrapper这个接口参数就是用来封装查询条件的
+                
+            查询投影
+            查询条件设定
+            字段映射与表明映射
+    
+    
+    
+    
+    
     
