@@ -2361,10 +2361,42 @@
                             private Integer age2;
                         }
 
-            查询投影
+            查询投影（Mybatisplus02DqlApplicationTests2.java）
+                解释：直白点讲就是设置查询结果具体是什么样子，也就是规定查询哪些字段用的
+                    /**
+                     * 正常格式
+                     */
+                    // 查询投影：
+                    // QueryWrapper queryWrapper = new QueryWrapper();
+                    // queryWrapper.select("name", "gender","password");
+                    // List<User> userList = userDao.selectList(queryWrapper);
+                    // System.out.println(userList);
+                    // 查询分组：（count（*））用来做字段统计，是一个User模型之外的字段，所以定义为了一个Map来接收结果
+                    // QueryWrapper queryWrapper = new QueryWrapper();
+                    // queryWrapper.select("count(*) as count", "gender").groupBy("gender");
+                    // List<Map<String, Object>> resultList = userDao.selectMaps(queryWrapper);
+                    // System.out.println(resultList);
+                    /**
+                     * Lambda格式
+                     */
+                    // 查询投影：只能select自己User模型内的字段属性，如果要select User模型之外的字段，那就要使用正常格式了
+                    // LambdaQueryWrapper<User> lambdaQueryWrapper = new LambdaQueryWrapper<User>();
+                    // lambdaQueryWrapper.select(User::getName, User::getPassword, User::getGender);
+                    // List<User> userList = userDao.selectList(lambdaQueryWrapper);
+                    // System.out.println(userList);
+                注意：mybatisplus只是做增强，如果感觉不好用，同样可以在UserDao中使用注解的方式进行书写（@Select）
+                    因为是继承BaseMapper，所以并不冲突。
+
+            查询条件设定（Mybatisplus02DqlApplicationTests3.java）
+                地址：https://baomidou.com/pages/10c804/
+                在官网查找关键字（条件构造器）
                 
-            查询条件设定
-            字段映射与表明映射
+                代码示例详见：Mybatisplus02DqlApplicationTests3.java
+                详细使用查询文档即可，按着官网给出的例子搬下来就行了，各位高级CV工程师们。
+            
+                
+            字段映射与表名映射
+                
                 
     
     
