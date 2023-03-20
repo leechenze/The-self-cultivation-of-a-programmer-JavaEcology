@@ -2314,7 +2314,7 @@
             #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
         
     条件查询的三种格式：
-        DQL编程控制
+        DQL编程控制（mybatisplus_02_dpl）
             条件查询方式（Mybatisplus02DqlApplicationTests.java）
                 mybatisplus将书写复杂的sql查询条件进行了封装，使用编程的形式完成查询条件的组合
                 Wrapper这个接口参数就是用来封装查询条件的
@@ -2395,10 +2395,29 @@
                 详细使用查询文档即可，按着官网给出的例子搬下来就行了，各位高级CV工程师们。
             
                 
-            字段映射与表名映射
+            字段映射与表名映射（Mybatisplus02DqlApplicationTests4.java）
+                详见：domain.User.java
+                @TableName("tb_user")
+                    用于处理类名和表名同步
+                @TableField(value = "pwd", select = false)
+                    用于处理类属性名和表字段名同步
+                    value  表示映射的字段名称
+                    select 表示某个字段不参与查询
+                    exist  表示声明类中的字段是表中不存在的
+            
+        DML编程控制（mybatisplus_03_dml）
+            Insert
+            Delete
+            Update
+
+            id生成策略控制
+                不同的表应用不同的id生成策略：
+                    日志：id自增（1，2，3，4，5。。。）某类id信息并不重要的可以自增
+                    购物订单：特殊规则（FQ23948AK3843）
+                    外卖单：关联地区日期等信息（10 04 20200314 34 91）
+                    关系表：可省略id
+                    。。。
                 
-                
-    
     
     
     
