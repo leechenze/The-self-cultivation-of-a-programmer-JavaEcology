@@ -21,3 +21,9 @@ mybatis-plus:
   # 关闭mybatisplus在控制台中的banner
   global-config:
     banner: false
+    db-config:
+      id-type: assign_id
+      table-prefix: tb_
+      logic-delete-field: deleted
+      logic-delete-value: 1
+      logic-not-delete-value: 0

@@ -18,6 +18,7 @@
       <module fileurl="file://$PROJECT_DIR$/mybatisplus_01_quickstart/mybatisplus_01_quickstart.iml" filepath="$PROJECT_DIR$/mybatisplus_01_quickstart/mybatisplus_01_quickstart.iml" />
       <module fileurl="file://$PROJECT_DIR$/mybatisplus_02_dql/mybatisplus_02_dql.iml" filepath="$PROJECT_DIR$/mybatisplus_02_dql/mybatisplus_02_dql.iml" />
       <module fileurl="file://$PROJECT_DIR$/mybatisplus_03_dml/mybatisplus_03_dml.iml" filepath="$PROJECT_DIR$/mybatisplus_03_dml/mybatisplus_03_dml.iml" />
+      <module fileurl="file://$PROJECT_DIR$/mybatisplus_04_generator/mybatisplus_04_generator.iml" filepath="$PROJECT_DIR$/mybatisplus_04_generator/mybatisplus_04_generator.iml" />
       <module fileurl="file://$PROJECT_DIR$/spring_mybatis/spring_mybatis.iml" filepath="$PROJECT_DIR$/spring_mybatis/spring_mybatis.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot_01_quickstart/springboot_01_quickstart.iml" filepath="$PROJECT_DIR$/springboot_01_quickstart/springboot_01_quickstart.iml" />
       <module fileurl="file://$PROJECT_DIR$/springboot_02_multiple_environments/springboot_02_multiple_environments.iml" filepath="$PROJECT_DIR$/springboot_02_multiple_environments/springboot_02_multiple_environments.iml" />

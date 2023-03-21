@@ -2312,7 +2312,12 @@
             #mybatis-plus:
             #  configuration:
             #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
-        
+        resources/logback.xml（清空控制台多余信息）
+            <?xml version="1.0" encoding="UTF-8" ?>
+            <!--此配置用于清空控制台中的多余打印信息-->
+            <configuration></configuration>
+
+
     条件查询的三种格式：
         DQL编程控制（mybatisplus_02_dpl）
             条件查询方式（Mybatisplus02DqlApplicationTests.java）
@@ -2418,7 +2423,111 @@
                     关系表：可省略id
                     。。。
                 
-    
-    
-    
-    
+                @TableId(type = IdType.AUTO)
+                    ID自增，数据库设计表，勾选Auto Increment，请在Options中设置Auto Increment的值
+                @TableId(type = IdType.INPUT)
+                    需要在数据库中取消勾选Auto Increment，取消自增策略
+                    此时这个ID需要自行指定。
+                        User user = new User();
+                        user.setId(666L);
+                        user.setName("heima");
+                        user.setPassword("heima");
+                        user.setAge(11);
+                        user.setTel("102220000");
+                        userDao.insert(user);
+                @TableId(type = IdType.ASSIGN_ID)
+                    ASSIGN_ID会自动生成ID，（1638172143701307393）生成这种长串ID，同时也是默认值，这种生成策略叫做雪花算法
+                    ASSIGN_ID允许不设值，进行自动生成。当然设值后，ID将为我们设的那个值
+                    
+            ID生成策略总结：
+                AUTO（0）：使用数据库ID自增策略控制id生成
+                NONE（1）：不设置id生成策略
+                INPUT（2）：用户手工输入ID
+                ASSIGN_ID（3）：雪花算法生成ID（可兼容数值型和字符串型，是默认策略）
+                ASSIGN_UUID（4）：以UUID生成算法作为id生成策略
+            
+            通过配置进行声明ID生成策略：application.yml
+                mybatis-plus:
+                 # 开启mybatisplus的日志输出（输出到控制台的日志）（调试时打开，开发时就关掉了，信息太多了）
+                 configuration:
+                  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+                 # 关闭mybatisplus在控制台中的banner
+                 global-config:
+                  banner: false
+                   db-config:
+                   id-type: assign_id
+                设置id-type后等同于在实体类（User.java）中@TableId注解的设定
+                    @TableId(type = IdType.ASSIGN_ID)
+            通过配置代替 @TableName 注解
+                mybatis-plus:
+                 # 开启mybatisplus的日志输出（输出到控制台的日志）（调试时打开，开发时就关掉了，信息太多了）
+                 configuration:
+                  log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+                 # 关闭mybatisplus在控制台中的banner
+                 global-config:
+                  banner: false
+                   db-config:
+                   id-type: assign_id
+                   table-prefix: tb_
+                设置table-prefix后等同于在实体类（User.java）中@TableName注解的设定，其实就是声明加个前缀
+                    @TableName("tb_user")
+            
+            多数据操作：
+                List<Long> userIdList = new ArrayList<Long>();
+                userIdList.add(1638172143701307393L);
+                userIdList.add(1638174811878334466L);
+                userIdList.add(666L);
+                userDao.deleteBatchIds(userIdList);
+            逻辑删除：
+                解释：（垃圾数据不进行物理删除，而是使用逻辑删除的字段标注是否删除）
+                步骤：
+                    数据库表中添加逻辑删除的字段（deleted），类型为int，设默认值为0
+                    实体类中添加对应的字段，然后挂上@TableLogic注解表示该字段是逻辑删除
+                        @TableLogic(value = "0", delval = "1")
+                        private Integer deleted;
+                    全局配置逻辑删除字段值application.yml中进行配置
+                      logic-delete-field: deleted   逻辑删除的字段名称
+                      logic-delete-value: 1         是逻辑删除的值
+                      logic-not-delete-value: 0     不是逻辑删除的值
+            乐观锁：
+                用于处理业务并发带来的问题
+                步骤：
+                    数据库表中添加逻辑删除的字段（version），类型为int，设默认值为1。
+                    在实体类中添加对应字段，然后挂上@Version注解表示标记一个当前的值，
+                        每次这条数据操作后，这个字段会自动加一，但并不是表设计时自增的原因，该字段也没有勾选自增属性，
+                        而是mybatisplus 自动自增的结果。
+                            @Version
+                            private Integer version;
+                    配置乐观锁拦截器实现锁机制对应的动态SQL语句拼装（config.MyBatisPlusConfig.java）
+                        @Configuration
+                        public class MyBatisPlusConfig {
+                            @Bean
+                            public MybatisPlusInterceptor mybatisPlusInterceptor() {
+                                // 添加乐观锁的拦截器
+                                MybatisPlusInterceptor mybatisPlusInterceptor = new MybatisPlusInterceptor();
+                                // 添加具体拦截
+                                mybatisPlusInterceptor.addInnerInterceptor(new OptimisticLockerInnerInterceptor());
+                                return mybatisPlusInterceptor;
+                            }
+                        }
+                    使用乐观锁机制在修改前必须保障对应的数据中有version字段，方可正常进行
+                        Mybatisplus03DmlApplicationTests.java
+                            // 模拟A，B用户操作，对乐观锁进行验证
+                            User userA = userDao.selectById(3L);    // version 3
+                            User userB = userDao.selectById(3L);    // version 3
+                    
+                            // 会成功
+                            userA.setName("trump aaa");
+                            userDao.updateById(userA);    // version 4
+                    
+                            // 不会成功
+                            userB.setName("trump bbb");
+                            // 此时 userB 还是3，但是userA执行后 version 已经变成4了，所以条件已经不成立了
+                            // 因为已经配置了乐观锁拦截器的作用，就不会执行了
+                            userDao.updateById(userB);    // version 3
+                    
+            代码生成器：（mybatisplus_04_generator）
+                模版：MyBatisPlus提供        
+                数据库相关配置：读取数据库信息获取        
+                开发者自定义配置：手工配置        
+                        
