@@ -3,6 +3,8 @@
   <component name="Encoding" defaultCharsetForPropertiesFiles="UTF-8">
     <file url="file://$PROJECT_DIR$/maven_01_all/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/maven_01_all/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/maven_01_all_polymerization/src/main/resources" charset="UTF-8" />
+    <file url="file://$PROJECT_DIR$/mybatis_04_generator/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatisplus_01_quickstart/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatisplus_02_dql/src/main/java" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/mybatisplus_03_dml/src/main/java" charset="UTF-8" />
