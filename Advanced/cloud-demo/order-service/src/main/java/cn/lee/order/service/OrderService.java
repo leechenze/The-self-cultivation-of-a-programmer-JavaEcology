@@ -1,7 +1,7 @@
-package cn.itcast.order.service;
+package cn.lee.order.service;
 
-import cn.itcast.order.mapper.OrderMapper;
-import cn.itcast.order.pojo.Order;
+import cn.lee.order.mapper.OrderMapper;
+import cn.lee.order.pojo.Order;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

@@ -7,11 +7,11 @@ spring:
     password: lcz19930316
     driver-class-name: com.mysql.jdbc.Driver
 mybatis:
-  type-aliases-package: cn.itcast.user.pojo
+  type-aliases-package: cn.lee.user.pojo
   configuration:
     map-underscore-to-camel-case: true
 logging:
   level:
-    cn.itcast: debug
+    cn.lee: debug
   pattern:
     dateformat: MM-dd HH:mm:ss:SSS
