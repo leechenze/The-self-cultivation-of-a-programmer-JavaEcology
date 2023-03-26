@@ -280,6 +280,11 @@
                 Nacos快速入门
                 Nacos服务分级存储模型
                 Nacos环境隔离
+                Nacos配置管理
+                Feign远程调用
+                Gateway服务网关
+
+
 
                 Nacos简介：
                     nacos是阿里巴巴的产品，现在是springcloud的一个组件，相比Eureka功能更丰富，在国内受欢迎程度较高
@@ -367,12 +372,65 @@
                         如果编辑报错就将 nacos/data 和 nacos/logs 两个目录删除，然后再次重启即可
                 
                 Nacos环境隔离：
+                    环境隔离（namespace）：
+                    nacos首先是一个注册中心，其次它还是一个数据中心。
+                    在nacos中为了做数据和服务的管理，有一个环境隔离的概念。
                     
+                    namespace > group > service > cluster > instance
+                    命名空间 > 分组 > 服务 > 集群 > 实例
                     
-                    
-                    
-                    
-                    
+                    步骤：
+                        在 http://localhost:8888/nacos 中选择左侧栏目 命名空间新建一个dev空间
+                        id会自动生成，必填项是空间名称和空间描述；
+                            命名空间 ==> 新建命名空间
+                        在 order-service 的 application.yml 文件中配置 命名空间的ID
+                            spring:
+                             cloud:
+                              nacos:
+                               discovery:
+                                cluster-name: XA
+                                namespace: f324b4ac-7a64-426d-8515-7fc9ce35669d # dev环境的命名空间ID
+                        此时 order服务在dev空间，user服务在public的默认空间，所以order就无法对user服务进行调用。
+                        报错信息为： No instances available for userService
+                    总结：
+                        每个namespace都有一个唯一的ID，用于在application.yml中配置。
+                        不同的namespace下的服务不可见，也不可访问。
+                        namespace用于做环境隔离
+                
+                Nacos的临时实例和非临时实例：
+                    在order-service的 application.yml 中配置： 
+                        spring:
+                         cloud:
+                          nacos:
+                           discovery:
+                            ephemeral: false # true为临时实例（默认值），false为非临时实例
+                    临时实例和非临时实例的区别：
+                        临时实例在停止服务时将会被删除，非临时实例只是 健康状态 这一栏中 ture 和 false 的变化，而不会删除服务
+                            这里遇见错误： failed to req API:/nacos/v1/ns/instance after all servers([localhost:8888]) tried: caused: errCode: 400
+                            原因是nacos缓存问题，nacos/data 这个目录需要删除再次重启 nacos 即可
+                    Nacos集群默认采用AP方式，当集群中存在非临时实例时，会采用CP模式，Eureka采用AP模式但不支持切换CP
+                        CP模式主要强调数据的可靠性和一致性，（非临时服务的数据可靠性很重要）
+                        AP模式主要强调服务的可用性
+                
+                
+                Nacos配置管理：
+                    统一配置管理概念：
+                        
+
+
+                
+
+
+
+
+
+
+
+
+
+
+
+
                     
                     
 

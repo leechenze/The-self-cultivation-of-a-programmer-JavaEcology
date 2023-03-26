@@ -15,7 +15,6 @@ spring:
         cluster-name: XA
 
 
-
 mybatis:
   type-aliases-package: cn.lee.user.pojo
   configuration:
