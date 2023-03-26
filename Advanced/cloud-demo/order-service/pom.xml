@@ -26,10 +26,23 @@
             <artifactId>mybatis-spring-boot-starter</artifactId>
         </dependency>
         <!--eureka 客户端依赖-->
+        <!--<dependency>-->
+        <!--    <groupId>org.springframework.cloud</groupId>-->
+        <!--    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>-->
+        <!--</dependency>-->
+
+        <!--nacos 客户端依赖（发现依赖）-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+        </dependency>
         <dependency>
             <groupId>org.springframework.cloud</groupId>
-            <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+            <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+            <version>3.1.6</version>
         </dependency>
+
+
         <!--ribbon 依赖,用以改变负载均衡策略:(是轮询还是随机的规则策略)-->
         <dependency>
             <groupId>com.netflix.ribbon</groupId>

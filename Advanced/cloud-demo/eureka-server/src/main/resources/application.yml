@@ -3,10 +3,15 @@ server:
 spring:
   application:
     name: eurekaServer # eureka的服务名称
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8888 # nacos 服务地址
+      server-addr: localhost:8888 # nacos 服务地址
 
-eureka:
-  client:
-    service-url: # eureka的地址信息
-      defaultZone: http://localhost:10086/eureka
-    # register-with-eureka: false # 关闭控制台错误信息
-    # fetch-registry: false # 关闭控制台错误信息
+#eureka:
+#  client:
+#    service-url: # eureka的地址信息
+#      defaultZone: http://localhost:10086/eureka
+#    register-with-eureka: false # 关闭控制台错误信息
+#    fetch-registry: false # 关闭控制台错误信息

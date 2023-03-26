@@ -287,27 +287,53 @@
                     
                 快速开始：
                     详见：https://nacos.io/zh-cn/docs/quick-start.html
-                    这里安装的版本是 1.4.5 版本，在bin目录下
+                    这里安装的版本是 1.4.5 版本，之后cd到在bin目录下（后面又安装了2.2.0版本，因为1.x.x版本不在维护了）
                         启动nacos：（参数 standalone 表示单机模式，没有此参数时表示集群模式）
                             sh startup.sh -m standalone
                         关闭nacos：
                             sh shutdown.sh
                     启动后访问：
-                        http://localhost:8848/nacos/#/login
+                        http://localhost:8888/nacos/#/login
                         默认账号密码：nacos/nacos
+                        默认端口号：8848
+                        
                     如要修改端口号在conf目录中进行配置
-                
+                        conf/application.properties
+                        坑点：1.4.5版本修改端口号不生效，所以只能用8848了，2.x.x版本可以修改版本（2.2.0端口好改为了8888）
                     配置：
                         在cloud-demo父工程中添加spring-cloud-alibaba的管理依赖：
-                            
-                        添加nacos客户端依赖：
-                            
+                            <!-- springCloud alibaba （nacos的管理依赖） -->
+                            <dependency>
+                                <groupId>com.alibaba.cloud</groupId>
+                                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                                <version>2021.0.5.0</version>
+                                <type>pom</type>
+                                <scope>import</scope>
+                            </dependency>
+                        在user-service中添加nacos客户端依赖：
+                            <!--nacos 客户端依赖（发现依赖）-->
+                            <dependency>
+                                <groupId>com.alibaba.cloud</groupId>
+                                <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.springframework.cloud</groupId>
+                                <artifactId>spring-cloud-starter-loadbalancer</artifactId>
+                                <version>3.1.6</version>
+                            </dependency>
                         修改user-service&order-service中的application.yml文件, 添加nacos地址:
-                        
+                            spring:
+                             cloud:
+                              nacos:
+                               discovery:
+                                server-addr: localhost:8888 # nacos 服务地址
+                               server-addr: localhost:8888 # nacos 服务地址
                         启动并测试
+                            http://localhost:8888/nacos/ ==> 服务管理 ==> 服务列表
+                            即可查看到 userService 和 orderService
 
-
-
+                Nacos分级存储模型:
+                    
 
 
 壹.

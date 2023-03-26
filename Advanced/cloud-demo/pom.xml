@@ -43,6 +43,15 @@
                 <type>pom</type>
                 <scope>import</scope>
             </dependency>
+            <!-- springCloud alibaba （nacos的管理依赖） -->
+            <dependency>
+                <groupId>com.alibaba.cloud</groupId>
+                <artifactId>spring-cloud-alibaba-dependencies</artifactId>
+                <version>2021.0.5.0</version>
+                <type>pom</type>
+                <scope>import</scope>
+            </dependency>
+
             <!-- mysql驱动 -->
             <dependency>
                 <groupId>mysql</groupId>

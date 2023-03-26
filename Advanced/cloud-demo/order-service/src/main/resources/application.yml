@@ -8,6 +8,11 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
   application:
     name: orderService # order的服务名称
+  cloud:
+    nacos:
+      discovery:
+        server-addr: localhost:8888 # nacos 服务地址
+      server-addr: localhost:8888 # nacos 服务地址
 
 mybatis:
   type-aliases-package: cn.lee.user.pojo
@@ -19,10 +24,10 @@ logging:
   pattern:
     dateformat: MM-dd HH:mm:ss:SSS
 
-eureka:
-  client:
-    service-url: # eureka的地址信息
-      defaultZone: http://localhost:10086/eureka
+#eureka:
+#  client:
+#    service-url: # eureka的地址信息
+#      defaultZone: http://localhost:10086/eureka
 
 userService:
   ribbon:
@@ -32,3 +37,4 @@ ribbon:
   eager-load:
     enabled: true # 开启饥饿加载
     clients: userService # 指定饥饿加载的服务名称（值是一个集合）
+
