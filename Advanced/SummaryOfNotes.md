@@ -325,16 +325,39 @@
                             spring:
                              cloud:
                               nacos:
-                               discovery:
-                                server-addr: localhost:8888 # nacos 服务地址
                                server-addr: localhost:8888 # nacos 服务地址
                         启动并测试
                             http://localhost:8888/nacos/ ==> 服务管理 ==> 服务列表
                             即可查看到 userService 和 orderService
 
                 Nacos分级存储模型:
+                    一级是服务：例如userService
+                    二级是集群：例如西安和上海（西安:XN 包含userService:8081和userService:8082, 上海:SH 包含userService:8083）
+                    三级是实例：userService:8081,userService:8082,userService:8083
+                    设置实例的集群属性：
+                        user-service中修改application.yml文件：
+                            spring:
+                             cloud:
+                              nacos:
+                               discovery:
+                                cluster-name: XA
+                        在启动 userService:8081 和 userService:8082 时 cluster-name 为 XA，就会分配到 XA（西安）集群
+                        在启动 userService:8083 时 cluster-name 为 SH，就会分配到 SH（上海）集群
+                        在启动时如果没有 discovery.cluster-name 这项配置时，将会分配到（DEFAULT）默认集群
+                
+                NacosRule负载均衡：
                     
-
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
+                    
 
 壹.
 

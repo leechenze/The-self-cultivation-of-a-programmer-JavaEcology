@@ -10,8 +10,6 @@ spring:
     name: orderService # order的服务名称
   cloud:
     nacos:
-      discovery:
-        server-addr: localhost:8888 # nacos 服务地址
       server-addr: localhost:8888 # nacos 服务地址
 
 mybatis:
