@@ -11,6 +11,8 @@ spring:
   cloud:
     nacos:
       server-addr: localhost:8888 # nacos 服务地址
+      discovery:
+        cluster-name: XA
 
 mybatis:
   type-aliases-package: cn.lee.user.pojo
@@ -29,8 +31,10 @@ logging:
 
 userService:
   ribbon:
-    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
-    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule # 负载均衡策略配置
+    # NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule # 负载均衡策略配置
+    NFLoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule # nacos 负载均衡策略配置
+    
 ribbon:
   eager-load:
     enabled: true # 开启饥饿加载

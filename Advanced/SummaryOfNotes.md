@@ -346,10 +346,27 @@
                         在启动时如果没有 discovery.cluster-name 这项配置时，将会分配到（DEFAULT）默认集群
                 
                 NacosRule负载均衡：
+                    优先选择同集群的服务实例列表
+                    本地集群找不到提供者，才回去其他集群找对应服务，并且会抛出警告（cross-cluster）
+                    确定了可用实例列表后，再采用随机负载的策略挑选实例
                     
-                    
-                    
-                    
+                    修改order-service 中的 application.yml 配置文件：
+                        userService:
+                         ribbon:
+                          # NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+                          # NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule # 负载均衡策略配置
+                          NF LoadBalancerRuleClassName: com.alibaba.cloud.nacos.ribbon.NacosRule # nacos 负载均衡策略配置
+
+                NacosRule服务实例权重设置：
+                    时机开发场景中，我们通常是希望性能好的机器承担更多的用户请求，性能较差的机器承担少一点请求。                    
+                    这种场景就需要使用权重进行负载策略处理了
+                    Nacos提供了权重配置来控制访问频率，权重越大，访问的频率就越高。
+                    权重值配置：
+                        http://localhost:8888/nacos
+                        服务管理 ==> 服务列表：详情 ==> 服务详情：编辑 ==> 弹出框中：编辑 ==> 权重属性（值在 1和0 之间，如果为0时将不会接收到请求，相当于备用机）
+                        如果编辑报错就将 nacos/data 和 nacos/logs 两个目录删除，然后再次重启即可
+                
+                Nacos环境隔离：
                     
                     
                     
