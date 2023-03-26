@@ -167,22 +167,144 @@
                                 根据服务名称从注册中心卡去服务列表
                                 基于服务列表做负载均衡，选中一个微服务后发起远程调用
             
-            搭建eureka服务：
-                搭建EurekaServer
-                将user和order模块注册到eureka
-                在order模块中完成服务拉取，然后通过负载均衡挑选一个服务，实现远程调用
+                搭建eureka服务：
+                    搭建EurekaServer
+                    将user和order模块注册到eureka
+                    在order模块中完成服务拉取，然后通过负载均衡挑选一个服务，实现远程调用
+                    
+                    搭建EurekaServer服务步骤如下：
+                        创建eureka-server项目模块，引入eureka服务端的坐标依赖：
+                            <!--eureka 服务端-->
+                            <dependency>
+                                <groupId>org.springframework.cloud</groupId>
+                                <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+                            </dependency>
+                        编写eureka-server模块的EurekaApplication启动类，添加@EnableEurekaServer注解以自动装配开关
+                            // 自动装配的开关
+                            @EnableEurekaServer
+                            @SpringBootApplication
+                            public class EurekaApplication {
+                                public static void main(String[] args) {
+                                    SpringApplication.run(EurekaApplication.class, args);
+                                }
+                            }
+                        填写application.yml文件，编写一下配置：
+                            server:
+                             port: 10086 # 服务端口
+                            spring:
+                             application:
+                              name: eurekaServer # eureka的服务名称
+                            
+                            eureka:
+                             client:
+                              service-url: # eureka的地址信息
+                                defaultZone: http://localhost:10086/eureka
+                              register-with-eureka: false # 关闭控制台错误信息
+                              fetch-registry: false # 关闭控制台错误信息
+                    服务注册：
+                        注册user-service
+                            在user-service模块引入eureka客户端的依赖
+                                <!--eureka 客户端依赖-->
+                                <dependency>
+                                    <groupId>org.springframework.cloud</groupId>
+                                    <artifactId>spring-cloud-starter-netflix-eureka-client</artifactId>
+                                </dependency>
+                            在application.yml文件中，编写配置：（声明客户端服务名称，声明服务端服务地址）
+                                spring:
+                                 application:
+                                  name: userService # user的服务名称
+                                eureka:
+                                 client:
+                                  service-url: # eureka的地址信息
+                                   defaultZone: http://localhost:10086/eureka
+                        注册order-service
+                            步骤同上，这里跳过了。
+                        另外，将user-service多次启动，模拟多实例部署，但为了避免端口冲突，需要修改端口配置：
+                            右键UserApplication ==> Copy Configuration ==> VM Options -Dserver.port=8082
+                            此时Services列表中将出现UserApplication(2)这个服务，启动它。
+                            那么这时eureka页面的（http://127.0.0.1:10086/）
+                                Instances currently registered with Eureka
+                                USERSERVICE 的 status 就出现了两个实例
+                            无论是消费者还是提供者，引入eureka-client依赖，知道eureka地址后，都可以完成服务注册
+                    服务发现：（服务拉取）
+                        在order-service完成服务拉取
+                            服务拉取是基于服务名称获取服务列表，然后在对服务列表做负载均衡
+                            步骤：
+                                修改OrderService代码，修改访问url路径，用服务名代替ip和端口
+                                    String url = "http://userService/user/" + order.getUserId();
+                                在order-service的配置类（启动类）中添加负载均衡注解：
+                                    @Bean
+                                    @LoadBalanced
+                                    public RestTemplate restTemplate() {
+                                        return new RestTemplate();
+                                    }
+                                    
+                Ribbon负载均衡：
+                    负载均衡原理
+                    负载均衡策略
+                    懒加载
+                    
+                    负载均衡解释：
+                        请看服务发现章节：在order模块每次对user模块发起请求时，由于user模块的服务有两个，
+                        每次收到请求时，要么是user执行，要么是user1执行，这样就减少了user的请求负载压力，也就做到了负载均衡
+    
+                    负载均衡原理：
+                        实际上 http://userService/user/1 并不是真实的请求地址，那么中间就是由于Ribbon这个组件
+                        通过userService 关键字找到eureka的注册中心（eureka-server）进行对userService服务的匹配，
+                        然后匹配到后发现有有两个user服务（user，user1），那么Ribbon就会对两个服务做轮询处理，以做到轮询负载
+                    
+                    负载均衡策略：
+                        通过定义IRule 实现可以修改负载均衡的规则，有两种方式：
+                            代码方式：在order-service的启动类中，定义一个新的 IRule（属于全局的策略配置）
+                                @Bean
+                                public IRule randomRule() {
+                                    return new RoundRobinRule();
+                                }
+                            配置文件方式：在order-service的application.yml文件中，添加新的配置进行负载均衡规则修改（针对某个服务的策略配置）
+                                userService: # 服务名称
+                                 ribbon:
+                                  NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule # 负载均衡策略配置
+                        负载均衡常用策略：
+                            RoundRobinRule：轮询策略（默认）
+                            RandomRule：随机策略
                 
-    
-    
-    
-    
+                Ribbon饥饿加载：
+                    Ribbon默认是采用懒加载，即第一次访问时才会去创建LoadBalanceClient,请求时间很长,而饥饿加载则会在项目启动时创建,降低第一次访问的耗时,通过下面配置开启饥饿加载
+                        ribbon:
+                         eager-load:
+                          enabled: true # 开启饥饿加载
+                           clients: userService # 指定饥饿加载的服务名称（值是一个集合）
 
+            Nacos注册中心：        
+                认识和安装Nacos
+                Nacos快速入门
+                Nacos服务分级存储模型
+                Nacos环境隔离
 
-
-
-
-
-
+                Nacos简介：
+                    nacos是阿里巴巴的产品，现在是springcloud的一个组件，相比Eureka功能更丰富，在国内受欢迎程度较高
+                    官网：https://nacos.io/en-us/
+                    
+                快速开始：
+                    详见：https://nacos.io/zh-cn/docs/quick-start.html
+                    这里安装的版本是 1.4.5 版本，在bin目录下
+                        启动nacos：（参数 standalone 表示单机模式，没有此参数时表示集群模式）
+                            sh startup.sh -m standalone
+                        关闭nacos：
+                            sh shutdown.sh
+                    启动后访问：
+                        http://localhost:8848/nacos/#/login
+                        默认账号密码：nacos/nacos
+                    如要修改端口号在conf目录中进行配置
+                
+                    配置：
+                        在cloud-demo父工程中添加spring-cloud-alibaba的管理依赖：
+                            
+                        添加nacos客户端依赖：
+                            
+                        修改user-service&order-service中的application.yml文件, 添加nacos地址:
+                        
+                        启动并测试
 
 
 

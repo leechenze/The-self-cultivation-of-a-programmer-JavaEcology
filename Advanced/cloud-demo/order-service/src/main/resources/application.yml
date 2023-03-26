@@ -6,6 +6,9 @@ spring:
     username: root
     password: lcz19930316
     driver-class-name: com.mysql.cj.jdbc.Driver
+  application:
+    name: orderService # order的服务名称
+
 mybatis:
   type-aliases-package: cn.lee.user.pojo
   configuration:
@@ -15,3 +18,17 @@ logging:
     cn.lee: debug
   pattern:
     dateformat: MM-dd HH:mm:ss:SSS
+
+eureka:
+  client:
+    service-url: # eureka的地址信息
+      defaultZone: http://localhost:10086/eureka
+
+userService:
+  ribbon:
+    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.RandomRule # 负载均衡策略配置
+ribbon:
+  eager-load:
+    enabled: true # 开启饥饿加载
+    clients: userService # 指定饥饿加载的服务名称（值是一个集合）
