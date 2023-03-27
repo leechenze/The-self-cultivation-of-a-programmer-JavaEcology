@@ -7,7 +7,7 @@ import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.web.client.RestTemplate;
 
-@MapperScan("cn.lee.user.mapper")
+@MapperScan({"cn.lee.user.mapper"})
 @SpringBootApplication
 @EnableDiscoveryClient
 public class UserApplication {

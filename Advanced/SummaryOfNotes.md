@@ -407,32 +407,107 @@
                     临时实例和非临时实例的区别：
                         临时实例在停止服务时将会被删除，非临时实例只是 健康状态 这一栏中 ture 和 false 的变化，而不会删除服务
                             这里遇见错误： failed to req API:/nacos/v1/ns/instance after all servers([localhost:8888]) tried: caused: errCode: 400
-                            原因是nacos缓存问题，nacos/data 这个目录需要删除再次重启 nacos 即可
+                            原因是nacos缓存问题，nacos/data 这个目录需要删除再次重启 nacos 即可（注意真正开发时，data数据不能删除，删除后nacos很多配置信息也都没有了）
                     Nacos集群默认采用AP方式，当集群中存在非临时实例时，会采用CP模式，Eureka采用AP模式但不支持切换CP
                         CP模式主要强调数据的可靠性和一致性，（非临时服务的数据可靠性很重要）
                         AP模式主要强调服务的可用性
                 
                 
                 Nacos配置管理：
-                    统一配置管理概念：
-                        
-
-
+                    http://localhost:8888/nacos
+                        配置管理 ==> 配置列表 ==> 创建配置 ==> 填写相关配置然后发布
+                        这里创建了一个 userservice-dev.yaml 的配置
+                        配置内容：主要是一些核心的将来会有变化的配置，而不是所有配置都写里面。
+                        dataID：[userService]-[dev].[suffixName]
+                    统一配置管理：
+                        在user-service中引入Nacos的 config 依赖
+                            <!--nacos配置管理依赖-->
+                            <dependency>
+                                <groupId>com.alibaba.cloud</groupId>
+                                <artifactId>spring-cloud-starter-alibaba-nacos-config</artifactId>
+                            </dependency>
+                            <dependency>
+                                <groupId>org.springframework.cloud</groupId>
+                                <artifactId>spring-cloud-starter-bootstrap</artifactId>
+                            </dependency>
+                            
+                        在user-service中的resource目录添加一个bootstrap.yml文件，这个文件是引导文件，程序读取的优先级要高于 application.yml
+                            spring:
+                             application:
+                              name: userService
+                             profiles:
+                              active: dev # 环境配置
+                             cloud:
+                              nacos:
+                               server-addr: localhost:8888
+                               config:
+                                file-extension: yaml # 文件后缀名
+                                namespace: f218710e-36db-4ec6-be40-28caaf23ec2d # dev环境的命名空间ID
+                               discovery:
+                                namespace: f218710e-36db-4ec6-be40-28caaf23ec2d # dev环境的命名空间ID
+                        在UserController中读取nacos中userService.yaml的dateformat的配置
+                            @Slf4j
+                            @RestController
+                            @RequestMapping("/user")
+                            @RefreshScope
+                            public class UserController {
+                                @Value("${pattern.dateformat}")
+                                private String dateformat;
+                                /**
+                                 * 路径： /user/time
+                                 *
+                                 * @return 时间
+                                 */
+                                @GetMapping("/time")
+                                public String time() {
+                                    System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateformat)));
+                                    return LocalDateTime.now().format(DateTimeFormatter.ofPattern(dateformat));
+                                }
+                            }
+                        然后通过 http://localhost:8081/user/time 成功访问到 一段时间 则表示成功读取到 dateformat的配置了
                 
-
-
-
-
-
-
-
-
-
-
-
-
+                Nacos热更新
+                    热更新即：配置自动刷新
+                    方式一：通过在 public class UserController 类上加上 @RefreshScope注解即可
+                        @RefreshScope
+                        public class UserController { ... }
+                    方式二：使用 @ConfigurationProperties 注解（推荐）
+                        新建config.PatternProperties.java，源吗如下
+                            @Data
+                            @Component
+                            @ConfigurationProperties(prefix = "pattern")
+                                public class PatternProperties {
+                                private String dateformat;
+                            }
+                        在 UserController 中自动注入 patternProperties：（推荐用法）
+                            @Autowired
+                            private PatternProperties patternProperties;
+                            /**
+                             * 路径： /user/time
+                             *
+                             * @return 时间
+                             */
+                            @GetMapping("/time")
+                            public String time() {
+                                System.out.println("nacos 热更新配置方式二");
+                                System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern(patternProperties.getDateformat())));
+                                return LocalDateTime.now().format(DateTimeFormatter.ofPattern(patternProperties.getDateformat()));
+                            }
+                
+                多环境配置：
                     
-                    
+
+
+
+
+
+
+
+
+
+
+
+
 
 壹.
 
