@@ -22,8 +22,8 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @Value("${pattern.dateformat}")
-    private String dateformat;
+    // @Value("${pattern.dateformat}")
+    // private String dateformat;
 
     @Autowired
     private PatternProperties patternProperties;
@@ -41,7 +41,16 @@ public class UserController {
         System.out.println("nacos 热更新配置方式二");
         System.out.println(LocalDateTime.now().format(DateTimeFormatter.ofPattern(patternProperties.getDateformat())));
         return LocalDateTime.now().format(DateTimeFormatter.ofPattern(patternProperties.getDateformat()));
+    }
 
+    /**
+     * 路径： /user/prop
+     *
+     * @return PatternProperties 实体类(就是配置中的所有属性)
+     */
+    @GetMapping("prop")
+    public PatternProperties prop() {
+        return patternProperties;
     }
 
     /**

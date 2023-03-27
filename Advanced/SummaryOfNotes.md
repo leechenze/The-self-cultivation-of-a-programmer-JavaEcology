@@ -494,12 +494,41 @@
                                 return LocalDateTime.now().format(DateTimeFormatter.ofPattern(patternProperties.getDateformat()));
                             }
                 
-                多环境配置：
+                多环境配置共享：
+                    微服务启动时会从nacos读取多个配置文件：
+                        1.[spring.application.name]-[spring.profiles.active].[suffixName] 例如：userService-dev.yaml
+                        2.[spring.application.name].[suffixName] 例如：userService.yaml
+                    无论profile.active如何变化，userService.yaml这个文件一定会加载，因此多环境共享可以写入这个文件
                     
+                    步骤：
+                        在 nacos 的 dev 的命名空间中添加 userService.yaml 的配置
+                            配置内容：
+                                pattern:
+                                    envSharedValue: 环境共享属性值
+                        在 PatternProperties 实体类中添加 envSharedValue 属性
+                        在 UserController 中：
+                            @Autowired
+                            private PatternProperties patternProperties;
 
-
-
-
+                            /**
+                             * 路径： /user/prop
+                             *
+                             * @return PatternProperties 实体类(就是配置中的所有属性)
+                             */
+                            @GetMapping("prop")
+                            public PatternProperties prop() {
+                                return patternProperties;
+                            }
+                        访问 /user/prop 可以读取 envSharedValue 的值，但是如果将profile.active的值改掉为test时，
+                        那么 userService-dev.yaml 文件中的值就读不到了，只能读到 userService.yaml文件中的值了
+                    多种配置的优先级：
+                        userService-dev.yaml  >  userService.yaml  >  user-service/*/resources/application.yml（本地配置）
+                        总结：nacos 远端的两个配置文件优先级更高，本地配置的优先级最低，
+                            然后 nacos 远端的配置 当前环境（dev） 又大于 共享环境的配置
+                            
+                Nacos集群搭建：
+                    Nacos生产环境下一定要部署为集群状态，部署方式参考：CSDN（Nacos生产环境集群部署方案）
+                        
 
 
 
