@@ -528,8 +528,59 @@
                             
                 Nacos集群搭建：
                     Nacos生产环境下一定要部署为集群状态，部署方式参考：CSDN（Nacos生产环境集群部署方案）
+                    新建nacos数据库：
+                        执行sql：lib/day2/nacos-all.sql
+                    nacos配置：
+                        因为目前没有三台机器，所以这里就使用一个nacos目录配完了后拷贝三分作为三个nacos节点充当三台机器。
+                        nacos目录：lib/day2/nacos-cluster/nacos1, lib/nacos-cluster/nacos2, lib/nacos-cluster/nacos3
                         
+                        在 nacos/conf/cluster.conf.example 改为 cluster.conf.example 进行配置：（都是本机ip的不同端口号）
+                            #example
+                            127.0.0.1:8045
+                            127.0.0.1:8046
+                            127.0.0.1:8047
+                        在 nacos/conf/application.properties 修改数据库配置为以下配置：
+                            #*************** Config Module Related Configurations ***************#
+                            ### If use MySQL as datasource:
+                            spring.datasource.platform=mysql（声明使用的是mysql的数据源）
+                            
+                            ### Count of DB:（集群中有几台mysql）
+                            db.num=1
+                            
+                            ### Connect URL of DB:（数据库配置）
+                            db.url.0=jdbc:mysql://127.0.0.1:3306/nacos?characterEncoding=utf8&connectTimeout=1000&socketTimeout=3000&autoReconnect=true&useUnicode=true&useSSL=false&serverTimezone=UTC
+                            db.user.0=root
+                            db.password.0=lcz19930316
+                            
+                            ### Connection pool configuration: hikariCP
+                            db.pool.config.connectionTimeout=30000
+                            db.pool.config.validationTimeout=10000
+                            db.pool.config.maximumPoolSize=20
+                            db.pool.config.minimumIdle=2
 
+                        然后如上所述，将配置好的 nacos 目录复制三份，然后分别把每个nacos的端口配置改下：
+                            nacos1 改为 8045
+                            nacos2 改为 8046
+                            nacos3 改为 8047
+                        配置完成之后再次运行时 就不需要 -m standalone 参数了，直接 sh startup.sh 即可，默认就是集群启动
+                        
+                        nginx方向代理：下载nginx，在nginx.conf 配置文件中添加如下片段
+                            upstream nacos-cluster {
+                                server 127.0.0.1:8845;
+                                server 127.0.0.1:8846;
+                                server 127.0.0.1:8847;
+                            }
+                            
+                            server {
+                                listen       99;
+                                server_name  localhost;
+                            
+                                location /nacos {
+                                    proxy_pass http://nacos-cluster;
+                                }
+                            }
+                        然后启动nginx：
+                            localhost:99
 
 
 
