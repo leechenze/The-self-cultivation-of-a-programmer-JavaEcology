@@ -1,0 +1,24 @@
+2023-03-29 23:10:58,265 INFO Current addressing mode selection : FileConfigMemberLookup
+
+2023-03-29 23:12:09,544 INFO Current addressing mode selection : FileConfigMemberLookup
+
+2023-03-29 23:12:09,548 WARN [serverlist] updated to : [Member{ip='10.10.167.21', port=8045, state=UP, extendInfo={raftPort=7045, readyToUpgrade=true, version=2.1.0}}, Member{ip='10.10.167.21', port=8046, state=UP, extendInfo={raftPort=7046, readyToUpgrade=true}}, Member{ip='10.10.167.21', port=8047, state=UP, extendInfo={raftPort=7047, readyToUpgrade=true}}]
+
+2023-03-29 23:13:16,160 INFO Current addressing mode selection : FileConfigMemberLookup
+
+2023-03-29 23:13:16,165 WARN [serverlist] updated to : [Member{ip='10.10.167.21', port=8045, state=UP, extendInfo={raftPort=7045, readyToUpgrade=true, version=2.1.0}}, Member{ip='10.10.167.21', port=8046, state=UP, extendInfo={raftPort=7046, readyToUpgrade=true}}, Member{ip='10.10.167.21', port=8047, state=UP, extendInfo={raftPort=7047, readyToUpgrade=true}}]
+
+2023-03-29 23:16:26,329 INFO Current addressing mode selection : StandaloneMemberLookup
+
+2023-03-29 23:16:28,567 WARN [ClusterRpcClientProxy] success to refresh cluster rpc client on start up,members =[] 
+
+2023-03-29 23:18:57,645 INFO Current addressing mode selection : StandaloneMemberLookup
+
+2023-03-29 23:19:01,669 WARN [ClusterRpcClientProxy] success to refresh cluster rpc client on start up,members =[] 
+
+2023-03-29 23:19:08,688 INFO This node is ready to provide external services
+
+2023-03-29 23:21:11,141 INFO Current addressing mode selection : FileConfigMemberLookup
+
+2023-03-29 23:21:11,145 WARN [serverlist] updated to : [Member{ip='10.10.167.21', port=8045, state=UP, extendInfo={raftPort=7045, readyToUpgrade=true, version=2.1.0}}, Member{ip='10.10.167.21', port=8046, state=UP, extendInfo={raftPort=7046, readyToUpgrade=true}}, Member{ip='10.10.167.21', port=8047, state=UP, extendInfo={raftPort=7047, readyToUpgrade=true}}]
+

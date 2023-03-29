@@ -564,6 +564,12 @@
                             nacos3 改为 8047
                         配置完成之后再次运行时 就不需要 -m standalone 参数了，直接 sh startup.sh 即可，默认就是集群启动
                         
+                        下载nginx：
+                            brew install nginx
+                            brew info nginx（查看nginx信息，安装和配置目录等）
+                            nginx （启动 nginx）
+                            nginx -s stop（停止 nginx）
+                            
                         nginx方向代理：下载nginx，在nginx.conf 配置文件中添加如下片段
                             upstream nacos-cluster {
                                 server 127.0.0.1:8845;
@@ -581,9 +587,9 @@
                             }
                         然后启动nginx：
                             localhost:99
-
-
-
+                    
+                    nacos 集群启动必须要配置数据库信息，单机启动不需要
+                    nacos 2.2.0 版本启动报错，改用2.1.0
 
 
 

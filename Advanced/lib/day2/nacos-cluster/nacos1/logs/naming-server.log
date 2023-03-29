@@ -1,0 +1,96 @@
+2023-03-29 23:10:58,322 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2023-03-29 23:10:58,322 WARN Using naming.distro config to replace core.distro config
+
+2023-03-29 23:11:01,006 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2023-03-29 23:11:01,008 INFO listen for service meta change
+
+2023-03-29 23:11:01,019 INFO upgrade.state file is not exist
+
+2023-03-29 23:12:09,625 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2023-03-29 23:12:09,625 WARN Using naming.distro config to replace core.distro config
+
+2023-03-29 23:12:10,638 INFO [NACOS-DISTRO] healthy server list changed, old: [10.10.167.21:8045, 10.10.167.21:8046, 10.10.167.21:8047], new: [10.10.167.21:8045, 10.10.167.21:8046, 10.10.167.21:8047]
+
+2023-03-29 23:13:16,249 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2023-03-29 23:13:16,249 WARN Using naming.distro config to replace core.distro config
+
+2023-03-29 23:13:17,216 INFO [NACOS-DISTRO] healthy server list changed, old: [10.10.167.21:8045, 10.10.167.21:8046, 10.10.167.21:8047], new: [10.10.167.21:8045, 10.10.167.21:8046, 10.10.167.21:8047]
+
+2023-03-29 23:16:26,404 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2023-03-29 23:16:26,404 WARN Using naming.distro config to replace core.distro config
+
+2023-03-29 23:16:26,672 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2023-03-29 23:16:26,673 INFO listen for service meta change
+
+2023-03-29 23:16:30,281 INFO [SelectorManager] Load SelectorContextBuilder(class com.alibaba.nacos.naming.selector.context.CmdbSelectorContextBuilder) contextType(CMDB) successfully.
+
+2023-03-29 23:16:30,282 INFO [SelectorManager] Load SelectorContextBuilder(class com.alibaba.nacos.naming.selector.context.NoneSelectorContextBuilder) contextType(NONE) successfully.
+
+2023-03-29 23:16:30,283 INFO [SelectorManager] Load Selector(class com.alibaba.nacos.naming.selector.LabelSelector) type(label) contextType(CMDB) successfully.
+
+2023-03-29 23:16:30,284 INFO [SelectorManager] Load Selector(class com.alibaba.nacos.naming.selector.NoneSelector) type(none) contextType(NONE) successfully.
+
+2023-03-29 23:18:57,698 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2023-03-29 23:18:57,698 WARN Using naming.distro config to replace core.distro config
+
+2023-03-29 23:18:57,958 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2023-03-29 23:18:57,960 INFO listen for service meta change
+
+2023-03-29 23:19:03,585 INFO [SelectorManager] Load SelectorContextBuilder(class com.alibaba.nacos.naming.selector.context.CmdbSelectorContextBuilder) contextType(CMDB) successfully.
+
+2023-03-29 23:19:03,585 INFO [SelectorManager] Load SelectorContextBuilder(class com.alibaba.nacos.naming.selector.context.NoneSelectorContextBuilder) contextType(NONE) successfully.
+
+2023-03-29 23:19:03,587 INFO [SelectorManager] Load Selector(class com.alibaba.nacos.naming.selector.LabelSelector) type(label) contextType(CMDB) successfully.
+
+2023-03-29 23:19:03,588 INFO [SelectorManager] Load Selector(class com.alibaba.nacos.naming.selector.NoneSelector) type(none) contextType(NONE) successfully.
+
+2023-03-29 23:19:05,259 INFO Load instance extension handler []
+
+2023-03-29 23:20:40,707 WARN [NamingServerHttpClientManager] Start destroying HTTP-Client
+
+2023-03-29 23:20:40,729 WARN [NamingServerHttpClientManager] Destruction of the end
+
+2023-03-29 23:20:42,281 ERROR [HEALTH-CHECK-V2] error while processing NIO task
+
+java.lang.InterruptedException: null
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2019)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2093)
+	at java.util.concurrent.LinkedBlockingQueue.poll(LinkedBlockingQueue.java:467)
+	at com.alibaba.nacos.naming.healthcheck.v2.processor.TcpHealthCheckProcessor.processTask(TcpHealthCheckProcessor.java:122)
+	at com.alibaba.nacos.naming.healthcheck.v2.processor.TcpHealthCheckProcessor.run(TcpHealthCheckProcessor.java:139)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2023-03-29 23:20:42,283 ERROR [HEALTH-CHECK] error while processing NIO task
+
+java.lang.InterruptedException: null
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.reportInterruptAfterWait(AbstractQueuedSynchronizer.java:2019)
+	at java.util.concurrent.locks.AbstractQueuedSynchronizer$ConditionObject.awaitNanos(AbstractQueuedSynchronizer.java:2093)
+	at java.util.concurrent.LinkedBlockingQueue.poll(LinkedBlockingQueue.java:467)
+	at com.alibaba.nacos.naming.healthcheck.TcpSuperSenseProcessor.processTask(TcpSuperSenseProcessor.java:137)
+	at com.alibaba.nacos.naming.healthcheck.TcpSuperSenseProcessor.run(TcpSuperSenseProcessor.java:154)
+	at java.util.concurrent.Executors$RunnableAdapter.call(Executors.java:511)
+	at java.util.concurrent.FutureTask.run(FutureTask.java:266)
+	at java.util.concurrent.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:1149)
+	at java.util.concurrent.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:624)
+	at java.lang.Thread.run(Thread.java:750)
+2023-03-29 23:21:11,237 WARN naming.distro config will be removed, please use core.protocol.distro replace.
+
+2023-03-29 23:21:11,237 WARN Using naming.distro config to replace core.distro config
+
+2023-03-29 23:21:12,208 INFO [NACOS-DISTRO] healthy server list changed, old: [10.10.167.21:8045, 10.10.167.21:8046, 10.10.167.21:8047], new: [10.10.167.21:8045, 10.10.167.21:8046, 10.10.167.21:8047]
+
+2023-03-29 23:21:13,781 INFO open empty service auto clean job, initialDelay : 50000 ms, period : 30000 ms
+
+2023-03-29 23:21:13,782 INFO listen for service meta change
+

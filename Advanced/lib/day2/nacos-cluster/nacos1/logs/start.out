@@ -1,0 +1,127 @@
+/Users/lee/Library/Java/JavaVirtualMachines/azul-1.8.0_322/Contents/Home/bin/java -Djava.ext.dirs=/Users/lee/Library/Java/JavaVirtualMachines/azul-1.8.0_322/Contents/Home/jre/lib/ext:/Users/lee/Library/Java/JavaVirtualMachines/azul-1.8.0_322/Contents/Home/lib/ext  -server -Xms2g -Xmx2g -Xmn1g -XX:MetaspaceSize=128m -XX:MaxMetaspaceSize=320m -XX:-OmitStackTraceInFastThrow -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/logs/java_heapdump.hprof -XX:-UseLargePages -Dnacos.member.list= -Xloggc:/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/logs/nacos_gc.log -verbose:gc -XX:+PrintGCDetails -XX:+PrintGCDateStamps -XX:+PrintGCTimeStamps -XX:+UseGCLogFileRotation -XX:NumberOfGCLogFiles=10 -XX:GCLogFileSize=100M -Dloader.path=/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/plugins/health,/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/plugins/cmdb,/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/plugins/selector -Dnacos.home=/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1 -jar /Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/target/nacos-server.jar  --spring.config.additional-location=file:/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/conf/ --logging.config=/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/conf/nacos-logback.xml --server.max-http-header-size=524288
+
+         ,--.
+       ,--.'|
+   ,--,:  : |                                           Nacos 2.1.0
+,`--.'`|  ' :                       ,---.               Running in cluster mode, All function modules
+|   :  :  | |                      '   ,'\   .--.--.    Port: 8045
+:   |   \ | :  ,--.--.     ,---.  /   /   | /  /    '   Pid: 65570
+|   : '  '; | /       \   /     \.   ; ,. :|  :  /`./   Console: http://10.10.167.21:8045/nacos/index.html
+'   ' ;.    ;.--.  .-. | /    / ''   | |: :|  :  ;_
+|   | | \   | \__\/: . ..    ' / '   | .; : \  \    `.      https://nacos.io
+'   : |  ; .' ," .--.; |'   ; :__|   :    |  `----.   \
+|   | '`--'  /  /  ,.  |'   | '.'|\   \  /  /  /`--'  /
+'   : |     ;  :   .'   \   :    : `----'  '--'.     /
+;   |.'     |  ,     .-./\   \  /            `--'---'
+'---'        `--`---'     `----'
+
+2023-03-29 23:21:01,015 INFO The server IP list of Nacos is [10.10.167.21:8045, 10.10.167.21:8046, 10.10.167.21:8047]
+
+2023-03-29 23:21:02,022 INFO Nacos is starting...
+
+2023-03-29 23:21:03,033 INFO Nacos is starting...
+
+2023-03-29 23:21:04,039 INFO Nacos is starting...
+
+2023-03-29 23:21:05,046 INFO Nacos is starting...
+
+2023-03-29 23:21:06,052 INFO Nacos is starting...
+
+2023-03-29 23:21:07,056 INFO Nacos is starting...
+
+2023-03-29 23:21:08,061 INFO Nacos is starting...
+
+2023-03-29 23:21:09,068 INFO Nacos is starting...
+
+2023-03-29 23:21:10,074 INFO Nacos is starting...
+
+2023-03-29 23:21:11,081 INFO Nacos is starting...
+
+2023-03-29 23:21:12,087 INFO Nacos is starting...
+
+2023-03-29 23:21:13,092 INFO Nacos is starting...
+
+2023-03-29 23:21:14,095 INFO Nacos is starting...
+
+2023-03-29 23:21:15,100 INFO Nacos is starting...
+
+2023-03-29 23:21:15,240 INFO Nacos Log files: /Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/logs
+
+2023-03-29 23:21:15,241 INFO Nacos Log files: /Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/conf
+
+2023-03-29 23:21:15,241 INFO Nacos Log files: /Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/data
+
+2023-03-29 23:21:15,242 ERROR Startup errors : 
+
+org.springframework.beans.factory.UnsatisfiedDependencyException: Error creating bean with name 'consoleHealth' defined in URL [jar:file:/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/target/nacos-server.jar!/BOOT-INF/classes!/com/alibaba/nacos/console/controller/HealthController.class]: Unsatisfied dependency expressed through constructor parameter 0; nested exception is org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'externalStoragePersistServiceImpl': Invocation of init method failed; nested exception is java.lang.RuntimeException: java.lang.RuntimeException: [db-load-error]load jdbc.properties error
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:769)
+	at org.springframework.beans.factory.support.ConstructorResolver.autowireConstructor(ConstructorResolver.java:218)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.autowireConstructor(AbstractAutowireCapableBeanFactory.java:1338)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBeanInstance(AbstractAutowireCapableBeanFactory.java:1185)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:554)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:514)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:319)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.preInstantiateSingletons(DefaultListableBeanFactory.java:866)
+	at org.springframework.context.support.AbstractApplicationContext.finishBeanFactoryInitialization(AbstractApplicationContext.java:878)
+	at org.springframework.context.support.AbstractApplicationContext.refresh(AbstractApplicationContext.java:550)
+	at org.springframework.boot.web.servlet.context.ServletWebServerApplicationContext.refresh(ServletWebServerApplicationContext.java:141)
+	at org.springframework.boot.SpringApplication.refresh(SpringApplication.java:744)
+	at org.springframework.boot.SpringApplication.refreshContext(SpringApplication.java:391)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:312)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1215)
+	at org.springframework.boot.SpringApplication.run(SpringApplication.java:1204)
+	at com.alibaba.nacos.Nacos.main(Nacos.java:35)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.boot.loader.MainMethodRunner.run(MainMethodRunner.java:49)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:108)
+	at org.springframework.boot.loader.Launcher.launch(Launcher.java:58)
+	at org.springframework.boot.loader.PropertiesLauncher.main(PropertiesLauncher.java:467)
+Caused by: org.springframework.beans.factory.BeanCreationException: Error creating bean with name 'externalStoragePersistServiceImpl': Invocation of init method failed; nested exception is java.lang.RuntimeException: java.lang.RuntimeException: [db-load-error]load jdbc.properties error
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:139)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.applyBeanPostProcessorsBeforeInitialization(AbstractAutowireCapableBeanFactory.java:413)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.initializeBean(AbstractAutowireCapableBeanFactory.java:1761)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.doCreateBean(AbstractAutowireCapableBeanFactory.java:592)
+	at org.springframework.beans.factory.support.AbstractAutowireCapableBeanFactory.createBean(AbstractAutowireCapableBeanFactory.java:514)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.lambda$doGetBean$0(AbstractBeanFactory.java:321)
+	at org.springframework.beans.factory.support.DefaultSingletonBeanRegistry.getSingleton(DefaultSingletonBeanRegistry.java:234)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.doGetBean(AbstractBeanFactory.java:319)
+	at org.springframework.beans.factory.support.AbstractBeanFactory.getBean(AbstractBeanFactory.java:199)
+	at org.springframework.beans.factory.config.DependencyDescriptor.resolveCandidate(DependencyDescriptor.java:277)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.doResolveDependency(DefaultListableBeanFactory.java:1276)
+	at org.springframework.beans.factory.support.DefaultListableBeanFactory.resolveDependency(DefaultListableBeanFactory.java:1196)
+	at org.springframework.beans.factory.support.ConstructorResolver.resolveAutowiredArgument(ConstructorResolver.java:857)
+	at org.springframework.beans.factory.support.ConstructorResolver.createArgumentArray(ConstructorResolver.java:760)
+	... 27 common frames omitted
+Caused by: java.lang.RuntimeException: java.lang.RuntimeException: [db-load-error]load jdbc.properties error
+	at com.alibaba.nacos.config.server.service.datasource.DynamicDataSource.getDataSource(DynamicDataSource.java:60)
+	at com.alibaba.nacos.config.server.service.repository.extrnal.ExternalStoragePersistServiceImpl.init(ExternalStoragePersistServiceImpl.java:135)
+	at sun.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+	at sun.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:62)
+	at sun.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+	at java.lang.reflect.Method.invoke(Method.java:498)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleElement.invoke(InitDestroyAnnotationBeanPostProcessor.java:363)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor$LifecycleMetadata.invokeInitMethods(InitDestroyAnnotationBeanPostProcessor.java:307)
+	at org.springframework.beans.factory.annotation.InitDestroyAnnotationBeanPostProcessor.postProcessBeforeInitialization(InitDestroyAnnotationBeanPostProcessor.java:136)
+	... 40 common frames omitted
+Caused by: java.lang.RuntimeException: [db-load-error]load jdbc.properties error
+	at com.alibaba.nacos.config.server.service.datasource.ExternalDataSourceServiceImpl.init(ExternalDataSourceServiceImpl.java:109)
+	at com.alibaba.nacos.config.server.service.datasource.DynamicDataSource.getDataSource(DynamicDataSource.java:55)
+	... 48 common frames omitted
+2023-03-29 23:21:16,792 WARN [WatchFileCenter] start close
+
+2023-03-29 23:21:16,795 WARN [WatchFileCenter] start to shutdown this watcher which is watch : /Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/conf
+
+2023-03-29 23:21:16,797 WARN [WatchFileCenter] already closed
+
+2023-03-29 23:21:16,797 WARN [NotifyCenter] Start destroying Publisher
+
+2023-03-29 23:21:16,798 WARN [NotifyCenter] Destruction of the end
+
+2023-03-29 23:21:16,800 ERROR Nacos failed to start, please see /Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/logs/nacos.log for more details.
+

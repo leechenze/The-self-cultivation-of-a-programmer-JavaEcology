@@ -1,0 +1,10 @@
+OpenJDK 64-Bit Server VM (25.322-b06) for bsd-amd64 JRE (Zulu 8.60.0.21-CA-macosx) (1.8.0_322-b06), built on Jan 13 2022 06:44:14 by "zulu_re" with gcc 4.2.1 Compatible Apple LLVM 11.0.0 (clang-1100.0.33.17)
+Memory: 4k page, physical 67108864k(1220284k free)
+
+/proc/meminfo:
+
+CommandLine flags: -XX:CompressedClassSpaceSize=327155712 -XX:GCLogFileSize=104857600 -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day2/nacos-cluster/nacos1/logs/java_heapdump.hprof -XX:InitialHeapSize=2147483648 -XX:MaxHeapSize=2147483648 -XX:MaxMetaspaceSize=335544320 -XX:MaxNewSize=1073741824 -XX:MetaspaceSize=134217728 -XX:NewSize=1073741824 -XX:NumberOfGCLogFiles=10 -XX:-OmitStackTraceInFastThrow -XX:+PrintGC -XX:+PrintGCDateStamps -XX:+PrintGCDetails -XX:+PrintGCTimeStamps -XX:+UseCompressedClassPointers -XX:+UseCompressedOops -XX:+UseGCLogFileRotation -XX:-UseLargePages -XX:+UseParallelGC 
+2023-03-29T23:21:01.642+0800: 3.688: [GC (Allocation Failure) [PSYoungGen: 786432K->11578K(917504K)] 786432K->11586K(1966080K), 0.0511361 secs] [Times: user=0.24 sys=0.08, real=0.05 secs] 
+2023-03-29T23:21:04.469+0800: 6.516: [GC (Allocation Failure) [PSYoungGen: 798010K->31827K(917504K)] 798018K->31843K(1966080K), 0.0428563 secs] [Times: user=0.19 sys=0.08, real=0.05 secs] 
+2023-03-29T23:21:07.736+0800: 9.784: [GC (Allocation Failure) [PSYoungGen: 818259K->36220K(917504K)] 818275K->36244K(1966080K), 0.0617195 secs] [Times: user=0.36 sys=0.11, real=0.06 secs] 
+2023-03-29T23:21:12.108+0800: 14.159: [GC (Allocation Failure) [PSYoungGen: 822652K->44900K(917504K)] 822676K->44932K(1966080K), 0.0682480 secs] [Times: user=0.35 sys=0.11, real=0.07 secs] 
