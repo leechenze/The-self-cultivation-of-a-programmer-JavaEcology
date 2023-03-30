@@ -8,7 +8,11 @@
 .idea
 target
 
+*.log
+*.dat
 
-nacos1
-nacos2
-nacos3
+nacos1/*
+nacos2/*
+nacos3/*
+
+Advanced/lib/day2/nacos-cluster/**

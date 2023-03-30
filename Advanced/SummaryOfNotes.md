@@ -602,8 +602,27 @@
                 Feign使用优化        
                 最佳实践        
 
-
-                
+                定义和使用Feign客户端
+                    在order-service中引入依赖：
+                        <!--feign客户端依赖包-->
+                        <dependency>
+                            <groupId>org.springframework.cloud</groupId>
+                            <artifactId>spring-cloud-starter-openfeign</artifactId>
+                        </dependency>
+                        
+                    在order-service的启动类中添加注解开启Feign的功能：
+                        @EnableFeignClients
+                    
+                    编写客户端，声明远程Feign的远程调用：clients.IUserClient（接口）
+                        
+                    
+                        主要是基于SrpingMvc的注解来声明远程调用信息，比如如上信息：
+                            服务名称：userservice
+                            请求方式：GET
+                            请求路径：/user/{id}
+                            请求参数：Long id
+                            返回值类型：User
+                            
 
 
 
