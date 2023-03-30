@@ -40,20 +40,17 @@ public class OrderService {
     /**
      * 使用 Feign 进行请求调用
      */
-
     @Autowired
     private IUserClient userClient;
-
     public Order queryOrderById(Long orderId) {
-
-            // 1.查询订单
-            Order order = orderMapper.findById(orderId);
-            // 2.使用 Feign 发起Http请求，查询用户
-            User user = userClient.findById(order.getUserId());
-            // 3.封装User到Order
-            order.setUser(user);
-            // 4.返回
-            return order;
+        // 1.查询订单
+        Order order = orderMapper.findById(orderId);
+        // 2.使用 Feign 发起Http请求，查询用户
+        User user = userClient.findById(order.getUserId());
+        // 3.封装User到Order
+        order.setUser(user);
+        // 4.返回
+        return order;
     }
 
 

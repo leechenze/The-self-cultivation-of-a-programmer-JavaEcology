@@ -611,21 +611,51 @@
                         </dependency>
                         
                     在order-service的启动类中添加注解开启Feign的功能：
+                        // 开启Feign的功能
                         @EnableFeignClients
-                    
+                        public class OrderApplication {...}
+
                     编写客户端，声明远程Feign的远程调用：clients.IUserClient（接口）
                         
-                    
-                        主要是基于SrpingMvc的注解来声明远程调用信息，比如如上信息：
+                        // 声明客户端，参数为服务名称
+                        @FeignClient("userService")
+                        public interface IUserClient {
+                            @GetMapping("/user/{id}")
+                            User findById(@PathVariable("id") Long id);
+                        }
+                    用Feign客户端代替 RestTemplate
+                        /**
+                         * 使用 Feign 进行请求调用
+                         */
+                        @Autowired
+                        private IUserClient userClient;
+                        public Order queryOrderById(Long orderId) {
+                            // 1.查询订单
+                            Order order = orderMapper.findById(orderId);
+                            // 2.使用 Feign 发起Http请求，查询用户
+                            User user = userClient.findById(order.getUserId());
+                            // 3.封装User到Order
+                            order.setUser(user);
+                            // 4.返回
+                            return order;
+                        }
+                        
+                    总结：
+                        主要是基于SrpingMvc的注解来声明远程调用信息，如下对比：
                             服务名称：userservice
                             请求方式：GET
                             请求路径：/user/{id}
                             请求参数：Long id
                             返回值类型：User
-                            
+                        代码对比：
+                            RestTemplate:
+                                String url = "http://userService/user/" + order.getUserId();
+                                User user = restTemplate.getForObject(url, User.class);
+                            Feign:
+                                User user = userClient.findById(order.getUserId());
 
-
-
+                自定义配置：
+                    
 壹.
 
 
