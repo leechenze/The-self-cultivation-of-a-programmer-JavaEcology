@@ -4,7 +4,7 @@
 
 
 零.Day1
-    
+
     认识微服务
     分布式服务架构案例 
     Eureka注册中心
@@ -334,7 +334,7 @@
                         启动并测试
                             http://localhost:8888/nacos/ ==> 服务管理 ==> 服务列表
                             即可查看到 userService 和 orderService
-
+                        
                 Nacos分级存储模型:
                     一级是服务：例如userService
                     二级是集群：例如西安和上海（西安:XN 包含userService:8081和userService:8082, 上海:SH 包含userService:8083）
@@ -572,9 +572,9 @@
                             
                         nginx方向代理：下载nginx，在nginx.conf 配置文件中添加如下片段
                             upstream nacos-cluster {
-                                server 127.0.0.1:8845;
-                                server 127.0.0.1:8846;
-                                server 127.0.0.1:8847;
+                                server 127.0.0.1:8045;
+                                server 127.0.0.1:8046;
+                                server 127.0.0.1:8047;
                             }
                             
                             server {
@@ -586,12 +586,24 @@
                                 }
                             }
                         然后启动nginx：
-                            localhost:99
-                    
+                            访问：localhost:99
+                            表面看上去访问的是一个，实际上nginx代理的 99 端口 会在 8045，8046，8047三个nacos之间做负载均衡
+                        代码改动：
+                            user-service 模块下的bootstrap.yml地址直接配置 nginx 的 99 即可。
+                        那么此时配置列表中新建一个配置，在数据库中会config_info 这张表中可以看到新增的配置
+                        
                     nacos 集群启动必须要配置数据库信息，单机启动不需要
                     nacos 2.2.0 版本启动报错，改用2.1.0
 
 
+            Http客户端Feign：            
+                Feign代替RestTemplate        
+                自定义配置        
+                Feign使用优化        
+                最佳实践        
+
+
+                
 
 
 
