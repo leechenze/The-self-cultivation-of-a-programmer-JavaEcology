@@ -655,7 +655,59 @@
                                 User user = userClient.findById(order.getUserId());
 
                 自定义配置：
-                    
+                    Feign实现了自动装配，Feign也允许自定义配置覆盖默认配置的。可以修改的配置如下：
+                        feign.Logger.Level
+                            修改日志级别：
+                                NONE：默认值，无输出日志信息
+                                BASIC：请求发送和结束时间耗时多久等一些基本日志信息
+                                HEADERS：包含BASIC信息和请求头响应头信息
+                                FULL：包含BASIC信息和HEADERS和请求体和响应体信息
+                        feign.codec.Decoder
+                            响应结果解析器：
+                                http远程调用的结果做解析，例如解析json字符串为java对象
+                        feign.codec.Encoder
+                            请求参数编码：
+                                将请求参数编码，便于通过http请求发送
+                        feign.Contract
+                            支持的注解格式：
+                                默认是SpringMVC的注解，用来规定Feign中支持哪些注解
+                        feign.Retryer
+                            失败重试机制：
+                                请求失败的重试机制，默认没有重试机制，但是feign是依赖ribbon的，所以会使用ribbon的重试机制
+                    方式一：
+                        配置文件的方式：
+                            全局生效：
+                                feign:
+                                    client:
+                                        config:
+                                            default: # 这里用default就是全局配置，如果指定服务名称，则是针对某个微服务的配置
+                                                loggerLevel: FULL # 日志级别
+                            局部生效：
+                                feign:
+                                    client:
+                                        config:
+                                            userService: # 这里用default就是全局配置，如果指定服务名称，则是针对某个微服务的配置
+                                                loggerLevel: FULL # 日志级别
+                    方式二：
+                        
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 壹.
 
 
