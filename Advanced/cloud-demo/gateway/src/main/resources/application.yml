@@ -1,0 +1,28 @@
+server:
+  port: 10010
+spring:
+  application:
+    name: gateway
+  cloud:
+    nacos:
+      server-addr: localhost:8888
+      discovery:
+        namespace: f324b4ac-7a64-426d-8515-7fc9ce35669d # public环境的命名空间ID
+    gateway:
+      routes:
+        - id: user-route # 路由标识，必须唯一
+          uri: lb://userService # 路由的目标地址，lb（LoadBalance的首写）
+          predicates: # 路由断言，判断请求是否符合规则
+            - Path=/user/** # 路径断言，判断路径是否是以/user/开头，如果是则符合规则，那么就会代理到userService中
+#          filters:
+#            - AddRequestHeader=Truth, Douglas Lee is freaking awesome!!!
+        - id: order-route
+          uri: lb://orderService
+          predicates:
+            - Path=/order/**
+      default-filters:
+        - AddRequestHeader=Truth, Douglas Lee is freaking awesome!!!
+
+
+
+

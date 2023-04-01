@@ -14,7 +14,7 @@ spring:
       discovery:
         # cluster-name: XA
         namespace: f324b4ac-7a64-426d-8515-7fc9ce35669d # dev环境的命名空间ID
-        ephemeral: false # true为临时实例（默认值），false为非临时实例
+        # ephemeral: false # true为临时实例（默认值），false为非临时实例
 
 
 mybatis:

@@ -818,13 +818,75 @@
         网关功能：
             身份认证和权限校验：
             服务路由和负载均衡：
-                
+                根据请求判断是userSerivce的请求还是OrderService的请求，这就是服务路由，然后对这些微服务的实例再做负载均衡处理
             请求限流：
-                
-    
+                微服务能够允许的请求量就是500，如果有两千个请求的话，后面1500的请求会被限制，是对微服务的一种保护措施
+            在SpringCloud中网关的实现包括两种，gateway和zuul。
+                zuul是基于Servlet的实现，属于阻塞式编程。
+                Gateway是基于Spring5中提供的WebFlux，属于响应式编程的实现，具备更好的性能。
+    网关搭建：
+        网关是一个独立的服务，因此搭建网关就需要创建一个全新的模块。
+        操作步骤：
+            引入依赖：
+                网关依赖
+                    <!--Gateway网关依赖-->
+                    <dependency>
+                        <groupId>org.springframework.cloud</groupId>
+                        <artifactId>spring-cloud-starter-gateway</artifactId>
+                    </dependency>
+                nacos服务发现依赖：因为网关本身也是一个微服务，也需要把自己注册到nacos，或者从nacos拉取服务，所以必须需要nacos的发现依赖。
+                    <!--nacos 客户端依赖（发现依赖）-->
+                    <dependency>
+                        <groupId>com.alibaba.cloud</groupId>
+                        <artifactId>spring-cloud-starter-alibaba-nacos-discovery</artifactId>
+                    </dependency>
+            编写路由配置以及nacos地址：
+                server:
+                    port: 10010
+                spring:
+                    application:
+                        name: gateway
+                    cloud:
+                        nacos:
+                            server-addr: localhost:8888
+                        gateway:
+                            routes:
+                                - id: userService # 路由标识，必须唯一
+                                uri: lb://userService # 路由的目标地址，lb（LoadBalance的首写）
+                                predicates: # 路由断言，判断请求是否符合规则
+                                    - Path=/user/** # 路径断言，判断路径是否是以/user/开头，如果是则符合规则，那么就会代理到userService中
+            此时访问 http://localhost:10010/user/1 即可转发到 http://localhost:8081/user/1 这个userSerivce的服务上
+    路由断言工厂：
+        网关路由可以配置的内容包括：
+            路由id：路由唯一表示
+            uri：路由目的地，支持http和lb两种方式
+            predicates：路由断言，用以判断请求是否符合要求，符合则转发到路由目的地
+            filers：路由过滤器，用以处理请求和响应
+        这段主要是对predicates断言的了解：
+            Spring提供了十多种基本的predicate工厂：
+            我们这里只是简单配置了 Path的规则：还有很多请看spring官网
+              predicates:
+                - Path=/order/**
+            spring官网： https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#the-after-route-predicate-factory
 
+    路由过滤器：
+        GatewayFilter是网关中提供的一种过滤器，可以对进入网关的请求和微服务返回的响应做处理：        
+        在Spring中提供了将近40种不同的路由过滤器工厂。        
+            spring官网：https://docs.spring.io/spring-cloud-gateway/docs/current/reference/html/#the-addrequestheader-gatewayfilter-factory
+        作用：
+            在过滤器中添加请求头等操作。
+            default-filters:
+                和 gateway.routes 同级，是针对所有路由的过滤器。
+            修改：UserController.java
+                第二个参数：@RequestHeader(value = "Truth", required = false) String truth 用来接收过滤器中的请求头参数信息：Truth。
+                @GetMapping("/{id}")
+                public User queryById(@PathVariable("id") Long id, @RequestHeader(value = "Truth", required = false) String truth) {
+                    System.out.println("Truth: " + truth);
+                    return userService.queryById(id);
+                }
 
-
+    全局过滤器：
+        
 
 
 

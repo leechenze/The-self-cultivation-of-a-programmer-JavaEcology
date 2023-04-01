@@ -58,9 +58,11 @@ public class UserController {
      *
      * @param id 用户id
      * @return 用户
+     * 第二个参数：@RequestHeader(value = "Truth", required = false) String truth 用来接收过滤器中的请求头参数信息：Truth。
      */
     @GetMapping("/{id}")
-    public User queryById(@PathVariable("id") Long id) {
+    public User queryById(@PathVariable("id") Long id, @RequestHeader(value = "Truth", required = false) String truth) {
+        System.out.println("Truth: " + truth);
         return userService.queryById(id);
     }
 }
