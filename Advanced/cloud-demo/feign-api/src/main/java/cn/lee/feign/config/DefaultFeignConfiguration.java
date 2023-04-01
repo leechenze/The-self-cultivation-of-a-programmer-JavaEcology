@@ -1,4 +1,4 @@
-package cn.lee.order.config;
+package cn.lee.feign.config;
 
 import feign.Logger;
 import org.springframework.context.annotation.Bean;

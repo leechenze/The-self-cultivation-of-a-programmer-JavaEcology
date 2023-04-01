@@ -1,13 +1,12 @@
 package cn.lee.order.service;
 
-import cn.lee.order.clients.IUserClient;
+
+import cn.lee.feign.clients.IUserClient;
 import cn.lee.order.mapper.OrderMapper;
 import cn.lee.order.pojo.Order;
-import cn.lee.order.pojo.User;
+import cn.lee.feign.pojo.User;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
-import org.springframework.web.client.RestTemplate;
 
 @Service
 public class OrderService {

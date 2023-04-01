@@ -52,6 +52,12 @@
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-httpclient</artifactId>
         </dependency>
+        <!--引入单独抽离的feign-api配置模块-->
+        <dependency>
+            <groupId>cn.lee.demo</groupId>
+            <artifactId>feign-api</artifactId>
+            <version>1.0</version>
+        </dependency>
 
 
         <!--ribbon 依赖,用以改变负载均衡策略:(是轮询还是随机的规则策略)-->
@@ -65,6 +71,12 @@
             <groupId>com.netflix.ribbon</groupId>
             <artifactId>ribbon-loadbalancer</artifactId>
             <version>2.7.9</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.lee.demo</groupId>
+            <artifactId>feign-api</artifactId>
+            <version>1.0</version>
+            <scope>compile</scope>
         </dependency>
 
     </dependencies>

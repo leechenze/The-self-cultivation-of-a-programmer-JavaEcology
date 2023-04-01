@@ -1,4 +1,4 @@
-package cn.lee.order.pojo;
+package cn.lee.feign.pojo;
 
 import lombok.Data;
 

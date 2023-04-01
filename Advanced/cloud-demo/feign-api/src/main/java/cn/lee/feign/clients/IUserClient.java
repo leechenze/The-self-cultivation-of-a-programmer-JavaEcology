@@ -1,7 +1,7 @@
-package cn.lee.order.clients;
+package cn.lee.feign.clients;
 
 
-import cn.lee.order.pojo.User;
+import cn.lee.feign.pojo.User;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
