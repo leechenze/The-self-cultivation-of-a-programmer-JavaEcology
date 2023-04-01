@@ -674,7 +674,7 @@
                         feign.Retryer
                             失败重试机制：
                                 请求失败的重试机制，默认没有重试机制，但是feign是依赖ribbon的，所以会使用ribbon的重试机制
-                    方式一：
+                    方式一：(order-service/.../application.yml)
                         配置文件的方式：
                             全局生效：
                                 feign:
@@ -689,7 +689,46 @@
                                             userService: # 这里用default就是全局配置，如果指定服务名称，则是针对某个微服务的配置
                                                 loggerLevel: FULL # 日志级别
                     方式二：
-                        
+                        java代码方式需要首先声明一个Bean：
+                            public class FeignClientCOnfiguration {
+                                @Bean
+                                public Logger.Level feignLogLevel() {
+                                    return Logger.Lever.FULL
+                                }
+                            }
+                        而后如果是全局配置，则把它放到@EnableFeignClients这个注解中（在启动类中添加）
+                            @EnableFeignClients(defaultConfiguration = FeignClientConfiguration.class)
+                        如果是局部配置，则把它放到@FeignClient这个注解中（在clients.IUserClient类中添加）
+                            @FeignClient(value = "userService", configuration = FeignClientConfinguration.class)
+                Feign性能调优：
+                    Feign底层的客户端实现：
+                        URLConnection：默认实现，不支持连接池
+                        Apache HttpClient：支持连接池
+                        OKHttp：支持连接池
+                    因此优化Feign的性能主要包括：
+                        使用连接池代替默认的URLConnection这个不支持连接池的客户端实现
+                        日志级别：最好用basic和none（不开日志对性能提升的影响很大）
+                    具体步骤：（order-service）
+                        Feign添加对HttpClient支持的依赖（这个依赖已经被spring管理起来的，不需要声明版本，只要引入即可）
+                            <!--引入HttpClient依赖，以修改Feign客户端默认的URLConnection的依赖-->
+                            <dependency>
+                                <groupId>io.github.openfeign</groupId>
+                                <artifactId>feign-httpclient</artifactId>
+                            </dependency>
+                        配置连接池：
+                            feign:
+                                client:
+                                    config:
+                                        default:
+                                            loggerLevel: FULL
+                                httpclient:
+                                    enabled: true # 支持HttpClient的开关
+                                    max-connections: 200 # 最大连接数（开发中要根据压测进行对这个属性的最优值进行配置）
+                                    max-connections-per-route: 50 # 单个请求路径的最大连接数（开发中要根据压测进行对这个属性的最优值进行配置）
+                Feign的最佳实践
+                    
+
+
 
 
 

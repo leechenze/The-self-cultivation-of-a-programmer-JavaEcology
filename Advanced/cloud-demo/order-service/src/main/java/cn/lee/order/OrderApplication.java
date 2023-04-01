@@ -1,5 +1,6 @@
 package cn.lee.order;
 
+import cn.lee.order.config.DefaultFeignConfiguration;
 import com.netflix.loadbalancer.IRule;
 import com.netflix.loadbalancer.RandomRule;
 import com.netflix.loadbalancer.RoundRobinRule;
@@ -16,9 +17,9 @@ import org.springframework.web.client.RestTemplate;
 @SpringBootApplication
 @EnableDiscoveryClient
 // 开启Feign的功能
-@EnableFeignClients
+@EnableFeignClients(defaultConfiguration = DefaultFeignConfiguration.class)
 public class OrderApplication {
-
+    
     public static void main(String[] args) {
         SpringApplication.run(OrderApplication.class, args);
     }
