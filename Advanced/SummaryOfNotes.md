@@ -885,8 +885,84 @@
                     return userService.queryById(id);
                 }
 
-    全局过滤器：
-        
+    全局过滤器GlobalFilter：
+        和default-filters优点类似，但是有区别：
+            GatewayFilter是通过配置定义，处理逻辑是固定的
+            GlobalFilter的逻辑是需要自己写代码实现的
+        操纵步骤：
+            定义实现接口GlobalFilter的接口
+                // @Order(-1)
+                @Component
+                public class AuthorizeFilter implements GlobalFilter, Ordered {
+                
+                    @Override
+                    public Mono<Void> filter(ServerWebExchange exchange, GatewayFilterChain chain) {
+                
+                        // 获取请求参数
+                        ServerHttpRequest request = exchange.getRequest();
+                        MultiValueMap<String, String> params = request.getQueryParams();
+                        // 获取参数中的 authorization 参数
+                        String authorize = params.getFirst("authorization");
+                        // 判断参数子是否等于 admin，是则放行
+                        if ("admin".equals(authorize)) {
+                            return chain.filter(exchange);
+                        }
+                        // 否则设置为认证的状态吗，然后拦截
+                        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+                        return exchange.getResponse().setComplete();
+                    }
+                
+                    @Override
+                    public int getOrder() {
+                        // Order也可以通过过滤器进行指定，用以定义过滤器执行的优先级。返回值越小优先级越高（包括负数）
+                        return -1;
+                    }
+                }
+            访问：
+                此时访问就需要加上 authorization 参数： http://localhost:10010/user/1?authorization=admin
+                否则无法正确访问
+            细节：
+                GlobalFilter返回的都是WebFlux的Mono接口。
+                此外@Order注解用来指定过滤器的执行顺序，代码实现方式就需要继承 Ordered 接口
+                过滤器一定要有Order这个顺序
+    过滤器链执行顺序：
+        请求进入到网关会碰到三类过滤器：当前路由过滤器，DefaultFilter，GlobalFilter。
+        请求路由后，会将当前路由器和DefaultFilter和GlobalFilter合并到一个路由器链（集合）中，排序后依次执行每个过滤器
+        每一个过滤器都必须指定一个int类型的order值，order值越小，优先级越高，执行顺序越靠前。
+            GlobalFilter通过实现Ordered接口，或者@Order注解进行指定
+            路由过滤器和DefaultFilter的Order是由Spring指定，默认是按照声明顺序从1递增。
+              default-filters：
+                - AddRequestHeader=Truth, Douglas Lee is freaking awesome!!! ==> order => 1
+                - AddXxxHeader=Truth, Douglas Lee is freaking awesome!!! ==> order => 2
+                - AddXxxHeader=Truth, Douglas Lee is freaking awesome!!! ==> order => 3
+        当过滤器的Order值都是一样的时，会按着Default > 路由过滤器 > GlobalFilter的顺序执行排序
+        总结：
+            过滤器排序先看order值，值越小优先级越高，当order值一样时，顺序是：Default > 路由过滤器 > GlobalFilter
+    跨域问题处理：
+        网关处理跨域采用的同样是CORS方案，并且只需要简单配置即可（globalcors 和 routes 同级）
+           globalcors:
+            add-to-simple-url-handler-mapping: true
+            cors-configurations:
+              "[/**]":
+                allowedOrigins: # 允许哪些网站的跨域请求
+                  - "http://localhost:8090"
+                  - "http://www.leechenze.com"
+                allowedMethods: # 允许的请求方式
+                  - "GET"
+                  - "POST"
+                  - "DELETE"
+                  - "PUT"
+                  - "OPTIONS"
+                allowedHeaders: "*" # 允许在请求头中携带的头信息
+                allowCredentials: true # 是否允许携带cookie
+                maxAge: 360000 # 这次跨域检查的有效期
+        CORS跨域要配置的参数主要包含以下配置：
+            允许哪些域名跨域
+            允许哪些请求头
+            允许哪些请求方式
+            是否允许使用cookie
+            有效期时间
+            
 
 
 
@@ -901,15 +977,58 @@
 
 
 
+伍.Docker
+    
+    初识Docker
+    Docker的基本操作
+    Dockerfile的自定义镜像
+    Docker-Compose
+    Docker镜像服务
+    
+    初识Docker
+        什么是Docker：
+            Docker用来解决Java服务的部署问题。
+            java项目在部署时，因为依赖关系复杂，很容易出现兼容性问题，一般服务器都是linux系统。
+            那我们的java项目依赖在linux下就要分别对各种各样的依赖进行版本配置。这是一件很复杂的事情。
+            因此在没有Docker时，开发部署的效率非常非常底下。
+            Docker所做的就是将应用的 Libs（函数库）和 Deps（依赖库）和配置 以及应用一起打包
+            再将每个应用放到一个隔离容器中运行，避免互相干扰。比如（Node容器，Rides容器，MQ容器，MySql容器等...）
+            那么有一个问题，打包是基于某中操作系统进行打包的，也就是说在ubuntu系统下的应用的依赖和函数库在CentOS上是无法运行的。
+            但是Doker是如何跨系统的呢？了解Docker如何跨系统运行前，需要了解下操作系统的结构：（以Ubuntu为例）
+                所有的Linux系统都分为以下三层：
+                    上层：系统应用（如：ubuntu，centOS）
+                    中层：内核（Linux）
+                    底层：计算机硬件
+                所有的上层系统应用都是基于Linux内核封装的一些方法，进行对内核指令的一个调用。
+                内核是不会改变的，但是变化的是系统应用，所以Ubuntu系统的一些方法可能 centOS中根本就不存在。
+            那么Docker是如何处理不同系统应用的问题的呢？
+                Docker实际是将用户程序和所需要调用的系统（比如Ubuntu）函数库一起打包
+                所以Docker就不需要关注系统是什么，因为他自己就有，他依赖的只是Linux内核，所以只需要关注是Linux内核就行。
+        总结：
+            Docker就是一个快速交付应用，运行应用的技术：
+                可以将程序及其依赖，运行环境一起打包为一个镜像，可以迁移到任意Linux操作系统 
+
+
+        Docker和虚拟机的区别：
+            虚拟机（Virtual Machine）是在操作系统中模拟硬件设备，然后运行另一个操作系统。
+            Docker应用执行时是直接调用操作系统内核的
+            VirtualMachine是使用Hypervisor的技术来实现和内核交互的，所以性能会有折扣 
+            因此企业在做服务部署时，都会选择使用Docker，而不会选择用虚拟机了。
+            总结：
+                性能：
+                    Docker接近原生，虚拟机性能较差
+                硬盘占用：
+                    Docker一般为MB级别，虚拟机一般都在GB级别
+                启动：
+                    Docker在秒级别，虚拟机在分钟级别
+                    因为Docker是系统的一个进程，而虚拟机属于在操作系统中的又一个操作系统。
+
+        Docker架构：
+            
 
 
 
-
-
-
-
-
-伍.
+        安装Docker：
 
 
 
