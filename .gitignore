@@ -16,3 +16,4 @@ nacos2/*
 nacos3/*
 
 Advanced/lib/day2/nacos-cluster/**
+local-docker
