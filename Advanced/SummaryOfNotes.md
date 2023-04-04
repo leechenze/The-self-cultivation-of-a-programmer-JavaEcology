@@ -1026,7 +1026,7 @@
         Docker架构：
             镜像和容器：
                 Docker架构中有几个比较重要的概念，首先就是镜像和容器
-                镜像（Image）：Docker将应用程序及其所需要的依赖，函数库，环境，配置文件等打包在一起，成为镜像
+                镜像（Image）：Docker将应用程序及其所需要的依赖，函数库，环境，配置文件等打包在一起，称为镜像
                 容器（Container）：镜像中的应用程序运行后形成的进程就是容器，只是Docker会给容器做隔离，对外不可见。
                     最大的特点，容器是只可读的，不可写入的，想要写入需要拷贝一份文件到自己的文件系统中重写，别对原容器有污染，这就是容器隔离的特性
                 DockerHub：
@@ -1039,12 +1039,57 @@
                     客户端（Client）：通过命令或RestAPI向Docker服务端发送指令，可以在本地或远程向服务端发送指令
 
         安装Docker：
-            企业部署一般都是采用Linux操作系统，而其中又数CentOS发行版占比最多，因为我们在CentOS下安装Docker。
+            企业部署一般都是采用Linux操作系统，而其中又数CentOS发行版占比最多，所以在CentOS下安装Docker配置请看 lib/day2/Centos7安装Docker.md
+            docker镜像加速：https://cr.console.aliyun.com/cn-hangzhou/instances/mirrors
+            dockerhub
+            后面教程使用本机mac进行学习。
+        
+        Docker基本操作：
+            镜像操作：
+            容器操作：
+            数据卷（容器数据管理）：
+            
+            镜像相关命令：
+                镜像名称一般分为两部分组成：[repository]:[tag]
+                比如：mysql:5.7，mysql就是repository，5.7就是版本（tag）
+                如果指定tag时，默认即使latest，代表最新版本镜像。
+            镜像操作命令：
+                获取镜像：
+                    本地获取：通过一个DockerFile的文件，通过 docker build 的命令构建为一个镜像。
+                    远程获取：大多数情况下我们会通过 Docker registry （DockerHub）镜像服务器中通过 docker pull 远程拉取镜像
+                常见命令：
+                    docker build： 构建镜像
+                    docker images： 查看镜像
+                    docker rmi： 删除镜像
+                    docker push：推送镜像到服务器
+                    docker pull：拉取镜像到服务器
+                    docker save：保存镜像为一个压缩包
+                    docker load：加载压缩包为一个镜像
+                    docker --help： docker命令帮助文档
+                    docker images --help：docker的images命令帮助文档
+                镜像实操：（docker本地实操都在 lib/day2/local-docker 这个目录下）
+                    首先去docker hub 搜索镜像，这里就在 DockerHub 搜索了。
+                    根据查到的镜像名称，拉取自己需要的镜像：
+                        docker pull nginx
+                    查看拉取到的镜像：
+                        docker iamges
+                    导出nginx镜像为压缩包
+                        docker save -o nginx.tar nginx:latest
+                        这时本地目就会出现一个 nginx.tar 压缩包
+                    删除本地镜像
+                        docker rmi nginx:latest
+                    查看images确定已经删除掉了 nginx:latest
+                        docker images
+                    确保成功删掉 nginx:latest 之后，加载本地的 nginx.tar
+                        docker load -i nginx.tar
+                    再次查看images确定已经成功加载了 nginx.tar 为 nginx:latest
+                        docker images
+            容器命令操作：
+                
+            
                 
                 
-
-
-
+                
 
 
 
