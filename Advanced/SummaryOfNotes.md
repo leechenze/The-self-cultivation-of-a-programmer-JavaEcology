@@ -1053,11 +1053,13 @@
                 镜像名称一般分为两部分组成：[repository]:[tag]
                 比如：mysql:5.7，mysql就是repository，5.7就是版本（tag）
                 如果指定tag时，默认即使latest，代表最新版本镜像。
+            
             镜像操作命令：
                 获取镜像：
                     本地获取：通过一个DockerFile的文件，通过 docker build 的命令构建为一个镜像。
                     远程获取：大多数情况下我们会通过 Docker registry （DockerHub）镜像服务器中通过 docker pull 远程拉取镜像
                 常用命令：
+                    docker search： 通过镜像名搜索镜像
                     docker build： 构建镜像
                     docker images： 查看镜像
                         -a： 查看所有镜像
@@ -1087,6 +1089,7 @@
                         docker load -i nginx.tar
                     再次查看images确定已经成功加载了 nginx.tar 为 nginx:latest
                         docker images
+                    
             容器命令操作：
                 常用命令：
                     docker run： 创建容器及运行容器
@@ -1094,6 +1097,7 @@
                         -p： (重要)将宿主机端口与容器端口映射，冒号左侧是宿主机端口，右侧是容器端口。如果不暴露宿主机端口则无法访问容器。
                         -d： 后台运行的容器
                         -a： 查看所有状态的容器（默认只能查看运行中的容器）
+                        -v [html:/root/html]：指定把html数据卷挂载到容器内的/root/html这个目录中  
                         [image name]： 指定宿主机中的容器
                     docker pause：暂停容器
                     docker unpause： 取消暂停容器
@@ -1111,9 +1115,10 @@
                         -it： 指定当前进入的容器创建一个输入、输出终端，允许与容器的交互
                         [container name]：要进入的容器名称
                         [command]：进入容器后执行的命令，如：bash（一个linux的终端交互命令）
-                镜像命令实操一：（创建运行一个nginx容器）
-                镜像命令实操二：（进入mynginx容器，修改html文件内容，添加"Hello Douglas Z. Lee"
-
+                容器命令实操一：（创建运行一个nginx容器）
+                    docker run --name mynginx -p 80:80 -d nginx
+                    docker logs -f mynginx
+                容器命令实操二：（进入mynginx容器，修改html文件内容，添加"Hello Douglas Z. Lee"
                     进入mynginx容器内部
                         docker exec -it mynginx bash
                     pwd查看当前目录，并ls 确定已经到了linux的根目录
@@ -1135,12 +1140,72 @@
                     启动容器：
                         docker start mynginx
                     查看所有容器：               
-                        docker ps -a               
+                        docker ps -a
                     删除容器：
                         docker rm nginx
                     查看所有容器确定下 mynginx 容器删除成功：     
                         docker ps -a
+                容器命令实操三：（创建并运行一个redis容器，并且支持数据持久化）
+                    创建并运行myredis容器：
+                        docker run --name myredis -p 6379:6379 -d redis redis-server --appendonly yes
+                    进入myredis容器内部：
+                        docker exec -it myredis bash
+                        当然也可以直接进入 redis-cli
+                        docker exec -it myredis redis-cli
+                    连接redis：
+                        redis-cli
+                    存储数据：
+                        set num 666
+            
+            数据卷命令操作：
+                解读：数据卷（volume）是一个虚拟目录，指向宿主机文件系统中的某个真实目录。
+                $PWD：此命令表示当前路径
+                docker volume 命令是数据卷操作，后面跟随的command来确定下一步的操作：
+                    create： 创建一个数据卷
+                    inspect： 显示一个或多个volume的信息
+                    ls： 列出所有的volume
+                    prune： 删除未使用的volme
+                    rm： 删除一个或多个指定的volume
+                数据卷命令实操一：
+                    创建一个名为html的数据卷：
+                        docker volume create html
+                    查看所有的数据卷，以查看html是否成功创建：
+                        docker volume ls
+                    查看html的详细信息：
+                        docker volume inspect html
+                    删除未使用的数据卷：
+                        docker volume prune
+                        会有提示，大致意思：将删除所有的本地的未使用的卷，是否确定？
+                    删除html卷：
+                        docker volume rm html
+                数据卷命令实操二：（注意：这里使用CentOS进行操作了）
+                    案例：这里演示的还是之前的 nginx 首页标头更改案例。
+                    问题处理：
+                        CentOS中（一切失败的命令使用 --nogpgcheck 进行安装）
+                        CentOS中操作步骤：ifconfig 中找到 ens160 的 inet 的值：172.16.168.130
+                        然后docker 中 nginx的开放端口为 80，所以：在本地浏览器访问：(172.16.168.130:80  ==>  172.16.168.130)
+                        就可以看到在虚拟机中启动的 nginx 的首页。
                     
+                    创建并且运行mynginx容器：
+                        docker run --name mynginx -p 80:80 -v html:/usr/share/nginx/html -d nginx
+                    查看html数据卷的详细信息：
+                        docker volume inspect html
+                        信息中找到 MountPoint 字段，就是在挂载的虚拟目录（/var/lib/docker/volumes/html/_data）
+                    进入这个虚拟目录：
+                        cd /var/lib/docker/volumes/html/_data
+                    查看目录下的文件：
+                        ls
+                        此时会输出 50x.html 和 index.html 说明此时已经挂载到了宿主机的真实目录下了。
+                        那么此时已经映射到宿主机的目录下了，无论是 vi，nano还是vim都可以对其进行修改。
+                        再次把 Welcome Nginx 换成 Hello Docker Hub！ 这个标头改一下。
+                        然后进行修改访问 centos中ifconfig中的本机地址 + nginx 的端口 即可看到修改后的内容。
+                数据卷命令实操三：（创建并运行一个MySql容器，将宿主机目录直接挂载到容器）
+                    提示：这里是宿主机目录挂载，而不是数据卷名称挂载了，所以这里回到 MacOS 的环境中进行操作。
+                        目录挂载和数据卷挂载的语法是类似的：
+                            -v [宿主机目录]:[容器内目录]
+                            -v [宿主机文件]:[容器内文件]
+                    
+                
                     
                     
                 
