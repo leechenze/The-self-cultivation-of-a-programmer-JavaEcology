@@ -1057,17 +1057,20 @@
                 获取镜像：
                     本地获取：通过一个DockerFile的文件，通过 docker build 的命令构建为一个镜像。
                     远程获取：大多数情况下我们会通过 Docker registry （DockerHub）镜像服务器中通过 docker pull 远程拉取镜像
-                常见命令：
+                常用命令：
                     docker build： 构建镜像
                     docker images： 查看镜像
+                        -a： 查看所有镜像
                     docker rmi： 删除镜像
                     docker push：推送镜像到服务器
                     docker pull：拉取镜像到服务器
                     docker save：保存镜像为一个压缩包
+                        -o： 镜像输出的保存名称
                     docker load：加载压缩包为一个镜像
+                        -i： 输入的镜像保存时的名称
                     docker --help： docker命令帮助文档
                     docker images --help：docker的images命令帮助文档
-                镜像实操：（docker本地实操都在 lib/day2/local-docker 这个目录下）
+                镜像命令实操：（docker本地实操都在 lib/day2/local-docker 这个目录下）
                     首先去docker hub 搜索镜像，这里就在 DockerHub 搜索了。
                     根据查到的镜像名称，拉取自己需要的镜像：
                         docker pull nginx
@@ -1085,8 +1088,61 @@
                     再次查看images确定已经成功加载了 nginx.tar 为 nginx:latest
                         docker images
             容器命令操作：
-                
-            
+                常用命令：
+                    docker run： 创建容器及运行容器
+                        --name： 指定容器名称
+                        -p： (重要)将宿主机端口与容器端口映射，冒号左侧是宿主机端口，右侧是容器端口。如果不暴露宿主机端口则无法访问容器。
+                        -d： 后台运行的容器
+                        -a： 查看所有状态的容器（默认只能查看运行中的容器）
+                        [image name]： 指定宿主机中的容器
+                    docker pause：暂停容器
+                    docker unpause： 取消暂停容器
+                    docker stop： 停止容器
+                        [container name]： 指定容器名称
+                    docker start： 开始容器
+                        [container name]： 指定容器名称
+                    docker rm： 删除容器
+                        -f： 强制删除运行中的容器（运行状态的容器不允许删除）
+                    docker ps： 查看运行的容器及其状态
+                    docker logs： 查看容器运行日志
+                        -f： 持续更新日志信息
+                        [container name]： 指定查看日志的容器名称
+                    docker exec： 进入容器内部执行命令
+                        -it： 指定当前进入的容器创建一个输入、输出终端，允许与容器的交互
+                        [container name]：要进入的容器名称
+                        [command]：进入容器后执行的命令，如：bash（一个linux的终端交互命令）
+                镜像命令实操一：（创建运行一个nginx容器）
+                镜像命令实操二：（进入mynginx容器，修改html文件内容，添加"Hello Douglas Z. Lee"
+
+                    进入mynginx容器内部
+                        docker exec -it mynginx bash
+                    pwd查看当前目录，并ls 确定已经到了linux的根目录
+                        pwd
+                        ls
+                        此时就需要知道nginx在这个容器中的哪个目录，这就需要去官网去查看了，官网给出的目录地址是：/usr/share/nginx/html
+                    进入到nginx的html目录，并查看index.html
+                        cd /usr/share/nginx/html
+                        ls
+                        cat index.html
+                    修改替换index.html中的内容（这里只是演示，不要在容器内做文件修改，不仅麻烦而且无法记录修改内容和日志）
+                        sed -i 's#Welcome to nginx#Hello Douglas Z. Lee#g' index.html
+                        sed -i 's#<head>#<head><meta charset="utf-8">#g' index.html
+                    再次刷新localhost:80 查看 nginx的欢迎页Title 已经变为 Hello Douglas Z. Lee。
+                    退出容器：
+                        exit
+                    停止容器：
+                        docker stop mynginx
+                    启动容器：
+                        docker start mynginx
+                    查看所有容器：               
+                        docker ps -a               
+                    删除容器：
+                        docker rm nginx
+                    查看所有容器确定下 mynginx 容器删除成功：     
+                        docker ps -a
+                    
+                    
+                    
                 
                 
                 
