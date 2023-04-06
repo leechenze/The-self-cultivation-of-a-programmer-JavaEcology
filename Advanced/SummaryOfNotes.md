@@ -1198,14 +1198,29 @@
                         此时会输出 50x.html 和 index.html 说明此时已经挂载到了宿主机的真实目录下了。
                         那么此时已经映射到宿主机的目录下了，无论是 vi，nano还是vim都可以对其进行修改。
                         再次把 Welcome Nginx 换成 Hello Docker Hub！ 这个标头改一下。
-                        然后进行修改访问 centos中ifconfig中的本机地址 + nginx 的端口 即可看到修改后的内容。
+                        然后进行访问 centos中ifconfig中的本机地址 + nginx 的端口 即可看到修改后的内容。
                 数据卷命令实操三：（创建并运行一个MySql容器，将宿主机目录直接挂载到容器）
-                    提示：这里是宿主机目录挂载，而不是数据卷名称挂载了，所以这里回到 MacOS 的环境中进行操作。
+                    提示：这里是宿主机目录挂载，而不是数据卷名称挂载了，仍是在CentOS下进行操作
                         目录挂载和数据卷挂载的语法是类似的：
                             -v [宿主机目录]:[容器内目录]
                             -v [宿主机文件]:[容器内文件]
-                    
-                
+                    操作步骤：
+                        从DockerHub下载mysql镜像
+                            docker pull mysql
+                        创建目录：/tmp/mysql/data
+                            mkdir /tmp/mysql/data
+                        创建目录：/tmp/mysql/conf，将lib/day2/hmy.cnf 文件放到 /tmp/mysql/conf
+                            mkdir /tmp/mysql/conf
+                        创建及运行mysql容器：
+                            docker run --name mysql -e MYSQL_ROOT_PASSWORD=lcz19930316 -p 3333:3306 -v "$PWD/tmp/mysql/data/":/var/lib/mysql/ -v "$PWD/tmp/mysql/conf/hmy.cnf":/etc/mysql/conf.d/hmy.cnf -d mysql:latest
+                            docker run --name mysql -e MYSQL_ROOT_PASSWORD=lcz19930316 -p 3333:3306 -v /tmp/mysql/data:/var/lib/mysql -v /tmp/mysql/conf/hmy.cnf:/etc/mysql/conf.d/hmy.cnf -d mysql:latest
+                        在DockerHub查阅资料，创建并运行MySql容器，要求：
+                            1。挂载/tmp/mysql/data 到 mysql容器内数据存储目录（/var/lib/mysql）
+                            2。挂载/temp/mysql/conf/hmy.cnf 到 mysql容器的配置文件（/etc/mysql/conf.d/hmy.cnf）
+                            3。设置MySql密码（MYSQL_ROOT_PASSWORD）
+                            
+                    踩坑记录：一定要注意docker的参数顺序！！！
+                        
                     
                     
                 
