@@ -1220,7 +1220,11 @@
                             3。设置MySql密码（MYSQL_ROOT_PASSWORD）
                             
                     踩坑记录：一定要注意docker的参数顺序！！！
+            
+            自定义镜像：
+                镜像结构：
                     
+                DockerFile：
                     
                     
                 
