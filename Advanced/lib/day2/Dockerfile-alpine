@@ -1,0 +1,10 @@
+# 指定基础镜像
+FROM java:8-alpine
+
+# 拷贝java项目的包
+COPY ./docker-demo.jar /tmp/app.jar
+
+# 暴露端口
+EXPOSE 8070
+# 入口，java项目的启动命令
+ENTRYPOINT java -jar /tmp/app.jar

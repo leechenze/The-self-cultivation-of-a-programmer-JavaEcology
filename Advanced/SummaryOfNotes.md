@@ -151,7 +151,7 @@
 
 
 壹.Eureka注册中心：
-    
+
     远程调用的问题    
     eureka原理
     搭建EurekaServer
@@ -302,8 +302,8 @@
 
 
 
-贰.Nacos注册中心：   
-    
+贰.Nacos注册中心：
+
     认识和安装Nacos
     Nacos快速入门
     Nacos服务分级存储模型
@@ -637,8 +637,8 @@
 
 
 
-叁.Http客户端Feign：        
-    
+叁.Http客户端Feign：
+
     Feign代替RestTemplate        
     自定义配置        
     Feign使用优化        
@@ -962,7 +962,7 @@
             允许哪些请求方式
             是否允许使用cookie
             有效期时间
-            
+
 
 
 
@@ -978,7 +978,7 @@
 
 
 伍.Docker
-    
+
     初识Docker
     Docker的基本操作
     Dockerfile的自定义镜像
@@ -1223,13 +1223,48 @@
             
             自定义镜像：
                 镜像结构：
-                    
-                DockerFile：
-                    
-                    
-                
-                
-                
+                    再次回顾镜像概念：镜像是将应用程序及其需要的系统函数库、环境、配置、依赖打包而成。
+                    镜像是分层结构，每一层成为一个Layer。在任何镜像结构当中一般都会有两层（BaseImage，EntryPoint）：
+                        BaseImage：基础镜像层，包含基础的系统函数库，环境变量，文件系统。
+                        EntryPoint：入口，是镜像中应用启动的命令。
+                        其他：在BaseImage基础上添加依赖，安装程序，完成整个应用的安装和配置。
+                自定义镜像：
+                    DockerFile是一个文本文件，其中包含了一个个的指令，用指令来说明要执行什么操作来构建镜像，每一个指令都会形成一个Layer。
+                    常用指令：
+                        FROM：       指定基础镜像，如：（FROM centos:6）
+                        ENV：        设置环境变量，可在后面指令使用，如：（ENV key value）
+                        COPY：       拷贝本地文件到镜像到指定目录，如：（COPY ./mysql-5.7.rpm /tmp）
+                        RUN：        执行Liunx的shell命令，一般是安装过程命令，如：（RUN yun install gcc）
+                        EXPOSE：     指定容器运行时监听的端口，是暴露给镜像使用者看的，如：（EXPOSE 8080）
+                        ENTRYPOINT： 镜像中应用的启动命令，容器运行时调用，如（ENTRYPOINT java -jar xx.jar）
+                    更多更详细的语法说明，请参考官网文档：https://docs.docker.com/engine/reference/builder    
+                构建一个Java项目镜像：（基于Ubuntu镜像构建一个新镜像，运行一个java项目）
+                    新建一个空文件夹 custom-docker
+                    拷贝day2/docker-demo.jar 到 custom-docker
+                    拷贝day2/jdk8.tar.gz 到 custom-docker
+                    拷贝day2/Dockerfile 到 custom-docker
+                    进入custom-docker
+                        docker build -t javaweb:1.0 .
+                            解读：-t 是tag的简写，最后还有一个 . 表示Dockerfile所在的目录
+                        docker run --name myjavaweb -p 8090:8090 -d javaweb:1.0
+                            此时访问：http://localhost:8090/hello/count
+                基于java:8-alpine镜像，将一个java项目构建为镜像。
+                    新建一个空文件夹 custom-alpine
+                    拷贝day2/docker-demo.jar 到 custom-alpine
+                    拷贝day2/jdk8.tar.gz 到 custom-alpine
+                    拷贝day2/Dockerfile-alpine 到 custom-alpine 并且更名为 Dockerfile
+                        修改Dockerfile：
+                            1。基于java:8-alpine作为基础镜像
+                            2。将app.jar拷贝到镜像中
+                            3。暴露端口
+                            4。编写入口ENTRYPOINT
+                    进入custom-alpine
+                        docker build -t javawebalpine:1.0 .
+                            解读：-t 是tag的简写，最后还有一个 . 表示Dockerfile所在的目录
+                        docker run --name myjavawebalpine -p 8070:8070 -d javawebalpine:1.0
+                            此时访问：http://localhost:8070/hello/count
+
+
 
 
 
