@@ -1263,6 +1263,94 @@
                             解读：-t 是tag的简写，最后还有一个 . 表示Dockerfile所在的目录
                         docker run --name myjavawebalpine -p 8070:8070 -d javawebalpine:1.0
                             此时访问：http://localhost:8070/hello/count
+            
+            DockerCompose：
+                初识DockerCompose：
+                    Docker Compose可以基于compose文件帮我们快速部署分布式应用，而无需手动一个个创建和运行容器。
+                    compose是一个文本文件，通过指令定义集群中每个容器如何运行。
+                    实际上通过compose文件对比就能发现：docker compose文件中就是把 docker run 命令行的各种命令行参数变成指令定义了。
+                    docker compose 官网：https://docs.docker.com/compose/compose-file/
+                    docker compose安装：详细请看：Advanced/lib/day2/Centos7安装Docker.md
+                    总结：compose就是用以实现集群微服务的快速的构建和部署
+                部署微服务集群：
+                    1。day2/cloud-demo中，编写docker-compose.yml文件 和 每个微服务中的Dockerfile文件
+                    2。修改自己的cloud-demo项目，将数据库、nacos地址都命名为 docker-compose.yml 中的服务名
+                    3。将每个微服务都打个包，名为app.jar，因为Dockerfile中配置的名字叫做app.jar
+                        user-service, order-service, gateway三个微服务的 pom.xml 中新增如下插件： 
+                            <build>
+                                <finalName>app</finalName>
+                                <plugins>
+                                    <plugin>
+                                        <groupId>org.springframework.boot</groupId>
+                                        <artifactId>spring-boot-maven-plugin</artifactId>
+                                    </plugin>
+                                </plugins>
+                            </build>
+                        注意打包前最好clean下，然后package后 target 就会出现app.jar包
+                    4。将打包好的app.jar拷贝到每个微服务对应的子目录中。
+                    5。cd cloud-demo中，使用 docker-compose up -d 进行部署。
+                    emmmm...反正就是这些步骤，docker-compose对于macm1是不受支持的, so... 这里没有完成部署。
+                windows和x86芯片的MacOS和其他Linux内核的系统都可以根据以上步骤进行。
+                
+            Docker镜像仓库：
+                搭建私有镜像仓库：
+                    镜像仓库（Docker Registry）有共有和私有两种形式：
+                        公共仓库：例如Docker官方的DockerHub，国内也有一些云服务商提供类似于DockerHub的公开服务，比如网易云镜像服务，DaoCloud镜像服务，阿里云镜像服务等。
+                        私有仓库：除了使用公开仓库外，用户还可以在本地搭建私有Docker Registry。企业自己的镜像服务考虑安全性和私密性一般都是私有的Docker Registry。
+                    搭建私有镜像仓库可以基于Docker官方提供的Docker Registry来搭建：
+                        官网地址：https://hub.docker.com/_/registry
+                    方式一：简化板镜像仓库
+                        Docker的官方DockerRegistry是一个基础版的Docker镜像仓库，具备仓库管理的完整功能，但没有图形化界面，命令如下：
+                            docker run -d \
+                                --restart=always \
+                                --name registry	\
+                                -p 5000:5000 \
+                                -v registry-data:/var/lib/registry \
+                                registry
+                    方式二：带有图形化界面的版本
+                        使用DockerCompose部署带有图形界面的DockerRegistry，命令如下：
+                            version: '3.0'
+                            services:
+                                registry:
+                                    image: registry
+                                    volumes:
+                                        - ./registry-data:/var/lib/registry
+                                ui:
+                                    image: joxit/docker-registry-ui:static
+                                    ports:
+                                        - 8080:80
+                                    environment:
+                                        - REGISTRY_TITLE=这是标题可以随便写
+                                        - REGISTRY_URL=http://registry:5000
+                                    depends_on:
+                                        - registry
+                        注：registry默认端口是5000
+                        私服采用的是http协议，默认不被Docker信任，所以需要配置Docker信任地址：
+                            # 打开要修改的文件
+                            vi /etc/docker/daemon.json
+                            # 添加内容：
+                            "insecure-registries":["http://192.168.150.101:8080"]
+                            # 重加载
+                            systemctl daemon-reload
+                            # 重启docker
+                            systemctl restart docker
+                        cloud-demo 同级目录新建：registry-ui
+                            mkdir registry-ui
+                            cd registry-ui
+                            touch docker-compose.yml
+                                将DockerRegistry的命令粘贴进去
+                            docker-compose up -d
+                        此时访问 172.16.168.130:8080 就会看到 DockerRegistry 的图形化界面，172.16.168.130 是centos中的ip地址。
+
+                向镜像仓库推送和拉取镜像：
+                    重新tag本地镜像，名称前缀为私有仓库地址：172.16.168.130:8080/
+                        docker tag nginx:latest 172.16.168.130:8080/nginx:1.0
+                        命令解读：tag重命名：nginx:latest是原tag，修改为了nginx:1.0，就是将latest的tag修改为1.0的tag。
+                    推送镜像：
+                        docker push 172.16.168.130:8080/nginx:1.0
+                        此时访问 172.16.168.130:8080 就可以看到推送的这个镜像。
+                    拉取镜像：
+                        docker pull 172.16.168.130:8080/nginx:1.0
 
 
 
@@ -1279,7 +1367,13 @@
 
 
 
-陆.
+
+
+
+
+陆.RabbitMQ
+    
+    
 
 
 

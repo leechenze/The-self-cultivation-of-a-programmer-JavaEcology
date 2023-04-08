@@ -2,7 +2,8 @@ server:
   port: 8081
 spring:
   datasource:
-    url: jdbc:mysql://localhost:3306/cloud_user?useSSL=false
+    # url: jdbc:mysql://localhost:3306/cloud_user?useSSL=false
+    url: jdbc:mysql://mysql:3306/cloud_user?useSSL=false # 改为 docker-compose.yml 集群部署的地址
     username: root
     password: lcz19930316
     driver-class-name: com.mysql.cj.jdbc.Driver
@@ -12,7 +13,8 @@ spring:
   # 此项配置在bootstrap.yml中进行配置了
   cloud:
     nacos:
-      server-addr: localhost:8888 # nacos 服务地址
+      # server-addr: localhost:8888 # nacos 服务地址
+      server-addr: nacos:8848 # 改为 docker-compose.yml 集群部署的地址
       discovery:
         # cluster-name: XA
         namespace: f324b4ac-7a64-426d-8515-7fc9ce35669d # dev环境的命名空间ID
