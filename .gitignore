@@ -10,6 +10,7 @@ target
 
 *.log
 *.dat
+jdk8.tar.gz
 
 nacos1/*
 nacos2/*
