@@ -1438,16 +1438,34 @@
                                 接收消息并且缓存消息
                             consumer：消费者
                                 从缓存中获取消息和处理消息
-                        
+                        基本消息队列的消息发送流程：（PublisherTest.java）
+                            1。建立connection
+                            2。创建channel
+                            3。利用channel声明队列
+                            4。利用channel向队列发送消息
+                        基本消息队列的消息接收流程：（Consumer.java）
+                            1。建立connection
+                            2。创建channel
+                            3。利用channel声明队列
+                            4。定义consumer的消费行为handleDelivery
+                            5。利用channel将消费者与队列绑定以处理消息
                     工作消息队列：（WorkQueue）
                     发布订阅消息队列：（Publish，Subscribe），又根据交换机类型不同分为三种：
                         Fanout Exchange：广播（Publish，Subscribe）
                         Direct Exchange：路由（Routing）
                         Topic Exchange：主题（Topics）
+        SpringAMQP：
+            初识SpringAMQP：
+            BasicQueue：简单队列模型
+            WorkQueue：工作队列模型
+            发布、订阅模型-Fanout：
+            发布、订阅模型-Direct：
+            发布、订阅模型-Topic：
+            消息转换器：
 
 
-
-
+            初识SpringAMQP：
+                
 
 
 
