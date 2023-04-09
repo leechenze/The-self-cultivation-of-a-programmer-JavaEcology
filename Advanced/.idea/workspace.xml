@@ -1,7 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="22a499b6-a5c5-4aac-aac3-977c5388dea0" name="Changes" comment="P004T000619" />
+    <list default="true" id="22a499b6-a5c5-4aac-aac3-977c5388dea0" name="Changes" comment="P004T000619">
+      <change afterPath="$PROJECT_DIR$/mq-demo/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mq-demo/.mvn/wrapper/maven-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mq-demo/.mvn/wrapper/maven-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mq-demo/pom.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mq-demo/src/main/java/com/lee/MqDemoApplication.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mq-demo/src/main/resources/application.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/mq-demo/src/test/java/com/lee/MqDemoApplicationTests.java" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -49,6 +57,7 @@
       <option name="presentableId" value="Default" />
       <updated>1679499094505</updated>
       <workItem from="1679499095554" duration="6376000" />
+      <workItem from="1681033391556" duration="68000" />
     </task>
     <task id="LOCAL-00001" summary="P004T000619">
       <created>1679499314281</created>

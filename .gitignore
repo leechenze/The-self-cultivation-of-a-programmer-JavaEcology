@@ -23,3 +23,4 @@ Advanced/lib/day2/local-docker/**
 Advanced/lib/day2/cloud-demo/mysql
 Advanced/lib/day2/cloud-demo/**/*.jar
 
+.mvn
