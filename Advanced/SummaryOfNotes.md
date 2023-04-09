@@ -1371,12 +1371,79 @@
 
 
 
-陆.RabbitMQ
+陆.RabbitMQ（mq-demo）
     
-    
+    初识MQ：
+    RabbitMQ：
+    SpringAMQP：
 
 
 
+    初识MQ：
+        MQ（MessageQueue），翻译为消息队列，字面来看就是存放消息的队列，实际上就是事件队列。也就是事件驱动架构中的Broker。
+        常见的MQ框架有：RabbitMQ，ActiveMQ，RocketMQ，Kafka
+        以上四种都各有优劣，优势各有不同，一般根据应用场景选择使用哪个。比较常用的还是RabbitMQ和Kafka和RocketMQ。
+
+        同步通讯：
+            微服务间基于Feign的调用就是同步方式的通讯。
+            优点：
+                实效性较强，可以立即得到结果。
+            缺点：
+                耦合度高：每次加入新的需求，都要修改原代码
+                性能下降：调用者需要等待服务提供者的响应，如果调用链过长，则响应时间等于每次调用的时间之和。
+                资源浪费：调用链中的每个服务在等待响应过程中，不能释放请求占用的资源，高并发场景下极度浪费系统资源。
+                级联失败：如果服务提供者出现问题，所有调用方都会跟着出问题，如同多米诺骨牌一样，导致整个微服务群故障。
+        异步通讯：
+            异步调用常见实现就是事件驱动模式。
+            优点：
+                耦合度低
+                吞吐量提升
+                故障隔离
+                流量削峰：高并发来了之后，通过broker做一个缓存，微服务基于自己的能力从broker中获取事件和处理事件，这样能做到对微服务的保护作用
+            缺点：
+                依赖于Broker的可靠性，安全性和吞吐能力，且有较高的要求。
+                架构复杂了，业务没有明显的流程线路，不好追踪管理。
+            总结：大多数情况下都是用的是同步通讯，因为大多数情况下对并发没有很高的要求，反而对实效性要求较高。
+
+        RibbitMQ：
+            安装：docker pull rabbitmq:3.12-rc-management
+            运行：
+                docker run \
+                    -e RABBITMQ_DEFAULT_USER=leechenze \
+                    -e RABBITMQ_DEFAULT_PASS=930316 \
+                    --name rabbitmq \
+                    --hostname mq1 \
+                    -p 15672:15672 \
+                    -p 5672:5672 \
+                    -d \
+                    rabbitmq:3.12-rc-management
+                陌生的命令解读：
+                    -e RABBITMQ_DEFAULT_USER 和 RABBITMQ_DEFAULT_PASS是配置用户名和密码的环境变量，后续访问mq和登陆管理平台都需要账号和密码。
+                    --hostname 是配置主机名，单机可以不用配置，但是如果后续集群部署就必要配置主机名了。                    
+                    -p 15672是RabbitMQ提供的一个UI界面，管理平台的端口。
+                    -p 5672是后续做消息通讯的一个端口，发消息和收消息都是通过5672
+                访问：127.0.0.1:15672然后登录
+            核心概念：
+                channel：        操作MQ的工具
+                exchange：       路由消息到队列中
+                queue：          缓存消息
+                virtual host：   虚拟主机，是对queue，exchange等资源的逻辑分组
+            常见消息模型：
+                MQ的官网中给出了几种MQ的Demo示例，对应了几种不同的用法：
+                    基本消息队列：（BasicQueue）
+                        只包含三个角色：
+                            publisher：发布者
+                                负责发送消息到队列
+                            queue：缓存消息队列
+                                接收消息并且缓存消息
+                            consumer：消费者
+                                从缓存中获取消息和处理消息
+                        
+                    工作消息队列：（WorkQueue）
+                    发布订阅消息队列：（Publish，Subscribe），又根据交换机类型不同分为三种：
+                        Fanout Exchange：广播（Publish，Subscribe）
+                        Direct Exchange：路由（Routing）
+                        Topic Exchange：主题（Topics）
 
 
 
