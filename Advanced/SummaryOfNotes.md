@@ -1393,6 +1393,7 @@
                 性能下降：调用者需要等待服务提供者的响应，如果调用链过长，则响应时间等于每次调用的时间之和。
                 资源浪费：调用链中的每个服务在等待响应过程中，不能释放请求占用的资源，高并发场景下极度浪费系统资源。
                 级联失败：如果服务提供者出现问题，所有调用方都会跟着出问题，如同多米诺骨牌一样，导致整个微服务群故障。
+
         异步通讯：
             异步调用常见实现就是事件驱动模式。
             优点：
@@ -1454,24 +1455,144 @@
                         Fanout Exchange：广播（Publish，Subscribe）
                         Direct Exchange：路由（Routing）
                         Topic Exchange：主题（Topics）
+
+
         SpringAMQP：
             初识SpringAMQP：
             BasicQueue：简单队列模型
             WorkQueue：工作队列模型
-            发布、订阅模型-Fanout：
-            发布、订阅模型-Direct：
-            发布、订阅模型-Topic：
+            发布、订阅模型-Fanout：广播模型
+            发布、订阅模型-Direct：路由模型
+            发布、订阅模型-Topic：主题模型
             消息转换器：
 
 
             初识SpringAMQP：
+                AMQP：Advanced Message Queuing Protocol（高级消息队列协议）
+                    是用于在应用程序或之间传递业务消息的开放标准。改协议和语言与平台无关，更符合微服务中独立性的要求。
+                SpringAMQP：
+                    是基于AMQP协议定义的一套API规范，提供了模版发送和接收消息，包含两部分，其中spring-amqp是基础抽象，spring-rabbit是底层的默认实现。
+            BasicQueue模型：
+                利用springamqp实现helloworld中的基础消息队列功能
+                    在父工程中引入spring-amqp的依赖。
+                    在publisher服务中利用RabbitTemplate发送消息到simple.queue这个队列。
+                    在consumer服务中编写消费逻辑，绑定simple.queue这个队列。
+                    具体步骤：
+                        1。父工程中引入amqp依赖：因为publisher和consumer服务都需要amqp依赖。因此这里把依赖直接放到父工程mq-demo中。
+                            <dependency>
+                                <groupId>org.springframework.boot</groupId>
+                                <artifactId>spring-boot-starter-amqp</artifactId>
+                            </dependency>
+                        2。在publisher服务中编写application.yml，添加mq连接信息：
+                            spring:
+                                rabbitmq:
+                                    host: 127.0.0.1
+                                    port: 5672
+                                    username: leechenze
+                                    password: 930316
+                                    virtual-host: / # leechenze这个用户的虚拟主机（/）
+                        3。在publisher服务中新建一个测试类，编写测试方法：（PublisherSpringAMQPTest.java）
+                            注意：这里要在rabbit控制台手动创建 （simple.queue）这个队列，SpringAMQP默认不会主动创建队列。
+                            @RunWith(SpringRunner.class)
+                            @SpringBootTest
+                            public class PublisherSpringAMQPTest {
+                                @Autowired
+                                private RabbitTemplate rabbitTemplate;
+                                @Test
+                                public void testSendMessage2SimpleQueue() {
+                                    String queueName = "simple.queue";
+                                    String message = "hello SpringAMQP";
+                                    rabbitTemplate.convertAndSend(queueName, message);
+                                }
+                            }
+                        4。在consumer中编写application.yml，添加mq连接信息：
+                            spring:
+                                rabbitmq:
+                                    host: 127.0.0.1
+                                    port: 5672
+                                    username: leechenze
+                                    password: 930316
+                                    virtual-host: / # leechenze这个用户的虚拟主机（/）
+                        5。在consumer中编写消费逻辑，监听 simple.queue：（listener.SpringRabbitListener）
+                            @Component
+                            public class SpringRabbitListener {
+                                @RabbitListener(queues = "simple.queue")
+                                public void listenSimpleQueue(String msg) {
+                                    System.out.println("消费者接收到simple.queue的消息：【" + msg + "】");
+                                }
+                            }
+                            注意这里要运行的是ConsumerApplication这个启动类。
+                            运行成功后可以成功打印接收到的simple.queue中的消息
+                            消息一旦接收到后，就会从队列中删除，RabbitMQ没有消息回溯功能（阅后即焚）
+            WorkQueue模型：       
+                作用：提高消息处理速度，避免队列消息堆积：
+                相比基础队列模型（BasicQueue）workQueue拥有多个消费者
+                基本思路如下：
+                    1。在publisher服务中定义测试方法，每秒产生50条消息，发送到work.queue中。（PublisherSpringAMQPTest）
+                        /**
+                         * WorkQueue 工作队列模型
+                         */
+                        @Test
+                        public void testSendMessage2WorkQueue() throws InterruptedException {
+                            String queueName = "work.queue";
+                            String message = "Hello SpringAMQP WorkQueue --> ";
+                            for(int i = 0; i <= 50; i++) {
+                                rabbitTemplate.convertAndSend(queueName, message + i);
+                                Thread.sleep(20);
+                            }
+                        }
+                    2。在consumer服务中定义两个消息监听者，都监听 work.queue 队列（listener.SpringRabbitListener）
+                        /**
+                         * WorkQueue 工作队列模型
+                         * @param msg
+                         */
+                        @RabbitListener(queues = "work.queue")
+                        public void listenWorkQueue1(String msg) throws InterruptedException {
+                            // 为了和工作队列2区别，这里使用 out 打印普通日志，LocalTime.now()当前时间
+                            System.out.println("工作队列模型消费者1 收到work.queue的消息：【" + msg + "】" + LocalTime.now());
+                            Thread.sleep(20);
+                        }
+                        @RabbitListener(queues = "work.queue")
+                        public void listenWorkQueue2(String msg) throws InterruptedException {
+                            // 为了和工作队列1区别，这里使用 err 打印红色错误日志，LocalTime.now()当前时间
+                            System.err.println("工作队列模型消费者2 收到work.queue的消息：【" + msg + "】" + LocalTime.now());
+                            Thread.sleep(200);
+                        }
+                    3。消费者1每秒处理50条消息，消费者2每秒处理10条消息。
+                    4。消息预取限制配置：consumer下的application.yml中配置：
+                        listener:
+                          simple:
+                            prefetch: 1 # rabbitmq消息预取配置，声明每次只能获取一条消息，处理完成之后才能获取下一条消息
+            发布（publisher）、订阅（subscribe）模型：
+                发布订阅模式与之前案例的区别就是允许将同一消息发送给多个消费者。实现方式就是加入了exchange（交换机）
+                常见的exchange类型有：
+                    Fanout：广播类型
+                    Direct：路由类型
+                    Topic：话题类型
+                注意：exchange负责消息路由和消息转发，并不负责消息存储，只有队列Queue负责消息存储，所以如果路由失败则消息丢失
                 
-
-
-
-
-
-
+                Fanout广播模型：
+                    Fanout Exchange会将接收到的消息路由到每一个跟其绑定的queue。
+                    利用SpringAMQP演示FanoutExchange的使用：
+                        实现思路如下：
+                            1。在consumer服务中，利用代码声明队列，交换机，并将两者绑定。
+                            2。在consumer服务中，编写两个消费者的方法，分别监听 fanout.queue1 和 fanout.queue2
+                            3。在publisher中编写测试方法，向leechenze.fanout发送消息。
+                    操作步骤：
+                        TODO ...
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                        
+                Direct路由模型：
+                    
+                Topic话题模型：
+                    
 
 
 

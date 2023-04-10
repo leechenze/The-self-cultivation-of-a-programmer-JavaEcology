@@ -1,3 +1,10 @@
 logging:
   pattern:
     dateformat: MM-dd HH:mm:ss:SSS
+spring:
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: leechenze
+    password: 930316
+    virtual-host: / # leechenze这个用户的虚拟主机（/）
