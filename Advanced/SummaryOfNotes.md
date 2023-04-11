@@ -1579,24 +1579,248 @@
                             2。在consumer服务中，编写两个消费者的方法，分别监听 fanout.queue1 和 fanout.queue2
                             3。在publisher中编写测试方法，向leechenze.fanout发送消息。
                     操作步骤：
-                        TODO ...
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
-                        
+                        1。在consumer服务创建配置类 config.FanoutConfig.java：
+                            @Configuration
+                            public class FanoutConfig {
+                                /**
+                                * FanoutExchange 发布订阅模型：广播队列
+                                */
+                                // leechenze.fanout
+                                @Bean
+                                public FanoutExchange fanoutExchange(){
+                                    return new FanoutExchange("leechenze.fanout");
+                                }
+                            
+                                // fanout.queue1
+                                @Bean
+                                public Queue fanoutQueue1(){
+                                    return new Queue("fanout.queue1");
+                                }
+                            
+                                // 绑定队列1到交换机
+                                @Bean
+                                public Binding fanoutBinding1(Queue fanoutQueue1, FanoutExchange fanoutExchange) {
+                                    return BindingBuilder.bind(fanoutQueue1).to(fanoutExchange);
+                                }
+                            
+                                // fanout.queue2
+                                @Bean
+                                public Queue fanoutQueue2(){
+                                    return new Queue("fanout.queue2");
+                                }
+                            
+                            
+                                // 绑定队列2到交换机
+                                @Bean
+                                public Binding fanoutBinding2(Queue fanoutQueue2, FanoutExchange fanoutExchange) {
+                                    return BindingBuilder.bind(fanoutQueue2).to(fanoutExchange);
+                                }
+                            }
+                        2。在consumer服务中添加两个方法，分别监听fanout.queue1 和 fanout.queue2：（SpringRabbitListener.java）
+                            /**
+                             * FanoutExchange 发布订阅模型：广播队列
+                             * @param msg
+                             */
+                            @RabbitListener(queues = "fanout.queue1")
+                            public void listenFanoutQueue1(String msg) {
+                                System.out.println("消费者接收到fanout.queue1的消息：【" + msg + "】");
+                            }
+                            @RabbitListener(queues = "fanout.queue2")
+                            public void listenFanoutQueue2(String msg) {
+                                System.out.println("消费者接收到fanout.queue2的消息：【" + msg + "】");
+                            }
+                        3。在publisher服务发送消息到FanoutExchange，注意发送到交换机而不是直接发给消息队列了：（PublisherSpringAMQPTest.java）
+                            /**
+                             * FanoutExchange 发布订阅模型：广播队列
+                             * @description 不同之处在于之前都是发消息到队列，这里是发消息到交换机，代码也略有不同
+                             */
+                            @Test
+                            public void testSendFanoutExchange() {
+                                // 交换机名称
+                                String exchangeName = "leechenze.fanout";
+                                // 消息定义
+                                String message = "hello FanoutExchange every one";
+                                // 消息发送
+                                rabbitTemplate.convertAndSend(exchangeName, "", message);
+                            }
+                    总结： 
+                        队列的Bean是用：Queue 
+                        交换机的Bean是用：FanoutExchange 
+                        绑定关系的Bean是用：Binding
+
                 Direct路由模型：
-                    
+                    Direct Exchange会将接收到的消息根据规则路由到指定的queue，因此成为路由模式。
+                        每一个Queue都与Exchange设置一个Bindingkey
+                        发布者发送消息时，指定消息的bindingkey。
+                        Exchange将消息路由到Bindingkey与消息的Bindingkey一致的队列。
+                    利用SpringAMQP演示DirectExchange的使用：
+                        实现思路如下：
+                            1。利用@RabbitListener声明Exchange，Queue，RoutingKey，不用@Bean是因为需要声明的方法太多，用Bean声明太复杂了，这里使用Rabbit官方提供的注解。
+                            2。在consumer服务中编写两个消费者方法，分别监听direct.queue1和direct.queue2
+                            3。在publisher中编写测试方法，向leechenze.direct发送消息。
+                    操作步骤：
+                        1。在consumer服务中编写两个消费者的 direct 的监听方法：（SpringRabbitListener.java）
+                            /**
+                             * DirectExchange 发布订阅模型：路由队列
+                             *
+                             * @param msg
+                             */
+                            @RabbitListener(bindings = @QueueBinding(
+                                    value = @Queue(name = "direct.queue1"),
+                                    exchange = @Exchange(name = "leechenze.direct", type = ExchangeTypes.DIRECT),
+                                    key = {"red", "blue"}
+                            ))
+                            public void listenDirectQueue1(String msg) {
+                                System.out.println("消费者接收到direct.queue1的消息：【" + msg + "】");
+                            }
+                            @RabbitListener(bindings = @QueueBinding(
+                                    value = @Queue(name = "direct.queue2"),
+                                    exchange = @Exchange(name = "leechenze.direct", type = ExchangeTypes.DIRECT),
+                                    key = {"red", "yellow"}
+                            ))
+                            public void listenDirectQueue2(String msg) {
+                                System.out.println("消费者接收到direct.queue2的消息：【" + msg + "】");
+                            }
+                        2。在publisher服务中发送消息到 direct.queue1 和 direct.queue2：（PublisherSpringAMQPTest.java）
+                            /**
+                             * FanoutExchange 发布订阅模型：广播队列
+                             * @description 不同之处在于之前都是发消息到队列，这里是发消息到交换机，代码也略有不同
+                             */
+                            @Test
+                            public void testSendDirectExchange() {
+                                // 交换机名称
+                                String exchangeName = "leechenze.direct";
+                                // 消息定义
+                                String message = "hello red";
+                                // 消息发送（这里routingkey要分别尝试改为：red（direct.queue1 && queue2），blue（direct.queue1），yellow（direct.queue2））
+                                rabbitTemplate.convertAndSend(exchangeName, "red", message);
+                            }
+
                 Topic话题模型：
+                    Topic Exchange 和 Direct Exchange类似，区别在于routingkey必须是多个单词的列表，并且以 . 分割
+                        Queue和Exchange在指定BindingKey时可以使用通配符：
+                            #：代指零个或多个单词
+                            *：代指一个单词
+                    利用SpringAMQP演示TopicExchange的使用：
+                        实现思路如下：和 Direct Exchange实现思路相同。
+                    操作步骤：
+                        1。在consumer服务中编写两个消费者的 topic 的监听方法：（SpringRabbitListener.java）
+                            /**
+                             * TopicExchange 发布订阅模型：话题队列
+                             * china.news
+                             * china.weather
+                             * japan.news
+                             * jspan.weather
+                             *
+                             * @param msg
+                             */
+                            @RabbitListener(bindings = @QueueBinding(
+                                    value = @Queue(name = "topic.queue1"),
+                                    exchange = @Exchange(name = "leechenze.topic", type = ExchangeTypes.TOPIC),
+                                    key = "china.#"
+                            ))
+                            public void listenTopicQueue1(String msg) {
+                                System.out.println("消费者接收到topic.queue1的消息：【" + msg + "】");
+                            }
+                            @RabbitListener(bindings = @QueueBinding(
+                                    value = @Queue(name = "topic.queue2"),
+                                    exchange = @Exchange(name = "leechenze.topic", type = ExchangeTypes.TOPIC),
+                                    key = "#.news"
+                            ))
+                            public void listenTopicQueue2(String msg) {
+                                System.out.println("消费者接收到topic.queue2的消息：【" + msg + "】");
+                            }
+                        2。在publisher服务中发送消息到 topic.queue1 和 topic.queue2：（PublisherSpringAMQPTest.java）
+                            /**
+                             * TopicExchange 发布订阅模型：广播队列
+                             */
+                            @Test
+                            public void testSendTopicExchange() {
+                                // 交换机名称
+                                String exchangeName = "leechenze.topic";
+                                // 消息定义
+                                String message = "中国新闻！！！轰20首飞了，十二万吨核动力航母下水啦！！！";
+                                // 消息发送（这里routingkey要分别尝试：china.news, china.weather, japan.news, japan.weather）
+                                rabbitTemplate.convertAndSend(exchangeName, "china.news", message);
+                            }
+                    总结：
+                        Topic 和 Direct 代码差别很小，差别在于Topic交换机（BindingKey）支持通配符匹配，RoutingKey必须多个单词以 . 分割。
+                        
+                消息转换器：
+                    总结：
+                        SpringAMQP的序列号和反序列化是通过MessageConverter实现的，默认是JDK的序列号。
+                        推荐使用json自定义的MessageConverter覆盖默认的MessageConverter。
+                        另外注意发送方和接收方必须使用的是相同的MessageConverter。
+                        不能一边是JDK序列化的一边是json的，那肯定是无法沟通的。
                     
+                    操作步骤：
+                        1。在FanoutConfig中编写声明一个队列：（FanoutConfig）
+                            /**
+                             * 消息转换器演示：因为在listener.SpringRabbitListener中基于注解声明消息直接被消费了，所以在这里声明@Bean的方式。
+                             * @return
+                             */
+                            @Bean
+                            public Queue objectQueue() {
+                                return new Queue("object.queue");
+                            }
+                        2。在Publisher服务编写消息发送方，发送一个Map类型的消息：（PublisherSpringAMQPTest）
+                            /**
+                             * 消息转换器演示
+                             */
+                            @Test
+                            public void testSendObjectQueue() {
+                                Map<String, Object> msg = new HashMap<>();
+                                msg.put("name", "trump");
+                                msg.put("age", 60);
+                                rabbitTemplate.convertAndSend("object.queue", msg);
+                            }
+                            此时会发现Rabbitmq控制台中接收到的消息是一段 content_type 为 application/x-java-serialized-object的序列化串
+                            那么我们就需要通过json序列化为一段可读的对象。
+                        3。在父工程（mq-demo）中引入jackson依赖，用于json序列化，因为consumer和publisher都要用到：
+                            <!--jackson依赖-->
+                            <dependency>
+                                <groupId>com.fasterxml.jackson.core</groupId>
+                                <artifactId>jackson-databind</artifactId>
+                            </dependency>
+                        4。在Publisher服务的启动类中声明MessageConverter的Bean覆盖默认的消息转换器：（PublisherApplication）
+                            /**
+                             * 用Jackson2JsonMessageConverter 覆盖 MessageConverter 这个默认的消息转换器，用以json格式的序列化。
+                             * @return
+                             */
+                            @Bean
+                            public MessageConverter messageConverter() {
+                                return new Jackson2JsonMessageConverter();
+                            }
+                            注意MessageConverter接口有很多，应该是 amqp.support.converter.MessageConverter 这个接口，别搞错了
+                            此时再次在Rabbitmq控制台中查看接收到的消息就变成了json序列化的 content_type 为 application/json 的可读对象
+                            然后注意在重新发送前在控制台在 purge 一下原来的消息。
+                        5。在Consumer服务的启动类和Publisher启动类中做同样的操作。直接代码粘贴一份到Consumer的启动类中即可：
+                        6。在Consumer的监听类中监听object.queue队列的消息：
+                            /**
+                             * 消息转换器演示：监听object.queue
+                             *
+                             * @param msg
+                             */
+                            @RabbitListener(queues = "object.queue")
+                            public void listenObjectQueue(Map<String, Object> msg) {
+                                System.out.println("消费者接收到 object.queue 的消息：【" + msg + "】");
+                            }
+                        
 
 
 
-柒.
+
+
+
+
+
+
+
+
+
+柒.elasticsearch
+    
+    
 
 
 
