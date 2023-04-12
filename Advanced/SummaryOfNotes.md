@@ -1820,8 +1820,62 @@
 
 柒.elasticsearch
     
+    初识elasticsearch
+    索引库操作
+    文档操作
+    RestAPI
     
-
+    初识elasticsearch
+        了解ES
+            elasticsearch是一款非常强大的开源搜索引擎，可以帮助我们从海量的数据中快速找到需要的内容。
+            elasticsearch结合Kibana，Logstansh，Beats，也就是elastic stack（ELK）。被广泛应用在日志数据分析，实时监控等领域。
+                Kibana是数据可视化的组件，官方提供的可以换性的组件。
+                ElasticSearch是存储，计算，搜索数据的组件，不可替代的核心。
+                Logstash，Beats是数据抓取的组件，官方提供的可以换性的组件。
+            elasticsearch底层实现是基于lucene，lucene是一个java语言实现的搜索引擎类库，是Apache公司的顶级项目，由 DougCutting 与1999年研发。
+                官网地址：https://lucene.apache.org/
+                Lucene优势：
+                    易扩展
+                    高性能（基于倒排索引）
+                Lucene劣势：
+                    只限于Java语言开发
+                    学习曲线陡峭
+                    不支持水平扩展
+            2004年 Shay Banon 基于Lucene开发了Compass
+            2010年 Shay Banon 重写了Compass，取名为 ElasticSearch
+                官网地址：https://www.elastic.co/cn/
+            相比与lucene，elasticsearch具备以下优势：
+                支持分布式，可水平扩展
+                提供Restful接口，可被任何语言调用
+        倒排索引
+            正向索引和倒排索引：
+                传统数据库（如MySql）采用正向索引：
+                    基于文档ID创建索引，查询词条时必须先找到文档，而后判断是否包含词条。
+                elasticsearch采用倒排索引：
+                    文档（document）：每条数据就是一个文档。
+                    词条（term）：文档按照语义分成的词语。
+                    对文档内容分词，对词条创建索引，并记录词条所在文档的信息，查询时先根据词条查询到文档ID，而后获取到文档。
+                区别：
+                    正向索引是先找文档，然后判断每条文档是否符合我们的要求，查找时根据文档找词条。
+                    而倒排索引是反过来的，是居于词条创建索引，然后关联这个文档，查找时根据词条找到这个文档。
+        ElasticSearch的一些概念
+            elasticsearch是面向文档存储的，可以是数据库中的一条商品信息，一个订单信息。
+            文档数据会被序列化为json格式后存储在elasticsearch中。
+            索引（index）：相同类型的文档的集合
+            映射（mapping）：索引中文档的字段约束信息，类似于表的结构约束
+            概念对比：
+                MySQL       ==>         ElasticSearch                   说明
+                Table       ==>         Index                           文档集合，类似于数据库的表
+                Row         ==>         Document                        对应数据库一条条的数据，类似于数据库中的行，文档都是JSON格式
+                Column      ==>         Field                           JSON文档中的字段，类似于数据库中的列
+                Schema      ==>         Mapping                         Mapping是索引中文档的约束，例如字段类型约束。类似数据库的表结构（Schema）
+                SQL         ==>         DSL                             DSL是elasticsearch提供的JSON风格的请求语句，用来操作elasticsearch，实现CRUD。                         
+            架构：
+                MySql：擅长事物类型操作，以确保数据的安全和一致性
+                ElasticSearch：擅长海量数据的搜索，分析，计算。
+                两者并不是替代关系，而是互补的关系。
+        安装es，kibana
+            
 
 
 
