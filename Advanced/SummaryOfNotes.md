@@ -1934,6 +1934,7 @@
                     docker logs -f myes
                     搜索 loaded plugin 关键字 确认加载了 analysis-ik 则插件加载成功。
                 此时回到kibana控制台，对中文分词进行测试：
+                    // 测试分词器
                     GET /_analyze
                     {
                         "analyzer": "ik_max_word",
