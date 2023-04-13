@@ -1875,10 +1875,79 @@
                 ElasticSearch：擅长海量数据的搜索，分析，计算。
                 两者并不是替代关系，而是互补的关系。
         安装es，kibana
-            
-
-
-
+            ElasticSearch：
+                创建网络：
+                    因为我们还需要部署Kibana容器，因此需要让es和kibana容器互联。这里先创建一个网络：
+                    docker network create es-net
+                安装ES：（镜像非常大一个多G）
+                    docker pull elasticsearch:8.7.0
+                部署单点ES：
+                    docker run -d \
+                        --name myes \
+                        -e "ES_JAVA_OPTS=-Xms512m -Xmx512m" \
+                        -e "discovery.type=single-node" \
+                        -e "xpack.security.enabled=false" \
+                        -v $PWD/es-data:/usr/share/elasticsearch/data \
+                        -v $PWD/es-plugins:/usr/share/elasticsearch/plugins \
+                        --privileged \
+                        --network es-net \
+                        -p 9200:9200 \
+                        -p 9300:9300 \
+                        elasticsearch:8.7.0
+                    命令解读：
+                        第一个 -e 表示配置JVM的堆内存大小为512，这里配置的就是ES将来运行时的内存大小，默认值为1G（如果虚拟机内存比较大就可以使用这个1G的默认值），512也不能再小了，否则会出现内存不足的问题
+                        第二个 -e 表示配置运行模式为单点运行，不是集群模型。
+                        第一个 -v 表示挂载的数据保存的目录
+                        第二个 -v 表示挂载的插件目录，以备将来ES做拓展用。
+                        --network es-net 表示让容器加入到这个网络当中
+                        第一个 -p 9200是http协议的端口，供用户访问界面用的
+                        第二个 -p 9300是es容器各个节点之间互联的接口
+                访问：127.0.0.1:9200 返回一段json信息则表示成功访问。
+            Kibana：
+                Kibana 用于提供一个elasticsearch的可视化界面，便于我们操作。
+                安装Kibana：
+                    docker pull kibana:8.7.0
+                部署：注意要和 elasticsearch 在同一个网络中（es-net）
+                    docker run -d \
+                        --name mykibana \
+                        -e ELASTICSEARCH_HOSTS=http://myes:9200 \
+                        --network=es-net \
+                        -p 5601:5601  \
+                        kibana:8.7.0
+                    命令解读：
+                        -e ELASTICSEARCH_HOSTS=http://myes:9200 表示配置 elasticsearch 的主机地址为 elasticsearch 对应的启动名称 name:端口
+                        --network=es-net 注意要和 elasticsearch 在同一个网络
+                        -p 5601:5601 kibana默认端口 5601
+                访问：http://127.0.0.1:5601
+                    进入后先选择 explore on my own
+                    左侧菜单选择 dev tools
+            中文分词器 IK：
+                官网：https://github.com/medcl/elasticsearch-analysis-ik
+                es在创建倒排索引时需要对文档分词，但是所有的分词规则对中文处理分词非常不友好，会把中文每一个字都分成一个词。
+                那么此时就需要 IK 分词器来此中文分词做支持。
+                安装：
+                    从官网下载 ik 安装包 解压到 es-plugin 挂载目录，重启docker即可。
+                    注意 elasticsearch，kibana，ik的版本号都是对应的。
+                重启 es：
+                    docker restart myes
+                查看日志信息：
+                    docker logs -f myes
+                    搜索 loaded plugin 关键字 确认加载了 analysis-ik 则插件加载成功。
+                此时回到kibana控制台，对中文分词进行测试：
+                    GET /_analyze
+                    {
+                        "analyzer": "ik_max_word",
+                        "text": "黑马程序员学习java太棒了"
+                    }
+                    IK分词器包含两种模式：
+                        ik_smart：最少切分
+                        ik_max_word：最细切分
+                    两种分词器的选择根据内存占用，执行效率以及搜索概率这些应用场景下自行恒定。
+                    ik_max_word分词更多，粒度更细，搜索概率更高，同时内存占用也更高。
+                    ik_smart分词较少，内存占用少，搜索概率较低。
+            IK分词器拓展和停用词典：
+                
+                        
 
 
 
