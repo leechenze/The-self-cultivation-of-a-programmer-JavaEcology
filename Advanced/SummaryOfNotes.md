@@ -1938,7 +1938,7 @@
                     GET /_analyze
                     {
                         "analyzer": "ik_max_word",
-                        "text": "黑马程序员学习java太棒了"
+                        "text": "李晨泽是白嫖的大神，奥力给！！！"
                     }
                     IK分词器包含两种模式：
                         ik_smart：最少切分
@@ -1948,13 +1948,154 @@
                     ik_smart分词较少，内存占用少，搜索概率较低。
             IK分词器拓展和停用词典：
                 IK分词器分词的原理就是依赖底层的一些词库进行匹配。它不会匹配到一些比如"白嫖"，"奥力给"这些新兴的网络用语。
-                所以有些词是需要拓展的，修改IK分词器config目录中的IKAnalyzer.cfg.xml文件：
-                    
-                        
-
-
-
-
+                所以有些词是需要拓展的，修改IK分词器config目录中的 IKAnalyzer.cfg.xml文件：
+                    <!--用户可以在这里配置自己的扩展字典 -->
+                    <entry key="ext_dict">ext.dic</entry>
+                     <!--用户可以在这里配置自己的扩展停止词字典-->
+                    <entry key="ext_stopwords">stopword.dic</entry>
+                ext.dic 和 stopword.dic 是两个文件，拓展词和停止词都是从这两个文件中读取。
+                这里添加两个白嫖和奥力给的拓展词，并且将"的"这个字加入到停止词中。
+                重启es
+                    docker restart myes
+                再次测试
+                    "text": "李晨泽是白嫖的大神，奥力给！！！" 这段文本，就已经将白嫖和奥力给成功匹配为一个词，并且没有匹配到"的"这个停止词
+                更多用法探索请移步官网查询。
+        搜索库操作：
+            mapping：映射属性
+                mapping映射是对索引库中文档的约束，常见的mapping属性包括：
+                    type：字段数据类型，常见的简单类型有：
+                        字符串：text（可分词的文本），keyword（精确值，例如：品牌，国家，ip地址）
+                        数值：long，integer，short，byte，double，float
+                        布尔：boolean
+                        日期：date
+                        对象：object
+                        注意：es中没有数组类型，但可以有多个值，比如：score:[99,98,12]，它实际上是具有多个值的数值类型
+                    index：是否创建索引，默认为true，如果为false就不会创建倒排索引。
+                    analyzer：指定使用哪种分词器，（一般只有字符串类型的 text 需要分词，其他类型都无需分词）
+                    properties：表示一个字段的子字段，即object的子属性
+                文档查阅地址：https://www.elastic.co/guide/en/elasticsearch/reference/current/elasticsearch-intro.html
+            创建索引库：
+                解释：ES中通过Restful请求操作索引库，文档。请求内容用DSL语句来表示。
+                语法：
+                    PUT /索引库名
+                    { DSL... }
+                示例：
+                    # 创建索引库
+                    PUT /panda
+                    {
+                        "mappings": {
+                            "properties": {
+                                "info": {
+                                    "type": "text",
+                                    "analyzer": "ik_smart"
+                                },
+                                "email":{
+                                    "type": "keyword",
+                                    "index": false,
+                                },
+                                "name":{
+                                    "type":"object",
+                                    "properties": {
+                                        "firstName":{
+                                            "type": "keyword",
+                                        },
+                                        "lastName":{
+                                            "type": "keyword",
+                                        },
+                                    },
+                                }
+                            }
+                        }
+                    }
+            删除索引库：
+                语法
+                    DELETE /索引库名
+                示例：
+                    DELETE /panda
+            查看索引库：
+                语法：
+                    GET /索引库名
+                示例：
+                    GET /panda
+            修改索引库：
+                解释：
+                    在ES中是禁止修改索引库的，因为创建时ES基于mapping创建倒排索引，如果修改一个字段后，就会导致原有的倒排索引失效。
+                    但是ES是允许添加新的字段。
+                语法：
+                    PUT /索引库名/_mapping
+                    { DSL... }
+                示例：
+                    PUT /panda/_mapping
+                    {
+                        "properties": {
+                            "age": {
+                                "type": "integer"
+                            }
+                        }
+                    }
+                注意：修改绝对不能和之前的字段重复，如果重复的话，就会意外在修改之前的字段，就会报错，因为ES是禁止修改原索引库字段的。
+                总结：索引库修改操作只能添加字段，而不能修改之前的字段。
+            
+        文档操作：
+            新增文档：
+                语法：
+                    POST /索引库名/_doc/文档ID
+                    { DSL... }
+                示例：
+                    POST /panda/_doc/1
+                    {
+                        "info": "李晨泽是白嫖的大神，奥力给！！！",
+                        "email": "leeczyc@gmail.com",
+                        "name": {
+                            "firstName": "云",
+                            "lastName": "赵"
+                        }
+                    }
+            查看文档：
+                语法：GET /索引库名/_doc/文档ID
+                示例：GET /panda/_doc/1
+            删除文档：
+                语法：DELETE /索引库名/_doc/文档ID
+                示例：DELETE /panda/_doc/1
+            修改文档：
+                全量修改：
+                    解释：删除旧文档，添加新文档。
+                    语法：
+                        PUT /索引库名/_doc/文档ID
+                        { DSL... }
+                    示例：
+                        PUT /panda/_doc/1
+                        {
+                            "info": "特朗普是白嫖的大神，奥力给！！！",
+                            "email": "leeczyc@gmail.com",
+                            "name": {
+                                "firstName": "云",
+                                "lastName": "赵"
+                            }
+                        }
+                    注意：这种方式逻辑：先把原来的文档干掉，再添加全新的文档进去，所以它既能做修改，也能做新增。
+                增量修改：
+                    解释：修改指定字段。
+                    语法：
+                        POST /索引库名/_update/文档ID
+                        { DSL... }
+                    示例：
+                        POST /panda/_update/1
+                        {
+                            "doc": {
+                                "info": "奥巴马是白嫖的大神，奥力给！！！",
+                            }
+                        }
+        RestClient操作索引库：                
+            RestClient就是ES官方提供的各种语言的客户端，用来操作ES，这些客户端的本质就是组装DSL语句。                
+            文档地址：https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html
+            案例：根据 /day5/tb_hotel.sql 中的酒店数据创建索引库，索引库名为hotel，mapping属性根据数据库结构定义
+            操作步骤：
+                导入Demo
+                分析数据结构，定义mapping属性
+                初始化JavaRestClient
+                使用JavaRestClient创建，删除和判断索引库。
+                
 
 
 
