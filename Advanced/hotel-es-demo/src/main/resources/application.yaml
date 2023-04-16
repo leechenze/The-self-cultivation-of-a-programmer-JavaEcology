@@ -1,0 +1,17 @@
+server:
+  port: 8089
+spring:
+  datasource:
+    url: jdbc:mysql://mysql:3306/es_panda?useSSL=false
+    username: root
+    password: lcz19930316
+    driver-class-name: com.mysql.cj.jdbc.Driver
+logging:
+  level:
+    com.lee: debug
+  pattern:
+    dateformat: HH:mm:ss:SSS
+mybatis-plus:
+  configuration:
+    map-underscore-to-camel-case: true
+  type-aliases-package: com.lee.hotel.pojo

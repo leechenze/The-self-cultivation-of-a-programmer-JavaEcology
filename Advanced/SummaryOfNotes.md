@@ -2086,7 +2086,7 @@
                                 "info": "奥巴马是白嫖的大神，奥力给！！！",
                             }
                         }
-        RestClient操作索引库：                
+        RestClient操作索引库：（hotel-es-demo）
             RestClient就是ES官方提供的各种语言的客户端，用来操作ES，这些客户端的本质就是组装DSL语句。                
             文档地址：https://www.elastic.co/guide/en/elasticsearch/client/java-api-client/current/introduction.html
             案例：根据 /day5/tb_hotel.sql 中的酒店数据创建索引库，索引库名为hotel，mapping属性根据数据库结构定义
@@ -2095,7 +2095,65 @@
                 分析数据结构，定义mapping属性
                 初始化JavaRestClient
                 使用JavaRestClient创建，删除和判断索引库。
+            
+            分析数据结构：
+                mapping要考虑的问题：
+                    字段名，数据类型，是否参与搜索，是否分词，如果分词，分词器是什么？
+                ES中支持两种地理坐标数据类型：
+                    geo_point 类型：由精度和纬度确定的一个点，例如："121.5748384, 37.3458234"
+                    geo_shape 类型：有多个geo_point组成的几何图层，例如："LINESTRING(121.5748384 37.3458234, 121.1100233 37.8834349)"
+                如果查询时需要根据多个字段进行查询时，且都必须是参与搜索的（index为true），可以使用copy_to 属性将当前字段拷贝到指定字段，例如：
+                    "all": {
+                        "type": "text",
+                        "analyzer": "ik_max_word"
+                    },
+                    "brand": {
+                        "type": "keyword",
+                        "copy_to": "all"
+                    }
+                    这样就可以在一个字段中搜索到多个字段的内容了。
+            初始化JavaRestClient：
+                引入ES的RestHighLevelClient依赖：
+                    <dependency>
+                        <groupId>org.elasticsearch.client</groupId>
+                        <artifactId>elasticsearch-rest-client</artifactId>
+                        <!--<version>8.7.0</version>-->
+                    </dependency>
+                因为SpringBoot默认的ES版本就是7.17.9，所以我们需覆盖默认的ES版本为8.7.0，ES版本和Rest的依赖需要保持一致：
+                这里使用最新的对8.7.0的支持，请参考es文档：
+                    <dependency>
+                        <groupId>co.elastic.clients</groupId>
+                        <artifactId>elasticsearch-java</artifactId>
+                        <version>8.7.0</version>
+                    </dependency>
+                初始化RestHighLevelClient：（HotelIndexTest）
+                    void setUp() {
+                        client = new RestHighLevelClient(RestClient.builder(
+                                HttpHost.create("http://127.0.0.1:9200")
+                        ));
+                    }
+            创建索引库：
                 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
