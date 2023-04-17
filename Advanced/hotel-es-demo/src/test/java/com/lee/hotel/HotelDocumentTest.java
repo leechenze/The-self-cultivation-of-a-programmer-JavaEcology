@@ -34,73 +34,16 @@ class HotelDocumentTest {
 
     @Test
     void testAddDocument() throws IOException {
-        // 1.查询数据库hotel数据
-        Hotel hotel = hotelService.getById(61083L);
-        // 2.转换为HotelDoc
+        // 根据ID查询酒店数据
+        Hotel hotel = hotelService.getById(36934L);
+        // 转换为文档类型
         HotelDoc hotelDoc = new HotelDoc(hotel);
-        // 3.转JSON
-        String json = JSON.toJSONString(hotelDoc);
-
-        // 1.准备Request
+        // 准备Request对象
         IndexRequest request = new IndexRequest("hotel").id(hotelDoc.getId().toString());
-        // 2.准备请求参数DSL，其实就是文档的JSON字符串
-        request.source(json, XContentType.JSON);
-        // 3.发送请求
+        // 准备Json DSL文档
+        request.source(JSON.toJSONString(hotelDoc), XContentType.JSON);
+        // 发送请求
         client.index(request, RequestOptions.DEFAULT);
-    }
-
-    @Test
-    void testGetDocumentById() throws IOException {
-        // 1.准备Request      // GET /hotel/_doc/{id}
-        GetRequest request = new GetRequest("hotel", "61083");
-        // 2.发送请求
-        GetResponse response = client.get(request, RequestOptions.DEFAULT);
-        // 3.解析响应结果
-        String json = response.getSourceAsString();
-
-        HotelDoc hotelDoc = JSON.parseObject(json, HotelDoc.class);
-        System.out.println("hotelDoc = " + hotelDoc);
-    }
-
-    @Test
-    void testDeleteDocumentById() throws IOException {
-        // 1.准备Request      // DELETE /hotel/_doc/{id}
-        DeleteRequest request = new DeleteRequest("hotel", "61083");
-        // 2.发送请求
-        client.delete(request, RequestOptions.DEFAULT);
-    }
-
-    @Test
-    void testUpdateById() throws IOException {
-        // 1.准备Request
-        UpdateRequest request = new UpdateRequest("hotel", "61083");
-        // 2.准备参数
-        request.doc(
-                "price", "870"
-        );
-        // 3.发送请求
-        client.update(request, RequestOptions.DEFAULT);
-    }
-
-    @Test
-    void testBulkRequest() throws IOException {
-        // 查询所有的酒店数据
-        List<Hotel> list = hotelService.list();
-
-        // 1.准备Request
-        BulkRequest request = new BulkRequest();
-        // 2.准备参数
-        for (Hotel hotel : list) {
-            // 2.1.转为HotelDoc
-            HotelDoc hotelDoc = new HotelDoc(hotel);
-            // 2.2.转json
-            String json = JSON.toJSONString(hotelDoc);
-            // 2.3.添加请求
-            request.add(new IndexRequest("hotel").id(hotel.getId().toString()).source(json, XContentType.JSON));
-        }
-
-        // 3.发送请求
-        client.bulk(request, RequestOptions.DEFAULT);
     }
 
     @BeforeEach

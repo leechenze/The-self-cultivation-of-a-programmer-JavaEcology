@@ -1880,7 +1880,7 @@
                     因为我们还需要部署Kibana容器，因此需要让es和kibana容器互联。这里先创建一个网络：
                     docker network create es-net
                 安装ES：（镜像非常大一个多G）
-                    docker pull elasticsearch:8.7.0
+                    docker pull elasticsearch:7.17.6
                 部署单点ES：
                     docker run -d \
                         --name myes \
@@ -1893,7 +1893,7 @@
                         --network es-net \
                         -p 9200:9200 \
                         -p 9300:9300 \
-                        elasticsearch:8.7.0
+                        elasticsearch:7.17.6
                     命令解读：
                         第一个 -e 表示配置JVM的堆内存大小为512，这里配置的就是ES将来运行时的内存大小，默认值为1G（如果虚拟机内存比较大就可以使用这个1G的默认值），512也不能再小了，否则会出现内存不足的问题
                         第二个 -e 表示配置运行模式为单点运行，不是集群模型。
@@ -1906,14 +1906,14 @@
             Kibana：
                 Kibana 用于提供一个elasticsearch的可视化界面，便于我们操作。
                 安装Kibana：
-                    docker pull kibana:8.7.0
+                    docker pull kibana:7.17.6
                 部署：注意要和 elasticsearch 在同一个网络中（es-net）
                     docker run -d \
                         --name mykibana \
                         -e ELASTICSEARCH_HOSTS=http://myes:9200 \
                         --network=es-net \
                         -p 5601:5601  \
-                        kibana:8.7.0
+                        kibana:7.17.6
                     命令解读：
                         -e ELASTICSEARCH_HOSTS=http://myes:9200 表示配置 elasticsearch 的主机地址为 elasticsearch 对应的启动名称 name:端口
                         --network=es-net 注意要和 elasticsearch 在同一个网络
@@ -2116,26 +2116,67 @@
                 引入ES的RestHighLevelClient依赖：
                     <dependency>
                         <groupId>org.elasticsearch.client</groupId>
-                        <artifactId>elasticsearch-rest-client</artifactId>
-                        <!--<version>8.7.0</version>-->
+                        <artifactId>elasticsearch-rest-high-level-client</artifactId>
                     </dependency>
-                因为SpringBoot默认的ES版本就是7.17.9，所以我们需覆盖默认的ES版本为8.7.0，ES版本和Rest的依赖需要保持一致：
-                这里使用最新的对8.7.0的支持，请参考es文档：
-                    <dependency>
-                        <groupId>co.elastic.clients</groupId>
-                        <artifactId>elasticsearch-java</artifactId>
-                        <version>8.7.0</version>
-                    </dependency>
+                因为SpringBoot默认的ES版本就是7.17.9，所以我们需覆盖默认的ES版本为7.17.6，ES版本和Rest的依赖需要保持一致：
+                    <properties>
+                        <java.version>1.8</java.version>
+                        <elasticsearch.version>7.17.6</elasticsearch.version>
+                    </properties>
                 初始化RestHighLevelClient：（HotelIndexTest）
                     void setUp() {
                         client = new RestHighLevelClient(RestClient.builder(
-                                HttpHost.create("http://127.0.0.1:9200")
+                            HttpHost.create("http://127.0.0.1:9200")
                         ));
                     }
-            创建索引库：
+            创建索引库：(HotelIndexTest)
+                // 1.准备Request      PUT /hotel
+                CreateIndexRequest request = new CreateIndexRequest("hotel");
+                // 2.准备请求参数
+                request.source(MAPPING_TEMPLATE, XContentType.JSON);
+                // 3.发送请求
+                client.indices().create(request, RequestOptions.DEFAULT);
                 
+                执行成功后在 5601 端口的控制台上查询 hotel 库：
+                    GET /hotel
+                    查到结果，成功创建
+            删除索引库：(HotelIndexTest)
+                // 1.准备Request
+                DeleteIndexRequest request = new DeleteIndexRequest("hotel");
+                // 2.发送请求
+                client.indices().delete(request, RequestOptions.DEFAULT);
+            判断索引库是否存在：(HotelIndexTest)
+                // 1.准备Request
+                GetIndexRequest request = new GetIndexRequest("hotel");
+                // 2.发送请求
+                boolean isExists = client.indices().exists(request, RequestOptions.DEFAULT);
+                // 3.输出
+                System.out.println(isExists ? "hotel索引库已存在" : "hotel索引库不存在");
+            
+        RestClient操作文档：
+            利用JavaRestClient实现文档的CRUD
+            去数据库查询酒店数据，导入到hotel索引库，实现酒店数据的CRUD。
+            中间需要从数据库获取数据，转换成索引库所需要的格式，然后写到索引库。
 
-
+            新增酒店数据：(HotelDocumentTest)
+                // 根据ID查询酒店数据
+                Hotel hotel = hotelService.getById(36934L);
+                // 转换为文档类型
+                HotelDoc hotelDoc = new HotelDoc(hotel);
+                // 准备Request对象
+                IndexRequest request = new IndexRequest("hotel").id(hotelDoc.getId().toString());
+                // 准备Json DSL文档
+                request.source(JSON.toJSONString(hotelDoc), XContentType.JSON);
+                // 发送请求
+                client.index(request, RequestOptions.DEFAULT);
+            根据ID查询酒店数据：(HotelDocumentTest)
+                注意：根据ID查询的文档数据是JSON，需要反序列化为java对象。
+                
+                
+                
+            删除酒店数据：
+            修改酒店数据：
+            
 
 
 
