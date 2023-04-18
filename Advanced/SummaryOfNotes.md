@@ -2171,14 +2171,51 @@
                 client.index(request, RequestOptions.DEFAULT);
             根据ID查询酒店数据：(HotelDocumentTest)
                 注意：根据ID查询的文档数据是JSON，需要反序列化为java对象。
-                
-                
-                
-            删除酒店数据：
-            修改酒店数据：
-            
+                // 准备Request对象
+                GetRequest request = new GetRequest("hotel", "36934");
+                // 发送请求，获取响应
+                GetResponse response = client.get(request, RequestOptions.DEFAULT);
+                // 解析响应结果
+                String json = response.getSourceAsString();
+                // 反序列化JSON对象
+                HotelDoc hotelDoc = JSON.parseObject(json, HotelDoc.class);
+                // 输出
+                System.out.println(hotelDoc);
+            修改酒店数据：(HotelDocumentTest)
+                全量更新：再次写入ID一样的文档，就会删除旧文档，添加新文档。
+                局部更新：只更新部分字段。
+                    // 准备Request对象
+                    UpdateRequest request = new UpdateRequest("hotel", "36934");
+                    // 准备请求参数
+                    request.doc("price", "633", "starName", "三钻");
+                    // 发送请求
+                    client.update(request, RequestOptions.DEFAULT);
+            删除酒店数据：(HotelDocumentTest)
+                // 准备Request对象
+                DeleteRequest request = new DeleteRequest("hotel", "36934");
+                // 发送请求
+                client.delete(request, RequestOptions.DEFAULT);
+            批量导入文档：(HotelDocumentTest.testBulkRequest)
+                需求：批量查询酒店数据，批量导入索引库中。
+                思路：
+                    1。利用mybatis-plus查询酒店数据
+                    2。将查询到的酒店数据（Hotel）转换为文档类型数据（HotelDoc）
+                    3。利用JavaRestClient中的Bulk批处理，实现批量新增文档。
+                实例代码：
+                    在ES控制台通过 GET /hotel/_search 命令查看
 
-
+        DSL操作：
+            DSL查询文档：
+                查询分类：
+                    官网地址：https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-filter-context.html
+                    ElasticSearch提供了基础的JSON的DSL（Domain Specific Language）来定义查询。常见的查询类型包括：
+                        查询所有：查询所有数据，一般测试用，但是会有分页的现在。例如：match_all
+                        全文检索：
+                全文检索查询：
+                精确查询：
+                地理坐标查询：
+                组合查询：
+                
 
 
 
