@@ -2209,13 +2209,139 @@
                 查询分类：
                     官网地址：https://www.elastic.co/guide/en/elasticsearch/reference/7.17/query-filter-context.html
                     ElasticSearch提供了基础的JSON的DSL（Domain Specific Language）来定义查询。常见的查询类型包括：
-                        查询所有：查询所有数据，一般测试用，但是会有分页的现在。例如：match_all
-                        全文检索：
+                        查询所有：查询所有数据，一般测试用，但是会有分页的现在。例如：
+                            match_all
+                        全文检索查询（full text）：利用分词器对用户输入内容分词，然后去倒排索引库中匹配。例如：
+                            match_query：                 
+                            multi_match_query：              
+                        精确查询：根据精确词条值查找数据，一半是查找keyword，数值，日期，booelan等类型字段。例如：
+                            ids
+                            range
+                            term
+                        地理查询（geo）：根据经纬度查询，例如：
+                            geo_distance
+                            geo_bounding_box
+                        复合查询（compound）：将上述各种查询条件组合在一起，合并查询条件，例如：
+                            bool    
+                            functino_score    
+                    查询基本语法：
+                        GET /indexName/_search
+                        {
+                            "query": {
+                                "查询类型": {
+                                    "查询条件": "条件值"
+                                }
+                            }
+                        }
+                        示例：
+                            GET /hotel/_search
+                            {
+                                "query": {
+                                    "match_all": { ... 条件 ... }
+                                }
+                            }
                 全文检索查询：
+                    match：全文检索查询的一种，会对用户输入内容分词，然后去倒排索引库检索，语法：
+                        GET /hotel/_search
+                        {
+                            "query":{
+                                "match": {
+                                    "all": "外滩如家"
+                                }
+                            }
+                        }
+                    multi_match：与match查询类似，只不过允许同时查询多个字段，语法：
+                        GET /hotel/_search
+                        {
+                            "query": {
+                                "multi_match": {
+                                    "query": "外滩如家",
+                                    "fields": [
+                                        "name",
+                                        "brand",
+                                        "business"
+                                    ]
+                                }
+                            }
+                        }
+                    以上例子的结果是一样的，因为 all 就是拷贝的 name，brand，business字段，这种情况推荐使用all查询，因为只查询一个all字段效率高，或者说查询的字段越多查询性能越差。
                 精确查询：
+                    解释：精确查询一般是查找keyword，数值，日期，boolean等类型字段，并不会对搜索条件进行分词，常见的有：
+                    term：根据词条精确值查询，语法：
+                        GET /hotel/_search
+                        {
+                            "query": {
+                                "term": {
+                                    "city": {
+                                        "value": "上海"
+                                    }
+                                }
+                            }
+                        }
+                    range：根据值范围查询，语法：
+                        GET /hotel/_search
+                        {
+                            "query": {
+                                "range": {
+                                    "price": {
+                                        "gte": 3000,
+                                        "lte": 5000
+                                    }
+                                }
+                            }
+                        }
                 地理坐标查询：
+                    geo_bounding_box：查询bounds矩形范围内的所有geo_point的文档，语法：
+                        GET /hotel/_search
+                        {
+                            "query": {
+                                "geo_bounding_box": {
+                                    "location": {
+                                        "top_left": {
+                                            "lat": 31.1,
+                                            "lon": 121.5
+                                        },
+                                        "bottom_right": {
+                                            "lat": 30.9,
+                                            "lon": 121.7
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    geo_distance：查询到指定中心点小于某个距离值的所有文档，语法：
+                        GET /hotel/_search
+                        {
+                            "query": {
+                                "geo_distance": {
+                                    "distance": "5km",
+                                    "location": "31.21,121.5"
+                                }
+                            }
+                        }
                 组合查询：
-                
+                    解释：组合查询亦称复合查询，可以将其他简单查询组合起来，实现更复杂的搜索逻辑。
+                    相关性算分算法：
+                        TF-IDF：在ES5.0版本之前使用的算法，会随着词频增加而越来越大。
+                        BM25：在ES5.0版本之后使用的算法，会随着词频的增加而增大，但增长曲线会趋于水平。
+                    Function Score Query：算分函数查询，可以控制文档相关性算分，控制文档排名。例如百度竞价：
+                        解释：可以修改文档的相关性算分（query score），根据新得到的算分排序：
+                        # 原始查询条件，搜索文档并根据相关性打分（query score）
+                        # 过滤条件，符合条件的文档才会被重新算分
+                        # 算分函数，算分函数的结果称为 function score，后续会与query score运算，得到新算分，常见的算分函数有：
+                            weight：给一个常量值，作为函数结果（function score）
+                            ... Here ...
+                        
+                        
+                        
+                        需求：将如家这个品牌的酒店排名考前一些：
+                            哪些文档需要计算分权？
+                                品牌为如家的酒店。
+                            算分函数是什么？
+                                weight即可。
+                            加权模式是什么？
+                                求和。
+                        
 
 
 
