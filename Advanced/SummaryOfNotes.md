@@ -2330,7 +2330,7 @@
                         # 过滤条件，符合条件的文档才会被重新算分
                         # 算分函数，算分函数的结果称为 function score，后续会与query score运算，得到新算分，常见的算分函数有：
                             weight：给一个常量值，作为函数结果（function score）
-                            ... Here ...
+                            ... Here ...    
                         
                         
                         
