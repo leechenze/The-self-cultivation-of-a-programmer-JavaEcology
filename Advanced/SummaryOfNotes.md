@@ -2330,9 +2330,16 @@
                         # 过滤条件，符合条件的文档才会被重新算分
                         # 算分函数，算分函数的结果称为 function score，后续会与query score运算，得到新算分，常见的算分函数有：
                             weight：给一个常量值，作为函数结果（function score）
-                            ... Here ...
-                        
-                        
+                            field_value_factor：用文档中的某个字段值作为函数结果。
+                            random_score：随机生成一个值，作为函数结果。
+                            script_score：自定义计算公司，公式结果作为函数结果。
+                        # 加权模式，定义function score与query score的运算方式，包括：
+                            multiply：两者想乘，默认值。
+                            replace：用function score 替换 query score
+                            sum：相加
+                            avg：平均值
+                            max：最大值
+                            min：最小值
                         
                         需求：将如家这个品牌的酒店排名考前一些：
                             哪些文档需要计算分权？
@@ -2341,16 +2348,188 @@
                                 weight即可。
                             加权模式是什么？
                                 求和。
-                        
-
-
-
-
-
-
-
-
-
+                        DSL语句：
+                            GET /hotel/_search
+                            {
+                            "query": {
+                                "function_score": {
+                                    # 原始查询条件
+                                    "query": {
+                                        "match": {
+                                            "all": "外滩"
+                                        }
+                                    },
+                                    "functions": [
+                                        {
+                                            # 过滤条件
+                                            "filter": {
+                                                "term": {
+                                                    "brand": "如家"
+                                                }
+                                            },
+                                            # 算分函数
+                                            "weight": 10
+                                        }
+                                    ],
+                                    # 加权模式
+                                    "boost_mode": "sum"
+                                    }
+                                }
+                            }
+                    Boolean Query：布尔查询是一个或多个查询子句的组合。
+                        子查询的组合方式有：
+                            must：必须匹配每个子查询，类似"与"
+                            should：选择性匹配子查询，类似"或"
+                            must_not：必须不匹配，不参与算分，类似"非"
+                            filter：必须匹配，不参与算分
+                        以上参与算分的must和should一般是用来匹配关键字的，
+                        其余不参与算分的都应该放在must_not和filter中，尽可能减少算分，提高查询效率
+                        需求：
+                            搜索名字包含"如家"，价格不高于400，在坐标 31.21,121.5 周围 10km 范围内的酒店
+                        DSL：
+                            GET /hotel/_search
+                            {
+                                "query": {
+                                    "bool": {
+                                        "must": [
+                                            {
+                                                "match": {
+                                                    "name": "如家"
+                                                }
+                                            }
+                                        ],
+                                        "must_not": [
+                                            {
+                                                "range": {
+                                                    "price": {
+                                                        "gt": 400
+                                                    }
+                                                }
+                                            }
+                                        ],
+                                        "filter": [
+                                            {
+                                                "geo_distance": {
+                                                    "distance": "10km",
+                                                    "location": {
+                                                        "lat": 31.21,
+                                                        "lon": 121.5
+                                                    }
+                                                }
+                                            }
+                                        ]
+                                    }
+                                }
+                            }
+            搜索结果处理：
+                排序：
+                    ElasticSearch支持对搜索结果排序，默认是根据相关度算分（_score）来排序。可以排序字段类型有：keyword类型，数值类型，地理坐标类型，日期类型等。
+                    如果一旦自定义了排序方式，那么ES就不会再根据相关度算分进行排序了，所以_score的值会为null。
+                    需求：
+                        对搜索结果进行排序，规则为：按评分降序，按价格升序。
+                    DSL：
+                        降序：desc
+                        升序：asc
+                        GET /hotel/_search
+                        {
+                            "query": {
+                                "match_all": {}
+                            },
+                            "sort": [
+                                {
+                                    "score": "desc"
+                                },
+                                {
+                                    "price": "asc"
+                                }
+                            ]
+                        }
+                    需求：
+                        搜索坐标为121.517064,31.241675的附近酒店进行升序排序
+                    DSL：
+                        GET /hotel/_search
+                        {
+                            "query": {
+                                "match_all": {}
+                            },
+                            "sort": [
+                                {
+                                    "_geo_distance": {
+                                        "location": {
+                                            "lat": 31.241675,
+                                            "lon": 121.517064
+                                        },
+                                        "order": "asc",
+                                        "unit": "km"
+                                    }
+                                }
+                            ]
+                        }
+                分页：
+                    ElasticSearch默认情况下只返回top10的数据，而如果要查询更多数据就要修改分页参数了。
+                    ElasticSearch通过from，size参数来控制要返回的分页结果：
+                    分页方式：
+                        from+size：
+                            优点：支持随机分页
+                            缺点：深度分页问题，默认查询分页上线（from+size）上限是10000条，超出就会报错。
+                            场景：百度，京东，谷歌，淘宝这样的随机翻页搜索
+                        after search：
+                            优点：没有查询上限（单次查询的size不超过10000）
+                            缺点：只能向后逐页查询，不支持随机翻页
+                            场景：没有随机翻页需求的搜索，例如手机向下滚动翻页
+                        scroll：
+                            优点：没有查询上限（单次查询的size不超过10000）
+                            缺点：会有额外的内存消耗，并且搜索结果都是非实时的
+                            场景：海量数据的获取和迁移，从ES7.1开始不推荐，建议用after search方案。
+                    from+size方式查询的 DSL：
+                        GET /hotel/_search
+                        {
+                            "query": {
+                                "match_all": {}
+                            },
+                            "sort": [
+                                {
+                                    "price": {
+                                        "order": "asc"
+                                    }
+                                }
+                            ],
+                            "from": 9999,
+                            "size": 20
+                        }
+                高亮：
+                    就是把搜索结果的关键字突出显示出来
+                    原理：
+                        将搜索结果中的关键字用标签标记出来。
+                        在页面中给标签添加css样式。
+                    DSL：
+                        GET /hotel/_search
+                        {
+                            "query": {
+                                "match": {
+                                    "all": "如家"
+                                }
+                            },
+                            "highlight": {
+                                "fields": {
+                                    "name": {
+                                        "require_field_match": "false"
+                                    }
+                                }
+                            }
+                        }
+                    解释：
+                        最终的返回结果字段会多一个highlight其中就是高亮显示的结果值，将原字段即可替换。
+        RestClient查询文档：        
+            快速入门：  
+                
+            match查询：
+            精确查询：        
+            复合查询：        
+            排序：
+            分页：
+            高亮：
+            黑马旅游案例：
 
 
 
