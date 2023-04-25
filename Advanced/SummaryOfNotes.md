@@ -2520,17 +2520,99 @@
                         }
                     解释：
                         最终的返回结果字段会多一个highlight其中就是高亮显示的结果值，将原字段即可替换。
-        RestClient查询文档：        
-            快速入门：  
+        RestClient查询文档：
+            快速入门：（HotelSearchTest.testMatchAll）       
+                通过match_all来演示下基本的API：
+                    @Test
+                    void testMatchAll() throws IOException {
+                        // 1.准备Request
+                        SearchRequest request = new SearchRequest("hotel");
+                        // 2.准备DSL
+                        request.source().query(QueryBuilders.matchAllQuery());
+                        // 3.发送请求
+                        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+                        System.out.println(response);
+                        // 4.解析响应
+                        SearchHits searchHits = response.getHits();
+                        // 5.获取总条数
+                        long total = searchHits.getTotalHits().value;
+                        System.out.println("共搜索到" + total + "条数据");
+                        // 6.获取文档数组
+                        SearchHit[] hits = searchHits.getHits();
+                        for (SearchHit hit : hits) {
+                            // 获取文档
+                            String json = hit.getSourceAsString();
+                            // 反序列化
+                            HotelDoc hotelDoc = JSON.parseObject(json, HotelDoc.class);
+                            System.out.println("hotelDoc = " + hotelDoc);
+                        }
+                    }
+                RestAPI中构建DSL是通过HighLevelRestClient中的source()类来实现的，其中包含了查询，排序，分页高亮等功能。
+                RestAPI中构建查询条件的核心部分是由一个名为QueryBuilders的工具类提供的，其中包含了检索查询，精确查询，地理坐标查询，组合查询等多种查询方法。
                 
-            match查询：
-            精确查询：        
-            复合查询：        
-            排序：
-            分页：
+            全文检索查询：（HotelSearchTest.testMatch）      
+                全文检索的match和multi_match查询与match_all的API基本一致，差别是查询条件，也就是query部分。
+                match查询和multi_match查询：
+                    @Test
+                    void testMatch() throws IOException {
+                        // 1.准备Request
+                        SearchRequest request = new SearchRequest("hotel");
+                        // 2.准备DSL
+                        // 2.1.但字段查询
+                        // request.source().query(QueryBuilders.matchQuery("all", "如家"));
+                        // 2.2.多字段查询
+                        request.source().query(QueryBuilders.multiMatchQuery("如家", "name", "business"));
+                        // 3.发送请求
+                        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+                        System.out.println(response);
+                        // 4，5，6（解析相关操作，抽取为了公共方法）
+                        extractedResolution(response);
+                    }
+            精确查询：
+                精确查询常见的有term（词条查询）和range（范围查询），同样利用QueryBuilders实现：
+                词条查询：
+                    QueryBuilders.termQuery("city","杭州");
+                范围查询：
+                    QueryBuilders.rangeQuery("price").gte(100).lte(300);
+            复合查询：（HotelSearchTest.testBool）       
+                布尔查询：
+                    // 创建布尔查询
+                    BoolQueryBuilders boolQuery = QueryBuilders.boolQuery();
+                    // 添加must条件
+                    boolQuery.must(QueryBuilders.termQuery("city","杭州"));
+                    // 添加filter条件
+                    boolQuery.filter(QueryBuilders.rangeQuery("price").lte(250));
+                总结：要构建查询条件，只要牢记一个类：QueryBuilders。
+            排序：（HotelSearchTest.testPageAndSort）      
+                request.source().from(0).size(5)
+            分页：（HotelSearchTest.testPageAndSort）      
+                request.source().sort("price", SortOrder.ASC)
             高亮：
+                高亮API包括请求DSL构建和结果解析两部分：
+                    DSL构建：HotelSearchTest.testHighLight）
+                        // 2.准备DSL
+                        // 2.1.查询（因为是关键字高亮，所以不能使用matchAll，这里就用match查询，指定具体的要高亮的关键字）
+                        request.source().query(QueryBuilders.matchQuery("all", "如家"));
+                        // 2.1.高亮
+                        request.source().highlighter(new HighlightBuilder().field("name").requireFieldMatch(false).preTags("<em>").postTags("</em>"));
+                    DSL解析：（HotelSearchTest.extractedResolution）
+                        // 获取高亮结果
+                        Map<String, HighlightField> highlightFields = hit.getHighlightFields();
+                        if(!CollectionUtils.isEmpty(highlightFields)){
+                            // 根据字段名获取高亮结果
+                            HighlightField highlightField = highlightFields.get("name");
+                            if(highlightField != null) {
+                                // 获取高亮值（一个string的数组）
+                                String name = highlightField.getFragments()[0].string();
+                                // 覆盖非高亮结果
+                                hotelDoc.setName(name);
+                            }
+                        }
+                总结：request.source() 就相当于 DSL 中最外层的花括号。
+                
+                
             黑马旅游案例：
-            
+                
             
 
 
