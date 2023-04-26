@@ -2611,9 +2611,43 @@
                 总结：request.source() 就相当于 DSL 中最外层的花括号。
                 
             黑马旅游案例：
-                
-            
-
+                基本搜索和分页：
+                    定义接收前端请求参数的类：（pojo.RequestParams）
+                        @Data
+                        public class RequestParams {
+                            private String key;
+                            private Integer page;
+                            private Integer size;
+                            private String sortBy;
+                        }
+                    定义返回前端数据的类：（pojo.PageResult）
+                        @Data
+                        public class PageResult {
+                            private Long total;
+                            private List<Hotel> hotels;
+                        }
+                    定义controller接口，接收前端请求：（controller.HotelController）
+                        @RestController
+                        @RequestMapping("/hotel")
+                        public class HotelController {
+                            @Autowired
+                            private IHotelService hotelService;
+                            
+                            @PostMapping("/list")
+                            public PageResult search(@RequestBody RequestParams params) {
+                                System.out.println(hotelService.search(params));
+                                return hotelService.search(params);
+                            }
+                        }
+                    在启动类（配置类）中将 RestHighLevelClient 声明为Bean：（HotelEsDemoApplication）
+                    定义service层：（service.impl.HotelService）
+                        详情请看：service.impl.HotelService
+                        代码量有点多这里，就不再这里展示了。
+                    此时访问 http://localhost:8089/# 即可成功操作搜索和分页
+                    
+                添加品牌，城市，星级，价格等过滤功能：
+                    ... here ...
+                    
 
 
 
