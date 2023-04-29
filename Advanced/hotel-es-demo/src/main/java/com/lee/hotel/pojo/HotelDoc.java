@@ -1,5 +1,6 @@
 package com.lee.hotel.pojo;
 
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -17,6 +18,8 @@ public class HotelDoc {
     private String business;
     private String location;
     private String pic;
+    private Object distance;
+    private Boolean isAD;
 
     public HotelDoc(Hotel hotel) {
         this.id = hotel.getId();

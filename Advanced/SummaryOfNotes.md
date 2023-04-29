@@ -2646,11 +2646,150 @@
                     此时访问 http://localhost:8089/# 即可成功操作搜索和分页
                     
                 添加品牌，城市，星级，价格等过滤功能：
-                    ... here ...
+                    修改RequestParams类，添加brand，city，starName，minPrice，maxPrice等参数
+                        @Data
+                        public class RequestParams {
+                            private String key;
+                            private Integer page;
+                            private Integer size;
+                            private String sortBy;
+                            private String city;
+                            private String brand;
+                            private String starName;
+                            private Integer minPrice;
+                            private Integer maxPrice;
+                        }
+                    修改search方法的实现，在关键字搜索时，如果brand等参数存在，对其做过滤（HotelService）
+                        @Override
+                        public PageResult search(RequestParams params) {
+                            try {
+                                // 1.准备Request
+                                SearchRequest request = new SearchRequest("hotel");
+                                // 2.准备DSL
+                                // 基础查询条件方法
+                                buildBasicQuery(params, request);
+                                // 分页
+                                int page = params.getPage();
+                                int size = params.getSize();
+                                request.source().from((page - 1) * size).size(size);
+                                // 3.发送请求
+                                SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+                                System.out.println(response);
+                                // 4，5，6（解析相关操作，抽取为了公共方法）
+                                return extractedResolution(response);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                实现我附近的酒店：    
+                    修改RequestParams类，添加location字段：
+                        @Data
+                        public class RequestParams {
+                            private String key;
+                            private Integer page;
+                            private Integer size;
+                            private String sortBy;
+                            private String city;
+                            private String brand;
+                            private String starName;
+                            private Integer minPrice;
+                            private Integer maxPrice;
+                            private Integer location;
+                        }
+                    修改search方法的业务逻辑，如果location有值，添加根据geo_distance排序的功能：（HotelService）
+                        @Override
+                        public PageResult search(RequestParams params) {
+                            try {
+                                // 1.准备Request
+                                SearchRequest request = new SearchRequest("hotel");
+                                // 2.准备DSL
+                                // 基础查询条件方法
+                                buildBasicQuery(params, request);
+                                // 分页
+                                int page = params.getPage();
+                                int size = params.getSize();
+                                request.source().from((page - 1) * size).size(size);
+                                // 排序
+                                String location = params.getLocation();
+                                if (location != null && !location.equals("")) {
+                                    request.source().sort(
+                                        SortBuilders
+                                        .geoDistanceSort("location", new GeoPoint(location))
+                                        .order(SortOrder.ASC)
+                                        .unit(DistanceUnit.KILOMETERS)
+                                    );
+                                }
+                                // 3.发送请求
+                                SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+                                System.out.println(response);
+                                // 4，5，6（解析相关操作，抽取为了公共方法）
+                                return extractedResolution(response);
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    给HotelDoc返回值的类添加 distance
+                        private Object distance;
+                广告指定功能实现：
+                    实现：给需要置顶的酒店文档添加一个标记，然后利用function score给带有标记的文档增加权重。
+                    给HotelDoc类添加isAD字段，Boolean类型。
+                        private Boolean isAD;
+                    挑选几个喜欢的酒店，给他的文档数据添加isAD字段，值为true。
+                        在ElasticSearch控制台中给几条数据添加isAD字段。
+                        # 添加isDA字段,方便置顶
+                        POST /hotel/_update/56201
+                        {
+                            "doc": {
+                                "isAD": true
+                            }
+                        }
+                        POST /hotel/_update/56392
+                        {
+                            "doc": {
+                                "isAD": true
+                            }
+                        }
+                        POST /hotel/_update/60214
+                        {
+                            "doc": {
+                                "isAD": true
+                            }
+                        }
+                        POST /hotel/_update/60223
+                        {
+                            "doc": {
+                                "isAD": true
+                            }
+                        }
+                    修改search方法，添加function score功能，给isAD值为true的酒店增加权重。
+                        private void buildBasicQuery(RequestParams params, SearchRequest request) {
+                            // 算分控制：function score给isAD（广告字段）添加权重。
+                            FunctionScoreQueryBuilder functionScoreQuery = QueryBuilders.functionScoreQuery(
+                                    // 原始查询，做相关性算分的查询。
+                                    boolQuery,
+                                    // function score的数组
+                                    new FunctionScoreQueryBuilder.FilterFunctionBuilder[]{
+                                            // 其中的一个Function Score元素
+                                            new FunctionScoreQueryBuilder.FilterFunctionBuilder(
+                                                    // 过滤条件
+                                                    QueryBuilders.termQuery("isAD", true),
+                                                    // 算分函数
+                                                    ScoreFunctionBuilders.weightFactorFunction(10)
+                                            )
+                                    }
+                            );
+                            // 执行查询
+                            request.source().query(functionScoreQuery);
+                        }
 
-                    
-
-
+        数据聚合：         
+            
+            
+            
+            
+        自动补全：            
+        数据同步：            
+        ES集群：            
 
 
 
