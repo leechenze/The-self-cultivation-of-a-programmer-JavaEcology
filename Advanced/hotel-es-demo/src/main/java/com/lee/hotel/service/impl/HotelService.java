@@ -24,16 +24,22 @@ import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilder;
 import org.elasticsearch.index.query.functionscore.ScoreFunctionBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.management.Query;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class HotelService extends ServiceImpl<HotelMapper, Hotel> implements IHotelService {
@@ -71,6 +77,74 @@ public class HotelService extends ServiceImpl<HotelMapper, Hotel> implements IHo
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    @Override
+    public Map<String, List<String>> filters(RequestParams params) {
+        try {
+            // 准备Request
+            SearchRequest request = new SearchRequest("hotel");
+            // 准备DSL
+            // 基础查询条件方法，用来限制聚合的范围
+            buildBasicQuery(params, request);
+            // 设置size，表示不要文档结果，只要聚合结果
+            request.source().size(0);
+            // 聚合
+            request.source().aggregation(
+                    AggregationBuilders
+                            .terms("brandAgg")
+                            .field("brand")
+                            .size(10)
+            );
+            request.source().aggregation(
+                    AggregationBuilders
+                            .terms("cityAgg")
+                            .field("city")
+                            .size(10)
+            );
+            request.source().aggregation(
+                    AggregationBuilders
+                            .terms("starNameAgg")
+                            .field("starName")
+                            .size(10)
+            );
+            // 发出请求
+            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+            // 定义Map
+            Map<String, List<String>> result = new HashMap<>();
+            // 解析结果
+            Aggregations aggregations = response.getAggregations();
+            // 根据名称获取品牌的结果
+            List<String> brandList = getAggByName(aggregations, "brandAgg");
+            // 将聚合结果put到Map中
+            result.put("品牌", brandList);
+            // 城市和星级亦同（复制粘贴）
+            List<String> cityList = getAggByName(aggregations, "cityAgg");
+            result.put("城市", cityList);
+            List<String> starNameList = getAggByName(aggregations, "starNameAgg");
+            result.put("星级", starNameList);
+            // 结果返回
+            return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @NotNull
+    private List<String> getAggByName(Aggregations aggregations, String aggName) {
+        // 根据聚合名称获取聚合结果
+        Terms aggregation = aggregations.get(aggName);
+        // 获取buckets
+        List<? extends Terms.Bucket> buckets = aggregation.getBuckets();
+        // 定义List
+        List<String> brandList = new ArrayList<>();
+        // 遍历
+        for (Terms.Bucket bucket : buckets) {
+            // 获取key
+            String key = bucket.getKeyAsString();
+            brandList.add(key);
+        }
+        return brandList;
     }
 
     /**

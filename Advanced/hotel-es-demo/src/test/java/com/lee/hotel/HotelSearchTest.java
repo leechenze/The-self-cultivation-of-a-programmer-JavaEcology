@@ -3,7 +3,6 @@ package com.lee.hotel;
 import com.alibaba.fastjson2.JSON;
 import com.lee.hotel.pojo.HotelDoc;
 import org.apache.http.HttpHost;
-import org.elasticsearch.action.admin.indices.delete.DeleteIndexRequest;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
 import org.elasticsearch.client.RequestOptions;
@@ -16,6 +15,10 @@ import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.search.SearchHit;
 import org.elasticsearch.search.SearchHits;
+import org.elasticsearch.search.aggregations.Aggregation;
+import org.elasticsearch.search.aggregations.AggregationBuilders;
+import org.elasticsearch.search.aggregations.Aggregations;
+import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
@@ -27,6 +30,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.Map;
 
 import static com.lee.hotel.constants.HotelIndexConstants.MAPPING_TEMPLATE;
@@ -122,7 +126,35 @@ class HotelSearchTest {
         extractedResolution(response);
     }
 
-
+    @Test
+    void testAggregation() throws IOException {
+        // 准备Request
+        SearchRequest request = new SearchRequest("hotel");
+        // 准备DSL
+        // 设置size，表示不要文档结果，只要聚合结果
+        request.source().size(0);
+        // 聚合
+        request.source().aggregation(
+                AggregationBuilders
+                        .terms("brandAgg")
+                        .field("brand")
+                        .size(10)
+        );
+        // 发出请求
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+        // 解析结果
+        Aggregations aggregations = response.getAggregations();
+        // 根据聚合名称获取聚合结果
+        Terms aggregation = aggregations.get("brandAgg");
+        // 获取buckets
+        List<? extends Terms.Bucket> buckets = aggregation.getBuckets();
+        // 遍历
+        for (Terms.Bucket bucket : buckets) {
+            // 获取key
+            String key = bucket.getKeyAsString();
+            System.out.println(key);
+        }
+    }
 
     /**
      * 公共方法：解析的相关代码封装（选中需要提取的代码片段，快捷键为：option+command+m）

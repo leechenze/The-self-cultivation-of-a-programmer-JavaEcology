@@ -2783,11 +2783,184 @@
                         }
 
         数据聚合：         
-            
-            
-            
-            
+            聚合的分类：
+                官网文档：https://www.elastic.co/guide/en/elasticsearch/reference/7.11/search-aggregations-bucket.html
+                聚合（aggregations）可以实现对文档数据的统计，分析，运算，聚合常见的有三类：
+                    桶（Bucket）聚合：用来对文档做分组：
+                        TermAggregation：按照文档字段值分组
+                        Date Histogram：按照日期阶梯分组，例如一周为一组，或者一月为一组
+                    度量（Metric）聚合：用以计算一些值，比如：最大值，最小值，平均值等。
+                        Avg：平均值
+                        Max：最大值
+                        Min：最小值
+                        Stats：同时求max，min，avg，sum等。
+                    管道（pipeline）聚合：其他聚合的结果为基础做聚合
+                参与聚合的字段类型必须是：
+                    keyword，数值，日期，布尔
+            实现Bucket聚合：
+                需求：统计数据中的酒店品牌有几种，此时可以根据酒店品牌名称做聚合：
+                DSL：
+                    GET /hotel/_search
+                    {
+                        "size": 0, # 设置size为0，结果中不包含文档，只包含聚合结果，即hits数据应为空。
+                        "aggs": { # 定义聚合
+                            "brandAgg": { # 定义聚合的名称
+                                "terms": { # 聚合的类型，按照品牌值聚合，所以用term
+                                    "field": "brand", # 参与聚合的字段
+                                    "size": 20 # 希望获取的聚合结果数量
+                                    "order": {
+                                      "_count": "asc" # 按着_count升序排序
+                                    }
+                                }
+                            }
+                        }
+                    }
+                详见控制台的相关演示：桶聚合,基础
+            实现Metrics聚合：
+                需求：例如，我们要求获取每个品牌的用户评分为min，max，avg等值：
+                DSL：
+                    GET /hotel/_search
+                    {
+                        "size": 0,
+                        "aggs": {
+                            "brandAgg": {
+                                "terms": {
+                                    "field": "brand",
+                                    "size": 10,
+                                    "order": {
+                                        "scoreAgg.avg": "desc"
+                                    }
+                                },
+                                "aggs": { # brands聚合的子聚合，也就是分组后对每组分别计算
+                                    "scoreAgg": { # 聚合名称
+                                        "stats": { # 聚合类型，这里stats可以计算min，max，avg等
+                                            "field": "score" # 聚合字段，这里对score字段做聚合
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                详见控制台的相关演示：度量聚合,利用stats聚合
+            RestClient实现聚合：（HotelSearchTest.testAggregation）
+                @Test
+                void testAggregation() throws IOException {
+                    // 准备Request
+                    SearchRequest request = new SearchRequest("hotel");
+                    // 准备DSL
+                    // 设置size，表示不要文档结果，只要聚合结果
+                    request.source().size(0);
+                    // 聚合
+                    request.source().aggregation(
+                            AggregationBuilders
+                                    .terms("brandAgg")
+                                    .field("brand")
+                                    .size(10)
+                    );
+                    // 发出请求
+                    SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+                    // 解析结果
+                    Aggregations aggregations = response.getAggregations();
+                    // 根据聚合名称获取聚合结果
+                    Terms aggregation = aggregations.get("brandAgg");
+                    // 获取buckets
+                    List<? extends Terms.Bucket> buckets = aggregation.getBuckets();
+                    // 遍历
+                    for (Terms.Bucket bucket : buckets) {
+                        // 获取key
+                        String key = bucket.getKeyAsString();
+                        System.out.println(key);
+                    }
+                }
+            多条件聚合：
+                案例：在IUserServices中定义方法，实现对品牌，城市，星级的聚合：
+                需求：搜索页面中，品牌，城市等信息不应该是在页面写死的，而是通过聚合索引库中的酒店数据得来的：
+                实现步骤：
+                    在IHotelService中定义一个filters接口：
+                    在HotelService中实现filters接口：
+                        @Override
+                        public Map<String, List<String>> filters() {
+                            try {
+                                // 准备Request
+                                SearchRequest request = new SearchRequest("hotel");
+                                // 准备DSL
+                                // 设置size，表示不要文档结果，只要聚合结果
+                                request.source().size(0);
+                                // 聚合
+                                request.source().aggregation(
+                                        AggregationBuilders
+                                                .terms("brandAgg")
+                                                .field("brand")
+                                                .size(10)
+                                );
+                                request.source().aggregation(
+                                        AggregationBuilders
+                                                .terms("cityAgg")
+                                                .field("city")
+                                                .size(10)
+                                );
+                                request.source().aggregation(
+                                        AggregationBuilders
+                                                .terms("starNameAgg")
+                                                .field("starName")
+                                                .size(10)
+                                );
+                                // 发出请求
+                                SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+                                // 定义Map
+                                Map<String, List<String>> result = new HashMap<>();
+                                // 解析结果
+                                Aggregations aggregations = response.getAggregations();
+                                // 根据名称获取品牌的结果
+                                List<String> brandList = getAggByName(aggregations, "brandAgg");
+                                // 将聚合结果put到Map中
+                                result.put("品牌", brandList);
+                                // 城市和星级亦同（复制粘贴）
+                                List<String> cityList = getAggByName(aggregations, "cityAgg");
+                                result.put("城市", cityList);
+                                List<String> starNameList = getAggByName(aggregations, "starNameAgg");
+                                result.put("星级", starNameList);
+                                // 结果返回
+                                return result;
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    在HotelEsDemoApplicationTests中对service层的filters方法进行测试：
+                        @SpringBootTest
+                        public class HotelEsDemoApplicationTests {
+                            @Autowired
+                            private IHotelService hotelService;
+                            @Test
+                            void contextLoads(){
+                                Map<String, List<String>> filters = hotelService.filters();
+                                System.out.println(filters);
+                            }
+                        }
+            带过滤条件的聚合：
+                需求：实现多条件聚合的接口：
+                实现步骤：
+                    编写controller接口，接收该请求：（HotelController.getFilters）
+                        @PostMapping("/filters")
+                        public Map<String, List<String>> getFilters(@RequestBody RequestParams params) {
+                            return hotelService.filters(params);
+                        }
+                    修改IUserService#getFilters()方法，添加RequestParam参数：
+                        Map<String, List<String>> filters(RequestParams params);
+                    修改getFilters()方法的业务，聚合时添加query条件：(HotelService.filters)
+                        给filter定义一个接收参数，执行一下之前封装的基础查询条件方法即可，用来限制聚合的范围。
+                        buildBasicQuery(params, request);
+
         自动补全：            
+            ... here ...
+            
+            
+            
+            
+            
+            
+            
+            
         数据同步：            
         ES集群：            
 
