@@ -2952,7 +2952,49 @@
                         buildBasicQuery(params, request);
 
         自动补全：            
-            ... here ...
+            安装拼音分词器：
+                要实现根据字母做补全，就必须对文档按照拼音分词，在GitHub上又一个对ES的拼音分词器插件
+                地址：https://github.com/medcl/elasticsearch-analysis-pinyin
+                安装步骤：和IK分词器安装步骤相同
+                    解压
+                    上传到elasticsearch的es-plugins目录
+                    重启elasticsearch
+                    在ES控制台测试
+                        DSL：
+                            POST /_analyze
+                            {
+                                "text": ["如家酒店还不错"],
+                                "analyzer": "pinyin"
+                            }
+            自定义分词器：
+                elasticsearch中分词器（analyzer）的组成包括三部分：
+                    character filters：在tokenizer之前对文本进行处理。例如删除字符，替换字符
+                    tokenizer：将文本按照一定的规则切割成词条（term），例如keyword，就是不分词，还有ik_smart
+                    tokenizer filter：将tokenizer输出的词条做进一步处理。例如大小写转换，同义词处理，拼音处理等。
+                示例：
+                    原文本：四级考试通过了:)
+                    character filter：四级考试通过了开心
+                        :) ==> 开心
+                        :( ==> 伤心
+                    tokenizer：四级，考试，通过，开心
+                        （通过ik_smart分词处理）
+                    tokenizer filter：siji，kaoshi，tongguo，kaixin
+                        （通过pinyin进行分词处理）
+                DSL：
+                    详见ES控制台：==========自定义分词器==========
+                问题：评分分词器适合在创建倒排索引时使用，但不能在搜索的时候使用。
+                    如ES控制台中：如果在搜索时使用，对搜索方式为my_analyzer的搜索进行测试
+                    这段文本是无法对狮子和虱子两个字进行辨别。
+                解决：在创建时和搜索时用不同的分词器：
+                    DSL：详见==========自定义分词器==========的test索引库创建部分
+                        "name": {
+                            "type": "text",
+                            "analyzer": "my_analyzer",
+                            "search_analyzer": "ik_smart"
+                        }
+                    
+                    
+                    
             
             
             
