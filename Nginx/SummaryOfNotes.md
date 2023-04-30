@@ -11,6 +11,8 @@
 零.Nginx简介和安装
 
   文档参考: https://www.yuque.com/wukong-zorrm/cql6cz/uoz0cq
+  资源链接: https://pan.baidu.com/s/1NmCR-vdAcZLouRRn9V1yTA  密码: 1b60
+    从Github中宕下来也可以,里面包含所有使用到的资源.
 
   Nginx是一款轻量级的Web服务器,反向代理服务器,由于他们的内存占用少,启动极快,高并发能力强,在互联网项目中广泛应用.
 
@@ -157,90 +159,111 @@
     NGINX Configuration
       一个Nginx配置文件高亮显示的插件
     
+
+    注:后续环境都是在CentOS下进行
+    注:后续环境都是在CentOS下进行
+    注:后续环境都是在CentOS下进行
     
 
 
 
+
+
 壹.静态Web配置
+  将 /learn/AdminLTE-3.2.0 配置为一个Web服务
   
-  将 /Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Nginx/AdminLTE-3.2.0 配置为一个Web服务
+  问题记录:
+    注意：在centos 7中，用systemctl启动nginx可能出现如下错误，
+    nginx: [emerg] bind() to 0.0.0.0:8000 failed (13: Permission denied)
+    这是由于selinux的安全策略引起的。解决方法如下：
+    ● setenforce 0 （临时）
+    ● 修改/etc/selinux/config，设置SELINUX=disabled （永久有效，需重启）
   
-  
+  文件配置:
+    listen
+      监听可以配置成IP或端口或IP+端口 
+      listen 127.0.0.1:8000;
+      listen 127.0.0.1;（ 端口不写,默认80 ） 
+      listen 8000; 
+      listen *:8000; 
+      listen localhost:8000;
+    server_name
+      server_name主要用于区分，可以随便起。
+      也可以使用变量 $hostname 配置成主机名。
+      或者配置成域名： example.org   www.example.org   *.example.org 
+      如果多个server的端口重复，那么根据域名或者主机名去匹配 server_name 进行选择。
+      下面的例子中：
+        curl http://localhost:80会访问/usr/share/nginx/html
+        curl http://nginx-dev:80会访问/home/AdminLTE-3.2.0
+
+    location
+      /请求指向 root 目录
+      location 总是从/目录开始匹配，如果有子目录，例如/css，他会指向/static/css, 也就是会直接追加到 配置的root根目录之后.
+        location /css {
+          root /static;
+        }
 
 
 
 
 
 
-贰.
+贰.HTTP反向代理
+  正向代理:
+    在客户端代理转发请求称为正向代理,例如:VPN.
+  反向代理:
+    在服务器端的代理转发请求称为方向代理,例如:Nginx
+  配置代理服务:
+    这里我们用若依管理系统作为方向代理的后台, 将若依系统的8088端口 通过nginx 代理到 8001的端口
+      把 ruoyi-admin.jar 包上传到 /learn 目录下
+      jar包地址:
+        RuoYi是一个基于Spring Boot的后台管理系统，ruoyi-admin.jar资源都在 SummaryOfNotes.md 的同级目录下
+        也可以根据官网文档（http://doc.ruoyi.vip/ruoyi/），自己编译打包。
+        源码下载：https://codeload.github.com/yangzongzhuan/RuoYi/zip/refs/tags/v4.7.4
+      启动ruoyi后台服务，端口为8088:
+        java -jar ruoyi-admin.jar
+    没有能力或懒的配置若依环境的话也可以使用docker官网的一个getting-started, 反正能跑来一个8088端口的页面就行了
+      docker run -d --name docker_demo -p 8088:80 docker/getting-started 这里就用这个代替上面的若依系统进行演示了
+      
+    nginx配置文件：
+      server {
+        listen 8001;
+        server_name ddemo.localhost;
+        location / {
+          proxy_pass http://localhost:8088;
+        }
+      }
 
+    重启Nginx后再次访问 http://172.16.168.130:8001 (访问前首先确定 http://172.16.168.130:8088 这个被代理的地址可以正常访问)
+      nginx -s reload
 
-
-
-
-
-
+    问题:
+      通过Nginx将请求转发给后端服务器, 所以后端服务获取到的 IP 变成了Nginx的主机IP.
+    解决:
+      用户可以重新定义或追加header信息传递给后端服务器, 可以包含文本,变量及其组合, 默认情况下, 仅重定义两个字段:
+        proxy_set_header Host       $proxy_host;
+      但由于使用方向代理之后, 后端服务无法获取用户的真实IP, 所以一般反向代理都会设置一下header信息:
+        location /some/path/ {
+          # nginx的主机地址: 向后端服务声明是从哪个Nginx转发的请求
+          proxy_set_header Host $http_host;
+          # 用户端真实的IP，即客户端IP
+          proxy_set_header X-Real-IP $remote_addr;
+          proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+          proxy_pass http://localhost:8088;
+        }
+      常用变量:
+        $host：nginx主机IP，例如172.16.168.130
+        $http_host：nginx主机IP和端口，172.16.168.130:8001
+        $proxy_host：localhost:8088，proxy_pass里配置的主机名和端口
+        $remote_addr:用户的真实IP，即客户端IP。
+      
+        
+    
 叁.
-
-
-
-
-
-
-
 肆.
-
-
-
-
-
-
-
 伍.
-
-
-
-
-
-
-
 陆.
-
-
-
-
-
-
-
 柒.
-
-
-
-
-
-
-
 捌.
-
-
-
-
-
-
-
 玖.
-
-
-
-
-
-
-
 拾.
-
-
-
-
-
-
-
