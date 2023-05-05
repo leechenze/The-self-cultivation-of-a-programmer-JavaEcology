@@ -55,7 +55,6 @@
       获取日志: 
         tail -f error.log
 
-
   CentOS环境:
     MacOS 连接 CentOS:
     ssh root@172.16.168.130
@@ -169,6 +168,12 @@
 
 
 
+
+
+
+
+
+
 壹.静态Web配置
   将 /learn/AdminLTE-3.2.0 配置为一个Web服务
   
@@ -202,6 +207,11 @@
         location /css {
           root /static;
         }
+
+
+
+
+
 
 
 
@@ -243,7 +253,7 @@
       用户可以重新定义或追加header信息传递给后端服务器, 可以包含文本,变量及其组合, 默认情况下, 仅重定义两个字段:
         proxy_set_header Host       $proxy_host;
       但由于使用方向代理之后, 后端服务无法获取用户的真实IP, 所以一般反向代理都会设置一下header信息:
-        location /some/path/ {
+        location / {
           # nginx的主机地址: 向后端服务声明是从哪个Nginx转发的请求
           proxy_set_header Host $http_host;
           # 用户端真实的IP，即客户端IP
@@ -256,10 +266,101 @@
         $http_host：nginx主机IP和端口，172.16.168.130:8001
         $proxy_host：localhost:8088，proxy_pass里配置的主机名和端口
         $remote_addr:用户的真实IP，即客户端IP。
+
+      proxy_pass配置说明:
+        如果proxy-pass的地址只配置到端口，不包含/或其他路径，那么location将被追加到转发地址中:
+          location /some/path/ {
+            proxy_pass http://localhost:8080;
+          }
+          如上配置: 访问 http://localhost/some/path/page.html 将被代理到 http://localhost:8080/some/path/page.html
+        如果proxy-pass的地址包括/或其他路径，那么/some/path将会被替换:
+          location /some/path/ {
+            proxy_pass http://localhost:8080/zh-cn/;
+          }
+          如上配置: 访问 http://localhost/some/path/page.html 将被代理到 http://localhost:8080/zh-cn/page.html
+
+      非HTTP代理:
+        如果要将请求传递到非 HTTP 代理服务器，可以使用下列指令：
+          ● fastcgi_pass 将请求转发到FastCGI服务器（多用于PHP）
+          ● scgi_pass 将请求转发到SCGI server服务器（多用于PHP）
+          ● uwsgi_pass 将请求转发到uwsgi服务器（多用于python）
+          ● memcached_pass 将请求转发到memcached服务器
       
-        
     
-叁.
+
+
+    
+
+    
+
+
+    
+
+    
+叁.动静分离
+
+  动静分离的好处:
+    Apache Tocmat 严格来说是一款java EE服务器，主要是用来处理 servlet请求。处理css、js、图片这些静态文件的IO性能不够好，
+    因此，将静态文件交给nginx处理，可以提高系统的访问速度，减少tomcat的请求次数，有效的给后端服务器降压。
+
+  文档参考
+    https://www.yuque.com/wukong-zorrm/cql6cz/rvmsl7
+  
+  代码片段:
+    server{
+      location / {
+        proxy_pass http://localhost:8080/;
+      }
+      
+      location = /html/ie.html {
+        root  /home/www/static;
+      }
+      
+      location ^~ /fonts/ {
+      
+        root  /home/www/static;
+      }
+      
+      location ~ \.(css|js|png|jpg|gif|ico) {
+        root /home/www/static;
+      }
+    }
+
+  location 修饰符
+    ● location可以使用修饰符或正则表达式
+      修饰符：
+        =     等于，严格匹配 ，匹配优先级最高。
+        ^~    表示普通字符匹配。使用前缀匹配。如果匹配成功，则不再匹配其它 location。优先级第二高。
+        ~     区分大小写
+        ~*    不区分大小写
+    ● 优先级
+      优先级从高到低依次为：。
+        1. 精确匹配（=）
+        2. 前缀匹配（^~）
+        3. 正则匹配（~和～*）
+        4. 不写
+
+    代码片段:
+      location ^~ /images/ {
+        proxy_pass http://localhost:8080;
+      }
+
+      location ~ \.jpg {
+        proxy_pass http://localhost:8080;
+      }
+
+      如上所示:
+        /images/1.jpg代理到 http://localhost:8080/images/1.jpg
+        /some/path/1.jpg 代理到http://localhost:8080/some/path/1.jpg
+      
+
+
+
+
+
+
+
+
 肆.
 伍.
 陆.
