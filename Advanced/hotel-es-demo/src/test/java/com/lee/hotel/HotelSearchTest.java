@@ -5,6 +5,7 @@ import com.lee.hotel.pojo.HotelDoc;
 import org.apache.http.HttpHost;
 import org.elasticsearch.action.search.SearchRequest;
 import org.elasticsearch.action.search.SearchResponse;
+import org.elasticsearch.client.Request;
 import org.elasticsearch.client.RequestOptions;
 import org.elasticsearch.client.RestClient;
 import org.elasticsearch.client.RestHighLevelClient;
@@ -22,6 +23,12 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightBuilder;
 import org.elasticsearch.search.fetch.subphase.highlight.HighlightField;
 import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.suggest.Suggest;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilders;
+import org.elasticsearch.search.suggest.SuggestionBuilder;
+import org.elasticsearch.search.suggest.completion.CompletionSuggester;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.elasticsearch.xcontent.XContentType;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -187,6 +194,34 @@ class HotelSearchTest {
             }
             // 结果打印
             System.out.println("hotelDoc = " + hotelDoc);
+        }
+    }
+
+    @Test
+    void testSuggest() throws IOException {
+        // 准备Request
+        SearchRequest request = new SearchRequest("hotel");
+        // 准备DSL（最好对照控制台 # ==========查询suggest========== 写RestAPI代码）
+        request.source().suggest(new SuggestBuilder().addSuggestion(
+                "suggestions",
+                SuggestBuilders.completionSuggestion("suggestion")
+                        .prefix("h")
+                        .skipDuplicates(true)
+                        .size(10)
+        ));
+        // 发起请求
+        SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+        // System.out.println(response);
+        // 解析结果
+        Suggest suggest = response.getSuggest();
+        // 根据补全查询名称，获取补全结果
+        CompletionSuggestion suggestions = suggest.getSuggestion("suggestions");
+        // 获取options
+        List<CompletionSuggestion.Entry.Option> options = suggestions.getOptions();
+        // 遍历
+        for (CompletionSuggestion.Entry.Option option : options) {
+            String text = option.getText().toString();
+            System.out.println(text);
         }
     }
 

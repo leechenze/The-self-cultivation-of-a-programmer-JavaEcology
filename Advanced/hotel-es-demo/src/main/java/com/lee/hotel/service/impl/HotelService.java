@@ -30,6 +30,10 @@ import org.elasticsearch.search.aggregations.bucket.terms.Terms;
 import org.elasticsearch.search.sort.SortBuilder;
 import org.elasticsearch.search.sort.SortBuilders;
 import org.elasticsearch.search.sort.SortOrder;
+import org.elasticsearch.search.suggest.Suggest;
+import org.elasticsearch.search.suggest.SuggestBuilder;
+import org.elasticsearch.search.suggest.SuggestBuilders;
+import org.elasticsearch.search.suggest.completion.CompletionSuggestion;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -125,6 +129,41 @@ public class HotelService extends ServiceImpl<HotelMapper, Hotel> implements IHo
             result.put("星级", starNameList);
             // 结果返回
             return result;
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    @Override
+    public List<String> getSuggestions(String prefix) {
+        try {
+            // 准备Request
+            SearchRequest request = new SearchRequest("hotel");
+            // 准备DSL（最好对照控制台 # ==========查询suggest========== 写RestAPI代码）
+            request.source().suggest(new SuggestBuilder().addSuggestion(
+                    "suggestions",
+                    SuggestBuilders.completionSuggestion("suggestion")
+                            .prefix(prefix)
+                            .skipDuplicates(true)
+                            .size(10)
+            ));
+            // 发起请求
+            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+            // System.out.println(response);
+            // 解析结果
+            Suggest suggest = response.getSuggest();
+            // 根据补全查询名称，获取补全结果
+            CompletionSuggestion suggestions = suggest.getSuggestion("suggestions");
+            // 获取options
+            List<CompletionSuggestion.Entry.Option> options = suggestions.getOptions();
+            // 准备List (长度即使options的长度)
+            List<String> list = new ArrayList<>(options.size());
+            // 遍历
+            for (CompletionSuggestion.Entry.Option option : options) {
+                String text = option.getText().toString();
+                list.add(text);
+            }
+            return list;
         } catch (IOException e) {
             throw new RuntimeException(e);
         }

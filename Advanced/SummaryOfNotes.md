@@ -2951,7 +2951,7 @@
                         给filter定义一个接收参数，执行一下之前封装的基础查询条件方法即可，用来限制聚合的范围。
                         buildBasicQuery(params, request);
 
-        自动补全：            
+        自动补全：（所有ES控制台的DSL语句都在 lib/day5/es_console_dsl.jsonc 文件中）
             安装拼音分词器：
                 要实现根据字母做补全，就必须对文档按照拼音分词，在GitHub上又一个对ES的拼音分词器插件
                 地址：https://github.com/medcl/elasticsearch-analysis-pinyin
@@ -2967,6 +2967,7 @@
                                 "analyzer": "pinyin"
                             }
             自定义分词器：
+                官网参考：https://github.com/medcl/elasticsearch-analysis-pinyin
                 elasticsearch中分词器（analyzer）的组成包括三部分：
                     character filters：在tokenizer之前对文本进行处理。例如删除字符，替换字符
                     tokenizer：将文本按照一定的规则切割成词条（term），例如keyword，就是不分词，还有ik_smart
@@ -2986,15 +2987,242 @@
                     如ES控制台中：如果在搜索时使用，对搜索方式为my_analyzer的搜索进行测试
                     这段文本是无法对狮子和虱子两个字进行辨别。
                 解决：在创建时和搜索时用不同的分词器：
+                    在指定mapping映射时指定两个，analyzer是在创建索引时用的，search_analyzer是在搜索时用的。
                     DSL：详见==========自定义分词器==========的test索引库创建部分
                         "name": {
                             "type": "text",
                             "analyzer": "my_analyzer",
                             "search_analyzer": "ik_smart"
                         }
+                    此时在控制台中执行，可以看到只有狮子这一个关键字匹配到了
+                        GET /test/_search
+                        {
+                            "query": {
+                                "match": {
+                                    "name": "掉入狮子笼咋办"
+                                }
+                            }
+                        }
+            DSL实现自动补全：
+                completion suggester查询
+                elasticsearch提供了 completion suggester查询来实现自动补全功能。这个查询会匹配以用户输入内容开头的词条并返回。
+                为了提高补全查询的效率，对于文档中字段的类型有一些约束：
+                    参与补全查询的字段必须是completion类型。
+                    字段的内容一般是用来补全的多个词条形成的数组
+                查询语法如下：
+                    # ==========自动补全的索引库==========
+                    PUT test2
+                    {
+                        "mappings": {
+                            "properties": {
+                                "title":{
+                                    "type": "completion"
+                                }
+                            }
+                        }
+                    }
+                    # 插入示例数据
+                    POST test2/_doc
+                    {
+                        "title": ["Sony", "WH-1000XM3"]
+                    }
+                    POST test2/_doc
+                    {
+                        "title": ["SK-II", "PITERA"]
+                    }
+                    POST test2/_doc
+                    {
+                        "title": ["Nintendo", "switch"]
+                    }
+                    # 自动补全查询，根据 "s" 进行匹配 suggest
+                    GET test2/_search
+                    {
+                        "suggest": {
+                            "title_suggest": {
+                                "text": "s", // 关键字
+                                "completion": {
+                                    "field": "title", // 补全查询的字段
+                                    "skip_duplicates": true, // 跳过重复的
+                                    "size": 10 // 获取前10条结果
+                                }
+                            }
+                        }
+                    }
+            自动补全实操：
+                需求：实现hotel索引库的自动补全，拼音搜索功能
+                    实现思路如下：
+                        修改hotel索引库结构，设置自定义拼音分词器
+                            详见：# ==========自动补全实操==========
+                        修改索引库的name和all字段，使用自定义分词器
+                            详见：# ==========自动补全实操==========
+                        索引库添加一个新字段suggestion，类型为completion类型，使用自定义分词器
+                            详见：# ==========自动补全实操==========
+                        给HotelDoc类添加suggestion字段，内容包含brand和business
+                            详见：HotelDoc.java
+                                private List<String> suggestion;
+                                this.suggestion = Arrays.asList(this.brand, this.business);
+                        重新导入数据到hotel库
+                            执行 HotelDocumentTest.textBulkRequest 方法
+                            在控制台中查询
+                                GET /hotel/_search
+                                {
+                                    "query": {
+                                        "match_all": {}
+                                    }
+                                }
+                            可以看到控制台的每一个查询结果多了个suggestion字段。
+                        针对business字段进行切割
+                            详见：HotelDoc.java
+                            if (this.business.contains("、")) {
+                                // business有多个值，需要切割
+                                String[] arr = this.business.split("、");
+                                // 添加元素
+                                this.suggestion = new ArrayList<>();
+                                this.suggestion.add(this.brand);
+                                // addAll方法会将arr的每一个元素add 到 this.suggestion中。
+                                Collections.addAll(this.suggestion, arr);
+                            }else{
+                                this.suggestion = Arrays.asList(this.brand, this.business);
+                            }
+                            再次在控制台中查询结果：（大概151行）
+                                GET /hotel/_search
+                                {
+                                    "query": {
+                                        "match_all": {}
+                                    }
+                                }
+                                结果：
+                                    "suggestion" : [
+                                        "7天酒店",
+                                        "江湾、五角场商业区",
+                                    ]
+                                    成功切割为变为
+                                    "suggestion" : [
+                                        "7天酒店",
+                                        "江湾",
+                                        "五角场商业区"
+                                    ]
+                        在ES控制台中suggestion查询：
+                            GET /hotel/_search
+                            {
+                                "suggest": {
+                                    "suggestions": {
+                                        "text": "h",
+                                        "completion": {
+                                            "field": "suggestion",
+                                            "skip_duplicates": true,
+                                            "size": 10
+                                        }
+                                    }
+                                }
+                            }
+                            结果：h 拼音开头的汉字的所有品牌和商圈都成功匹配。
                     
+                RestAPI实现自动补全查询：    
+                    代码片段：(HotelSearchTest.testSuggest)
+                        @Test
+                        void testSuggest() throws IOException {
+                            // 准备Request
+                            SearchRequest request = new SearchRequest("hotel");
+                            // 准备DSL（最好对照控制台 # ==========查询suggest========== 写RestAPI代码）
+                            request.source().suggest(new SuggestBuilder().addSuggestion(
+                                    "suggestions",
+                                    SuggestBuilders.completionSuggestion("suggestion")
+                                            .prefix("h")
+                                            .skipDuplicates(true)
+                                            .size(10)
+                            ));
+                            // 发起请求
+                            SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+                            // System.out.println(response);
+                            // 解析结果
+                            Suggest suggest = response.getSuggest();
+                            // 根据补全查询名称，获取补全结果
+                            CompletionSuggestion suggestions = suggest.getSuggestion("suggestions");
+                            // 获取options
+                            List<CompletionSuggestion.Entry.Option> options = suggestions.getOptions();
+                            // 遍历
+                            for (CompletionSuggestion.Entry.Option option : options) {
+                                String text = option.getText().toString();
+                                System.out.println(text);
+                            }
+                        }
+                
+                实现酒店搜索页面输入框的自动补全
+                    在服务端编写接口，接收该请求，返回补全结果的集合，类型为List<String>（HotelController）
+                        @GetMapping("/suggestion")
+                        public List<String> getSuggestions(@RequestParam("key") String prefix) {
+                            return hotelService.getSuggestions(prefix);
+                        }
+                    iHotelService接口：
+                        List<String> getSuggestions(String prefix);
+                    HotelService实现方法：
+                        @Override
+                        public List<String> getSuggestions(String prefix) {
+                            try {
+                                // 准备Request
+                                SearchRequest request = new SearchRequest("hotel");
+                                // 准备DSL（最好对照控制台 # ==========查询suggest========== 写RestAPI代码）
+                                request.source().suggest(new SuggestBuilder().addSuggestion(
+                                        "suggestions",
+                                        SuggestBuilders.completionSuggestion("suggestion")
+                                                .prefix(prefix)
+                                                .skipDuplicates(true)
+                                                .size(10)
+                                ));
+                                // 发起请求
+                                SearchResponse response = client.search(request, RequestOptions.DEFAULT);
+                                // System.out.println(response);
+                                // 解析结果
+                                Suggest suggest = response.getSuggest();
+                                // 根据补全查询名称，获取补全结果
+                                CompletionSuggestion suggestions = suggest.getSuggestion("suggestions");
+                                // 获取options
+                                List<CompletionSuggestion.Entry.Option> options = suggestions.getOptions();
+                                // 准备List (长度即使options的长度)
+                                List<String> list = new ArrayList<>(options.size());
+                                // 遍历
+                                for (CompletionSuggestion.Entry.Option option : options) {
+                                    String text = option.getText().toString();
+                                    list.add(text);
+                                }
+                                return list;
+                            } catch (IOException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                    此时访问页面，在搜索看随便输入字母，以该字母为前缀的汉字的品牌和商圈会出现在列表中表示成功。
+
+        数据同步：
+            数据同步思路分析
+                elasticsearch中的酒店数据来自于mysql数据库，因此mysql数据发生改变时，elasticsearch也必须跟着改变，这个就是elasticsearch与mysql之间的数据同步
+                同步问题不光是es和mysql，凡是数据库双写的情况，都会有数据同步的问题，比如redis和mysql都会存在数据同步问题
+                在微服务中，负责酒店管理（操作mysql）的业务与负责酒店搜索（操作elasticsearch）的业务可能在两个不同的微服务上，数据同步该如何实现呢？
+                    方案一：同步调用
+                        当有人做增删改查的业务时，首先把数据同步到库里，然后调用hotel-es-demo项目暴露的更新索引库的接口，去同步更新es
+                        弊端：
+                            这样做就导致从原来的一步变成三步了，写入数据库，调用hotel-es-demo更新es的接口，然后hotel-es-demo更新es。
+                            并且三个步骤是依次执行的，顺序不可乱，同时导致性能下降，从原来一个接口的响应，变成了两个接口的响应等待。
+                            且还会有业务耦合和数据耦合的问题。
+                        优点：实现简单，粗暴
+                    方案二：异步通知（推荐方式）
+                        基于MQ的技术实现的，当有人新增时，先写入数据库，写完后向MQ发布消息，通知MQ有数据新增，至于谁监听这个消息
+                        监听完之后做什么和什么时候做都不会和写数据这一步有任何冲突，这样一来业务和数据的耦合就解除了。
+                        并且监听方（hotel-es-demo）耗时多少秒也不会对 hoteo-admin 项目有任何影响。
+                    方案三：监听binlog
+                        优点：完全解除服务见的耦合
+                        缺点：开启binlog会增加数据库负担，并且canal中间件的实现复杂的较高。
+
+            实现elasticsearch与数据库数据同步（利用MQ，方式二）
+                新建hotel-admin项目作为酒店管理的微服务，当酒店数据发生增删改查时，要求对elasticsearch数据也要完成相同操作
+                步骤：
+                    导入day中提供的hotel-admin项目，启动并测试酒店数据的CRUD
+                    声明exchange，queue，RoutingKey
+                    在hotel-admin中的增删改业务中完成消息发送的逻辑
+                    在hotel-es-demo中完成消息监听，并更新elasticsearch中的数据
+                    启动并测试数据的同步功能
                     
-                    
+                
             
             
             
@@ -3002,8 +3230,6 @@
             
             
             
-            
-        数据同步：            
         ES集群：            
 
 
