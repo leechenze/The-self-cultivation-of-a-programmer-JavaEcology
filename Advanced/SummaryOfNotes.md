@@ -3216,13 +3216,94 @@
             实现elasticsearch与数据库数据同步（利用MQ，方式二）
                 新建hotel-admin项目作为酒店管理的微服务，当酒店数据发生增删改查时，要求对elasticsearch数据也要完成相同操作
                 步骤：
-                    导入day中提供的hotel-admin项目，启动并测试酒店数据的CRUD
-                    声明exchange，queue，RoutingKey
+                    创建hotel-admin项目，启动并测试酒店数据的CRUD
+                    在hotel-es-demo中导入amqp坐标，并在application中配置 rabbitmq 地址
+                        rabbitmq:
+                            host: 127.0.0.1
+                            port: 5672
+                            username: leechenze
+                            password: 930316
+                            virtual-host: / # leechenze这个用户的虚拟主机（/）
+                    声明exchange，queue，RoutingKey的常量
+                        constants.MqConstants
+                            package com.lee.hotel.constants;
+                            public class MqConstants {
+                                /**
+                                * 交换机
+                                */
+                                private final static String HOTEL_EXCHANGE = "hotel.topic";
+                                /**
+                                * 监听新增和修改的队列
+                                */
+                                private final static String HOTEL_INSERT_QUEUE = "hotel.insert.queue";
+                                /**
+                                * 监听删除的队列
+                                */
+                                private final static String HOTEL_DELETE_QUEUE = "hotel.delete.queue";
+                                /**
+                                * 新增和修改的RoutingKey
+                                */
+                                private final static String HOTEL_INSERT_KEY = "hotel.insert.key";
+                                /**
+                                * 新增和修改的RoutingKey
+                                */
+                                private final static String HOTEL_DELETE_KEY = "hotel.delete.key";
+                            }
+                        config.MqConfig
+                            @Configuration
+                            public class MqConfig {
+                                /**
+                                * 定义交换机
+                                * @return
+                                */
+                                @Bean
+                                public TopicExchange topicExchange() {
+                                    return new TopicExchange(MqConstants.HOTEL_EXCHANGE, true, false);
+                                }
+                                
+                                /**
+                                 * 定义插入的队列
+                                 * @return
+                                 */
+                                @Bean
+                                public Queue insertQueue() {
+                                    return new Queue(MqConstants.HOTEL_INSERT_QUEUE, true);
+                                }
+                            
+                                /**
+                                 * 定义删除的队列
+                                 * @return
+                                 */
+                                @Bean
+                                public Queue deleteQueue() {
+                                    return new Queue(MqConstants.HOTEL_DELETE_QUEUE, true);
+                                }
+                        
+                                /**
+                                 * 定义插入的绑定关系
+                                 * @return
+                                 */
+                                @Bean
+                                public Binding insertQueueBinding() {
+                                    return BindingBuilder.bind(insertQueue()).to(topicExchange()).with(MqConstants.HOTEL_INSERT_KEY);
+                                }
+                            
+                                /**
+                                 * 定义删除的绑定关系
+                                 * @return
+                                 */
+                                @Bean
+                                public Binding deleteQueueBinding() {
+                                    return BindingBuilder.bind(deleteQueue()).to(topicExchange()).with(MqConstants.HOTEL_DELETE_KEY);
+                                }
+                            }
+
                     在hotel-admin中的增删改业务中完成消息发送的逻辑
+                        ... here ...
                     在hotel-es-demo中完成消息监听，并更新elasticsearch中的数据
                     启动并测试数据的同步功能
                     
-                
+                    
             
             
             
