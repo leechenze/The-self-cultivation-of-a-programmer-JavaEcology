@@ -1,0 +1,637 @@
+# Click the Variables button, above, to create your own variables.
+GET ${exampleVariable1} // _search
+{
+  "query": {
+    "${exampleVariable2}": {}
+  }
+}
+
+
+# GET /_analyze
+# {
+#   "analyzer": "ik_max_word",
+#   "text": "李晨泽是白嫖的大神，奥力给！！！"
+# }
+
+
+# ==========索引库操作==========
+
+# 删除索引库
+DELETE /panda
+
+# 创建索引库
+PUT /panda
+{
+  "mappings": {
+    "properties": {
+      "info": {
+        "type": "text",
+        "analyzer": "ik_smart"
+      },
+      "email":{ 
+        "type": "keyword",
+        "index": false
+      },
+      "name":{
+        "type":"object",
+        "properties": {
+          "firstName": {
+            "type": "keyword"
+          },
+          "lastName": {
+            "type": "keyword"
+          }
+        }
+      }
+    }
+  }
+}
+
+# 查询索引库
+GET /panda
+
+# 修改索引库, 添加新字段
+PUT /panda/_mapping
+{
+  "properties": {
+    "age": {
+      "type": "integer"
+    }
+  }
+}
+
+
+# ==========文档操作==========
+
+# 删除文档
+DELETE /panda/_doc/1
+
+# 插入文档
+POST /panda/_doc/1
+{
+  "info": "李晨泽是白嫖的大神，奥力给！！！",
+  "email": "leeczyc@gmail.com",
+  "name": {
+    "firstName": "云",
+    "lastName": "赵"
+  }
+}
+
+# 查看文档
+GET /panda/_doc/1
+
+# 修改文
+# 全量修改
+PUT /panda/_doc/1
+{
+  "info": "特朗普是白嫖的大神，奥力给！！！",
+  "email": "leeczyc@gmail.com",
+  "name": {
+    "firstName": "云",
+    "lastName": "赵"
+  }
+}
+# 增量修改某个字段
+POST /panda/_update/1
+{
+  "doc": {
+    "info": "奥巴马是白嫖的大神，奥力给！！！"
+  }
+}
+
+
+
+
+# ==========Java Rest API 索引库操作==========
+
+# 查询 hotel 索引库
+GET /hotel
+
+# 查询 hotel 文档
+GET /hotel/_doc/36934
+
+# 查询bulk批量导入的 hotel 文档结果
+GET /hotel/_search
+
+
+
+
+# ==========DSL 操作==========
+
+# 查询所有
+GET /hotel/_search
+{
+  "query":{
+    "match_all": {}
+  }
+}
+# 全文检索
+# match
+GET /hotel/_search
+{
+  "query":{
+    "match": {
+      "all": "外滩如家"
+    }
+  }
+}
+# multi_match
+GET /hotel/_search
+{
+  "query": {
+    "multi_match": {
+      "query": "外滩豫园",
+      "fields": [
+        "name",
+        "brand",
+        "business"
+      ]
+    }
+  }
+}
+# 精确查询
+# term查询
+GET /hotel/_search
+{
+  "query": {
+    "term": {
+      "city": {
+        "value": "上海"
+      }
+    }
+  }
+}
+# range查询
+GET /hotel/_search
+{
+  "query": {
+    "range": {
+      "price": {
+        "gte": 3000,
+        "lte": 5000
+      }
+    }
+  }
+}
+# 地理查询
+# bounding查询
+GET /hotel/_search
+{
+  "query": {
+    "geo_bounding_box": {
+      "location": {
+        "top_left": {
+          "lat": 31.1,
+          "lon": 121.5
+        },
+        "bottom_right": {
+          "lat": 30.9,
+          "lon": 121.7
+        }
+      }
+    }
+  }
+}
+# distance查询
+GET /hotel/_search
+{
+  "query": {
+    "geo_distance": {
+      "distance": "5km",
+      "location": "31.21,121.5"
+    }
+  }
+}
+
+# 组合查询(Function Score Query)
+GET /hotel/_search
+{
+  "query": {
+    "function_score": {
+      "query": {
+        "match": {
+          "all": "外滩"
+        }
+      },
+      "functions": [
+        {
+          "filter": {
+            "term": {
+              "brand": "如家"
+            }
+          },
+          "weight": 10
+        }
+      ],
+      "boost_mode": "sum"
+    }
+  }
+}
+# 组合查询(Boolean Query)
+GET /hotel/_search
+{
+  "query": {
+    "bool": {
+      "must": [
+        {
+          "match": {
+            "name": "如家"
+          }
+        }
+      ],
+      "must_not": [
+        {
+          "range": {
+            "price": {
+              "gt": 400
+            }
+          }
+        }
+      ],
+      "filter": [
+        {
+          "geo_distance": {
+            "distance": "10km",
+            "location": {
+              "lat": 31.21,
+              "lon": 121.5
+            }
+          }
+        }
+      ]
+    }
+  }
+}
+
+# 搜索结果排序
+# 要求: 按评分降序，按价格升序。
+GET /hotel/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "score": "desc"
+    },
+    {
+      "price": "asc"
+    }
+  ]
+}
+# 要求: 搜索坐标为121.517064,31.241675的附近酒店进行升序排序
+GET /hotel/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "_geo_distance": {
+        "location": {
+          "lat": 31.241675,
+          "lon": 121.517064
+        },
+        "order": "asc",
+        "unit": "km"
+      }
+    }
+  ]
+}
+# 搜索结果分页
+GET /hotel/_search
+{
+  "query": {
+    "match_all": {}
+  },
+  "sort": [
+    {
+      "price": {
+        "order": "asc"
+      }
+    }
+  ],
+  "from": 9999,
+  "size": 20
+}
+# 搜索结果高亮
+GET /hotel/_search
+{
+  "query": {
+    "match": {
+      "all": "如家"
+    }
+  },
+  "highlight": {
+    "fields": {
+      "name": {
+        "require_field_match": "false"
+      }
+    }
+  }
+}
+
+# 添加isDA字段,方便置顶
+POST /hotel/_update/56201
+{
+  "doc": {
+    "isAD": true
+  }
+}
+POST /hotel/_update/56392
+{
+  "doc": {
+    "isAD": true
+  }
+}
+POST /hotel/_update/60214
+{
+  "doc": {
+    "isAD": true
+  }
+}
+POST /hotel/_update/60223
+{
+  "doc": {
+    "isAD": true
+  }
+}
+
+# ==========数据聚合==========
+# 桶聚合,基础
+GET /hotel/_search
+{
+  "size": 0,
+  "aggs": {
+    "brandAgg": {
+      "terms": {
+        "field": "brand",
+        "size": 10,
+        "order": {
+          "_count": "asc"
+        }
+      }
+    }
+  }
+}
+# 桶聚合,限定范围
+GET /hotel/_search
+{
+  "query": {
+    "range": {
+      "price": {
+        "lte": 200
+      }
+    }
+  }, 
+  "size": 0,
+  "aggs": {
+    "brandAgg": {
+      "terms": {
+        "field": "brand",
+        "size": 10,
+        "order": {
+          "_count": "asc"
+        }
+      }
+    }
+  }
+}
+
+# 度量聚合,利用stats聚合
+GET /hotel/_search
+{
+  "size": 0,
+  "aggs": {
+    "brandAgg": {
+      "terms": {
+        "field": "brand",
+        "size": 10,
+        "order": {
+          "scoreAgg.avg": "desc"
+        }
+      },
+      "aggs": {
+        "scoreAgg": {
+          "stats": {
+            "field": "score"
+          }
+        }
+      }
+    }
+  }
+}
+
+# ==========拼音分词器插件测试==========
+POST /_analyze
+{
+  "text": ["如家酒店还不错"],
+  "analyzer": "pinyin"
+  
+}
+
+# ==========自定义分词器==========
+# 删除test索引库
+DELETE /test
+# 这里创建一个索引库
+PUT /test
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "my_analyzer": {
+          "tokenizer": "ik_max_word",
+          "filter": "py"
+        }
+      },
+      "filter": {
+        "py": {
+          "type": "pinyin",
+          "keep_full_pinyin": false,
+          "keep_joined_full_pinyin": true,
+          "keep_original": true,
+          "limit_first_letter_length": 16,
+          "remove_duplicated_term": true,
+          "none_chinese_pinyin_tokenize": false
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "name": {
+        "type": "text",
+        "analyzer": "my_analyzer",
+        "search_analyzer": "ik_smart"
+      }
+    }
+  }
+}
+# 测试my_analyzer
+POST /test/_analyze
+{
+  "text": ["如家酒店还不错"],
+  "analyzer": "my_analyzer"
+}
+# 在test库存插入两条doc进行测试
+POST /test/_doc/1
+{
+  "id": 1,
+  "name": "狮子"
+}
+POST /test/_doc/2
+{
+  "id": 2,
+  "name": "虱子"
+}
+# 对搜索方式为my_analyzer的搜索进行测试
+GET /test/_search
+{
+  "query": {
+    "match": {
+      "name": "掉入狮子笼咋办"
+    }
+  }
+}
+
+
+# ==========自动补全的索引库==========
+PUT test2
+{
+  "mappings": {
+    "properties": {
+      "title":{
+        "type": "completion"
+      }
+    }
+  }
+}
+# 插入示例数据
+POST test2/_doc
+{
+  "title": ["Sony", "WH-1000XM3"]
+}
+POST test2/_doc
+{
+  "title": ["SK-II", "PITERA"]
+}
+POST test2/_doc
+{
+  "title": ["Nintendo", "switch"]
+}
+# 自动补全查询
+GET test2/_search
+{
+  "suggest": {
+    "title_suggest": {
+      "text": "s",
+      "completion": {
+        "field": "title",
+        "skip_duplicates": true,
+        "size": 10
+      }
+    }
+  }
+}
+
+
+
+# ==========自动补全实操==========
+# 查看酒店数据结构
+GET /hotel/_mapping
+# 删除之前酒店索引库
+DELETE /hotel
+# 酒店数据索引库
+PUT /hotel
+{
+  "settings": {
+    "analysis": {
+      "analyzer": {
+        "text_anlyzer": {
+          "tokenizer": "ik_max_word",
+          "filter": "py"
+        },
+        "completion_analyzer": {
+          "tokenizer": "keyword",
+          "filter": "py"
+        }
+      },
+      "filter": {
+        "py": {
+          "type": "pinyin",
+          "keep_full_pinyin": false,
+          "keep_joined_full_pinyin": true,
+          "keep_original": true,
+          "limit_first_letter_length": 16,
+          "remove_duplicated_term": true,
+          "none_chinese_pinyin_tokenize": false
+        }
+      }
+    }
+  },
+  "mappings": {
+    "properties": {
+      "id":{
+        "type": "keyword"
+      },
+      "name":{
+        "type": "text",
+        "analyzer": "text_anlyzer",
+        "search_analyzer": "ik_smart",
+        "copy_to": "all"
+      },
+      "address":{
+        "type": "keyword",
+        "index": false
+      },
+      "price":{
+        "type": "integer"
+      },
+      "score":{
+        "type": "integer"
+      },
+      "brand":{
+        "type": "keyword",
+        "copy_to": "all"
+      },
+      "city":{
+        "type": "keyword"
+      },
+      "starName":{
+        "type": "keyword"
+      },
+      "business":{
+        "type": "keyword",
+        "copy_to": "all"
+      },
+      "location":{
+        "type": "geo_point"
+      },
+      "pic":{
+        "type": "keyword",
+        "index": false
+      },
+      "all":{
+        "type": "text",
+        "analyzer": "text_anlyzer",
+        "search_analyzer": "ik_smart"
+      },
+      "suggestion":{
+          "type": "completion",
+          "analyzer": "completion_analyzer"
+      }
+    }
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
+
