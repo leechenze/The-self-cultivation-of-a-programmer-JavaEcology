@@ -6,6 +6,12 @@ spring:
     username: root
     password: lcz19930316
     driver-class-name: com.mysql.cj.jdbc.Driver
+  rabbitmq:
+    host: 127.0.0.1
+    port: 5672
+    username: leechenze
+    password: 930316
+    virtual-host: / # leechenze这个用户的虚拟主机（/）
 logging:
   level:
     com.lee: debug

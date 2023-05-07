@@ -3299,20 +3299,109 @@
                             }
 
                     在hotel-admin中的增删改业务中完成消息发送的逻辑
-                        ... here ...
+                        首先copy一份 constants.MqConstants 和 amqp 坐标依赖和 application 配置到 hotel-admin
+                        在controller中处理消息发送的业务（HotelController）
+                            // 首先注入发送消息需要的API
+                            private RabbitTemplate rabbitTemplate
+                            
+                            @PostMapping
+                            public void saveHotel(@RequestBody Hotel hotel){
+                                hotelService.save(hotel);
+                                // 发送业务新增时的MQ消息，参数为（消息交换机，新增消息的key，酒店的ID）
+                                rabbitTemplate.convertAndSend(MqConstants.HOTEL_EXCHANGE, MqConstants.HOTEL_INSERT_KEY, hotel.getId());
+                            }
+                        
+                            @PutMapping()
+                            public void updateById(@RequestBody Hotel hotel){
+                                if (hotel.getId() == null) {
+                                    throw new InvalidParameterException("id不能为空");
+                                }
+                                hotelService.updateById(hotel);
+                                // 发送业务修改时的MQ消息，参数为（消息交换机，修改消息的key，酒店的ID）
+                                rabbitTemplate.convertAndSend(MqConstants.HOTEL_EXCHANGE, MqConstants.HOTEL_INSERT_KEY, hotel.getId());
+                            }
+                        
+                            @DeleteMapping("/{id}")
+                            public void deleteById(@PathVariable("id") Long id) {
+                                hotelService.removeById(id);
+                                // 发送业务删除时的MQ消息，参数为（消息交换机，删除消息的key，酒店的ID）
+                                rabbitTemplate.convertAndSend(MqConstants.HOTEL_EXCHANGE, MqConstants.HOTEL_DELETE_KEY, id);
+                            }
+                            
                     在hotel-es-demo中完成消息监听，并更新elasticsearch中的数据
+                        首先创建mq的消息监听类：mq.HotelListener
+                            @Component
+                            public class HotelListener {
+                                @Autowired
+                                private IHotelService hotelService;
+                                /**
+                                 * 监听酒店新增或修改的业务
+                                 * @param id 酒店ID
+                                 */
+                                @RabbitListener(queues = MqConstants.HOTEL_INSERT_QUEUE)
+                                public void listenHotelInsertOrUpdate(Long id) {
+                                    hotelService.insertById(id);
+                                }
+                                /**
+                                 * 监听酒店删除的业务
+                                 * @param id 酒店ID
+                                 */
+                                @RabbitListener(queues = MqConstants.HOTEL_DELETE_QUEUE)
+                                public void listenHotelDelete(Long id) {
+                                    hotelService.deleteById(id);
+                                }
+                            }
+                        在IHotelService中声明对应接口
+                            void insertById(Long id);
+                            void deleteById(Long id);
+                        在HotelService中编写两个方法的实现
+                            @Override
+                            public void insertById(Long id) {
+                                try {
+                                    // 根据ID查询酒店数据
+                                    Hotel hotel = getById(id);
+                                    // 转换为文档类型
+                                    HotelDoc hotelDoc = new HotelDoc(hotel);
+                                    // 准备Request对象
+                                    IndexRequest request = new IndexRequest("hotel").id(hotelDoc.getId().toString());
+                                    // 准备Json DSL文档
+                                    request.source(JSON.toJSONString(hotelDoc), XContentType.JSON);
+                                    // 发送请求
+                                    client.index(request, RequestOptions.DEFAULT);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        
+                            @Override
+                            public void deleteById(Long id) {
+                                try {
+                                    // 准备Request对象
+                                    DeleteRequest request = new DeleteRequest("hotel", String.valueOf(id));
+                                    // 发送请求
+                                    client.delete(request, RequestOptions.DEFAULT);
+                                } catch (IOException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        
                     启动并测试数据的同步功能
+                        hotel-admin：http://localhost:8099/
+                        hotel-es-demo：http://localhost:8089/
+                        
+                        在酒店管理项目修改一条上海希尔顿酒店，将价格值改变后保存。
+                        在http://127.0.0.1:15672/的RabbitMQ管理界面查看监听的队列状态，会有一条接收到的消息，则表示成功
+                        在酒店搜索项目选择1500以上价格区间，查看该酒店数据已经改变。
+                        
+                        然后在酒店管理中将上海希尔顿酒店这条数据删除，删除前在Vue devtools工具中把这条数据copy value，等会新增数据时候还要加回来。
+                        在酒店搜索中刷新1500以上价格区间查看原来的13条数据变为了12条数据，此时上海希尔顿酒店数据已经找不到了，至此删除已完成
+                        
+                        在酒店管理中打开新增酒店Dialog，在Vue Devtools中将刚才拷贝的数据加回来，然后保存。
+                        同理再次在酒店搜索项目中刷新1500以上价格区间的数据，发现从12条变为了13条，上海希尔顿酒店可以查到了。至此所有功能都验证通过。
                     
                     
-            
-            
-            
-            
-            
-            
-            
         ES集群：            
-
+            ... here ...
 
 
 
