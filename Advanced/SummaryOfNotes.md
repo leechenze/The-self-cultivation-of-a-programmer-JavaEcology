@@ -3400,17 +3400,105 @@
                         同理再次在酒店搜索项目中刷新1500以上价格区间的数据，发现从12条变为了13条，上海希尔顿酒店可以查到了。至此所有功能都验证通过。
                     
                     
-        ES集群：            
-            ... here ...
-
-
-
-
-
-
-
-
-
+        ES集群：
+            集群结构介绍：
+                单机的elasticsearch做数据存储，必然面临两个问题：海量数据存储问题，单点故障问题。
+                    海量数据存储问题：将索引从逻辑上拆分为N个分片（shard），存储到多个节点
+                    单点故障问题： 将分片数据在不同节点备份（replica）
+            集群搭建：
+                这里利用3个docker容器和docker-compose模拟3个ES的节点。
+                    docker-compose.yml的配置文件在 lib/day5/es-cluster/docker-compose.yml
+                CentOS：
+                    如果在liunx系统运行还需要修改/etc/sysctl.conf文件
+                        vi /etc/sysctl.conf
+                    添加下面的内容：
+                        vm.max_map_count=262144
+                    然后执行命令，让配置生效：
+                        sysctl -p
+                    通过docker-compose启动集群：
+                        docker-compose up -d
+                cd到/Users/lee/MySkills/The-self-cultivation-of-a-programmer-JavaEcology/Advanced/lib/day5/es-cluster目录下
+                    执行 docker-compose up -d 即 docker-compose.yml配置文件所在的目录。 
+                es01，es02，es03容器都已常见成功，查看每一个容器的运行日志：
+                    docker logs -f es01
+                    docker logs -f es02
+                    docker logs -f es03
+            集群状态监控：
+                kibana可以监控es集群，不过新版需要依赖es的x-pack功能，配置比较麻烦
+                这里使用 cerebro 来代替Kibana监听es集群状态，官网地址：https://github.com/lmenezes/cerebro
+                下载v0.9.4这个版本，解压即可使用，非常方便
+                解压好后进入bin目录，双击其中的 cerebro 文件 或 在命令行执行 sh cerebro 即可启动服务。
+                启动成功后访问 localhost:9000 即可进入 cerebro 的控制台界面
+                在首页的 Node address 输入框中输入 http://127.0.0.1:9200 即可进入es01的管理界面
+                    es01地址是 http://127.0.0.1:9200
+                    es02地址是 http://127.0.0.1:9201
+                    es03地址是 http://127.0.0.1:9202
+                创建索引库时指定分片信息的DSL：
+                    PUT /panda
+                    {
+                        "settings": {
+                            "number_of_shards": 3,  // 分片数量（表示节点总共拆分主分片的数量）
+                            "number_of_replicas": 1 // 副本数量（表示每一个分片中除了主分片外，还能拥有几个副分片）
+                        },
+                        {
+                            "mappings": {
+                                "properties": {
+                                    // mapping映射定义...
+                                }
+                            }
+                        }
+                    }
+                在cerebro中创建索引库：
+                    选择顶部导航的more按钮，选中 create index，对应输入框的值如下：
+                        name：panda
+                        number of shards：3  // 分片数量
+                        number of replicas：1  // 备份数量（副本数量 或 副分片数量）
+                    如果有更多 settings 可以在右侧直接写settings 的 json配置。
+                回到控制台首页即可看到变化
+                    shards：3*2 表示我们配置的三个节点，每个分片中有两个分片，除一个主分片外还有一个副分片。
+                    
+            ES集群的节点角色：
+                elasticsearch 中集群节点有不同的职责划分：        
+                节点类型：
+                    master eligible（备选主节点）
+                        配置参数：node.master
+                        默认值：true
+                        节点职责：主节点可以管理和记录集群状态，决定分片在那个节点，处理创建和删除索引库的请求。
+                    data（数据节点）
+                        配置参数：node.data
+                        默认值：true
+                        节点职责：存储数据，搜索，聚合，CRUD
+                    ingest（数据预处理节点）
+                        配置参数：node.ingest
+                        默认值：true
+                        节点职责：数据存储之前的预处理
+                    coordinating（协调节点）
+                        协调节点不做业务处理，如果有用户请求到达了协调节点，它会把请求路由到真正处理的数据节点上去，
+                        数据节点处理完后会把结果返回，返回以后它再将结果合并然后返回给用户。
+                        相当于协调节点就是路由 和 负载均衡然后合并结果的作用。
+                        配置参数：以上三个参数都为false时，那么该节点就是协调节点，默认也就是协调节点。
+                ES集群的脑裂问题：
+                    默认情况下：每个节点都是master eligible节点，因此一旦master节点宕机，其他候选节点会选举一个成为主节点，
+                    当主节点与其他备选节点网络故障时，其他备选节点就又会选出一个主节点，
+                    因此就会出现两个主节点都会对集群的状态，节点和CRUD的管理导致脑裂。
+                    简而言之，es集群的脑裂现象指的就是：一个集群出现了两个主节点。
+                    
+                    为了避免脑裂问题，需要要求选票超过（备选主节点数量 + 1）/ 2 才能当选为主节点，因此备选主节点的数量最好是奇数
+                    对应配置项是 discovery.zen.minimum_master_nodes，在es7.0以后，已经成为默认配置，因此7.0后一般不会发生脑裂问题。
+                    
+                    总结：
+                        master eligible 节点作用：    
+                            参与集群选主    
+                            一旦成为主节点：
+                                管理集群状态，管理分片信息，处理创建和删除索引库的请求。
+                        data 节点作用：
+                            数据的CRUD
+                        coordinator节点作用：
+                            路由请求协调到其他节点
+                            合并查询到的请求，返回给用户。
+                ES集群分布式新增和查询流程：
+                    ... here ...
+                    
 
 捌.
 
