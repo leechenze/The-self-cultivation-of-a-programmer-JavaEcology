@@ -3497,10 +3497,46 @@
                             路由请求协调到其他节点
                             合并查询到的请求，返回给用户。
                 ES集群分布式新增和查询流程：
-                    ... here ...
-                    
+                    这里不用kibana了，用insomnia这个Restful工具来处理DSL的增删改查
+                    官网地址：https://insomnia.rest/download，类似于PostMan，操作很简单
+                        新增文档：
+                            POST http://127.0.0.1:9200/panda/_doc/1
+                            POST http://127.0.0.1:9201/panda/_doc/2
+                            POST http://127.0.0.1:9202/panda/_doc/3
+                        新增文档：
+                            GET http://127.0.0.1:9200/panda/_search
+                    DSL：
+                        {
+                            "explain": true, // 显示在哪个分片上
+                            "query": {
+                                "match_all": {}
+                            }
+                        }
+                    在新增文档时，应该保存到不同的分片，保证数据均衡，那么coordinating node如何确定数据存储到哪个分片呢？
+                        ES会通过hash算法来计算文档应该存储在哪个分片
+                            shard = hash(_routing) % number_of_shards
+                            shard = hash(文档ID) % 分片数量
+                        说明：
+                            _routing默认是文档ID
+                            算法与分片数量有关，因此索引库一旦建立，分片数量不能修改！
+                    ES故障转移：
+                        集群的master节点会监控集群中的几点状态,如果发现有节点宕机,会立即将宕机节点的分片数据迁移到其他节点,确保数据安全,这个叫做故障转移
+                        操作：
+                            首先将es02停掉，因为es02是主节点。
+                                docker-compose stop es02
+                            此时在cerebro控制台可以看到绿条变为黄条了，表示集群不健康了，因为es02停掉了
+                            那么稍等片刻，es02这个主节点上的分片就会分配个重新选举出来的主节点上，
+                            同时当es02恢复健康后，它也已不再是主节点了，但是分片会重新分配给他！ 就是主打一个智能！！
+                        
 
-捌.
+
+
+
+
+
+捌.sentinel
+
+    
 
 
 
