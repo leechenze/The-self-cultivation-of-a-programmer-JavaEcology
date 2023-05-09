@@ -3536,8 +3536,35 @@
 
 捌.sentinel
 
-    
-
+    雪崩问题及解决方案
+        微服务调用链路中的某个服务出现故障，引起整个链路中的所有微服务都不可用，这就是雪崩，非常恐怖。
+        解决雪崩问题的常见方式有四种：
+            超时处理：设定超时时间，请求超过一定时间没有响应就返回错误信息，不会无休止等待。
+            舱壁模式：限定每个业务能使用的线程数，避免耗尽整个tomcat的资源，因此也叫线程隔离
+            熔断降级：由断路器统计业务执行的异常比例，如果超出阈值则会熔断该业务，即拦截访问该业务的一切请求。
+            流量控制：限制业务访问的QPS（每秒处理的请求的数量），避免服务因瞬间高并发流量而导致的故障。
+    服务保护技术对比
+        Sentinel：好！！！
+        Hystrix：一般。。。
+        CSDN一片总结较好：
+            https://blog.csdn.net/truelove12358/article/details/107507455?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522168364478816800211587394%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=168364478816800211587394&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-2-107507455-null-null.142^v86^control_2,239^v2^insert_chatgpt&utm_term=sentinel%E5%92%8Chystrix%E7%9A%84%E5%8C%BA%E5%88%AB&spm=1018.2226.3001.4187
+    Sentinel介绍和安装
+        Sentinel是阿里巴巴开源的一款微服务流量控制组件。
+        官网地址：https://sentinelguard.io/zh-cn/
+        安装Sentinel
+            Sentinel官方提供了UI控制台，方便我们对系统做限流设置。
+            Github下载地址：https://github.com/alibaba/Sentinel
+            将其拷贝到本地，然后运行命令：
+                java -jar sentinel-dashboard-1.8.6.jar
+            访问：localhost:8080即可访问控制台页面，默认账号密码都是sentinel
+            进入之后是一个空白控制台，因为目前还没有和微服务做整合，他没有监控任何东西
+                java -Dserver.port=8888 -jar sentinel-dashboard.jar
+                修改默认端口8080指向8888
+                更多参数请看文档：https://github.com/alibaba/Sentinel/wiki/%E6%8E%A7%E5%88%B6%E5%8F%B0
+                注意所有参数之前都要加一个 -D 为前缀，如：-Dserver.port=8888
+            
+    微服务整合Sentinel
+        
 
 
 
