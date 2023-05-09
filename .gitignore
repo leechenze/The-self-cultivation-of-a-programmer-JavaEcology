@@ -28,3 +28,5 @@ Advanced/lib/day2/cloud-demo/**/*.jar
 es-docker
 
 AdminLTE-3.2.0
+
+sentinel-dashboard-1.8.6.jar
