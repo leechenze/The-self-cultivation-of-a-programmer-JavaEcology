@@ -5,8 +5,8 @@ spring:
     name: gateway
   cloud:
     nacos:
-      # server-addr: localhost:8888
-      server-addr: nacos:8848 # 改为 docker-compose.yml 集群部署的地址
+      server-addr: localhost:8888
+      # server-addr: nacos:8848 # 改为 docker-compose.yml 集群部署的地址
       discovery:
         namespace: f324b4ac-7a64-426d-8515-7fc9ce35669d # public环境的命名空间ID
     gateway:

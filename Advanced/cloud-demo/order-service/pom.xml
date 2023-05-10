@@ -79,6 +79,12 @@
             <scope>compile</scope>
         </dependency>
 
+        <!--引入Sentinel依赖-->
+        <dependency>
+            <groupId>com.alibaba.cloud</groupId>
+            <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+        </dependency>
+
     </dependencies>
 
 

@@ -3564,14 +3564,63 @@
                 注意所有参数之前都要加一个 -D 为前缀，如：-Dserver.port=8888
             
     微服务整合Sentinel
-        
+        要使用Sentinel肯定要结合微服务，这里我们继续使用cloud-demo工程。
+            项目结构如下：
+                cloud-demo：
+                    gateway：微服务网关
+                    user-service：用户服务，包含用户的CURD
+                    order-service：订单服务，调用user-service
+                    feign-api：用户服务对外暴露的feign客户端，实体类
+            启动以上的所有服务前先启动 nacos（2.2.0）
+                cd /Users/lee/Library/nacos-server-2.2.0/bin
+                sh startup.sh -m standalone
+            修改user-service和order-service中的application.yml配置文件
+                主要改动是nacos地址配置和mysql连接配置。
+            启动Sentinel
+                java -Dserver.port=1024 -jar sentinel-dashboard-1.8.6.jar
 
-
-
-
-
-
-
+        在order-service中整合sentinel，并连接sentinel控制台，步骤如下：
+            引入Sentinel依赖
+                <!--引入Sentinel依赖-->
+                <dependency>
+                    <groupId>com.alibaba.cloud</groupId>
+                    <artifactId>spring-cloud-starter-alibaba-sentinel</artifactId>
+                </dependency>
+            配置控制台地址
+                sentinel:
+                  transport:
+                    dashboard: localhost:1024 # sentinel 控制台地址
+            访问微服务的任意端点，触发sentinel监控
+                端点解释：（EndPoint）springmvc任意一个controler的接口都是一个端点
+                访问：http://localhost:8080/order/101
+                多访问几次，在sentinel控制台的 orderService ==> 即可看到端点访问信息。
+    限流规则
+        概念了解：
+            簇点链路：
+                即项目内的调用链路，链路中被监控的每个接口就是一个资源，默认情况下Sentinel会监控srpingmvc的每一个端点
+                因此springmvc的每个端点就是调用链路中的一个资源。
+                比如：当请求进入MVC的那一刻起，首先会进入controller，controller会调用service
+                service又会调用mapper，那么controller，service和mapper就形成了一个调用链路，即所谓的簇点链路
+        流控，熔断等都是针对簇点链路中的资源来设置的，因此我们可以点击对应资源后面的按钮来设置规则
+            流控按钮：流量控制
+            降级按钮：降级熔断
+            热点按钮：热点参数限流
+            授权按钮：授权规则
+        新增流控规则：
+            资源名：/order/{orderId}
+            针对来源：default
+                default表示一切访问的请求都要被限流，一般选择default即可
+            阈值类型：一般选择QPS
+            单机阈值：表示QPS的上限
+                假设单机阈值为1，表示/order/{orderId}每秒钟最多处理一个请求，超出的请求会被拦截并报错。
+                所以单机阈值一般就是我们接口最大的并发量值，通过压测测试的最大并发量。
+            
+            需求：给/order/{orderId}这个资源设置流控规则，QPS不能超过5，然后利用JMeter进行测试
+                JMeter工具：
+                    /order/{orderId}一秒钟刷五次，一般人达不到这样的手速，所以要依赖一款名为 JMeter 的工具来实现
+                    下载地址：https://jmeter.apache.org/download_jmeter.cgi
+                    
+                
 
 
 
