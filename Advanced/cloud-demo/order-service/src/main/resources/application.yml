@@ -20,7 +20,7 @@ spring:
     sentinel:
       transport:
         dashboard: localhost:1024 # sentinel 控制台地址
-
+      web-context-unify: false # 关闭Sentinel的context整合，从而导致的链路模式的流控失效。
 mybatis:
   type-aliases-package: cn.lee.user.pojo
   configuration:

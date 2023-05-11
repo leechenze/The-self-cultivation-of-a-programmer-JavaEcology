@@ -5,6 +5,7 @@ import cn.lee.feign.clients.IUserClient;
 import cn.lee.order.mapper.OrderMapper;
 import cn.lee.order.pojo.Order;
 import cn.lee.feign.pojo.User;
+import com.alibaba.csp.sentinel.annotation.SentinelResource;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -53,5 +54,11 @@ public class OrderService {
     }
 
 
-
+    // Sentinel 限流高级设置的链路模式的相关案例 /queryGoods 和 /saveGoods
+    @SentinelResource("queryGoods")
+    public void queryGoods() {
+        System.out.println("===========================");
+        System.out.println("查询商品");
+        System.out.println("===========================");
+    }
 }

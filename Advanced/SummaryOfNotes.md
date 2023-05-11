@@ -3664,11 +3664,107 @@
                             注意访问 /order/query 时一定要在 /order/update的JMeter程序执行中时才能验证。
                             一旦/order/update的JMeter程序走完后，/order/query一定是能正常访问的。
                 链路：统计从指定链路访问到本资源的请求，触发阈值时，对指定链路限流
+                    例如有两条链路：
+                        /test1/common
+                        /test2/common
+                    如果只希望统计从/test2进入到/common的请求，则可以在Sentinel控制台这样配置：
+                        资源名：/common
+                        针对来源：default
+                        阈值类型：QPS
+                        单机阈值：
+                        流控模式：链路
+                        入口资源：/test2
+                    需求：有查询订单和创建订单的业务，两者都需要查询商品，针对从查询订单进入到查询商品的请求统计，并设置限流：
+                        实现步骤：
+                            在OrderService中添加一个queryGoods方法，不用实现业务：
+                                Sentinel默认只标记Controller中的方法为资源，如果要标记service中的方法或其他方法，需要利用@SentinelResource注解，示例：
+                                    // Sentinel 限流高级设置的链路模式的相关案例 /queryGoods 和 /saveGoods
+                                    @SentinelResource("queryGoods")
+                                    public void queryGoods() {
+                                        System.out.println("===========================");
+                                        System.out.println("查询商品");
+                                        System.out.println("===========================");
+                                    }
+                                Sentinel默认会将Controller方法做context整合，导致链路模式的流控失效，关闭该功能需要修改application.yml，添加配置：
+                                    sentinel:
+                                      web-context-unify: false # 关闭Sentinel的context整合，从而导致的链路模式的流控失效。
+                                重启服务Order服务
+                            在OrderController中添加一个/order/queryGoods端点，调用OrderService中的queryGoods方法
+                            在OrderController中添加一个/order/saveGoods端点，也调用OrderService中的queryGoods方法
+                                // Sentinel 限流高级设置的链路模式的相关案例 /queryGoods 和 /saveGoods
+                                @GetMapping("/queryGoods")
+                                public String queryGoods() {
+                                    // 查询商品
+                                    orderService.queryGoods();
+                                    // 查询商品
+                                    System.out.println("查询商品=====queryGoods");
+                                    return "查询商品成功=====queryGoods";
+                                }
+                                @GetMapping("/saveGoods")
+                                public String saveGoods() {
+                                    // 查询商品
+                                    orderService.queryGoods();
+                                    // 查询商品
+                                    System.out.println("创建商品=====saveGoods");
+                                    return "创建商品成功=====saveGoods";
+                                }
+                            给queryGoods设置限流规则，从/order/queryGoods 进入queryGoods的方法限制QPS必须小于2
+                                打开控制台后可以看到
+                                    /order/queryGoods
+                                    /order/saveGoods
+                                    两个链路成为了两个独立的资源，这就是 web-context-unify:false 配置的结果
+                                打开这两个资源中的任意一个queryGoods的子资源，就是在service 中 @SentinelResource("queryGoods")注解对应的这个方法
+                                对queryGoods子资源进行流控配置：
+                                    资源名：queryGoods
+                                    针对来源：default
+                                    阈值类型：QPS
+                                    单机阈值：2
+                                    流控模式：链路
+                                    入口资源：/order/queryGoods
+                            打开JMeter对 /order/queryGoods进行测试：
+                                在JMeter左侧选择 流控模式-链路
+                                Nubmer of Threads（users）：1000
+                                Ramp-up period（seconds）：100
+                                以上配置表示QPS为4
+                                但是在Sentinel控制台中对 /order/queryGoods 的QPS配置为2
+                                所以/order/queryGoods 会被限流：
+                                    注意之前限流报错为 Blocked by Sentinel (flow limiting)：被Sentinel阻塞（流量限制）
+                                    而现在则会报500错误：Internal Server Error，服务器内部错误。
+                                但是/order/saveGoods 因为没有针对他的配置所以他不会被限流。
+        流控效果：                    
+            流控效果是指当请求达到流控阈值时应该采取的措施，包括三种：
+                快速失败：达到阈值后，新的请求会被立即拒绝并且抛出FlowException异常，是默认的处理方式。
+                    诸如：Internal Server Error 和 Blocked by Sentinel (flow limiting)
+                    这些错误的抛出都是属于配置快速失败的结果
+                warm up：预热模式，对超出阈值的请求同样是拒绝并抛出异常，不同的是这种模式阈值会动态变化，从一个较小的阈值逐渐增加到最大阈值
+                    warm up是应对服务冷启动的一种方案，请求阈值初始值是 threshold / coldFactor，持续指定时长后，
+                    会逐渐提高到threshold值，而coldFactor的默认值是3，那么根据threshold / coldFactor，也就是说初始阈值是最大阈值的三分之一。
+                    所以总结得出：预热模式就是为了避免冷启动那一刻因过高并发而导致服务故障的。
+                    冷启动解释：可理解为慢热启动，比如服务器最大QPS能达到10，刚启动时不能上来就把QPS打满，要给服务器时间"预热"。
+                    threshold：最大阈值
+                    coldFactor：冷启动因子
+                    例如：
+                        设置QPS的threshold为10，预热时间为5秒，那么初始阈值就是10/3，也就是3，然后在5秒后逐渐增长到10。
+                    所以在预热模式中有两个关键的参数：threshold 和 预热时长，coldFactor一般不用管，默认是3就可以。
                     
-
-
-
-
+                    需求：给/order/{orderId}这个资源设置限流，最大QPS为10，利用warm up效果，预热时长为5秒。
+                        重新访问 http://localhost:8080/order/101后，打开Sentinel控制台：
+                            在簇点链路中选择/order/{orderId}的流控按钮，配置如下：
+                                资源名：/order/{orderId}
+                                针对来源：default
+                                阈值类型：QPS
+                                单机阈值：10
+                                流控模式：直接
+                                流控效果：Warm Up
+                                预热时长：5秒
+                        在JMeter中选择：流控效果，warm up
+                            Nubmer of Threads（users）：200
+                            Ramp-up period（seconds）：20
+                        然后选择：流控效果，warm up 的查看结果树
+                            可以看到开始成功的请求只有三个，随着时间的推移，成功的请求会越来越多，直到最终的10个最大阈值为止。这就是预热模式。
+                排队等待：让所有的请求按照先后次序排队执行，两个请求的间隔不能小于指定时长。
+                    ... here ...
+                    
 
 
 

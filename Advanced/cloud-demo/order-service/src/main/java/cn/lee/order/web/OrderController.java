@@ -31,4 +31,22 @@ public class OrderController {
         return "订单更新成功";
     }
 
+    // Sentinel 限流高级设置的链路模式的相关案例 /queryGoods 和 /saveGoods
+    @GetMapping("/queryGoods")
+    public String queryGoods() {
+        // 查询商品
+        orderService.queryGoods();
+        // 查询商品
+        System.out.println("查询商品=====queryGoods");
+        return "查询商品成功=====queryGoods";
+    }
+    @GetMapping("/saveGoods")
+    public String saveGoods() {
+        // 查询商品
+        orderService.queryGoods();
+        // 查询商品
+        System.out.println("创建商品=====saveGoods");
+        return "创建商品成功=====saveGoods";
+    }
+
 }
