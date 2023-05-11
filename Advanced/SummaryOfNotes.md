@@ -3619,8 +3619,52 @@
                 JMeter工具：
                     /order/{orderId}一秒钟刷五次，一般人达不到这样的手速，所以要依赖一款名为 JMeter 的工具来实现
                     下载地址：https://jmeter.apache.org/download_jmeter.cgi
+                    cd jmeter.sh 运行 JMeter
+                    点击Open，选择 lib/day6/sentinel-test.jmx
+                    右键流控入门，QPS < 5，点击start，进行对 order服务进行测试。
+                    可以发现 连着五次的请求都是成功的，其他几次是失败的，并报错：Blocked by Sentinel (flow limiting)
+                    这个报错就是表示请求被限制：被Sentinel阻塞（流量限制）
+        流控模式：
+            在添加限流规则时，点击高级选项，可以选择三种流控模式：
+                直接：统计当前资源的请求，触发阈值时对当前资源直接限流，也是默认模式
+                    默认模式，就是对QPS单机阈值的默认配置数
+                    操作步骤：
+                        首先对/order/101地址的 Sentinel配置 QPS单机阈值为 5
+                        右键流控入门，QPS < 5，点击start，进行对 order服务进行测试。
+                        可以发现 连着五次的请求都是成功的，其他几次是失败的，并报错：Blocked by Sentinel (flow limiting)
+                        这个报错就是表示请求被限制：被Sentinel阻塞（流量限制）
+                关联：统计与当前资源相关的另一个资源，触发阈值时，对当前资源限流
+                    应用场景：
+                        两个有竞争关系的资源
+                        一个优先级较高，一个优先级较低
+                    操作步骤：
+                        在OrderController新建两个端点，/order/query 和 /order/update，无需业务实现。
+                            // Sentinel 限流高级设置的关联模式的相关案例 /query 和 /update
+                            @GetMapping("/query")
+                            public String queryOrder() {
+                                return "订单查询成功";
+                            }
+                            @GetMapping("/update")
+                            public String updateOrder() {
+                                return "订单更新成功";
+                            }
+                        配置流控规则，当/order/update 资源被访问的QPS超过5时，对/order/query请求限流
+                            给谁限流就给谁加流控规则，所以这里是对query进行流控配置，别搞错了。
+                            点击 /order/query 的新增流控规则，单机阈值仍然选择5
+                            点击打开高级选项，流控模式选择关联，关联资源输入 /order/update
+                            一切就绪后，就可以用JMeter进行对 /order/query 和 /order/update 进行测试了。
+                        打开JMeter，选择左侧的流控模式-关联
+                            Nubmer of Threads（users）：1000
+                            Ramp-up period（seconds）：100
+                            这两个配置表示 100 秒内 触发 1000次请求。
+                            右键流控模式-关联，点击start启动测试。
+                            那么此时我们配置的 /order/query 的单机阈值仍然是5，这样就是一秒触发10次请求了，超过了配置的5个
+                            但是 /order/update 这个请求本身是没有任何配置的，所以update能全部成功，限流的只是配置的 /order/query这个端点。
+                            此时我们再次访问 http://localhost:8080/order/query 就会报错：被Sentinel阻塞（流量限制）。
+                            注意访问 /order/query 时一定要在 /order/update的JMeter程序执行中时才能验证。
+                            一旦/order/update的JMeter程序走完后，/order/query一定是能正常访问的。
+                链路：统计从指定链路访问到本资源的请求，触发阈值时，对指定链路限流
                     
-                
 
 
 
