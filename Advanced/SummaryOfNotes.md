@@ -3840,7 +3840,37 @@
                             查看结果树：
                                 结果为：101所有的请求都是每5个请求中都是成功的，没有失败的，因为103在Sentinel配置的QPS为10，所以不会失败。
                     那么现在热点参数限流就实现了，同一个资源不同的参数限流的上限是不同的（101默认的2，102的4，103的10）
-                        
+    隔离和降级    
+        限流是为了避免服务出现故障，如果服务已经出现了故障，就很容易把故障传递给其他想依赖的服务，这样很容易产生雪崩，    
+        所以需要线程隔离和熔断降级这些手段去避免级连失败，避免雪崩。    
+        
+        FeignClient整合Sentinel
+            SpringCloud中，微服务调用都是通过Feign来实现的，因此做客户端保护必须整合Feign和Sentinel
+                修改Order服务的application.yml文件，开启Feign和Sentinel功能。
+                    。。。
+                给FeignClient编写失败后的降级逻辑
+                    方式一：FallbackClass，无法对远程调用的异常做处理。
+                    方式二：FallbackFactory，可以对远程调用的异常做处理，所以我们选择这种。
+                在feign-api项目中定义UserClientFallbackFactory类，实现FallbackFactory：
+                    。。。
+                在feign-api项目中的DefaultFeignConfiguration类中将UserClientFallbackFactory注册为一个Bean：
+                    。。。
+                在feign-api项目中的UserClient接口中使用UserClientFallbackFactory：
+                    。。。
+                
+        线程隔离（舱壁模式）
+        熔断降级
+
+
+
+
+
+
+
+
+
+
+
 玖.
 
 
