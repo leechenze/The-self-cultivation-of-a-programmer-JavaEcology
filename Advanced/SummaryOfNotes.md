@@ -3654,7 +3654,7 @@
                             点击打开高级选项，流控模式选择关联，关联资源输入 /order/update
                             一切就绪后，就可以用JMeter进行对 /order/query 和 /order/update 进行测试了。
                         打开JMeter，选择左侧的流控模式-关联
-                            Nubmer of Threads（users）：1000
+                            Number of Threads（users）：1000
                             Ramp-up period（seconds）：100
                             这两个配置表示 100 秒内 触发 1000次请求。
                             右键流控模式-关联，点击start启动测试。
@@ -3723,7 +3723,7 @@
                                     入口资源：/order/queryGoods
                             打开JMeter对 /order/queryGoods进行测试：
                                 在JMeter左侧选择 流控模式-链路
-                                Nubmer of Threads（users）：1000
+                                Number of Threads（users）：1000
                                 Ramp-up period（seconds）：100
                                 以上配置表示QPS为4
                                 但是在Sentinel控制台中对 /order/queryGoods 的QPS配置为2
@@ -3758,7 +3758,7 @@
                                 流控效果：Warm Up
                                 预热时长：5秒
                         在JMeter中选择：流控效果，warm up
-                            Nubmer of Threads（users）：200
+                            Number of Threads（users）：200
                             Ramp-up period（seconds）：20
                         然后选择：流控效果，warm up 的查看结果树
                             可以看到开始成功的请求只有三个，随着时间的推移，成功的请求会越来越多，直到最终的10个最大阈值为止。这就是预热模式。
@@ -3768,7 +3768,7 @@
                     需求：给/order/{orderId}这个资源设置限流，最大的QPS为10，利用排队的流控效果，超时时长设置为5s。
                         在Sentinel控制台流控规则中的/order/{orderId}资源修改流控效果的 warm up 为 排队等待，超时时间为5000。
                         打开JMeter选择：流控效果，队列
-                            Nubmer of Threads（users）：300
+                            Number of Threads（users）：300
                             Ramp-up period（seconds）：20
                         然后选择：流控效果，队列的查看结果树
                             可以看到所有的请求都成功了，我们设置的发起的请求是15个（300/20）， 但是Sentinel控制台的QPS通过都是10，
@@ -3828,7 +3828,7 @@
                                     第二个限流阈值：10
                                 点击新增按钮即可
                     打开JMeter，选择热点参数限流 QPS1：
-                        Nubmer of Threads（users）：500
+                        Number of Threads（users）：500
                         Ramp-up period（seconds）：100
                         第一个是101的，是默认的，Sentinel中配置的最大的QPS是2。
                             查看结果树：
@@ -3845,22 +3845,80 @@
         所以需要线程隔离和熔断降级这些手段去避免级连失败，避免雪崩。    
         
         FeignClient整合Sentinel
-            SpringCloud中，微服务调用都是通过Feign来实现的，因此做客户端保护必须整合Feign和Sentinel
+            SpringCloud中，微服务之间的调用都是通过Feign来实现的，因此做客户端保护必须整合Feign和Sentinel
                 修改Order服务的application.yml文件，开启Feign和Sentinel功能。
-                    。。。
+                    feign:
+                        client:
+                            sentinel:
+                                enabled: true # 开启feign对Sentinel的支持
                 给FeignClient编写失败后的降级逻辑
                     方式一：FallbackClass，无法对远程调用的异常做处理。
                     方式二：FallbackFactory，可以对远程调用的异常做处理，所以我们选择这种。
-                在feign-api项目中定义UserClientFallbackFactory类，实现FallbackFactory：
-                    。。。
+                在feign-api项目中定义fallback.UserClientFallbackFactory类，实现FallbackFactory：
+                    @Slf4j
+                    public class UserClientFallbackFactory implements FallbackFactory<IUserClient> {
+                        @Override
+                        public IUserClient create(Throwable cause) {
+                            // IUserClient 是一个接口，要实现它必须写成匿名内部类。
+                            return new IUserClient() {
+                                @Override
+                                public User findById(Long id) {
+                                    log.error("查询用户异常", cause);
+                                    return new User();
+                                }
+                            };
+                        }
+                    }
                 在feign-api项目中的DefaultFeignConfiguration类中将UserClientFallbackFactory注册为一个Bean：
-                    。。。
-                在feign-api项目中的UserClient接口中使用UserClientFallbackFactory：
-                    。。。
-                
+                    @Bean
+                    public UserClientFallbackFactory userClientFallbackFactory() {
+                        return new UserClientFallbackFactory();
+                    }
+                在feign-api项目中的IUserClient接口中使用UserClientFallbackFactory：
+                    // 声明客户端，参数为服务名称
+                    @FeignClient(value = "userService", fallbackFactory = UserClientFallbackFactory.class)
+                那么重启Order服务后，并访问一次Order服务，再打开Sentinel控制台的簇点链路即可看到 /order/{orderId}下的hot下就出现了通过Feign调用的接口。
+                    
         线程隔离（舱壁模式）
-        熔断降级
+            线程池隔离
+                优点：
+                    支持主动超时，即会主动终止超时的线程
+                    支持异步调用
+                缺点：
+                    线程的额外开销比较大
+                适用场景：
+                    低扇出，即依赖或相关联比较少的服务，如果依赖的服务越多那么扇出就会越高。而扇出越高，调用的越多，需要开启的线程也越多，消耗也就越大，并不是线程隔离说擅长的场景。
+            信号量隔离（Sentinel默认采用方式）
+                优点：
+                    轻量级，没有额外开销。
+                缺点：
+                    不支持主动超时
+                    不支持异步调用
+                使用场景：
+                    高频调用/高扇出，比如Gateway网关都是采用这种模式，这也是Sentinel为何默认选择信号量模式的原因。
+            在添加限流规则时，可以选择两种阈值类型，即QPS和线程数。
+                QPS：就是每秒的请求数。
+                线程数：就是该资源能使用的tomcat线程数的最大值。也就是通过限制线程数量，实现舱壁模式。
+            需求：给UserClient的查询用户接口设置流控规则，线程数不超过2，并利用JMeter测试。
+                首先打开Sentinel控制台的簇点链路，给刚才添加的Feign的调用资源（GET:http://userService/user/{id}）做一个线程隔离，点击流控按钮
+                    资源名：GET:http://userService/user/{id}
+                    针对来源：default
+                    阈值类型：并发线程数
+                    单机阈值：2
+                打开JMeter，选择最后一个：阈值类型-线程数<2
+                    Number of Threads（users）：10
+                    Ramp-up period（seconds）：0
+                    表示一瞬间线程发十个请求。
+                    然后打开查看结果树，可以看到所有的结果都成功了，是因为在代码做了降级策略，即IUserClient加了Fallback。
+                    所以当线程隔离后并不会报错，而是会走 UserClientFallbackFactory 这个降级逻辑，然后返回一个空用户。
+                    这些在Idea控制台中可以看到 在Fallback中手动抛出的报错（log.error("查询用户异常", cause)）详见：feign-api服务的fallback.UserClientFallbackFactory
+                    但是实际上成功请求且正确返回的只有两个，即单机阈值设置为2的结果。其余请求都返回的是一个空用户。
 
+        熔断降级
+            熔断降级是解决雪崩问题的重要手段，其思路是由断路器统计服务调用的异常比例，慢请求比例，如果超出阈值则会熔断该服务。
+            即拦截访问该服务的一切请求；而当服务恢复时，断路器会放行访问该服务的请求。
+            
+            
 
 
 
