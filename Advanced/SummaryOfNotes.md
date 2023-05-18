@@ -3914,9 +3914,13 @@
                     这些在Idea控制台中可以看到 在Fallback中手动抛出的报错（log.error("查询用户异常", cause)）详见：feign-api服务的fallback.UserClientFallbackFactory
                     但是实际上成功请求且正确返回的只有两个，即单机阈值设置为2的结果。其余请求都返回的是一个空用户。
 
-        熔断降级
+        熔断降级（新版Sentinel是熔断规则，老版Sentinel是降级规则）
             熔断降级是解决雪崩问题的重要手段，其思路是由断路器统计服务调用的异常比例，慢请求比例，如果超出阈值则会熔断该服务。
             即拦截访问该服务的一切请求；而当服务恢复时，断路器会放行访问该服务的请求。
+                断路器的三种状态：
+                    Closed：断路器不会拦截任何请求。
+                    Open：断路器拦截任何请求。
+                    Half-open：断路器会放开一次请求，根据此次请求的结果成功与否来再次决定将状态重调为Open或Closed状态。中间多久放开一次请求，是由配置决定的。
             断路器策略有三种：
                 慢调用
                     业务响应时长（RT）大于指定时长的请求认定为慢调用请求。在指定时间内，如果请求数量超过设定的最小数量，慢调用比例大于设定的阈值，则触发熔断
@@ -3930,17 +3934,70 @@
                         统计时长：10000ms
                     解读：RT超过500ms的调用是慢调用，统计最近10000ms内的10次请求，如果慢调用比例不低于0.5即不低于一半。
                         则会触发熔断，如果熔断时长为5秒。就进入half-open状态，放行一次请求做重试。
-                    需求：给UserClient的查询用户接口设置降级规则，慢调用的RT阈值为500ms，统计时间小于1秒，最小请求数量为5，失败阈值比例为0.4，熔断时长为5秒。
-                        ... TODO ...
+                    需求：给UserClient的查询用户接口设置降级规则，慢调用的RT阈值为50ms，统计时间小于1秒，最小请求数量为5，失败阈值比例为0.4，熔断时长为5秒。
+                        提示：为了触发慢调用规则，需要修改UserService中的业务，增加业务耗时：（UserController）
+                            @GetMapping("/{id}")
+                            public User queryById(@PathVariable("id") Long id, @RequestHeader(value = "Truth", required = false) String truth) throws InterruptedException {
+                                System.out.println("Truth: " + truth);
+                                if (id == 1) {
+                                    // 休眠60ms，满足Sentinel中配置的慢调用的50ms，触发熔断
+                                    Thread.sleep(60);
+                                }
+                                return userService.queryById(id);
+                            }
+                        重启服务，后访问 http://localhost:8080/order/101，101会调用user/1的服务，可以发现最起码在60ms以上的响应。
+                        在Sentinel配置新增熔断规则：
+                            资源名：GET:http://userService/user/{id}
+                            熔断策略：慢调用比例
+                            最大RT：50
+                            比例阈值：0.4
+                            熔断时长：5s
+                            最小请求数：5
+                            统计时长：1000ms
+                        保存以上熔断配置后，不需要JMeter测试了，就在 http://localhost:8080/order/101 这个页面，在5秒内速刷5次页面，即可触发熔断
+                        可以看到结果user对象中的值都为null了，表示进入了代码中的降级策略，表示触发成功。
+                        而稍等两秒后进入到half-open的状态后，再次刷新一次后，就会正常返回user的值。
+
+                异常比例，异常数
+                    异常比例或异常数：统计指定时间内的调用，如果调用次数超过指定请求数，并且出现异常的比例达到设定的比例阈值（或者超过指定异常数），则触发熔断。
+                    例如：
+                        资源名：/test
+                        熔断策略：异常比例 ｜ 熔断策略：异常数
+                        比例阈值：0.4 ｜ 异常数：2
+                        熔断时长：5s
+                        最小请求数：10
+                        统计时长：10000ms
+                    解读：统计最近10s内的请求，如果请求量超过10次，并且异常比例不低于0.5，则会触发熔断，熔断时长为5秒。然后进入Half-open状态，放行一次请求做重试。
+                    解读：统计最近10s内的请求，如果请求量超过10次，并且异常数达到2次，则会触发熔断，熔断时长为5秒。然后进入Half-open状态，放行一次请求做重试。
+                    需求：给IUserClient的查询用户接口设置降级规则，统计时间为1秒，最小请求数为5，失败阈值比例为0.4，熔断时长为5s。
+                        提示：为了触发异常统计，需要修改UserService中的业务，抛出异常：（UserController）
+                            @GetMapping("/{id}")
+                            public User queryById(@PathVariable("id") Long id, @RequestHeader(value = "Truth", required = false) String truth) throws InterruptedException {
+                                System.out.println("Truth: " + truth);
                         
-                异常比例
-                    
-                异常数
-            
-
-
-
-
+                                if (id == 1) {
+                                    // 休眠60ms，满足Sentinel中配置的慢调用的50ms，触发熔断
+                                    Thread.sleep(60);
+                                }else if(id == 2) {
+                                    throw new RuntimeException("成功抛错，触发熔断，以满足异常比例，异常数的演示。");
+                                }
+                                return userService.queryById(id);
+                            }
+                        重启服务，后访问 http://localhost:8080/order/102，102会调用user/2的服务，可以发现user服务报错了，并且user的值都为null。
+                        在Sentinel配置新增熔断规则：
+                            资源名：GET:http://userService/user/{id}
+                            熔断策略：异常比例 ｜ 熔断策略：异常数
+                            比例阈值：0.4 ｜ 异常数：2
+                            熔断时长：5s
+                            最小请求数：10
+                            统计时长：10000ms
+                        保存以上熔断配置后，不需要JMeter测试了，就在 http://localhost:8080/order/102 这个页面，在5秒内速刷5次页面，即可触发熔断
+                        可以看到结果user对象中的值都为null了，并且也成功触发throw new RuntimeException。
+                        而此时刷新 http://localhost:8080/order/103 这个页面就发现 user值也为null了。
+                        而稍等两秒后进入到half-open的状态后，再次刷新一次103，就会正常返回user的值。
+    授权规则
+        
+                            
 
 
 

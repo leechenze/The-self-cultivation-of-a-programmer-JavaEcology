@@ -61,8 +61,15 @@ public class UserController {
      * 第二个参数：@RequestHeader(value = "Truth", required = false) String truth 用来接收过滤器中的请求头参数信息：Truth。
      */
     @GetMapping("/{id}")
-    public User queryById(@PathVariable("id") Long id, @RequestHeader(value = "Truth", required = false) String truth) {
+    public User queryById(@PathVariable("id") Long id, @RequestHeader(value = "Truth", required = false) String truth) throws InterruptedException {
         System.out.println("Truth: " + truth);
+
+        if (id == 1) {
+            // 休眠60ms，满足Sentinel中配置的慢调用的50ms，触发熔断
+            Thread.sleep(60);
+        }else if(id == 2) {
+            throw new RuntimeException("成功抛错，触发熔断，以满足异常比例，异常数的演示。");
+        }
         return userService.queryById(id);
     }
 }
