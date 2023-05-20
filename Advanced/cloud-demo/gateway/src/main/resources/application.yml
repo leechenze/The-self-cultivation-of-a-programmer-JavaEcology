@@ -23,6 +23,7 @@ spring:
             - Path=/order/**
       default-filters:
         - AddRequestHeader=Truth, Douglas Lee is freaking awesome!!!
+        - AddRequestHeader=origin, gateway
       globalcors:
         add-to-simple-url-handler-mapping: true
         cors-configurations:

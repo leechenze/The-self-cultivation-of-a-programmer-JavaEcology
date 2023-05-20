@@ -3996,16 +3996,142 @@
                         而此时刷新 http://localhost:8080/order/103 这个页面就发现 user值也为null了。
                         而稍等两秒后进入到half-open的状态后，再次刷新一次103，就会正常返回user的值。
     授权规则
-        
-        
-                            
+        系统规则：是对当前应用所在的服务器的一种保护，不过这个保护的规则只对Liunx系统有效，现阶段无法演示。
+        授权规则：是对请求者的一种身份的判断。
+        集群流控：是将限流规则放到集群环境下做判断，而不再针对单个机器，不过这个模式目前还处于一个state阶段，不建议生产环境使用，所以这也不做演示。
+        授权规则：
+            授权规则可以对调用方的来源做控制，有白名单和黑名单两种方式。        
+            白名单：来源（origin）在白名单内的调用者允许访问。        
+            黑名单：来源（origin）在黑名单内的调用者不允许访问。        
+            问题：SpringCloud Gateway网关就是做身份认证的，看是否有权限访问，那么为何授权规则还要再次做这个验证呢？        
+                所有请求经过网关路由到微服务，这个时候网关当然可以对请求做身份认证，但是万一公司内部人员将微服务地址泄漏出去        
+                那么就可以绕过网关直接访问微服务，那么网关内做的安全校验在严密也没用。所以解决这个问题就要使用到Sentinel的授权规则。        
+                Sentinel可以验证请求从哪里来的，如果是从Gateway网关来的就放行，否则就拦截。
+            操作步骤：
+                Sentinel是通过RequestOriginParser这个接口的ParseOrigin来获取请求的来源的，
+                例如，我们可以从request中获取一个名为origin的请求头，作为origin的值：（）
+                    @Component
+                    public class HeaderOriginParser implements RequestOriginParser {
+                        @Override
+                        public String parseOrigin(HttpServletRequest httpServletRequest) {
+                            // 获取请求头
+                            String origin = httpServletRequest.getHeader("origin");
+                            // 非空判断
+                            if (StringUtils.isEmpty(origin)) {
+                                origin = "blank";
+                            }
+                            return origin;
+                        }
+                    }
+                但是因为浏览器和网关都没有名为origin的请求头，所以要给它的请求头加一个名为origin的属性，
+                在gateway服务中，利用网关的过滤器添加值为gateway的origin头：
+                  default-filters:
+                    - AddRequestHeader=origin, gateway
+                重启服务，然后在Sentinel给 /order/{orderId} 添加授权规则。        
+                    Sentinel授权规则配置：
+                        资源名：/order/{orderId}
+                        流控应用：gateway
+                            这填写的就是origin的值。我们在gateway网关中设置了order为gateway，如果origin为空那么就证明请求源不是从gateway网关来的。
+                        授权类型：白名单 
+                那么此时再访问 http://localhost:8080/order/101 就会报错：Blocked by Sentinel (flow limiting)
+                    因为8080是绕过了gateway网关直接访问的微服务的端口。
+                此时再通过gateway访问这个服务：http://localhost:10010/order/101?authorization=admin 就可以正常访问！
+                    因为10010是gateway网关的端口，通过它访问就会给请求头加一个orign为gateway的值。通过Sentinel的授权校验。
+        自定义异常：        
+            默认情况下：发生限流，降级，授权拦截时，都会抛出异常到调用方，但是无论是什么异常返回的结果都是 Blocked by Sentinel (flow limiting) 这个限流异常。        
+            如果要自定义异常时的返回结果，需要实现一个阻塞异常处理器 BlockExceptionHandle接口：
+            BlockException包含很多之类，分别对应不同的场景：
+                FlowException：限流异常
+                ParamFlowException：热点参数限流的异常
+                DegradeException：降级异常
+                AuthorityException：授权规则异常
+                SystemBlockException：系统规则异常
+            操作步骤：
+                在order服务中定义类，实现BlockExceptionHandler接口：（sentinel.ExceptionHandler）
+                    @Component
+                    public class ExceptionHandler implements BlockExceptionHandler {
+                        @Override
+                        public void handle(HttpServletRequest request, HttpServletResponse response, BlockException e) throws Exception {
+                            String msg = "未知异常";
+                            int status = 429;
+                        
+                            if (e instanceof FlowException) {
+                                msg = "请求被限流了";
+                            } else if (e instanceof ParamFlowException) {
+                                msg = "请求被热点参数限流";
+                            } else if (e instanceof DegradeException) {
+                                msg = "请求被降级了";
+                            } else if (e instanceof AuthorityException) {
+                                msg = "没有权限访问";
+                                status = 401;
+                            }
+                    
+                            response.setContentType("application/json;charset=utf-8");
+                            response.setStatus(status);
+                            response.getWriter().println("{\"msg\": " + msg + ", \"status\": " + status + "}");
+                        }
+                    }
+                重启服务后，给 /order/{orderId}这个资源配置一个流控规则，单机阈值配为1，
+                那么在一秒钟内速刷两次即可触发 FlowException，页面返回 {"msg":"status": 429}。
+    
+    规则持久化
+        每当服务重启后，我们在Sentinel所配的各种规则就会丢失。这是因为Sentinel默认会把规则保存在内存里，重启后自然就丢失了，解决这个问题就需要对规则做持久化的处理。
+        规则管理模式：
+            Sentinel的控制台规则管理有三种模式：
+                原始模式：Sentinel的默认模式，将规则保存在内存，重启服务会丢失。
+                pull模式：
+                    控制台将配置的规则推送到Sentinel客户端，而客户端会将配置规则保存在本地文件或数据库中，以后会定时在本地文件或数据库中查询，更新本地规则。
+                    但是这个模式缺点就是实效性比较差，比如刚写入一条规则，这个模式不会马上读取，它是定时读取的，所以就会导致服务之间的规则不一致，所以并不推荐。
+                push模式：
+                    控制台将配置规则推送到远程配置中心，例如Nacos，Sentinel客户端监听Nacos，获取配置变更的推送消息，完成本地配置更新（推荐方案）。
+
+        实现push模式：
+            push模式实现较为复杂，依赖于Nacos，并且需要修改Sentinel控制台源码，详细步骤请看 /lib/day6/sentinel规则持久化.md
+            操作步骤：
+                在order服务中引入Sentinel监听nacos的依赖：(保证和Sentinel的版本一致)
+                    <dependency>
+                        <groupId>com.alibaba.csp</groupId>
+                        <artifactId>sentinel-datasource-nacos</artifactId>
+                        <version>1.8.6</version>
+                    </dependency>
+                在order-service中的application.yml文件配置nacos地址及监听的配置信息：
+                    spring:
+                        cloud:
+                            sentinel:
+                                datasource:
+                                    flow:
+                                        nacos:
+                                            server-addr: localhost:8888 # nacos地址
+                                            dataId: orderservice-flow-rules
+                                            groupId: SENTINEL_GROUP
+                                            rule-type: flow # 还可以是：degrade、authority、param-flow
+                重启服务。
+                修改Sentinel-dashboard源码，详见 /lib/day6/sentinel规则持久化.md
+                    这里处理完后打包好的是 /lib/day6/sentinel-dashboard-nacos.jar
+                    启动方式跟官方一样：
+                        java -jar sentinel-dashboard.jar
+                    如果要修改nacos地址，需要添加参数：
+                        java -jar -Dnacos.addr=localhost:8888 sentinel-dashboard.jar
+                浏览器清楚缓存后刷新即可看到多出一个栏目：流控规则 - Nacos
+                    那么在这个栏目下配置的流控规则就会进入Nacos
+                    在流控规则 - Nacos栏目下新增流控规则（注nacos需要时集群启动）
+                        资源名：/order/{orderId}
+                        针对来源：default
+                        阈值类型：QPS
+                        单机阈值：1
+                    对应的nacos的dataId是 orderservice-flow-rules。
+                重新启动服务后，可以发现，流控规则 - Nacos 栏目下配置的规则仍然存在，这样就实现持久化了。
+                
 
 
 
 
 
 
-玖.
+
+玖.Seata
+    
+    
 
 
 

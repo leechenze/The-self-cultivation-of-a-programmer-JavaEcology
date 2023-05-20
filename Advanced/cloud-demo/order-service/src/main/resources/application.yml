@@ -21,6 +21,21 @@ spring:
       transport:
         dashboard: localhost:1024 # sentinel 控制台地址
       web-context-unify: false # 关闭Sentinel的context整合，从而导致的链路模式的流控失效。
+      datasource:
+        flow:
+          nacos:
+            server-addr: localhost:8888 # nacos地址
+            dataId: orderservice-flow-rules
+            groupId: SENTINEL_GROUP
+            rule-type: flow # 还可以是：degrade、authority、param-flow
+        # flow是限流规则，degrade是降级规则，这里只演示限流flow，降级就不配了。
+        # degrade:
+          # nacos:
+            # server-addr: localhost:8888 # nacos地址
+            # dataId: orderservice-degrade-rules
+            # groupId: SENTINEL_GROUP
+            # rule-type: degrade # 还可以是：degrade、authority、param-flow
+
 mybatis:
   type-aliases-package: cn.lee.user.pojo
   configuration:
