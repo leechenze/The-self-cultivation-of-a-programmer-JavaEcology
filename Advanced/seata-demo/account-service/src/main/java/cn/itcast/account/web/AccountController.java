@@ -1,6 +1,7 @@
 package cn.itcast.account.web;
 
 import cn.itcast.account.service.AccountService;
+import cn.itcast.account.service.AccountTCCService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +17,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class AccountController {
 
     @Autowired
-    private AccountService accountService;
+    // private AccountService accountService;
+    private AccountTCCService accountService;
 
     @PutMapping("/{userId}/{money}")
     public ResponseEntity<Void> deduct(@PathVariable("userId") String userId, @PathVariable("money") Integer money){

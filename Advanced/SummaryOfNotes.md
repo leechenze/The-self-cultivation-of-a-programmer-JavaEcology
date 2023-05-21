@@ -4302,7 +4302,7 @@
                 Seata的自动装配已经完成了XA模式的自动装配，实现非常简单，步骤如下：
                     修改applciation.yml文件（每个参与事务的微服务），开启XA模式：
                         seata:
-                            data-source-proxy-mode: XA
+                            data-source-proxy-mode: XA # 开启数据源代理的XA模式
                     发起全局事务的入口方法添加一个@GlobalTransactional注解即可，本例中是OrderServiceImpl中的create方法，其他service方法中只需要声明@Transactional注解即可：
                         @Override
                         @GlobalTransactional
@@ -4343,26 +4343,215 @@
                 两阶段之间的属于软状态，属于最终一致。
                 框架的快照功能会影响性能，但比XA模式要好很多。
             实现步骤：
-                
+                AT模式中的快照生成，回滚等动作都是由框架自动完成的，没有任何代码侵入，因此实现非常简单。
+                导入lib/day7/sql/seata-at.sql文件，其中lock_table导入到TC服务关联的数据库（seata库），undo_log表导入到微服务关联的数据库（seata_demo）
+                修改application.yml文件，将事物模式改为AT模式即可：
+                    seata:
+                        data-source-proxy-mode: AT # 开启数据源代理的AT模式
+                重启服务并测试：
+                    和XA是同样的效果。同成功同失败。
         TCC模式：
-            
+            TCC模式与AT模式非常相似,每阶段都是独立事务,不同的是TCC通过人工编码来实现数据恢复.需要实现三个方法:
+                Try: 资源的检测和预留
+                Confirm: 完成资源操作业务; 要求Try成功Confirm一定要能成功
+                Cancel: 预留资源释放, 可以理解为try的方向操作
+            TCC模式的优点：
+                一阶段完成直接提交事物，释放数据库资源，性能好。
+                相比AT模型，不用生成快照，无需使用全局锁，性能最强。
+                不依赖数据事务，而是依赖补偿操作，可以用于非事务型数据库。
+            TCC模式的缺点：
+                有代码侵入（需手写代码），需要人为编写try，Confirm和Cancel接口，太麻烦。
+                软状态，事务是最终一致的
+                需要考虑Confirm和Cancel的失败情况，做好幂等处理。
+            需求：
+                改造account-service服务，利用TCC实现分布式事务，这里只改account服务，其他服务仍沿用AT模式，这几种模式可以混着用，因为它们都属于Seata内部的实现。
+                
+                修改account-service，编写try，confirm，cancel逻辑
+                try业务：添加冻结金额，扣减可用金额。
+                confirm业务：删除冻结金额。
+                cancel业务：删除冻结金额，恢复可用金额。
+                代码层面考虑：
+                    保证confirm和cancel接口的幂等性：
+                        即调用一次和多次的结果是一致的，不会因为重复调用而出问题，具体通过业务进行判断，是否执行过了，执行过就不再执行即可。
+                    允许空回滚：
+                        当某分支事物的try阶段阻塞时,可能导致全局事务超时而触发二阶段的cancel操作.在未执行try操作时先执行了cancel操作,这时cancel不能做回滚, 这就是空回滚
+                    拒绝业务悬挂：
+                        对于已经空回滚的业务,如果以后继续执行try,就永远不可能confirm或cancel,这就是业务悬挂.应当阻止执行空回滚后的try操作,避免悬挂
+                        所以为了实现空回滚，方式业务悬挂，以及幂等性要求。我们必须在数据库记录冻结金额的同时，记录当前事务id和执行状态。
+                        为此需要设计一张表 lib/day7/sql/account_freeze_tbl （在seata_demo库中执行）
+                            xid：事务ID，user_id：用户id，freeze_money：冻结金额，state：TCC的状态（Try，Confirm，Cancel）
+            实现步骤：
+                TCC的Try,Confirm,Cancel方法都需要在注解中基于注解来声明，声明接口在 account-service/.../service/AccountTCCService
+                    @LocalTCC
+                    public interface AccountTCCService {
+                        /**
+                        * name表示try方法
+                        * commitMethod表示confirm方法
+                        * rollbackMethod表示cancel方法
+                        */
+                        @TwoPhaseBusinessAction(name = "deduct", commitMethod = "confirm", rollbackMethod = "cancel")
+                        void deduct(@BusinessActionContextParameter(paramName = "userId") String userId,
+                        @BusinessActionContextParameter(paramName = "money") int money);
+                
+                        /** 这两个方法是获取事务信息和参数信息的，前提是必须要在Try的方法中指定 @BusinessActionContextParameter 这个注解 */
+                        boolean confirm(BusinessActionContext ctx);
+                
+                        boolean cancel(BusinessActionContext ctx);
+                    }
+                在impl中实现该接口，书写业务逻辑：
+                    @Slf4j
+                    @Service
+                    public class AccountTCCServiceImpl implements AccountTCCService {
+                    
+                        @Autowired
+                        private AccountMapper accountMapper;
+                        @Autowired
+                        private AccountFreezeMapper accountFreezeMapper;
+                    
+                        @Override
+                        @Transactional
+                        public void deduct(String userId, int money) {
+                    
+                            // 获取事务ID
+                            String xid = RootContext.getXID();
+                    
+                            // 判断业务悬挂
+                            // 判读accountFreeze是否有冻结记录，如果有，一定是CANCEL执行过，就变成悬挂业务了，要拒绝业务。
+                            AccountFreeze oldAccountFreeze = accountFreezeMapper.selectById(xid);
+                            if (oldAccountFreeze != null) {
+                                // CANCEL执行过，要拒绝业务。
+                                return;
+                            }
+                    
+                            // 扣减可用金额
+                            accountMapper.deduct(userId, money);
+                            // 记录冻结金额，事务状态。
+                            AccountFreeze accountFreeze = new AccountFreeze();
+                            accountFreeze.setUserId(userId);
+                            accountFreeze.setFreezeMoney(money);
+                            accountFreeze.setState(AccountFreeze.State.TRY);
+                            accountFreeze.setXid(xid);
+                            accountFreezeMapper.insert(accountFreeze);
+                    
+                        }
+                    
+                        /**
+                         * confirm提交事务逻辑
+                         * @param ctx
+                         * @return
+                         */
+                        @Override
+                        public boolean confirm(BusinessActionContext ctx) {
+                            // 获取事务ID
+                            String xid = ctx.getXid();
+                    
+                            // 根据ID删除冻结记录
+                            int count = accountFreezeMapper.deleteById(xid);
+                            return count == 1;
+                        }
+                    
+                        /**
+                         * cancel回滚事务逻辑
+                         * @param ctx
+                         * @return
+                         */
+                        @Override
+                        public boolean cancel(BusinessActionContext ctx) {
+                    
+                            // 获取xid 和 userId
+                            String xid = ctx.getXid();
+                            String userId = ctx.getActionContext("userId").toString();
+                            // 查询冻结记录
+                            AccountFreeze accountFreeze = accountFreezeMapper.selectById(xid);
+                    
+                            // 空回滚的判断，判断accountFreeze是否为Null。
+                            if (accountFreeze == null) {
+                                // 为Null证明try没执行，需要空回滚。
+                                accountFreeze.setUserId(userId);
+                                accountFreeze.setFreezeMoney(0);
+                                accountFreeze.setState(AccountFreeze.State.CANCEL);
+                                accountFreeze.setXid(xid);
+                                accountFreezeMapper.insert(accountFreeze);
+                                return true;
+                            }
+                    
+                            // 判断幂等
+                            if (accountFreeze.getState() == AccountFreeze.State.CANCEL) {
+                                // 证明已经处理过一次CANCEL了，无需重复处理。
+                                return true;
+                            }
+                    
+                            // 恢复可用余额
+                            accountMapper.refund(accountFreeze.getUserId(), accountFreeze.getFreezeMoney());
+                    
+                            // 将冻结金额清零，状态改为CANCEL
+                            accountFreeze.setFreezeMoney(0);
+                            accountFreeze.setState(AccountFreeze.State.CANCEL);
+                    
+                            // 更新操作
+                            int count = accountFreezeMapper.updateById(accountFreeze);
+                            return count == 1;
+                        }
+                    }
+                修改web/AccountController
+                    @Autowired
+                    // private AccountService accountService;
+                    private AccountTCCService accountService;
+                重启服务测试：
+                    操作同XA和AT模式。
+            这里有点懵懂，如若具体结果不是预期，请差文档关联自己业务逻辑自行实现。
+                   
+ 
         SAGA模式：
+            SAGA是Seata提供的长事物解决方案，也分为两个阶段：
+                一阶段：直接提交本地事物。
+                二阶段：成功则什么都不做，失败则通过编写补偿业务来回滚。
+            SAGA优点：
+                事务参与者可以基于事件驱动实现异步调用,吞吐高
+                一阶段直接提交事务,无锁,性能好
+                不用编写TCC中的三个阶段,实现简单
+            SAGA缺点：
+                软状态持续时间不确定,时效性差
+                没有锁,没有事务隔离,会有脏写
+        总结和对比：
+            SAGA模式一般应用较少，TCC和AT模式结合使用是应对大多数场景需求的首选。
+            四种模式对比和应用场景请看：
+                https://upload-images.jianshu.io/upload_images/67572-26012ff5fe55f1e2.png?imageMogr2/auto-orient/strip%7CimageView2/2/w/1200/format/webp
             
 
 
 
+    
 
 
 
 
-
-
-
-
-
-
-
-拾.
+拾.Redis
+    
+    Redis是一种开源的高性能键值对存储数据库，支持多种数据结构，如字符串、哈希表、列表、集合、有序集合等。
+    它常用于分布式缓存、队列等方面，具有快速、可靠、灵活等特点。Redis支持主从复制、哨兵模式和集群模式，可以满足不同规模和可靠性需求的应用场景。
+    除此之外，Redis还提供了丰富的命令和扩展功能，如Lua脚本执行、过期时间设置、发布/订阅功能等。
+    
+    单点Redis的问题：
+        数据丢失问题，Redis是内存存储，服务宕机或重启等情况可能会丢失数据。
+            解决：实现Redis数据持久化。
+        并发能力问题，Redis是内存存储，并发能力很强，但是毕竟是单节点，诸如618这种过高并发场景就显得无力了。
+            解决：搭建主从集群，实现读写分离。
+        故障恢复问题，如果Redis宕机，导致的服务不可用，不能影响其他服务的正常使用，需要一种自动的故障恢复手段，需要边运行边修复。而单点Redis无法做到
+            解决：利用Redis哨兵，实现健康监测和自动恢复。
+        存储能力问题，Redis基于内存，单节点能存储的数据量难以满足海量数据的需求。
+            解决：搭建分片集群，利用插槽机制实现动态扩容。
+    
+    
+    Redis数据持久化
+        
+    Redis主从
+        
+    Redis哨兵
+        
+    Redis分片集群
+        
+        
 
 
 
