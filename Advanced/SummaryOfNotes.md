@@ -4186,15 +4186,117 @@
                 AT模式: 最终一致的分阶段事务模式, 无业务侵入, 也是Seata的默认模式
                 SAGA模式: 长事物模式, 有业务侵入。
         部署TC服务：
-            参考 lib/day7/seata的部署和集成.md
-            
+            详细请看：lib/day7/seata的部署和集成.md
+            所录结构：lib/day7/seata-server-1.4.2
+                bin     运行脚本
+                conf    配置文件
+                lib     依赖库
+                logs    日志文件
+            修改配置：conf/registry.conf文件：
+                registry {
+                    # tc服务的注册中心类，这里选择nacos，也可以是eureka、zookeeper等
+                    type = "nacos"
+                    nacos {
+                        # seata tc 服务注册到 nacos的服务名称，可以自定义
+                        application = "seata-tc-server"
+                        serverAddr = "127.0.0.1:8848"
+                        group = "DEFAULT_GROUP"
+                        namespace = ""
+                        cluster = "SH"
+                        username = "nacos"
+                        password = "nacos"
+                    }
+                }
+                config {
+                    # 读取tc服务端的配置文件的方式，这里是从nacos配置中心读取，这样如果tc是集群，可以共享配置
+                    type = "nacos"
+                    # 配置nacos地址等信息
+                    nacos {
+                        serverAddr = "127.0.0.1:8848"
+                        namespace = ""
+                        group = "SEATA_GROUP"
+                        username = "nacos"
+                        password = "nacos"
+                        dataId = "seataServer.properties"
+                    }
+                }
+            在nacos中添加配置：
+                特别注意，为了让tc服务的集群可以共享配置，我们选择了nacos作为统一配置中心。因此服务端配置文件seataServer.properties文件需要在nacos中配好。
+                配置内容如下：
+                    # 数据存储方式，db代表数据库
+                    store.mode=db
+                    store.db.datasource=druid
+                    store.db.dbType=mysql
+                    store.db.driverClassName=com.mysql.jdbc.Driver
+                    store.db.url=jdbc:mysql://127.0.0.1:3306/seata?useUnicode=true&rewriteBatchedStatements=true
+                    store.db.user=root
+                    store.db.password=lcz19930316
+                    store.db.minConn=5
+                    store.db.maxConn=30
+                    store.db.globalTable=global_table
+                    store.db.branchTable=branch_table
+                    store.db.queryLimit=100
+                    store.db.lockTable=lock_table
+                    store.db.maxWait=5000
+                    # 事务、日志等配置
+                    server.recovery.committingRetryPeriod=1000
+                    server.recovery.asynCommittingRetryPeriod=1000
+                    server.recovery.rollbackingRetryPeriod=1000
+                    server.recovery.timeoutRetryPeriod=1000
+                    server.maxCommitRetryTimeout=-1
+                    server.maxRollbackRetryTimeout=-1
+                    server.rollbackRetryTimeoutUnlockEnable=false
+                    server.undo.logSaveDays=7
+                    server.undo.logDeletePeriod=86400000
+                    
+                    # 客户端与服务端传输方式
+                    transport.serialization=seata
+                    transport.compressor=none
+                    # 关闭metrics功能，提高性能
+                    metrics.enabled=false
+                    metrics.registryType=compact
+                    metrics.exporterList=prometheus
+                    metrics.exporterPrometheusPort=9898
+                ==其中的数据库地址、用户名、密码都需要修改成你自己的数据库信息。==
+                tc服务在管理分布式事务时，需要记录事务相关数据到数据库中，需要提前创建好这些表。
+                所以根据以上的数据库信息新建seata数据库，并执行 lib/day7/sql/seata-tc-server.sql
+            启动TC服务：
+                进入bin目录，运行其中的seata-server.sh即可
+                启动成功后，seata-server应该已经注册到nacos注册中心了。
+                打开浏览器，访问nacos地址：http://localhost:8888，然后进入服务列表页面，可以看到seata-tc-server的信息：
+
         微服务集成Seata：
-        
-        
+            操作步骤：
+                在storage-aervice中引入Seata相关依赖：
+                配置storage-aervice/application.yml，让微服务通过注册中心，找到seata-tc-server：
+                    seata:
+                        registry: # TC服务注册中心配置，微服务根据这些信息去注册中心获取tc服务地址
+                            # 参考TC服务自己的registry.conf中的配置。
+                            # 包括：地址，namespace，group，application-name，cluster
+                            type: nacos
+                            nacos: # TC
+                                server-addr: 127.0.0.1:8888
+                                namespace: ""
+                                group: DEFAULT_GROUP
+                                application: seata-tc-server # tc服务中的服务名称
+                                username: nacos
+                                password: nacos
+                        tx-service-group: seata-demo # 事务组，根据这个获取tc服务的cluster名称
+                        service:
+                            vgroup-mapping: # 事务组与cluster的映射关系
+                            seata-demo: SH
+                account-service 和 order-service同样按着以上的方法进行配置。
+                重启服务后，在seata服务（tc服务）的控制台（seata-server.sh）可以看到更新一条 RM register success 和 TM register success的消息则表示成功。
+
     动手实践：
-    高可用：
-
-
+        XA模式：
+            
+        AT模式：
+            
+        TCC模式：
+            
+        SAGA模式：
+            
 
 
 
