@@ -4290,9 +4290,60 @@
 
     动手实践：
         XA模式：
-            
+            XA规范是X/Open组织定义的分布式事务处理（DTP，Distributed Transaction Processing）标准，XA规范描述了全局的TM与局部的RM之间的接口
+            几乎所有的主流数据库都对XA规范提供了支持。它是分布式事务领域最早的一种标准。Seata的XA模式做了一些调整，但是大体相似。
+            优点：
+                事务的强一致性，满足ACID原则。
+                常用数据库都支持，实现简单，并且没有代码侵入。
+            缺点：
+                因为一阶段需要锁定数据库资源，等待二阶段结束才释放，性能较差。
+                依赖关系性数据库的实现事务。
+            实现步骤：
+                Seata的自动装配已经完成了XA模式的自动装配，实现非常简单，步骤如下：
+                    修改applciation.yml文件（每个参与事务的微服务），开启XA模式：
+                        seata:
+                            data-source-proxy-mode: XA
+                    发起全局事务的入口方法添加一个@GlobalTransactional注解即可，本例中是OrderServiceImpl中的create方法，其他service方法中只需要声明@Transactional注解即可：
+                        @Override
+                        @GlobalTransactional
+                        public Long create(Order order) {
+                            // 创建订单
+                            orderMapper.insert(order);
+                            try {
+                                // 扣用户余额
+                                accountClient.deduct(order.getUserId(), order.getMoney());
+                                // 扣库存
+                                storageClient.deduct(order.getCommodityCode(), order.getCount());
+                    
+                            } catch (FeignException e) {
+                                log.error("下单失败，原因:{}", e.contentUTF8(), e);
+                                throw new RuntimeException(e.contentUTF8(), e);
+                            }
+                            return order.getId();
+                        }
+                    重启服务并测试:
+                        PostMan执行 http://localhost:8082/order?userId=user202103032042012&commodityCode=100202003032041&count=10&money=200 
+                        这个创建订单接口，同时关注三张表：account_tbl，order_tbl，storage_tbl，接口中的count参数输入10，但是金额不够1000，所以订单服务失败
+                        订单服务失败后，account服务 和 storage都不会成功了，都会进行事务回滚。三张表的数据不会变，至此验证成功。
+                        
         AT模式：
-            
+            AT模式同样是分阶段提交的事务模型，不过弥补了XA模型中资源锁定周期过长的缺陷。
+            AT模式与XA模式最大的区别是什么：
+                XA模式第一阶段不提交事物，锁定资源；AT模式一阶段直接提交，不锁定资源。
+                XA模式依赖数据库机制实现回滚，AT模式利用数据快照（undo log）实现数据回滚。
+                XA模式强一致，AT模式最终一致。
+            AT模式的脏写问题解决：
+                AT模式写的隔离：马马虎虎没听懂，这里指定CSDN了解原理和工作流程吧。
+                全局锁：由TC记录当前正在操作某行数据的事务,该事物持有全局锁,具备执行权。
+            AT模式的优点：
+                一阶段完成直接提交事物，释放数据库资源，性能比较好。
+                利用全局锁实现读写隔离。
+                没有代码侵入，框架自动完成回滚和提交。
+            AT模式的缺点：
+                两阶段之间的属于软状态，属于最终一致。
+                框架的快照功能会影响性能，但比XA模式要好很多。
+            实现步骤：
+                
         TCC模式：
             
         SAGA模式：
