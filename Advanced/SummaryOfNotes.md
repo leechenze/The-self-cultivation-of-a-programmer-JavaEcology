@@ -4544,7 +4544,79 @@
     
     
     Redis数据持久化
-        
+        RDB持久化：
+            RDB全称（Redis Database Backup file）Redis数据备份文件，也被叫做数据快照，简单来说就是把内存中的所有数据
+            都记录到磁盘中，当Redis实例故障重启后，从磁盘读取快照文件，恢复数据。
+                快照文件被称为RDB文件，默认是保存在当前运行目录。
+                    redis-cli
+                    save：由Redis主进程来执行RDB，会阻塞所有命令，最终返回OK则算保存成功。
+                    bgsave：开启子进程执行RDB，避免主进程受影响，回车后控制台会立即返回 Background saving started。
+                Redis停机时会自动执行一次RDB。
+                安装步骤：
+                    首先需要在Linux系统中安装一个Redis，如果尚未安装的同学，请参考资料 /lib/day7/Redis集群.md
+                    这里推荐一个MacOS下的SSH连接工具：SSH Term Pro
+                    CentOS 安装 Redis：（https://technixleo.com/install-redis-server-centos-alma-rhel/）
+                        yum install -y gcc tcl
+                            安装Redis所需依赖。
+                        sudo dnf update --nogpgcheck
+                            更新系统软件包。
+                        sudo dnf -y install redis --nogpgcheck
+                            安装Redis
+                        sudo systemctl start redis | redis-server
+                            启动Redis
+                        sudo systemctl enable redis
+                            启用Redis
+                        sudo systemctl stop redis
+                            停止Redis
+                        systemctl status redis
+                            查看Redis状态
+                        redis-cli ping
+                            测试Redis是否可以正常连接
+                        redis-cli
+                            连接Redis
+                    MacOS 安装 Redis：
+                        brew install redis
+                            安装Redis
+                        brew services start redis | redis-server
+                            启动Redis
+                        brew services stop redis
+                            停止Redis
+                        brew services info redis
+                            查看Redis状态
+                        redis-cli ping
+                            测试Redis是否可以正常连接
+                        redis-cli
+                            连接Redis
+                        brew install --cask another-redis-desktop-manager
+                        安装Redis客户端可视化工具（Another Redis Desktop Manager）
+                操作步骤：
+                    在github获取和redis-cli相对应的版本（https://github.com/redis/redis/releases?page=3）
+                    redis查看版本：
+                        redis-cli
+                        info
+                    放到CentOS的 /tmp 目录下。
+                    解压 redis-6.2.7.zip 目录：
+                        tar -xvf redis-6.2.7.zip
+                    解压后，进入redis目录：
+                        cd redis-6.2.7
+                    运行Redis编译命令：
+                        make && make install
+                    然后修改redis.conf文件中的一些配置：
+                        # 绑定地址，默认是127.0.0.1，会导致只能在本地访问。修改为0.0.0.0则可以在任意IP访问
+                        bind 0.0.0.0
+                        # 数据库数量，设置为1
+                        databases 1
+                    启动Redis：
+                        redis-server redis.conf
+                    停止redis服务：
+                        redis-cli shutdown
+                
+                    
+                    
+        AOF持久化：
+            
+            
+            
     Redis主从
         
     Redis哨兵
