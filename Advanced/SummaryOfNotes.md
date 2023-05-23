@@ -4610,14 +4610,70 @@
                         redis-server redis.conf
                     停止redis服务：
                         redis-cli shutdown
-                
-                    
-                    
+                    测试链接：
+                        redis-cli ping
+                    当ctrl+c执行后，就会返回 Saving the final RDB snapshot before exiting. DB saved on disk 这样的一段信息
+                        此时在 redis-server命令所执行的目录下会生成一个dump.rdb文件，这个就是redis的缓存文件，再次启动redis后，数据就会恢复
+                        而恢复的数据就是从这个dump.rdb文件中读取的。所以redis默认就有这个持久化机制的。
+                    在Redis内部有触发RDB的机制，可以在redis.conf文件中找到。格式如下：
+                        # 以下含义表示的是：900秒内，如果至少有1个key被修改，则执行bgsave，如果是 save "" 则表示禁用RDB。
+                        # save 900 1
+                        save 5 1 # 这里配置个5秒内一次的修改执行bgsave吧。
+                    RDB的其他配置可以在redis.conf文件中设置：
+                        # 是否压缩，建议不开启，压缩也会消耗cpu，磁盘其实不值钱。看情况如果cpu资源很充足，那么就可以开启压缩模式。
+                        rdbcompression yes
+                        # RDB文件名称
+                        dbfilename dump.rdb
+                        # 文件保存的路径目录
+                        dir ./
+                    再次重新redis-server后，每5秒内执行 set [key] 时
+                        控制台就会返回一条信息：1 changes in 5 seconds. Saving...
+                        Background saving started by pid 277240
+                        意思就是在5秒内 后台异步保存了这次修改，同时当停止redis后，就会保存到配置的test.rdb文件中（原来是dump.rdb）
+                总结：
+                    RDB方式bgsave的基本流程？
+                        1。fork主进程得到一个子进程，共享内存空间。
+                        2。子进程读取内存数据并写入新的RDB文件。
+                        3。用新的RDB文件替换旧的RDB文件。
+                    RDB会在什么时候执行？save 60 1000代表什么含义？
+                        默认是服务停止执行。
+                        代表60秒内至少执行1000次修改则触发RDB。
+                    RDB的缺点？
+                        RDB执行间隔时间长，两次RDB之间写入数据有丢失的风险。
+                        fork子进程，压缩，写出RDB文件都比较耗时。
+
         AOF持久化：
+            AOF全称为（Append Only File）追加文件，Redis处理文件的每一个写命令都会记录在AOF文件，可以看作是命令日志文件。
+            AOF默认是关闭的，需要修改redis.conf配置文件来开启AOF。
+                # 是否开启AOF功能，默认是no
+                appendonly yes
+                # AOF文件的名称
+                appendfilename "appendonly.aof"
+            AOF的命令记录频率也可以通过redis.conf文件来配：
+                # 每执行一次写命令，立即记录到AOF文件
+                # 同步刷盘，可靠性高，几乎不丢失数据，但性能影响大。
+                appendfsync always
+                # 写命令执行完先放入AOF缓冲区, 然后表示每隔1秒将缓冲区数据写到AOF文件,是默认方案
+                # 每秒刷盘，性能适中，最多丢失1秒内的数据。
+                appendfsync everysec
+                # 写命令执行完先放入AOF缓冲区, 由操作系统决定何时将缓冲区内容写回磁盘
+                # 操作系统控制写入磁盘，性能最好，可靠性差，可能丢失大量数据。
+                appendfsync no
+            因为AOF是记录命令, AOF文件会比RDB文件大多, 而且AOF会记录对同一个key的多次写操作, 但只有最后一次写操作才有意义, 可以通过执行bgrewriteaof命令, 可以让AOF文件执行重写功能, 用最少的命令达到相同的效果.
+            Redis也会在触发阈值时自动重写AOF文件，阈值也可以在redis.conf中配置：
+                # AOF文件比上次文件 增长超过多少百分比，触发重写。
+                auto-aof-rewrite-percentage 100
+                # AOF文件体积最小多大以上就触发重写
+                auto-aof-rewrite-min-size 64mb
             
-            
-            
-    Redis主从
+            总结：
+                RDB和AOF各有自己的特点，如果对数据安全性要求较高，在实际开发中往往会结合来使用。
+                更明细对比请见：
+                    https://blog.csdn.net/weixin_43783509/article/details/89838537?ops_request_misc=&request_id=&biz_id=102&utm_term=RDB%E5%92%8CAOF%E5%8C%BA%E5%88%AB&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-2-89838537.nonecase&spm=1018.2226.3001.4187
+
+    Redis主从：
+        
+        
         
     Redis哨兵
         
