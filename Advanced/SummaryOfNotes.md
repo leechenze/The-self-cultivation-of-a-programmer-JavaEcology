@@ -4672,7 +4672,19 @@
                     https://blog.csdn.net/weixin_43783509/article/details/89838537?ops_request_misc=&request_id=&biz_id=102&utm_term=RDB%E5%92%8CAOF%E5%8C%BA%E5%88%AB&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduweb~default-2-89838537.nonecase&spm=1018.2226.3001.4187
 
     Redis主从：
-        
+        搭建主从架构：
+            单节点Redis的并发能力是有上限的，要进一步提高Redis的并发能力，就需要搭建主从集群，实现读写分离。
+            Redis的集群往往都是主从集群，一个主节点（master）多个从节点（slave/replica）
+            因为Redis大多数的应用场景都是读多写少的场景，所以Redis是主从的集群，而不是负载均衡的集群。
+            所以一般是在master节点上执行写操作，压力较大的读操作就分发到slave或replica从节点上执行。
+            所需要保证的是Redis客户端不管访问哪个从节点，数据结果必须是相同的，那么就需要主节点的数据同步到每一个从节点。
+            这就是Redis主从架构的基本模式（最基本也要三台Redis服务，一主两从）
+            slave是redis5.0以前从节点的叫法。replica是redis5.0以后从节点的叫法。
+            操作步骤：
+                详见：lib/day7/Redis集群.md
+            
+        主从数据同步原理：
+            ... here ...
         
         
     Redis哨兵
