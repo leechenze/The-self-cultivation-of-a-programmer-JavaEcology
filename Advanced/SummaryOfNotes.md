@@ -4684,12 +4684,123 @@
                 详见：lib/day7/Redis集群.md
             
         主从数据同步原理：
-            
-            ... here ...
-            
+            主从第一次同步是全量同步
+                master如何判断slave是不是第一次同步数据？这里有两个重要的概念：
+                    Replication Id：简称replid，是数据集的标记，ID一致说明是同一个数据集，每一个master都有一个唯一的replid，slave则会继承master节点的replid
+                    offset：偏移量，随着记录在repl_baklog中的数据增多而逐渐增大。slave完成同步时也会记录当前同步的offset。
+                        如果slave的offset小于master的offset，说明slave数据落后于master，需要更新。
+                    因此slave做数据同步，必须向master声明自己的replid和offset，master才能判断到底需要同步哪些数据。
+            如果slave重启后同步，则执行增量同步
+                repl_baklog大小有上限, 写满后会覆盖最早的数据. 如果slave断开时间过久, 导致尚未备份的数据被覆盖, 则无法基于log做增量同步, 只能再次全量同步
+                这种增量同步的问题是没有办法避免的。只能是尽可能的通过Redis主从集群的优化减少概率。
+            可以从以下几个方面来优化Redis主从集群：
+                在master中配置 repl-diskless-sync yes 启用无磁盘复制（无RDB文件复制），避免全量同步时的磁盘IO。
+                    这种应用场景就是磁盘比较慢，但是网络非常快时，可以开启为yes。
+                控制单节点Redis的内存上限
+                    单节点的内存占用不要太大，减少RDB导致的过多磁盘IO。
+                适当提高repl_baklog的大小，发现slave宕机时尽快实现故障恢复, 尽可能避免全量同步
+                限制一个master上的slave节点数量,如果实在是太多slave, 则可以采用主-从-从链式结构,减少master压力
+                    主节点 A1 为master，
+                    从节点 B1 为slave，slaveof A1，以A1作为主节点
+                    从节点 B2 为slave，slaveof A1，以A1作为主节点
+                    从节点 C1 为slave，slaveof B1，以B1作为主节点
+                    从节点 C2 为slave，slaveof B2，以B2作为主节点
+                    以上规则就是主-从-从的链式关系，从节点也可以作为其他从节点的主节点。
+            总结：
+                Redis中的全量同步和增量同步的区别？
+                    全量同步：master将完整内存数据生成RDB, 发送RDB到slave. 后续命令则记录在repl_baklog, 做个发送给slave
+                    增量同步：slave提交自己的offset到master, master获取repl_baklog中从offset之后的命令给slave
+                什么时候执行全量同步？
+                    slave节点第一次连接到master时。
+                    slave几点断开时间太久，repl_baklog中的offset已经被覆盖时
+                什么时候执行增量同步？
+                    slave节点断开又恢复，并且在repl_baklog中能找到offset时。
         
-    Redis哨兵
-        
+    Redis哨兵：            
+        哨兵的作用和原理
+            哨兵的作用：
+                Redis提供了哨兵（Sentinel）机制来实现主从集群的自动故障恢复。哨兵的结构和作用如下：
+                    监控：Sentinel会不断检查Redis的master和slave是否按预期工作。
+                    自动故障恢复：如果master故障，Sentinel会将一个slave提升为master. 当故障实例恢复后也以新的master为主
+                服务状态监控：
+                    Sentinel基于心跳机制监测服务状态, 每隔1秒向集群的每个实例发送ping命令
+                        主观下线: 如果某Sentinel节点发现某实例为在规定时间响应, 则认为该实例主观下线
+                        客观下线: 若超过指定数量(quorum)的Sentinel都认为该实例主观下线, 则该实例客观下线（客观事实）. quorum值最好超过Sentinel实例数量的一半
+                选举新的Master：
+                    一旦发现master故障,sentinel需要在slave中选择一个作为新的master,选择依据如下:
+                        首先会判断slave节点与master节点断开时间长短,如果超过指定值(down-after-millisecond*10)则会排出该slave节点
+                        然后判断slave节点的slave-priority值,越小优先级越高,如果是0则永不参与选举
+                        如果slave-prority一样,则判断slave节点的offset值, 越大说明数据越新,优先级越高（最重要的依据）
+                        最后是判断slave节点的运行ID大小, 越小优先级越高（最不重要的依据）
+                实现故障转移：
+                    当选中了其中一个slave为新的master后(例如slave1),故障的转移的步骤如下:
+                        sentinel给备选节点的slave1节点发送slaveof no one 命令, 让该节点成为master
+                        sentinel给所有其他slave发送slaveof 172.16.168.130 7002命令, 让这些slave成为新master的从节点, 开始从新的master上同步数据
+                        最后，sentinel将故障节点标记为slave,当故障节点恢复后会自己成为新的master的slave节点
+                
+            
+        搭建哨兵集群
+            详见：lib/day7/Redis集群.md
+            
+        RedisTemplate的哨兵模式
+            在Sentinel集群监管下的Redis主从集群, 其节点会因为自动故障转移而发生变化, Redis的客户端必须感知这种变化, 即使更新链接信息.
+            Spring的RedisTemplate底层利用lettuce实现了节点的感知和自动切换
+            操作步骤：（redis-demo）
+                在pom文件中引入redis的starter依赖：
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-data-redis</artifactId>
+                    </dependency>
+                在配置文件application.yaml中指定sentinel相关信息：
+                    配置的并不是Redis集群地址，而是Sentinel的地址。因为Redis主从的地址有变更的可能，不能写死，所以Redis客户端，不需要知道Redis集群地址，只配置redis的sentinel（哨兵）地址即可。
+                    配置好后主从切换等所有工作都是由RedisTemplate客户端全自动完成的。
+                    spring:
+                        redis:
+                            sentinel:
+                                master: mymaster
+                                nodes:
+                                    - 172.16.168.130:27001
+                                    - 172.16.168.130:27002
+                                    - 172.16.168.130:27003
+                配置读写分离，为了方便就在启动类中配置：
+                    @Bean
+                    public LettuceClientConfigurationBuilderCustomizer clientConfigurationBuilderCustomizer() {
+                        /**
+                         * 匿名内部类写法：
+                         * 因为这个接口内部只有customize这一个方法，所以可以直接 new 这个接口 LettuceClientConfigurationBuilderCustomizer
+                         */
+                        return new LettuceClientConfigurationBuilderCustomizer() {
+                            @Override
+                            public void customize(LettuceClientConfiguration.LettuceClientConfigurationBuilder clientConfigurationBuilder) {
+                                clientConfigurationBuilder.readFrom(ReadFrom.REPLICA_PREFERRED);
+                            }
+                        };
+                
+                        /**
+                         * Lambda表达式写法：
+                         */
+                        // return clientConfigurationBuilder -> clientConfigurationBuilder.readFrom(ReadFrom.REPLICA_PREFERRED);
+                    }
+
+                    这里的ReadFrom是配置Redis的读取策略, 是一个枚举, 包括下面选择:
+                        MASTER: 从主节点读
+                        MASTER_PREFERRED: 优先从master节点读取, master不可用才读取replica
+                        REPLICA: 从slave(replica)节点读取
+                        REPLICA_PREFERRED:优先从slave(replica)节点读取, 所有的slave都不可用才读取master
+                
+                访问controller进行验证：http://localhost:8080/get/num
+                    redis-cli -p 7001
+                        get num
+                        999
+                    这个的get/num其实就是 redis中的num值：999。
+                    此时查看Idea中的日志，大致意思为：选中了7002这个从节点执行读取操作。
+                访问controller进行验证：http://localhost:8080/set/num/666，返回success表示成功。
+                    此时查看Idea中的日志，大致意思为：选中了7003这个主节点执行写入操作。
+                将7003这个主节点停掉后重启，RedisTemplate是可以动态发现主从节点变更并切换的。
+                    停止redis7003这个节点后，主节点重新选举为7002。idea中会有日志信息打印。
+                    无需重启项目，重新访问以上两个controller，可以发现，读操作现在由7002这个新的主节点进行执行。写操作由7001或7003两个从节点的任意一个进行执行。
+
+            
     Redis分片集群
         
         
