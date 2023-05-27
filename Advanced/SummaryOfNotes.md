@@ -4802,8 +4802,139 @@
 
             
     Redis分片集群
-        
-        
+        搭建分片集群
+            主从和哨兵可以解决高可用，高并发读的问题，但是依然有两个问题需要解决：
+                海量数据存储问题
+                高并发写的问题
+                使用分片集群可以解决上述问题，分片集群特征：
+                    集群中有多个master，每个master保存不同数据。
+                    每个master都可以有多个slave节点。
+                    master之间通过ping监测彼此健康状态。
+                        之前是通过Sentinel哨兵进行监测，现在master之间互相监测，起到哨兵的效果。
+                    客户端请求可以访问集群的任意节点，最终都会被转发到正确节点上。
+                        具备了哨兵的所有机制，所以就不在需要哨兵机制了。
+            搭建步骤：
+                详见：lib/day7/Redis集群.md
+                
+        散列插槽
+            Redis会把每一个master节点映射到0~16383共16384个插槽(hash slot)上, 查看集群信息时就能看到
+            数据key不是与节点绑定, 而是与插槽绑定. redis会根据key的有效部分计算插槽值, 分两种情况:
+                key中包含"{}", 且"{}"中至少包含1个字符, "{}"中的部分是有效部分
+                key中不包含"{}", 整个key就是有效部分
+                例如: key是num, 那么就根据num计算, 如果是{lee}num, 则根据lee计算. 
+                计算方式是利用CRC16算法得到一个hash值, 然后对16384取余, 得到的结果就是slot值.
+                因为每个节点有固定的一部分solt值，那么就可以通过slot值知道存在于哪个节点上。
+            Redis为何跟插槽绑定而不是根节点绑定呢？
+                因为Redis的主节点是可能会出现宕机的情况的，或者是集群扩容增加的节点，或者是集群伸缩删除的节点，都有可能使节点宕机。
+                如果一个节点宕机了数据就会跟着丢失。但如果跟插槽绑定后，如果节点宕机时，就可以将节点对应的插槽转移到活着的节点。
+                集群扩容时，也可以将插槽转移，这样数据跟着插槽走，就可以永远找到数据所在的位置。
+            思考：
+                如何将同一类数据固定的保存在同一个Redis实例（节点）？
+                    这一类数据使用相同的有效部分，例如key都以{typeId}为前缀
+                    语法：set {typeId}num 111
+
+        集群伸缩
+            集群伸缩：可以动态的增加或者删除节点。
+            添加一个节点到集群：
+                redis-cli --cluster 命令提供了很多操作集群的命令，可以通过 help 查看：
+                    create：创建节点
+                    add-node：添加节点
+                需求：
+                    启动一个新的Redis实例，端口为7004：
+                        cd /tmp
+                        mkdir 7004
+                        cp redis.conf 7004
+                            拷贝redis.conf文件到7004目录下
+                        sed -i s/6379/7004/g 7004/redis.conf
+                            修改7004/redis.conf文件中的所有6379的端口为7004
+                        redis-server 7004/redis.conf
+                        ps -ef | grep redis
+                            查看7004实例是否成功创建
+                        redis-cli --cluster add-node 172.16.168.130:7004 172.16.168.130:7001
+                            通过172.16.168.130:7001这个节点找到集群，并添加172.16.168.130:7004节点到集群中。
+                        redis-cli -p 7001 cluster nodes
+                            查看7004是否成功添加到集群中了
+                    添加7004到之前的集群，并作为一个master节点：
+                        命令同上
+                    给7004节点分配插槽，使得num这个key存储在7004实例：
+                        redis-cli --cluster reshard 172.16.168.130:7001
+                            重新分片，通过7001节点与集群建立联系然后进行插槽分配
+                        How many slots du you want to move(from 1 to 16384)? 3000
+                            你想移动多少插槽数量？
+                            解释：这里选择3000，因为num在2765这个插槽上，在0和3000之间的一个数量。
+                        what is the receiving node ID? 7004的nodeID
+                            接收的节点ID是什么？
+                            解释：这里意思为 接受这些插槽的节点是哪个？（节点ID）
+                        Please enter all the source node IDs.
+                            Type "all" to use all the nodes as source nodes for the hash slots.
+                            Type "done" once you entered all the source node IDs.
+                            Source node #1: 7001的nodeID
+                            Source node #2: done
+                            解读：
+                                输入all就将插槽分配到所有节点上
+                                输入done则所有的源节点ID的输入。
+                            解释：这里意思为：选择哪个节点作为数据源拷贝到7004？
+                                2765插槽在7001节点上，所以要选择7001这个节点作为数据源。
+                        Do you want to proceed with the proposed reshard plan(yes/no)? yes
+                            是否想要继续执行重新分配的打算？
+                        redis-cli -p 7001 --cluster nodes
+                            查看7004的的插槽是否重新成功分配到3000
+                            30641df6eb77eb711953dbee25f27d3ac1cb82b3 172.16.168.130:7004@17004 master - 0 1685197160751 7 connected 0-2999
+                            可以看到日志信息中的7004之后有 connected 0-2999 表示分配成功。
+
+        故障转移
+            分片集群虽然没有哨兵，但是也具备故障转移的功能。
+            当集群中有一个master宕机会发生什么呢？
+                之前7004的节点已经删除了，删除方式通过 redis-cli --cluster help 执行查看命令帮助文档吧。
+                
+                watch redis-cli -p 7001 cluster nodes
+                    监控集群状态：
+                redis-cli -p 7002 shutdown
+                    停止7002节点
+                返回监控的命令中可以实时看到7002这个节点 从 connected 变为 disconnected状态。并且主节点分配到了8001这个节点上。
+                redis-server 7002/redis.conf
+                    再次启动7002节点
+                返回监控的命令中可以查看状态，7002 以从节点（slave）的身份再次成功连接。
+                全程都是自动故障转移。
+            手动故障转移：
+                首先要有一个新的从节点。
+                利用cluster failover命令可以手动让集群中的某个master宕机，切换到执行cluster failover命令的这个slave节点上，实现无感知的数据迁移。
+                其流程如下：
+                    手动的failover支持三种不同的模式：
+                        缺省：默认的流程，首先master拒绝任何请求，master返回offset给slave，等待数据offset与master一致，开始故障转移，原来slave标记自己为master，向其他节点广播故障转移的结果。
+                        force：省略了对offset的一致性校验。（谨慎使用）
+                        takeover：直接进行向其他节点广播。忽略了数据一致性，master状态和其他master意见等步骤。（谨慎使用）
+                需求：在7002这个slave节点上执行手动故障转移，重新夺回master地位。
+                    步骤如下：
+                        利用redis-cli连接7002这个节点：
+                            redis-cli -p 7002
+                        执行cluster failover命令：
+                            CLUSTER FAILVOER
+                        也可以一步到位，等同于以上的两步骤：
+                            redis-cli -p 7002 CLUSTER FAILVOER
+
+        RedisTemplate访问分片集群
+            RedisTemplate底层同样基于lettuce实现了分片集群的支持，而且使用的步骤与哨兵模式基本一致：
+                引入redis的starter依赖
+                    参见：RedisTemplate的哨兵模式
+                配置分片集群地址（application.yml)
+                    与哨兵模式相比，其中只有分片集群的配置方式略有差异，差异如下：
+                        spring:
+                            redis:
+                                cluster:
+                                    nodes:
+                                        - 172.16.168.130:7001
+                                        - 172.16.168.130:7002
+                                        - 172.16.168.130:7003
+                                        - 172.16.168.130:8001
+                                        - 172.16.168.130:8002
+                                        - 172.16.168.130:8003
+                配置读写分离
+                    参见：RedisTemplate的哨兵模式
+            访问：http://localhost:8080/get/num
+                返回123，查看控制台是从8003这个从节点上读的，说明是自动支持读写分离的，主节点只管写，从节点只管读。
+            访问：http://localhost:8080/set/num/123
+                返回success，查看控制台从7001这个主节点上写的。而不是在从节点上写的。至此验证完毕。
 
 
 
@@ -4814,8 +4945,9 @@
 
 
 
-
-
-
+拾.多级缓存
+    
+    ... here ...
+    
 
 
