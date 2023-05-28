@@ -4984,8 +4984,27 @@
                 Caffeine的Github地址：https://github.com/ben-manes/caffeine
                 Caffeine示例：
                     通过item-service项目中的单元测试来学习Caffeine的使用：(CaffeineTest.testBasicOps)
-                        
-                        
+                        /**
+                         * 基本用法测试
+                         */
+                        @Test
+                        void testBasicOps() {
+                            Cache<Object, Object> cache = Caffeine.newBuilder().build();
+                            // 存数据
+                            cache.put("girlfriend","leechenhui");
+                            // 取数据
+                            String girlfriend = (String) cache.getIfPresent("girlfriend");
+                            System.out.println("girlfriend = " + girlfriend);
+                            // 取数据，如果未命中，则执行第二个参数查询数据库
+                            Object defaultGF = cache.get("defaultGF", key -> {
+                                // 根据key取数据库查询数据。
+                                return "liuyan";
+                            });
+                            // 小技巧记录：soutv ==> System.out.println("defaultGF = " + defaultGF);
+                            System.out.println("defaultGF = " + defaultGF);
+                        }
+                Caffeine提供了三种缓存驱逐策略：
+                    ... here ...
             
         实现进程缓存：
         
