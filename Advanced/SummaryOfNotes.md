@@ -4969,8 +4969,23 @@
             案例导入说明.md 中的 nginx目录位于：/usr/local/nginx
             
         初识Caffeine：
-            ... here ...
-            
+            本地进程缓存：
+                缓存在日常开发中启着至关重要的作用, 由于是存储在内存中, 数据的读取速度是非常快的, 能大量减少对数据库的访问, 减少数据库的压力, 我们把缓存分为两类：
+                    分布式缓存，例如Redis：
+                        优点：存储容量更大，可靠性更好，可以在集群之间共享
+                        缺点：从Tomcat像Redis的请求访问缓存有网络开销
+                        场景：缓存数据量较大，可靠性要求较高，需要在集群间共享
+                    进程本地缓存，例如HashMap，GuavaCache：
+                        优点：读取本地内存，没有网络开销，速度更快。
+                        缺点：存储容量有限，可靠性较低，无法共享
+                        场景：性能要求较高，缓存数据量较小
+                实际上进程本地缓存是作为Redis分布式缓存的一种补充使用的，企业开发中一定是两者结合使用的。
+                Caffeine是一个基于java8开发的，提供了近乎最佳命中率的高性能的本地缓存库. 目前spring内部的缓存使用的就是Caffeine.
+                Caffeine的Github地址：https://github.com/ben-manes/caffeine
+                Caffeine示例：
+                    通过item-service项目中的单元测试来学习Caffeine的使用：(CaffeineTest.testBasicOps)
+                        
+                        
             
         实现进程缓存：
         

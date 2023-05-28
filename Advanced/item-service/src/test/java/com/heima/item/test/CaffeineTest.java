@@ -8,31 +8,29 @@ import java.time.Duration;
 
 public class CaffeineTest {
 
-    /*
-      基本用法测试
+    /**
+     * 基本用法测试
      */
     @Test
     void testBasicOps() {
-        // 创建缓存对象
-        Cache<String, String> cache = Caffeine.newBuilder().build();
-
+        Cache<Object, Object> cache = Caffeine.newBuilder().build();
         // 存数据
-        cache.put("gf", "迪丽热巴");
-
-        // 取数据，不存在则返回null
-        String gf = cache.getIfPresent("gf");
-        System.out.println("gf = " + gf);
-
-        // 取数据，不存在则去数据库查询
-        String defaultGF = cache.get("defaultGF", key -> {
-            // 这里可以去数据库根据 key查询value
-            return "柳岩";
+        cache.put("girlfriend","leechenhui");
+        // 取数据
+        String girlfriend = (String) cache.getIfPresent("girlfriend");
+        System.out.println("girlfriend = " + girlfriend);
+        // 取数据，如果未命中，则执行第二个参数查询数据库
+        Object defaultGF = cache.get("defaultGF", key -> {
+            // 根据key取数据库查询数据。
+            return "liuyan";
         });
+        // 小技巧记录：soutv ==> System.out.println("defaultGF = " + defaultGF);
         System.out.println("defaultGF = " + defaultGF);
     }
 
-    /*
-     基于大小设置驱逐策略：
+    /**
+     * 基于大小设置驱逐策略：
+     * @throws InterruptedException
      */
     @Test
     void testEvictByNum() throws InterruptedException {
@@ -53,8 +51,9 @@ public class CaffeineTest {
         System.out.println("gf3: " + cache.getIfPresent("gf3"));
     }
 
-    /*
-     基于时间设置驱逐策略：
+    /**
+     * 基于时间设置驱逐策略：
+     * @throws InterruptedException
      */
     @Test
     void testEvictByTime() throws InterruptedException {
