@@ -4965,11 +4965,13 @@
     
     JVM进程缓存：
         导入商品案例：
-            参考：lib/day8/案例导入说明.md
+            参考：lib/day8/案例导入说明.md，所属项目：item-service
+            案例导入说明.md 中的 nginx目录位于：/usr/local/nginx
             
-        
         初识Caffeine：
-        
+            ... here ...
+            
+            
         实现进程缓存：
         
         
