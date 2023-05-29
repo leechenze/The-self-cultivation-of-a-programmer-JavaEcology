@@ -1,6 +1,7 @@
 package com.heima.item.web;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.github.benmanes.caffeine.cache.Cache;
 import com.heima.item.pojo.Item;
 import com.heima.item.pojo.ItemStock;
 import com.heima.item.pojo.PageDTO;
@@ -20,6 +21,14 @@ public class ItemController {
     private IItemService itemService;
     @Autowired
     private IItemStockService stockService;
+
+    @Autowired
+    private Cache<Long, Item> itemCache;
+
+    @Autowired
+    private Cache<Long, ItemStock> stockCache;
+
+
 
     @GetMapping("list")
     public PageDTO queryItemPage(
@@ -63,13 +72,16 @@ public class ItemController {
 
     @GetMapping("/{id}")
     public Item findById(@PathVariable("id") Long id){
-        return itemService.query()
-                .ne("status", 3).eq("id", id)
-                .one();
+        // 给根据ID查询商品的业务添加缓存，缓存未命中时查询数据库
+        return itemCache.get(id, key -> itemService.query()
+                .ne("status", 3).eq("id", key)
+                .one()
+        );
     }
 
     @GetMapping("/stock/{id}")
     public ItemStock findStockById(@PathVariable("id") Long id){
-        return stockService.getById(id);
+        // 给根据ID查询商品库存的业务添加缓存，缓存未命中时查询数据库
+        return stockCache.get(id, key -> stockService.getById(key));
     }
 }

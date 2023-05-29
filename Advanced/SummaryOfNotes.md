@@ -5004,17 +5004,109 @@
                             System.out.println("defaultGF = " + defaultGF);
                         }
                 Caffeine提供了三种缓存驱逐策略：
-                    ... here ...
-            
+                    基于容量：设置缓存的数量上限
+                        @Test
+                        void testEvictByNum() throws InterruptedException {
+                            // 创建缓存对象
+                            Cache<String, String> cache = Caffeine.newBuilder()
+                                    // 设置缓存大小上限为 1
+                                    .maximumSize(1)
+                                    .build();
+                            // 存数据
+                            cache.put("gf1", "柳岩");
+                            cache.put("gf2", "范冰冰");
+                            cache.put("gf3", "迪丽热巴");
+                            // 延迟10ms，给清理线程一点时间
+                            Thread.sleep(10L);
+                            // 获取数据
+                            System.out.println("gf1: " + cache.getIfPresent("gf1"));
+                            System.out.println("gf2: " + cache.getIfPresent("gf2"));
+                            System.out.println("gf3: " + cache.getIfPresent("gf3"));
+                        }
+                    基于时间：设置缓存的有效时间
+                        @Test
+                        void testEvictByTime() throws InterruptedException {
+                            // 创建缓存对象
+                            Cache<String, String> cache = Caffeine.newBuilder()
+                                    .expireAfterWrite(Duration.ofSeconds(1)) // 设置缓存有效期为 10 秒
+                                    .build();
+                            // 存数据
+                            cache.put("gf", "柳岩");
+                            // 获取数据
+                            System.out.println("gf: " + cache.getIfPresent("gf"));
+                            // 休眠一会儿
+                            Thread.sleep(1200L);
+                            System.out.println("gf: " + cache.getIfPresent("gf"));
+                        }
+                    基于引用：设置缓存为软引用或弱引用, 利用GC来回收缓存数据。
+                        性能较差, 不建议使用
+                    在默认情况下，当一个缓存元素过期的时候，Caffeine不会自动立即的将其清理和驱逐，而是再一次读或写操作后，或者在空闲时间完成对失效数据的驱逐。
+
         实现进程缓存：
-        
-        
-        
-        
-        
+            需求：实现商品查询的本地进程缓存
+                利用Caffeine实现以下需求：
+                    给根据ID查询商品的业务添加缓存，缓存未命中时查询数据库
+                    给根据ID查询商品库存的业务添加缓存，缓存未命中时查询数据库
+                    缓存初始化大小为100
+                    缓存上限为10000
+                操作步骤：
+                    编写Caffeine的配置类：
+                        @Configuration
+                        public class CaffeineConfig {
+                            @Bean
+                            public Cache<Long, Item> itemCache() {
+                                // 缓存初始化大小为100，缓存上限为10000
+                                return Caffeine.newBuilder().initialCapacity(100).maximumSize(10000).build();
+                            }
+                            @Bean
+                            public Cache<Long, ItemStock> stockCache() {
+                                // 缓存初始化大小为100，缓存上限为10000
+                                return Caffeine.newBuilder().initialCapacity(100).maximumSize(10000).build();
+                            }
+                        }
+                    在controller中对查询业务进行JVM进程缓存处理。
+                        @Autowired
+                        private Cache<Long, Item> itemCache;
+                        @Autowired
+                        private Cache<Long, ItemStock> stockCache;
+                        
+                        @GetMapping("/{id}")
+                        public Item findById(@PathVariable("id") Long id){
+                            // 给根据ID查询商品的业务添加缓存，缓存未命中时查询数据库
+                            return itemCache.get(id, key -> itemService.query()
+                                    .ne("status", 3).eq("id", key)
+                                    .one()
+                            );
+                        }
+                    
+                        @GetMapping("/stock/{id}")
+                        public ItemStock findStockById(@PathVariable("id") Long id){
+                            // 给根据ID查询商品库存的业务添加缓存，缓存未命中时查询数据库
+                            return stockCache.get(id, key -> stockService.getById(key));
+                        }
+                    
+                访问验证：
+                    访问 http://localhost:8081/item/10001：
+                        第一次会打印如下信息（数据库sql查询的信息）
+                            ==> Preparing: SELECT id,name,title,price,image,category,brand,spec,status,create_time,update_time FROM tb_item WHERE (status <> ? AND id = ?)
+                            ==> Parameters: 3(Integer), 10001(Long)
+                            ==> Total: 1
+                        第二次再次刷新查询后直接读取缓存，以上的信息不会打印，证明第二次是从缓存中读取的数据，而非从数据库读取的。
+                    访问 http://localhost:8081/item/stock/10001：
+                        第一次会打印如下信息（数据库sql查询的信息）
+                            ==> Preparing: SELECT id,name,title,price,image,category,brand,spec,status,create_time,update_time FROM tb_item WHERE (status <> ? AND id = ?)
+                            ==> Parameters: 3(Integer), 10001(Long)
+                            ==> Total: 1
+                        第二次再次刷新查询后直接读取缓存，以上的信息不会打印，证明第二次是从缓存中读取的数据，而非从数据库读取的。
+                    
         
     Lua：
-    
+        上个章节实现了Nginx方向代理到Nginx集群处理本地缓存和Jvm的进程缓存。
+        这个章节由于要在Nginx集群中使用本地缓存，对Redis 或 Tomcat（Jvm进程缓存）缓存的查询。
+        
+        
+        
+        
     多级缓存：
     
     缓存同步策略：
