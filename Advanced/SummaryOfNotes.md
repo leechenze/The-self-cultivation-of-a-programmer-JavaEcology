@@ -5103,12 +5103,122 @@
     Lua：
         上个章节实现了Nginx方向代理到Nginx集群处理本地缓存和Jvm的进程缓存。
         这个章节由于要在Nginx集群中使用本地缓存，对Redis 或 Tomcat（Jvm进程缓存）缓存的查询。
+        所以要在Nginx中做业务编码，而在Nginx中做业务逻辑就需要一门新的语言：Lua
         
+        初识Lua
+            Lua是一中轻量小巧的脚本语言，用C语言编写并以源代码形式开放，其设计的目的是为了嵌入应用程序中。
+            C语言和Lua是可以相互之间做引用的，从而为应用提供灵活的扩展和定制功能。官网：https://www.lua.org/
+            注意：因为CentOS环境默认有Lua环境，所以之后步骤全程在CentOS9中操作：
+                在 /learn/lua 目录下新建hello.lua文件：
+                    touch hello.lua
+                添加内容：
+                    print("hello world")
+                    或：
+                    vim hello.lua
+                运行：
+                    lua hello.lua
         
-        
-        
+            数据类型：
+                nil：用于表示一个无效值（在条件表达式中相当于flase）
+                boolean：同JavaScript
+                number：表示双精度类型的实浮点数，小数，整数都用number表示。
+                string：同JavaScript
+                function：由C或者Lua编写的函数
+                table：Lua中的表（table）其实是一个关联数组，数组的索引可以是数字，字符串或表类型，所以可以看做table既是array也是map。
+                补充：
+                    可以在命令行直接输入 lua，即可进入lua编辑模式。
+                    可以利用type函数测试给定变量的类型：
+                        pring(type('hello world'))
+                        string
+                        pring(type(10.4*3))
+                        number
+            变量：
+                lua声明变量的时候，并不需要指定数据类型：
+                    声明字符串：
+                        local str = 'hello'
+                    声明数字：
+                        local num = 123
+                    声明布尔类型：
+                        local flag = true
+                    声明 table 作为 arr：
+                        local arr = {'java', 'python', 'lua'}
+                    声明 table 作为 map：
+                        local map = {name='jack', age=20}
+                补充：
+                    local表示局部变量声明，没有local表示全局变量声明。
+                    访问数组：print(arr[1])
+                    注意：数组下标是从1开始计的。
+                    访问Map：print(map['name'])
+                    访问Map：print(map.name)
+                    字符串拼接：
+                        local str = 'hello' .. 'world'
+                        print(str)
+                        helloworld
+            循环：
+                table可以利用for循环来遍历：
+                    遍历数组：
+                        -- 声明数组
+                        arr = {'java', 'python', 'lua'}
+                        -- 遍历数组
+                        for ind,val in ipairs(arr) do
+                            print(ind,val)
+                        end
+                        解读：
+                            -- 是lua中的语法注释。
+                            ind 和 val 是变量名可以随便起，只要不是关键字即可。
+                            ipairs()是针对数组的解析函数。
+                            do等同{，end等同}。
+                    遍历Map：
+                        -- 声明Map
+                        map = {name='jack', age=20}
+                        -- 遍历Map
+                        for key,val in pairs(map) do
+                            print(key,val)
+                        end
+                        解读：
+                            其他同上，如果是Map的话第一个就是key，而不是index了。
+                            pairs()是对map的解析函数。
+            函数：
+                定义函数的语法：
+                    function foo(argument1, argument2, argument3) 
+                        -- 函数体
+                        return 'value'
+                    end
+                示例：
+                    function foo(arr)
+                        for ind,val in ipairs(arr) do
+                            print(ind,val)
+                        end
+                    end
+                注意：
+                    function的起使位不能有 do，也就是没有 { 这前半个花括号
+            条件控制：
+                关键字解释：
+                    if：不多说了
+                    else：不多说了
+                    then：类似do，用以表示前半个花口号 "{"
+                    end：用以表示后半个花括号 "}"
+                    语法结构：
+                        if(布尔表达式)
+                        then
+                            -- 布尔表达式为 ture 时执行该语句块
+                        else
+                            -- 布尔表达式为 false 时执行该语句块
+                        end
+                    示例：
+                        
+                逻辑运算符：
+                    and：与
+                    or：或
+                    not：非
+                    
     多级缓存：
-    
+        ... here ...
+        
+        
+        
+        
+        
     缓存同步策略：
                 
     
