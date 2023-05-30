@@ -4966,7 +4966,8 @@
     JVM进程缓存：
         导入商品案例：
             参考：lib/day8/案例导入说明.md，所属项目：item-service
-            案例导入说明.md 中的 nginx目录位于：/usr/local/nginx
+            案例导入说明.md 中的 nginx目录位于MacOS的：/usr/local/nginx
+            
             
         初识Caffeine：
             本地进程缓存：
@@ -5213,7 +5214,83 @@
                     not：非
                     
     多级缓存：
-        ... here ...
+        OpenResty：
+            OpenResty是基于Nginx的高性能Web平台。用于方便的搭建能够处理超高并发，扩展性极高的动态Web应用，Web服务和动态网关
+                特点：
+                    具备Nginx的完整功能
+                    基于Lua语言进行扩展，集成了大量精良的Lua库，第三方模块。
+                    允许使用Lua自定义业务逻辑，自定义库。
+                官网地址：https://openresty.org/cn/
+                安装流程见：lib/day8/安装OpenResty.md
+                    注意这个流程中将 CentoS 的nginx环境变量目录配到了openResty下的nginx中了。
+                实现案例：
+                    商品查询页的查询案例：
+                        注意本机（MacOS）Nginx的服务是用于转发用的。
+                            nginx 目录位于 /usr/local/nginx
+                        远程（CentOS）Nginx的集群是用于业务开发的。
+                            nginx 目录位于 /usr/local/openresty/nginx
+                        商品详情页面目前是假数据。在控制台可以看到查询商品信息的请求：
+                            http://localhost/api/item/10001
+                            这个请求最终会被本机MacOS的Nginx方向代理到 远程的CentOS的 OpenResty nginx 的业务集群中去。
+                                # OpenResty(Nginx)的业务集群,用于Nginx本地缓存,Redis缓存,Tomcat查询.
+                                upstream nginx-cluster{
+                                    server 172.16.168.130:8081;
+                                }
+                                server {
+                                    listen       80;
+                                    server_name  localhost;
+                            
+                                    location /api {
+                                        proxy_pass http://nginx-cluster;
+                                    }
+                            
+                                    location / {
+                                        root   html;
+                                        index  index.html index.htm;
+                                    }
+                            
+                                    error_page   500 502 503 504  /50x.html;
+                                    location = /50x.html {
+                                        root   html;
+                                    }
+                                }
+                    需求：在虚拟机OpenResty中接受这个请求，并返回一段商品的假数据：
+                        修改nginx.conf文件
+                            在nginx.conf的http下面，添加对OpenResty的Lua模块加载：
+                                #lua 模块
+                                lua_package_path "/usr/local/openresty/lualib/?.lua;;";
+                                #c模块     
+                                lua_package_cpath "/usr/local/openresty/lualib/?.so;;";  
+                            在nginx.conf的server下面，添加对/api/itme这个路径监听：
+                                # 监听 /api/item 这个地址
+                                location /api/item {
+                                    # 响应类型.
+                                    default_type application/json;
+                                    # 响应结果由 /lua/item.lua 这个文件决定. 注意 /lua/item.lua 这个路径会从nginx目录下找，所以取新建这个文件（nginx/lua/item.lua）
+                                    content_by_lua_file lua/item.lua;
+                                }
+                        编写item.lua文件
+                            item.lua 的内容如下：
+                                ngx.say('{"id":10001,"name":"SALSA AIR","title":"RIMOWA 30寸托运箱拉杆箱 SALSA AIR系列果绿色 820.70.36.4","price":10000,"image":"https://m.360buyimg.com/mobilecms/s720x720_jfs/t6934/364/1195375010/84676/e9f2c55f/597ece38N0ddcbc77.jpg!q70.jpg.webp","category":"拉杆箱","brand":"RIMOWA","spec":"","status":1,"createTime":"2019-04-30T16:00:00.000+00:00","updateTime":"2019-04-30T16:00:00.000+00:00","stock":2999,"sold":31290}')
+                                注意：这里把 title 和 price 字段更改了，原来item.html中的假数据在（MacOS的Nginx的item.html中）。
+                            重新加载配置：
+                                nginx -s reload
+                            然后可以看到：
+                                price 和 title 这两个字段变更了。
+                                ... here ...
+                                
+                        
+                
+        请求参数处理：
+        
+        查询Tomcat：
+        
+        Redis缓存预热：
+        
+        查询Redis缓存：
+        
+        Nginx本地缓存：
+        
         
         
         
