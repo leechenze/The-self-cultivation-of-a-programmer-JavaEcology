@@ -5266,7 +5266,7 @@
                                 location /api/item {
                                     # 响应类型.
                                     default_type application/json;
-                                    # 响应结果由 /lua/item.lua 这个文件决定. 注意 /lua/item.lua 这个路径会从nginx目录下找，所以取新建这个文件（nginx/lua/item.lua）
+                                    # 响应结果由 /lua/item.lua 这个文件决定. 注意 /lua/item.lua 这个路径会从nginx目录下找，所以去新建这个文件（nginx/lua/item.lua）
                                     content_by_lua_file lua/item.lua;
                                 }
                         编写item.lua文件
@@ -5276,15 +5276,95 @@
                             重新加载配置：
                                 nginx -s reload
                             然后可以看到：
-                                price 和 title 这两个字段变更了。
-                                ... here ...
-                                
-                        
-                
+                                price（价格） 和 title（标题） 这两个字段变更了。
+
         请求参数处理：
-        
+            OpenResty提供了各种API用来获取不同类型的请求参数：
+                路径占位符：（/item/10001）
+                请求头：（id：10001）
+                Get请求参数：（?id=10001）
+                Post请求参数：（id=1001）
+                JSON参数：（{"id":1001}）
+            实现案例：
+                http://localhost/api/item/10001
+                在OpenResty中接收这个请求，并获取路径中的id信息，拼接到结果的json字符串中返回。
+                    在虚拟机的 /usr/local/openresty/nginx/lua/itme.lua 文件修改：
+                        -- 获取路径参数
+                        local id = ngx.var[1];
+                        -- 返回结果
+                        ngx.say('{"id":' .. id .. ',"name":"SALSA AIR","title":"RIMOWA 30寸托运箱拉杆箱 SALSA AIR系列果绿色 820.70.36.4","price":10000,"image":"https://m.360buyimg.com/mobilecms/s720x720_jfs/t6934/364/1195375010/84676/e9f2c55f/597ece38N0ddcbc77.jpg!q70.jpg.webp","category":"拉杆箱","brand":"RIMOWA","spec":"","status":1,"createTime":"2019-04-30T16:00:00.000+00:00","updateTime":"2019-04-30T16:00:00.000+00:00","stock":2999,"sold":31290}')
+                    在虚拟机的 /usr/local/openresty/nginx/conf/nginx.conf 文件修改：
+                        # 这里是路径占位符 ~ 表示RegExp正则匹配。
+                        location ~ /api/item/(\d+) {
+                            # 响应类型.
+                            default_type application/json;
+                            # 响应结果由 /lua/item.lua 这个文件决定. 注意 /lua/item.lua 这个路径会从nginx目录下找，所以取新建这个文件（nginx/lua/item.lua）
+                            content_by_lua_file lua/item.lua;
+                        }
+                    保存后重启 nginx -s reload
+                    http://localhost/item.html?id=10003 可以看到返回的id字段是实时变更的了。
+
         查询Tomcat：
-        
+            现在开始处理对Tomcat的请求。来获取Tomcat的进程缓存（JVM进程缓存）。
+            由于虚拟机和本机的地址不同。这里要在虚拟机访问本机需要的到本机IP进行访问
+            注意：CentOS地址为 172.16.168.130，本机地址为：172.16.168.1
+            这是铁律：ip前三位是相同的，本机的IP地址最后以为永远是1。虚拟机：xxx.xxx.xxx.xxx，本机：xxx.xxx.xxx.1
+            实现案例：
+                获取请求中的商品id信息，根据ID向Tomcat查询商品信息：
+                    封装Http请求函数：（/usr/local/openresty/lualib/common.lua）
+                        -- 封装函数，发送http请求，并解析响应
+                        local function read_http(path, params)
+                            local resp = ngx.location.capture(path,{
+                                method = ngx.HTTP_GET,
+                                args = params,
+                            })
+                            
+                            if not resp then
+                                -- 记录错误信息，返回404
+                                ngx.log(ngx.ERR, "http not found, path: ", path , ", args: ", args)
+                                ngx.exit(404)
+                            end
+                            return resp.body
+                        end
+                        -- 将方法导出
+                        local _M = {  
+                            read_http = read_http
+                        }
+                        return _M
+                    拦截发起的请求,反向代理到本机的目标服务器：（/usr/local/openresty/nginx/conf/nginx.conf）
+                        # 拦截发起的请求,反向代理到本机的目标服务器
+                        location /item {
+                            proxy_pass http://172.16.168.1:8081;
+                        }
+                    根据ID向Tomcat服务发请求，查询商品信息：（/usr/local/openresty/nginx/lua/item.lua）
+                        -- 导入common.lua函数库,这里直接是在 lualib 目录下, 就可以直接写lualib目录下的所有文件名.
+                        local common = require('common');
+                        local read_http = common.read_http;
+                        -- 获取路径参数
+                        local id = ngx.var[1];
+                        -- 查询商品信息
+                        local itemJson = read_http("/item/" .. id, nil);
+                        -- 查询库存信息
+                        local itemStockJson = read_http("/item/stock/" .. id, nil);
+                        -- 返回结果
+                        ngx.say(itemJson);
+                    根据ID向Tomcat服务发请求，查询库存信息：（/usr/local/openresty/nginx/lua/item.lua）
+                        同上
+                        此时访问 http://localhost/item.html?id=10003 id在5之内随便测试，可以看到是从 本机 172.16.168.1:8081 的 item-service 中获取的真实数据。
+                    组装商品信息，库存信息，序列化为JSON格式并返回：（/usr/local/openresty/nginx/lua/item.lua）
+                        -- JSON转换为Lua的Table格式
+                        local item = cjson.decode(itemJson)
+                        local itemStock = cjson.decode(itemStockJson)
+                        -- 组合数据
+                        item.stock = itemStock.stock
+                        item.sold = itemStock.sold
+                        -- 把Item序列化为JSON返回
+                        ngx.say(cjson.encode(item));
+                        此时再次访问 http://localhost/item.html?id=10003 可以看到 stock 和 sold 字段都有了返回值。
+                Tomcat的集群配置和负载均衡配置：    
+                    ... here ...    
+
+
         Redis缓存预热：
         
         查询Redis缓存：
