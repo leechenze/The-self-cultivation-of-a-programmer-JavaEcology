@@ -5362,11 +5362,33 @@
                         ngx.say(cjson.encode(item));
                         此时再次访问 http://localhost/item.html?id=10003 可以看到 stock 和 sold 字段都有了返回值。
                 Tomcat的集群配置和负载均衡配置：    
-                    ... here ...    
-
-
+                    在openResty中对nginx进行集群配置：（/usr/local/openresty/nginx/conf/nginx.conf）
+                        # tomcat集群, nginx会自动做负载均衡, 默认是轮询策略.
+                        # hash $request_uri 解释: $request_uri就是请求路径, 是一种负载均衡（默认轮询机制不变）算法, 即:只要请求路径没有变, 那么它就保证一个请求永远访问同一台tomcat服务器.
+                        # 为什么这样做, 因为tomcat服务之间的进程缓存是无法共享的. 所以一个请求访问同一台tomcat服务器用来保证缓存生效.
+                        # 所以如果没有这个$request_uri配置, 同一个请求对多台tomcat服务器做请求,那么每台tomcat服务器都要对这个请求进行缓存,很没必要,效率极差.
+                        # 保证一个请求永远对应一台tomcat服务器, 这就是 hash $request_uri; 的作用.
+                        upstream tomcat-cluster {
+                            hash $request_uri;
+                            server 172.16.168.1:8081;
+                            server 172.16.168.1:8082;
+                        }
+                        
+                        # 这里从原地址改为集群的地址，原地址配置：http://172.16.168.1:8081;
+                        location /item {
+                            proxy_pass http://tomcat-cluster;
+                        }
+                    在item-service服务启动8082端口，这里作用的是第二台tomcat服务：
+                        选择 Edit Configurations...
+                        将ItemApplication复制一份为ItemApplication2
+                        修改配置：VM Options：-Dserver.port=8082  ==>  Apply  ==>  OK
+                    测试：
+                        http://localhost/item.html?id=10001
+                        结果负载到了8082这台服务器上，清空Idea日志后，再刷新十次，8081也不会有日志，他永远不会再负载到8081上了，这就是 hash $request_uri 的作用。
+                        当然8082也不会再有日志了，因为做过进程缓存了。然后切换id再次访问重复测试，因为默认轮询的机制，也同样必然会在两个服务之间轮询访问。多次验证没有问题。
+                    
         Redis缓存预热：
-        
+            ... here ...
         查询Redis缓存：
         
         Nginx本地缓存：
