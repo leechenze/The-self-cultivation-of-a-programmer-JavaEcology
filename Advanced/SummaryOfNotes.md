@@ -5388,9 +5388,78 @@
                         当然8082也不会再有日志了，因为做过进程缓存了。然后切换id再次访问重复测试，因为默认轮询的机制，也同样必然会在两个服务之间轮询访问。多次验证没有问题。
                     
         Redis缓存预热：
-            ... here ...
+            按着最初多级缓存的设想，请求到达OpenResty之后不能直接查询Tomcat，应该优先查询Redis，在Redis缓存未命中时，再查询Tomcat。
+            所以这个章节就要加入Redis缓存的相关功能了。但是Redis缓存会面临一个问题，即：冷启动，缓存预热。
+            冷启动：服务刚刚启动时，Redis中并没有缓存，如果所有商品数据都在第一次查询时添加缓存，可能会给数据库带来较大压力。
+            解决方案：缓存预热。
+            缓存预热：在实际开发中，我们可以利用大数据统计用户访问的热点数据（常用数据），在项目启动时将这些热点数据提前查询并保存到Redis中。
+            注：我们数据较少，可以在启动时将所有数据都放入缓存中。
+            操作步骤：
+                在虚拟机用Docker安装Redis（之前是在CentOS系统直接安装的Redis，这里使用docker安装）
+                    docker run --name myredis -p 6379:6379 --network host -d redis redis-server --appendonly yes
+                    注意：这里如果无法在本机Mac上连接到虚拟机中的docker服务（首先保证IP是通的），就加入--network host这个参数。
+                在itme-service服务中引入Redis依赖
+                    <dependency>
+                        <groupId>org.springframework.boot</groupId>
+                        <artifactId>spring-boot-starter-data-redis</artifactId>
+                    </dependency>
+                配置Redis地址
+                    spring:
+                        redis:
+                            host: 172.16.168.130
+                编写初始化缓存的配置类：
+                    @Configuration
+                    public class RedisHandler implements InitializingBean {
+                    
+                        @Autowired
+                        private StringRedisTemplate redisTemplate;
+                    
+                        @Autowired
+                        private IItemService iItemService;
+                        @Autowired
+                        private IItemStockService iItemStockService;
+                    
+                        // 静态常量工具，用以序列化和反序列化Json
+                        private static final ObjectMapper MAPPER = new ObjectMapper();
+                    
+                        /**
+                         * InitializingBean.afterPropertiesSet
+                         * 这个Bean的afterPropertiesSet方法会在 bean（RedisHandler）创建完，且@Autowired注入成功之后执行。
+                         * 那么它就可以在项目启动后就执行，这样来实现缓存预热预存。
+                         * @throws Exception
+                         */
+                        @Override
+                        public void afterPropertiesSet() throws Exception {
+                            /**
+                             * 初始化缓存
+                             */
+                            // 1.1查询商品信息
+                            List<Item> itemList = iItemService.list();
+                            // 1.2放入缓存
+                            for (Item item : itemList) {
+                                // item序列化为JSON
+                                String itemJson = MAPPER.writeValueAsString(item);
+                                // 存入Redis，一般我们不能直接存ID，因为有冲突的可能，所以这里加一个 item:id: 的前缀。
+                                redisTemplate.opsForValue().set("item:id:" + item.getId(), itemJson);
+                            }
+                    
+                            // 2.1查询库存信息
+                            List<ItemStock> itemStockList = iItemStockService.list();
+                            // 2.2放入缓存，步骤同上。
+                            for (ItemStock itemStock : itemStockList) {
+                                String itemStockJson = MAPPER.writeValueAsString(itemStock);
+                                redisTemplate.opsForValue().set("item:stock:id:" + itemStock.getId(), itemStockJson);
+                            }
+                        }
+                    }
+
         查询Redis缓存：
-        
+            ... here ...
+            
+            
+            
+            
+            
         Nginx本地缓存：
         
         

@@ -8,6 +8,8 @@ spring:
     username: root
     password: lcz19930316
     driver-class-name: com.mysql.jdbc.Driver
+  redis:
+    host: 172.16.168.130
 mybatis-plus:
   type-aliases-package: com.heima.item.pojo
   configuration:
