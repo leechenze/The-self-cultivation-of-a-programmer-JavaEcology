@@ -5548,14 +5548,53 @@
                         因为（Redis缓存预热）章节已经把所有数据导入Redis缓存中，所以能够正常从Redis中读取数据。
 
         Nginx本地缓存：
-            ... here ...
-        
-        
-        
-        
-        
+            前面的所有小章节，已经实现了多级缓存的本地缓存集群搭建，优先查询Redis缓存，Tomcat进程缓存，和MacOS本机对的单机Nginx反向代理到CentOS的nginx缓存集群。
+            那么这个章节就要实现在这个Ngixn业务缓存集群中进行nginx的本地缓存了。
+            OpenResty为Nginx提供了shard dict（共享词典）的功能，可以在nginx的多个worker之间共享数据，实现缓存功能。
+                补充：在nginx中往往有一个master进程和多个worker进程，多个worker进程可以处理请求，它们的共享就等于是共享内存了，
+                    但是这也只是在nginx内部做共享，如果部署了多台openResty，那么它们之间是无法共享的。
+                需求：
+                    修改item.lua中的read_data函数，优先查询本地缓存，为命中时再查询Redis，Tomcat。
+                    查询Redis或Tomcat成功后，将数据写入本地缓存，并设置有效期。
+                    商品基本信息，有效期30分钟（1800）；商品库存信息配置有效期为1分钟（60）。
+                        因为商品基本信息是属于常年不怎么变化的数据，而库存相关的数据就会变化的频率比较高，所以有效期尽可能设置的短一点。
+                操作步骤：
+                    开启共享字典，在nginx.conf的http下添加配置：
+                        # 添加共享词典, 开启Nginx本地缓存, 缓存名称是item_cache, 缓存大小为150m, 因为CentOS系统配置时的内存不大所以这里给小点,150m足够了.
+                        lua_shared_dict item_cache 150m;
+                    在/usr/local/openresty/nginx/lua/item.lua中操作共享字典：
+                        -- 导入共享词典, 开启Nginx本地缓存, 缓存名称是item_cache, 缓存大小为150m.
+                        local item_cache = ngx.shared.item_cache;
+                        -- 封装查询函数:Redis缓存中是否有该条数据,如果没有则查询数据库.
+                        local function read_data(key, expire,path, params)
+                            -- 查询Nginx本地缓存
+                            local val = item_cache:get(key);
+                            if not val then
+                                ngx.log(ngx.ERR, "本地缓存查询失败, 尝试查询Redis, key", key);
+                                -- 查询Redis(openresty和redis同在虚拟机中,所以这里可以直接使用"127.0.0.1")
+                                val = read_redis("127.0.0.1", 6379, key);
+                                -- 判断查询结果
+                                if not val then
+                                    ngx.log(ngx.ERR, "Redis查询失败,尝试查询http, key",key);
+                                    -- redis查询失败,查询http(查询Tomcat)
+                                    val = read_http(path, params)
+                                end
+                            end
+                            -- 查询成功后先把数据写入Nginx本地缓存.参数为:键,值,有效期.
+                            -- 设置有效期可以在有效期内进行清除, 避免缓存越存越多, 如果expire为0时,那么将永久有效.
+                            item_cache:set(key,val,expire)
+                            return val;
+                        end
+                    测试：
+                        重启Nginx以更新配置，并监控日志，以方便查看在ngixn中编写的lua程序的日志打印信息和报错信息。
+                            tail -f logs /usr/local/openresty/nginx/logs/error.log
+                            访问：http://localhost/item.html?id=10001
+                            第一次访问ID为10001的商品时，日志会有Lua中输出的日志信息：本地缓存查询失败, 尝试查询Redis, keyitem:id:10003
+                            第二次访问id为10001的就已经存入nginx本地缓存了，就不会有走Redis缓存查询和http缓存查询（Tomcat缓存）了。
+                            那么这些已经缓存到Nginx本地的数据，即使是停止Redis服务，停止Tomcat服务，停止数据库MySql服务，都不会受到影响。
+                            支持验证完毕！
     缓存同步策略：
-                
+        ... here ...
     
     
 
