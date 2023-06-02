@@ -5454,14 +5454,101 @@
                     }
 
         查询Redis缓存：
-            ... here ...
-            
-            
-            
-            
-            
+            OpenResty的Redis模块：
+                OpenResty提供了操作Redis的模块，只需要引入该模块就能直接使用：
+                    引入Redis模块，并初始化Redis对象：（/usr/local/openresty/lualib/common.lua）
+                    封装函数，用来释放Redis连接，其实是放入连接池：
+                    封装函数，从Redis读取数据并返回：
+                        /usr/local/openresty/lualib/common.lua:
+                            -- 导入Redis模块(这里指的是resty/redis.lua) 
+                            local redis = require("resty.redis");
+                            -- 初始化Redis
+                            local red = redis:new();
+                            -- 设置超时时间
+                            red:set_timeouts(1000,1000,1000);
+    
+                            -- 关闭redis连接的工具方法，其实是放入连接池
+                            local function close_redis(red)
+                                local pool_max_idle_time = 10000 -- 连接的空闲时间，单位是毫秒
+                                local pool_size = 100 --连接池大小
+                                local ok, err = red:set_keepalive(pool_max_idle_time, pool_size)
+                                if not ok then
+                                    ngx.log(ngx.ERR, "放入redis连接池失败: ", err)
+                                end
+                            end
+    
+                            -- 查询redis的方法 ip和port是redis地址，key是查询的key
+                            local function read_redis(ip, port, key)
+                                -- 获取一个连接
+                                local ok, err = red:connect(ip, port)
+                                if not ok then
+                                    ngx.log(ngx.ERR, "连接redis失败 : ", err)
+                                    return nil
+                                end
+                                -- 查询redis
+                                local resp, err = red:get(key)
+                                -- 查询失败处理
+                                if not resp then
+                                    ngx.log(ngx.ERR, "查询Redis失败: ", err, ", key = " , key)
+                                end
+                                --得到的数据为空处理
+                                if resp == ngx.null then
+                                    resp = nil
+                                    ngx.log(ngx.ERR, "查询Redis数据为空, key = ", key)
+                                end
+                                close_redis(red)
+                                return resp
+                            end
+    
+                            -- 将方法导出
+                            local _M = {
+                                read_http = read_http,
+                                read_redis = read_redis
+                            }
+                            return _M
+
+                        /usr/local/openresty/nginx/lua:
+                            -- 导入cjson库, 即: lualib目录下的 cjson.so 这个包. 它是OpenResty提供的用来处理JSON的序列化和反序列化的.
+                            local cjson = require('cjson');
+                            -- 导入common.lua函数库,这里直接是在 lualib 目录下, 就可以直接写lualib目录下的所有文件名.
+                            local common = require('common');
+                            local read_http = common.read_http;
+                            local read_redis = common.read_redis;
+                            
+                            -- 封装查询函数:Redis缓存中是否有该条数据,如果没有则查询数据库.
+                            function read_data(key, path, params)
+                                -- 查询Redis(openresty和redis同在虚拟机中,所以这里可以直接使用"127.0.0.1")
+                                local resp = read_redis("127.0.0.1", 6379, key);
+                                -- 判断查询结果
+                                if not resp then
+                                    ngx.log("Redis查询失败,尝试查询http, key",key);
+                                    -- redis查询失败,查询http(查询Tomcat)
+                                    resp = read_http(path, params)
+                                end
+                                return resp;
+                            end
+                            
+                            -- 获取路径参数
+                            local id = ngx.var[1];
+                            -- 查询商品信息
+                            local itemJson = read_data("item:id:" .. id, "/item/" .. id, nil);
+                            -- 查询库存信息
+                            local itemStockJson = read_data("item:stock:id:" .. id, "/item/stock/" .. id, nil);
+                            -- JSON转换为Lua的Table格式
+                            local item = cjson.decode(itemJson)
+                            local itemStock = cjson.decode(itemStockJson)
+                            -- 组合数据
+                            item.stock = itemStock.stock
+                            item.sold = itemStock.sold
+                            -- 把Item序列化为JSON返回
+                            ngx.say(cjson.encode(item));
+                    测试：
+                        重启Nginx以更新配置，然后停掉Tomcat服务后，再次刷新 http://localhost/item.html?id=10003
+                        这个地址进行测试：如果能够正常返回数据则表示成功。
+                        因为（Redis缓存预热）章节已经把所有数据导入Redis缓存中，所以能够正常从Redis中读取数据。
+
         Nginx本地缓存：
-        
+            
         
         
         
