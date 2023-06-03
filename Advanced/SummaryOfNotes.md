@@ -5594,8 +5594,73 @@
                             那么这些已经缓存到Nginx本地的数据，即使是停止Redis服务，停止Tomcat服务，停止数据库MySql服务，都不会受到影响。
                             支持验证完毕！
     缓存同步策略：
-        ... here ...
-    
-    
+        常见方式有三种：
+            设置有效期: 给缓存设置有效期, 到期后自动删除. 再次查询时更新
+                优势：简单，方便。
+                缺点：时效性差，缓存过期之前可能不一致。
+                场景：更新频率低，时效性要求低的业务。
+            同步双写：在修改数据库的同时，直接修改缓存数据
+                优势：时效性强，缓存与数据库强一致。
+                缺点：有代码侵入，耦合度高。
+                场景：对一致性，时效性要求较高的缓存数据。
+            异步通知：修改数据库时发送事件通知，相关服务监听到通知后修改缓存数据。
+                优势：低耦合，可以同时通知多个缓存服务。
+                缺点：时效性一般，可能存在中间不一致的状态。
+                场景：时效性要求一般，有多个服务需要同步。
+                方案：
+                    基于MQ的异步通知
+                    基于Canal的异步通知（相比MQ的异步通知，代码侵入更低，耦合性更低）
+        Canal：
+            Canal是阿里巴巴旗下的一款开源项目，基于Java开发，基于数据库增量日志解析，提供增量数据订阅&消费，Github地址：https://github.com/alibaba/canal
+            Canal是基于mysql的主从同步来实现的，MySql主从同步的原理如下:
+                Mysql master 将数据变更写入二进制日志文件(binary log), 其中记录的数据叫做binary log events
+                Mysql slave 将 master 的 binary log events 拷贝到它的中继日志(relay log)
+                Mysql Slave 重放 relay log 中事件, 将数据变更反映射它自己的数据，也就是说主节点做了哪些Sql，从节点也做哪些Sql。这样来保证数据的一致性。
+            Canal实际上就是把自己伪装成Mysql的一个slave节点，从而监听master的binary log变化。
+                再把得到的变化信息通知给Canal的客户端，进而完成对其他服务或数据库（如Redis，MQ，ES，Mysql）的同步
+            所以要使用Canal，还要实现mysql的主从同步，所以他的部署会相对麻烦一点。
+                安装配置Canal请参考：lib/day8/安装Canal.md
+                监听canal：
+                    docker exec -it canal bash
+                        tail -f /canal-server/logs/canal/canal.log
+                            canal的运行日志监听
+                        tail -f /canal-server/logs/heima/heima.log
+                            heima的运行日志监听
+                    exit
+            Canal提供了各种语言的客户端，当Canal监听到Binlog变化时，会通知canal的客户端。在Tomcat编写canal客户端，监听到变化后，更新Redis。但官方提供的API比较麻烦复杂的。
+            所以我们这里使用Github上开源的第三方的客户端：canal-starter（跟srpintboot整合的，拿来即用）。地址：https://github.com/NormanGyllenhaal/canal-client
+                引入依赖：
+                    <!--引入canal依赖-->
+                    <dependency>
+                        <groupId>top.javatool</groupId>
+                        <artifactId>canal-spring-boot-starter</artifactId>
+                        <version>1.2.1-RELEASE</version>
+                    </dependency>
+                编写配置：
+                    canal:
+                        destination: heima
+                        server: 172.16.168.130:11111
+                编写监听器，监听Canal消息：
+                    
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
