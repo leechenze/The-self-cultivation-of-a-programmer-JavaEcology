@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.annotation.Transient;
 
 import java.util.Date;
 
@@ -12,6 +14,7 @@ import java.util.Date;
 @TableName("tb_item")
 public class Item {
     @TableId(type = IdType.AUTO)
+    // @Id
     private Long id;//商品id
     private String name;//商品名称
     private String title;//商品标题
@@ -24,7 +27,9 @@ public class Item {
     private Date createTime;//创建时间
     private Date updateTime;//更新时间
     @TableField(exist = false)
+    // @Transient // 表示不属于这张表中的字段。
     private Integer stock;
     @TableField(exist = false)
+    // @Transient
     private Integer sold;
 }

@@ -5641,22 +5641,94 @@
                         destination: heima
                         server: 172.16.168.130:11111
                 编写监听器，监听Canal消息：
+                    修改pojo.Item实体类：
+                        @Data
+                        @TableName("tb_item")
+                        public class Item {
+                            @TableId(type = IdType.AUTO)
+                            @Id
+                            private Long id;//商品id
+                            private String name;//商品名称
+                            private String title;//商品标题
+                            private Long price;//价格（分）
+                            private String image;//商品图片
+                            private String category;//分类名称
+                            private String brand;//品牌名称
+                            private String spec;//规格
+                            private Integer status;//商品状态 1-正常，2-下架
+                            private Date createTime;//创建时间
+                            private Date updateTime;//更新时间
+                            @TableField(exist = false)
+                            @Transient // 表示不属于这张表中的字段。
+                            private Integer stock;
+                            @TableField(exist = false)
+                            @Transient
+                            private Integer sold;
+                        }
+                    编写Canal监听器：（canal.ItemHandler）
+                        // canal的声明表的注解
+                        @CanalTable("tb_item")
+                        @Component
+                        public class ItemHandler implements EntryHandler<Item> {
+                            @Autowired
+                            private RedisHandler redisHandler;
+                            @Autowired
+                            private Cache<Long, Item> itemCache;
+                            /**
+                             * 每当数据库进行了增删改，就会把对应的数据传递到这些方法。
+                             * @param item
+                             */
+                            @Override
+                            public void insert(Item item) {
+                                // 写数据到JVM进程缓存
+                                itemCache.put(item.getId(), item);
+                                // 写数据到Redis缓存
+                                redisHandler.saveItem(item);
+                            }
+                            @Override
+                            public void update(Item before, Item after) {
+                                // 更新数据到JVM进程缓存
+                                itemCache.put(after.getId(), after);
+                                // 更新数据到Redis缓存
+                                redisHandler.saveItem(after);
+                            }
+                            @Override
+                            public void delete(Item item) {
+                                // 删除数据到JVM进程缓存
+                                itemCache.invalidate(item.getId());
+                                // 删除数据到Redis缓存
+                                redisHandler.deleteItem(item.getId());
+                            }
+                        }
+                    封装Reids的设值和删除操作：（config.RedisHandler）
+                        /**
+                         * redis缓存新增操作封装
+                         * @param item
+                         */
+                        public void saveItem(Item item) {
+                            try {
+                                String json = MAPPER.writeValueAsString(item);
+                                redisTemplate.opsForValue().set("item:id:" + item.getId(), json);
+                            } catch (JsonProcessingException e) {
+                                throw new RuntimeException(e);
+                            }
+                        }
+                        /**
+                         * redis缓存删除操作封装
+                         * @param id
+                         */
+                        public void deleteItem(Long id) {
+                            redisTemplate.delete("item:id:" + id);
+                        }
+                    重启测试：
+                        重启之后控制台会一直打印信息，则就证明Canal已经建立起了连接。
+                        因为只是对Redis和JVM（Tomcat）进程缓存做了修改，所以不太容易在页面（nginx代理的地址页面）上看到。
+                        可以直接在浏览器访问接口：http://localhost:8081/item/10001 进行测试。
+                        然后直接访问：http://localhost:8081 就有一个增删改查的页面。可以对数据进行CRUD操作。
+                        那么在这里随便更新一条数据之后，Idea中会有一次同步Redis缓存数据相关的日志打印
+                        那么再次访问 http://localhost:8081/item/10001 这个接口（首先会访问缓存数据），查看是否成功同步了刚才对于数据的修改。
+                        注：这个章节没有走通，因为canal在centOS的平台docker上 无法对 macOS m1芯片做支持，所以 canal 的服务没有启动成功，以上是详细步骤。
                     
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
