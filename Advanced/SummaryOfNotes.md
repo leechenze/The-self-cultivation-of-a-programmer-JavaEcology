@@ -5916,7 +5916,7 @@
                             Message message = MessageBuilder
                                     .withBody("hello, exchange and queue for durable".getBytes(StandardCharsets.UTF_8))
                                     .setDeliveryMode(MessageDeliveryMode.PERSISTENT).build();
-                            // 发送消息（注意这里直接发送到队列中，不通过交换机了，两个参数为队列名 和 发布的消息）
+                            // 发送消息（注意这里直接发送到队列中，不通过交换机了，两个参数为绑定队列的routingkey 和 发布的消息）
                             rabbitTemplate.convertAndSend("simple.queue",message);
                         }
                     重启测试可以发现无论是交换机或队列或消息都依然存在。
@@ -6038,7 +6038,106 @@
                                 并且可以看到除了接收到的消息外，在请求头中：还会将报错信息带入！非常方便。
         
     死信交换机：
-        ... here ...
+        何为死信？
+            当一个队列的消息满足下列情况之一时，就可以称之为死信（dead letter）：
+                消费者使用basic.reject或basic.nack声明消费失败，并且消息的requeue参数设置为false（即不重新入队了）。
+                消息是一个过期消息，超时无人消费。
+                要投递的队列消息堆积满了，最早的消息可能成为死信。
+            一般情况下，消息变为死信，应该是要被丢弃的，但是有了死信交换机就不同了。
+            如果该队列配置了dead-letter-exchange属性，指定一个交换机，那么队列中的死信就会投递到这个交换机中，而这个交换机称为死信交换机（Dead Letter Exchange），简称DLX。
+            会发现这个死信交换机和异常错误消息交换机是很相似的，区别在于：
+                错误消息交换机的所有失败消息是由Consumer消费者做投递的。
+                死信交换机的失败消息是由exchange交换机做投递的。
+            死信交换机也可以实现向异常消息交换机那样直接从consumer消费者处做投递，但是死信交换机除了做消息兜底以外还会有其他的一些功能和作用。
+            所以如果只是做异常消息的兜底处理，建议还是使用异常消息交换机（RepublishMessageRecoverer）
+        如何给队列绑定死信交换机？
+            给队列设置dead-letter-exchange属性，指定一个交换机。
+            给队列设置dead-letter-routing-key属性，设置死信交换机和死信队列的RoutingKey。
+        TTL：
+            即Time-To-Live的首写。指的是消息存活时间，如果一个队列中的消息TTL结束仍未消费，则会变为死信，ttl超时分为两种情况：
+                消息所在的队列设置了存活时间。
+                消息本身设置了存活时间。
+            基于这个特性，实现延迟消息原理：
+                一个消息本身设置了ttl为5000ms，它通过publisher发布后通过exchange到达了queue，到达队列这一刻起它就开始倒计时5000ms，
+                然后5000ms之后就会变成死信，被投递到dl.direct（死信交换机），再到dl.queue（死信队列）。
+                而此时监听死信队列的消费者拿到publisher发送的消息中间时差就是5000ms，所以从这个角度来看就实现了延迟投递的效果了。
+                当然除了给消息设置ttl以外，还可以给队列设置ttl（x-message-ttl），如果消息和队列都有ttl，那么就会以时间小的ttl数值为准。
+            TTL实现：
+                声明一组死信交换机和死信队列，基于注解方式：（consumer/../listener/SpringRabbitListener）
+                    /**
+                     * 死信交换机和死信队列，基于注解的方式
+                     */
+                    @RabbitListener(bindings = @QueueBinding(
+                            value = @Queue(name = "dl.queue", durable = "true"),
+                            exchange = @Exchange(name = "dl.direct"),
+                            key = "dl.key"
+                    ))
+                    public void listenDLQueue(String msg) {
+                        log.info("消费者接收到了dl.queue的延迟消息：" + msg);
+                    }
+                声明一组TTL延迟交换机和延迟队列：（consumer/../config/TTLMessageConfig）
+                    @Configuration
+                    public class TTLMessageConfig {
+                        /**
+                         * 声明延迟交换机
+                         * @return
+                         */
+                        @Bean
+                        public DirectExchange ttlDirectExchange() {
+                            return new DirectExchange("ttl.direct");
+                        }
+                        /**
+                         * 声明延迟队列，并绑定延迟时间和死信交换机和死信RoutingKey。
+                         * @return
+                         */
+                        @Bean
+                        public Queue ttlQueue() {
+                            return QueueBuilder
+                                    .durable("ttl.queue")
+                                    .ttl(10000)
+                                    .deadLetterExchange("dl.direct")
+                                    .deadLetterRoutingKey("dl.key")
+                                    .build();
+                        }
+                        /**
+                         * 绑定ttl交换机（延迟交换机）和ttl队列（延迟队列）
+                         */
+                        @Bean
+                        public Binding ttlBinding() {
+                            return BindingBuilder.bind(ttlQueue()).to(ttlDirectExchange()).with("ttl.key");
+                        }
+                    }
+                在SpringAmqpTest单元测试中做消息的发送：（publisher/../test/../SpringAMQPTest）
+                    /**
+                     * 发送持久化的消息
+                     */
+                    @Test
+                    public void testTTLMessage() {
+                        // 准备消息
+                        Message message = MessageBuilder
+                            .withBody("hello, ttl message".getBytes(StandardCharsets.UTF_8))
+                            .setDeliveryMode(MessageDeliveryMode.PERSISTENT)
+                            .setExpiration("5000") // 设置消息的延迟时间。
+                            .build();
+                        // 发送消息（注意这里直接发送到队列中，不通过交换机了，两个参数为队列名 和 发布的消息）
+                        rabbitTemplate.convertAndSend("ttl.direct", "ttl.key", message);
+                        // 记录日志
+                        log.info("ttl消息已经成功发送，延迟时间为10000ms");
+                    }
+                测试：
+                    重启ConsumerApplication服务，然后执行ttl单元测试方法：SpringAmqpTest.testTTLMessage。
+                    查看Idea的SpringAmqpTest.testTTLMessage的控制台，可以看到如下消息：
+                        22:56:41:984  INFO 85138 --- [           main] cn.itcast.mq.spring.SpringAmqpTest       : ttl消息已经成功发送，延迟时间为10000ms
+                    查看ConsumerApplication的控制台，十秒后消息如下：
+                        22:56:52:044  INFO 85115 --- [ntContainer#1-1] c.i.mq.listener.SpringRabbitListener     : 消费者接收到了dl.queue的延迟消息：hello, ttl message
+                    可以看到从消息发布到消息接收中间时间间隔正式我们给定的ttl为10000ms，即10秒。【22:56:41:984 - 22:56:52:044】
+            总结：
+                消息超时的两种方式是？
+                    给队列设置ttl属性
+                    给消息设置ttl属性
+                    两者共存时，以时间段的ttl为准
+        延迟队列：
+            ... here ...
         
         
     惰性队列：

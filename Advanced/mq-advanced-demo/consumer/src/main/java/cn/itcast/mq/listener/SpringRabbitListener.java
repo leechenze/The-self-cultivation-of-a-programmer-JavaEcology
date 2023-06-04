@@ -1,6 +1,9 @@
 package cn.itcast.mq.listener;
 
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.amqp.rabbit.annotation.Exchange;
+import org.springframework.amqp.rabbit.annotation.Queue;
+import org.springframework.amqp.rabbit.annotation.QueueBinding;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.stereotype.Component;
 
@@ -17,4 +20,15 @@ public class SpringRabbitListener {
         log.info("消费者处理消息成功");
     }
 
+    /**
+     * 死信交换机和死信队列，基于注解的方式
+     */
+    @RabbitListener(bindings = @QueueBinding(
+            value = @Queue(name = "dl.queue", durable = "true"),
+            exchange = @Exchange(name = "dl.direct"),
+            key = "dl.key"
+    ))
+    public void listenDLQueue(String msg) {
+        log.info("消费者接收到了dl.queue的延迟消息：" + msg);
+    }
 }

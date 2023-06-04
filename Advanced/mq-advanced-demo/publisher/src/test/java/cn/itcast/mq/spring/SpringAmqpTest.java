@@ -70,8 +70,27 @@ public class SpringAmqpTest {
         Message message = MessageBuilder
                 .withBody("hello, exchange and queue for durable".getBytes(StandardCharsets.UTF_8))
                 .setDeliveryMode(MessageDeliveryMode.PERSISTENT).build();
-        // 发送消息（注意这里直接发送到队列中，不通过交换机了，两个参数为队列名 和 发布的消息）
+        // 发送消息（注意这里直接发送到队列中，不通过交换机了，两个参数为绑定队列的routingkey 和 发布的消息）
         rabbitTemplate.convertAndSend("simple.queue",message);
     }
+
+    /**
+     * 发送持久化的消息
+     */
+    @Test
+    public void testTTLMessage() {
+        // 准备消息
+        Message message = MessageBuilder
+                .withBody("hello, ttl message".getBytes(StandardCharsets.UTF_8))
+                .setDeliveryMode(MessageDeliveryMode.PERSISTENT)
+                .setExpiration("5000") // 设置消息的延迟时间。
+                .build();
+        // 发送消息（注意这里直接发送到队列中，不通过交换机了，两个参数为队列名 和 发布的消息）
+        rabbitTemplate.convertAndSend("ttl.direct", "ttl.key", message);
+        // 记录日志
+        log.info("ttl消息已经成功发送，延迟时间为10000ms");
+    }
+
+
 
 }
