@@ -5923,27 +5923,123 @@
                 小结：其实SpringAMQP当中的 交换机，队列，消息 这些其实默认都是持久的。 
                     
             消费者消息确认
-                ... here ...
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                RabbitMQ支持消费者确认机制，即：消费者处理消息后可以向MQ发送ack回执，MQ收到ack回执后才会删除该消息，而SpringAMQP则允许配置三种模式：
+                    manual：手动ack，需要在业务代码结束后，调用api发送ack。（不太推荐）
+                    auto：自动ack，由spring监测listener代码（即消费者的业务逻辑）是否出现异常，没有异常则返回ack；抛出异常则返回nack。（推荐）
+                    none：关闭ack，MQ假定消费者获取消息后会成功处理，因此消息投递后立即被删除。
+                配置方式是修改consumer的application.yml文件，添加下面配置：
+                    spring:
+                        rabbitmq:
+                            listener:
+                                simple:
+                                    prefetch: 1
+                                    acknowledge-mode: none
+                测试：（consumer/../listener/SpringRabbitListener）
+                    // 在 http://127.0.0.1:15672/#/queues 队列中手动发布一段消息，以触发以下程序的断点。
+                    @RabbitListener(queues = "simple.queue")
+                    public void listenSimpleQueue(String msg) {
+                        System.out.println("消费者接收到simple.queue的消息：【" + msg + "】");
+                        // 此处打断点进行测试，并编写一个异常。
+                        System.out.println(1 / 0);
+                        log.info("消费者处理消息成功");
+                    }
+                    None：
+                        进入断点，消息收到后，在 http://127.0.0.1:15672/#/queues 再次刷新消息都会马上丢失。
+                    auto：
+                        进入断点，继续断点，遇见异常（System.out.println(1 / 0)），如果放行，那么就会因为异常一直处理失败，并且一直重新投递信息，进入死循环。
+                        所以针对这个问题，就要对消费失败的重试机制进行处理了。
                 
             消费失败重试机制
-        
-        
-        
-        
+                如上个章节：当消费者异常后，消息会不断的requeue（重新入队）到队列，再重新发送给消费者，然后再次异常，再次requeue，无限循环，导致MQ的消息处理飙升，带来压力。
+                我们可以利用Spring的retry机制，在消费者出现异常时，利用本地重试，而不是无限制的requeue到mq队列。
+                    在consumer的application.yml文件中添加配置如下：
+                        spring:
+                            rabbitmq:
+                                listener:
+                                    simple:
+                                        prefetch: 1
+                                        acknowledge-mode: none
+                                        retry: 
+                                          enabled: true # 开启消费者失败重试
+                                          initial-interval: 1000 # 初始的失败等待时长为1秒
+                                          multiplier: 3 # 再次失败的等待时长倍数, 下次等待时长 = multiplier * initial-interal
+                                          max-attempts: 4 # 最大重试次数
+                                          stateless: true # true无状态，false有状态，如果业务中包含事务，这里必须改为false。
+                                          max-interval: 10000 # 最大等待时长为10秒。
+                    启动测试，修改（consumer/../listener/SpringRabbitListener）：
+                        // 在 http://127.0.0.1:15672/#/queues 队列中手动发布一段消息，以触发以下程序的断点。
+                        @RabbitListener(queues = "simple.queue")
+                        public void listenSimpleQueue(String msg) {
+                            // 这里改为日志记录方法打印，方便看时间是否与配置匹配。
+                            log.debug("消费者接收到simple.queue的消息：【" + msg + "】");
+                            // 此处打断点进行测试，并编写一个异常。
+                            System.out.println(1 / 0);
+                            log.info("消费者处理消息成功");
+                        }
+                        可以看到日志信息：
+                            18:08:25:177 DEBUG 59097 --- SpringRabbitListener     : 消费者接收到simple.queue的消息：【hello, rabbit】
+                            18:08:26:181 DEBUG 59097 --- SpringRabbitListener     : 消费者接收到simple.queue的消息：【hello, rabbit】
+                            18:08:29:188 DEBUG 59097 --- SpringRabbitListener     : 消费者接收到simple.queue的消息：【hello, rabbit】
+                            18:08:38:194 DEBUG 59097 --- SpringRabbitListener     : 消费者接收到simple.queue的消息：【hello, rabbit】
+                        可以看到时间间隔为：25，26，29，38。
+                        和配置的等待时长倍数为 3，并且最多重试 4 次，和配置吻合了。
+                        继续看下一行日志信息：
+                            Retries exhausted for message (Body:'[B@5421a300(byte[13])' MessageProperties ...
+                        意思为重试次数耗尽了，那么此时消息就会被拒绝，也说明默认情况下，次数耗尽会把消息丢弃。
+                        
+                消费者失败消息处理策略：
+                    在开启重试模式后，重试次数耗尽，如果消息依然失败，如果是重要的休息，不能直接丢弃，需要有MessageRecoverer接口来处理，它包含三种不同的实现：
+                        RejectAndDontRequeueRecoverer：重试耗尽后，直接reject，丢弃消息。默认就是这种方式。
+                        ImmediateRequeueMessageRecoverer：重试耗尽后，返回nack，消息重新入队。
+                        RepublishMessageRecoverer：重试耗尽后，将失败的消息投递到指定的交换机。（推荐）
+                    RepublishMessageRecoverer处理模式：
+                        首先定义接收失败消息的交换机，队列及其绑定关系：（consumer/../config/ErrorMessageConfig）
+                            /**
+                             * 定义异常消息的交换机
+                             */
+                            @Bean
+                            public DirectExchange errorMessageExchange() {
+                                return new DirectExchange("error.direct");
+                            }
+                        
+                            /**
+                             * 定义异常消息队列
+                             */
+                            @Bean
+                            public Queue errorQueue() {
+                                return new Queue("error.queue");
+                            }
+                        
+                            /**
+                             * 绑定交换机和队列
+                             * @return
+                             */
+                            @Bean
+                            public Binding errorMessageBinding() {
+                                return BindingBuilder.bind(errorQueue()).to(errorMessageExchange()).with("error.key");
+                            }
+                        然后，定义RepublishMessageRecoverer（异常消息处理器）：（consumer/../config/ErrorMessageConfig）
+                            /**
+                             * 异常消息处理器（消费者失败消息的处理策略）
+                             * @param rabbitTemplate
+                             * @return
+                             */
+                            @Bean
+                            public MessageRecoverer republishMessageRecoverer(RabbitTemplate rabbitTemplate) {
+                                // 参数分别为：rabbitTemplate，异常消息的交换机，异常消息的RoutingKey。
+                                return new RepublishMessageRecoverer(rabbitTemplate, "error.direct", "error.key");
+                            }
+                        测试：
+                            可以看到 http://127.0.0.1:15672/#/queues 中的 error.direct 和 error.queue 都创建好了。
+                            在simple.queue中发布一条消息，即可看到四条日志信息（稍等一会儿）。
+                            继续看下一行日志：
+                                Republishing failed message to exchange 'error.direct' with routing key error.key
+                                那么就证明重试次数耗尽后，成功将消费者的失败消息传递给了error.direct的交换机中的error.queue队列了。
+                                并且可以看到除了接收到的消息外，在请求头中：还会将报错信息带入！非常方便。
         
     死信交换机：
+        ... here ...
+        
         
     惰性队列：
         
