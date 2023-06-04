@@ -5838,7 +5838,7 @@
                                 });
                             }
                         }
-                    发送消息，指定消息ID，消息ConfirmCallback：(publisher/../text/../SpringAMQPTest)
+                    发送消息，指定消息ID，消息ConfirmCallback：(publisher/../test/../SpringAMQPTest)
                         @Slf4j
                         @RunWith(SpringRunner.class)
                         @SpringBootTest
@@ -5895,22 +5895,46 @@
 
             消息持久化
                 确保MQ的消息持久化到硬盘，避免RabbitMQ重启后配置和数据丢失。
-                MQ默认是内存存储消息，开启持久化功能（Durability）可以确保缓存在MQ中的消息不会丢失。
-                    交换机持久化：
-                        
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                MQ默认是内存存储消息，开启交换机或队列的持久化功能（Durability）可以确保缓存在MQ中的消息不会丢失。
+                    交换机持久化：（consumer/../CommonConfig）
+                        // 在消费者中编码，因为消费者（consumer）在启动时可以创建队列和交换机。
+                        @Bean
+                        public DirectExchange simpleDirect() {
+                            // 参数为：交换机名称，是否持久化，当交换机没有queue绑定时是否自动删除该交换机
+                            return new DirectExchange("simple.direct", true, false);
+                        }
+                    队列持久化：（consumer/../CommonConfig）
+                        @Bean
+                        public Queue simpleQueue() {
+                            return QueueBuilder.durable("simple.queue").build();
+                        }
+                    消息持久化：（publisher/../test/../SpringAMQPTest）
+                        // SpringAMQP中的消息默认是持久的，可以通过MessageProperties中的DeliveryMode来指定：
+                        @Test
+                        public void testDurableMessage() {
+                            // 准备消息
+                            Message message = MessageBuilder
+                                    .withBody("hello, exchange and queue for durable".getBytes(StandardCharsets.UTF_8))
+                                    .setDeliveryMode(MessageDeliveryMode.PERSISTENT).build();
+                            // 发送消息（注意这里直接发送到队列中，不通过交换机了，两个参数为队列名 和 发布的消息）
+                            rabbitTemplate.convertAndSend("simple.queue",message);
+                        }
+                    重启测试可以发现无论是交换机或队列或消息都依然存在。
+                小结：其实SpringAMQP当中的 交换机，队列，消息 这些其实默认都是持久的。 
+                    
             消费者消息确认
+                ... here ...
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 
                 
             消费失败重试机制

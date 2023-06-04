@@ -3,14 +3,19 @@ package cn.itcast.mq.spring;
 import lombok.extern.slf4j.Slf4j;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageBuilder;
+import org.springframework.amqp.core.MessageDeliveryMode;
 import org.springframework.amqp.rabbit.connection.CorrelationData;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.context.annotation.Bean;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.util.concurrent.FailureCallback;
 import org.springframework.util.concurrent.SuccessCallback;
 
+import java.nio.charset.StandardCharsets;
 import java.util.UUID;
 
 @Slf4j
@@ -55,4 +60,18 @@ public class SpringAmqpTest {
         rabbitTemplate.convertAndSend("amq.topic", routingKey, message, correlationData);
 
     }
+
+    /**
+     * 发送持久化的消息
+     */
+    @Test
+    public void testDurableMessage() {
+        // 准备消息
+        Message message = MessageBuilder
+                .withBody("hello, exchange and queue for durable".getBytes(StandardCharsets.UTF_8))
+                .setDeliveryMode(MessageDeliveryMode.PERSISTENT).build();
+        // 发送消息（注意这里直接发送到队列中，不通过交换机了，两个参数为队列名 和 发布的消息）
+        rabbitTemplate.convertAndSend("simple.queue",message);
+    }
+
 }
