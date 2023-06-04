@@ -5775,13 +5775,12 @@
                         publisher return：ACK：表示失败：publisher到exchange成功，但是exchange到queue的路由失败了。
                     注意：确认机制发送消息时，需要给每一个消息设置一个全局唯一ID，以区分不同消息，避免ack冲突。
                 对应项目：mq-advanced-demo
-                    首先在CentOS中安装并启动rabbitmq：
+                    首先在CentOS中安装并启动rabbitmq：（后面换成了本地MacOS运行了，因为虚拟机中的TCP和AMQP始终无法连接的问题无法解决）
                         docker run \
                             -e RABBITMQ_DEFAULT_USER=leechenze \
                             -e RABBITMQ_DEFAULT_PASS=930316 \
                             --name myrabbitmq \
                             --hostname mq1 \
-                            --network host \
                             -p 15672:15672 \
                             -p 5672:5672 \
                             -d \
@@ -5808,24 +5807,106 @@
                     在 http://172.16.168.130:15672 添加simple.queue队列。
                 SpringAMQP实现生产者确认：
                     在publisher这个微服务中的application.yml中添加配置：
-                        ... here ...
-                        配置说明：
-                            publish-confirm-type: 开启publisher-confirm, 这里支持两种类型:
-                                simple: 同步等待confirm结果, 直到超时
-                                correlated: 异步回调, 定义confirmCallback, MQ返回结果时会回调这个ConfirmCallback
-                            publish-returns：开启publish-return功能（同样是基于callback机制, 不过是定义ReturnCallback）
-                            template.mandatory: 定义消息路由失败时的策略. ture：则调用ReturnCallback，才能看到路由失败的消息回执； false: 则直接丢弃消息。
-                    每个RabbitTemplate只能配置一个ReturnCallback，因此需要在项目启动过程中配置：
+                        publisher-confirm-type: correlated
+                        publisher-returns: true
+                        template:
+                          mandatory: true
+                            配置说明：
+                                publish-confirm-type: 开启publisher-confirm, 这里支持两种类型:
+                                    simple: 同步等待confirm结果, 直到超时
+                                    correlated: 异步回调, 定义confirmCallback, MQ返回结果时会回调这个ConfirmCallback
+                                publish-returns：开启publish-return功能（同样是基于callback机制, 不过是定义ReturnCallback）
+                                template.mandatory: 定义消息路由失败时的策略. ture：则调用ReturnCallback，才能看到路由失败的消息回执； false: 则直接丢弃消息。
+                    每个RabbitTemplate只能配置一个ReturnCallback，因此需要在项目启动过程中配置：（publisher/../config/CommonConfig）
+                        @Slf4j
+                        @Configuration
+                        public class CommonConfig implements ApplicationContextAware {
                         
-                    发送消息，指定消息ID，消息ConfirmCallback：
+                            @Override
+                            public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {
+                                // 获取RabbitTemplate对象
+                                RabbitTemplate rabbitTemplate = applicationContext.getBean(RabbitTemplate.class);
+                                // 配置ReturnCallback
+                                rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
+                                    @Override
+                                    public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+                                        // 记录日志：（第一个参数为错误消息，消息中的{}是关键字，会将后续参数挨个匹配到第一个字符串中的{}关键字中去）
+                                        log.error("消息发送到队列失败，响应码：{}, 失败原因：{}, 交换机: {}, 路由Key: {}, 消息：{}", replyCode, replyText, exchange, routingKey, message);
+                                        // 如果有需要的话，重发消息。
+                                        
+                                    }
+                                });
+                            }
+                        }
+                    发送消息，指定消息ID，消息ConfirmCallback：(publisher/../text/../SpringAMQPTest)
+                        @Slf4j
+                        @RunWith(SpringRunner.class)
+                        @SpringBootTest
+                        public class SpringAmqpTest {
+                        @Autowired
+                        private RabbitTemplate rabbitTemplate;
                         
-                
-                
-                
-                
-                
+                            @Test
+                            public void testSendMessage2SimpleQueue() throws InterruptedException {
+                                // 准备发送的消息
+                                String message = "hello, spring amqp!";
+                                // 准备RoutingKey
+                                String routingKey = "simple.test";
+                                // 准备CorrelationData
+                                CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
+                                // 准备ConfirmCallback（这里可以用lambda表达式来表示，但是为了能看清参数这里就不用lambda的方式了）
+                                correlationData.getFuture().addCallback(new SuccessCallback<CorrelationData.Confirm>() {
+                                    @Override
+                                    public void onSuccess(CorrelationData.Confirm confirm) {
+                                        // 判断结果
+                                        if (confirm.isAck()) {
+                                            // ACK
+                                            log.debug("消息投递到交换机成功！消息ID：{}", correlationData.getId());
+                                        } else {
+                                            // NACK
+                                            log.error("消息投递到交换机失败！消息ID：{}", correlationData.getId());
+                                        }
+                                    }
+                                }, new FailureCallback() {
+                                    @Override
+                                    public void onFailure(Throwable throwable) {
+                                        // 记录日志
+                                        log.error("消息投递到交换机成功，但是路由到队列失败", throwable);
+                                        // 重发消息
+                        
+                                    }
+                                });
+                        
+                                // 发送消息
+                                rabbitTemplate.convertAndSend("amq.topic", routingKey, message, correlationData);
+                                
+                            }
+                        }
+                    运行 SpringAMQPTest 测试发送消息：
+                        Idea控制台中输出消息：消息投递到交换机成功！消息ID：72dd57d7-c1b2-4211-bec3-95cd8e46738b 则为成功，否则失败。
+                    此时访问 http://127.0.0.1:15672/#/queues
+                        可以看到simple.queue队列中接收到有一条消息
+                    测试失败情况：
+                        修改 SpringAMQPTest 的发送消息模块
+                        // 发送消息
+                        rabbitTemplate.convertAndSend("amq.topic", routingKey, message, correlationData);
+                        或是将amq.topic填错，或是将routingkey填错，Idea控制台都会输出一条日志为：消息发送到队列失败，响应码：{}, 失败原因：{}, 交换机: {}, 路由Key: {}, 消息：{}
+                    至此生产者消息确认全部验证完毕。
+
             消息持久化
                 确保MQ的消息持久化到硬盘
+                ... here ...
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
                 
             消费者消息确认
                 
