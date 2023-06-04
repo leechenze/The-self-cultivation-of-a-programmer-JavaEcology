@@ -5728,7 +5728,132 @@
                         那么在这里随便更新一条数据之后，Idea中会有一次同步Redis缓存数据相关的日志打印
                         那么再次访问 http://localhost:8081/item/10001 这个接口（首先会访问缓存数据），查看是否成功同步了刚才对于数据的修改。
                         注：这个章节没有走通，因为canal在centOS的平台docker上 无法对 macOS m1芯片做支持，所以 canal 的服务没有启动成功，以上是详细步骤。
-                    
+
+
+
+
+
+
+
+
+
+
+
+
+拾壹.服务异步通讯RabbitMQ的高级特性
+
+    MQ的常见问题：
+        消息可靠性问题：（消息的可靠性）
+            如何确保发送的消息至少被消费一次。
+        延迟消息问题：（死信交换机）
+            如何实现消息的延迟投递，延迟发送。例如：企业微信会议设定半小时后的通知，就是延迟消息。
+        消息堆积问题：（惰性队列）
+            如果在高并发的场景下，消息的发送越来越多，消费者根本忙不过来，就会产生消息堆积，那么如何即决百万消息堆积，无法及时消费的问题。
+        高可用问题：（MQ集群）
+            如何避免单点的MQ故障而导致的不可用问题，解决方案：MQ集群。
+    
+    所以针对以上的问题，本章节会学习如上的四个问题处理方案。
+    消息的可靠性：
+        消息从生产者发送到exchange，再到queue，再到消费者，有哪些导致消息丢失的可能性？
+            发送时丢失：
+                生产者发送的消息未达到exchange
+                消息到达exchange后未达到queue
+            MQ宕机，queue将消息丢失
+            consumer接收到消息后未消费就宕机
+        解决消息的可靠性，自然要解决以上三类丢失问题，细分为如下几个章节：
+            生产者消息确认
+                用以保证生产者不会把消息弄丢
+                RabbitMQ提供了pulbisher confirm机制来避免消息发送到MQ过程中丢失。消息发送到MQ以后，会返回一个结果给发送者，表示消息是否处理成功。结果有两种请求：
+                    publisher confirm，发送者确认：
+                        消息成功投递到交换机，返回ack（acknowledge）。
+                        消息未投递到交换机，返回nack（no acknowledge）。
+                    publisher return，发送者回执：
+                        消息投递到交换机，但没有路由到队列，也是返回ack，及路由失败的原因。
+                    总结：
+                        publisher confirm：ACK：表示成功。publisher到exchange成功，exchange到queue的路由也成功了。
+                        publisher confirm：NACK：表示失败：publisher到exchange失败了。
+                        publisher return：ACK：表示失败：publisher到exchange成功，但是exchange到queue的路由失败了。
+                    注意：确认机制发送消息时，需要给每一个消息设置一个全局唯一ID，以区分不同消息，避免ack冲突。
+                对应项目：mq-advanced-demo
+                    首先在CentOS中安装并启动rabbitmq：
+                        docker run \
+                            -e RABBITMQ_DEFAULT_USER=leechenze \
+                            -e RABBITMQ_DEFAULT_PASS=930316 \
+                            --name myrabbitmq \
+                            --hostname mq1 \
+                            --network host \
+                            -p 15672:15672 \
+                            -p 5672:5672 \
+                            -d \
+                            rabbitmq:3.12-rc-management
+                        命令解读：
+                            -e RABBITMQ_DEFAULT_USER 和 RABBITMQ_DEFAULT_PASS是配置用户名和密码的环境变量，后续访问mq和登陆管理平台都需要账号和密码。
+                            --hostname 是配置主机名，单机可以不用配置，但是如果后续集群部署就必要配置主机名了。                    
+                            -p 15672是RabbitMQ提供的一个UI界面，管理平台的端口。
+                            -p 5672是后续做消息通讯的一个端口，发消息和收消息都是通过5672
+                        访问：172.16.168.130:15672然后登录
+                    consumer和publisher中的application.yml配置修改：
+                        logging:
+                            pattern:
+                                dateformat: HH:mm:ss:SSS
+                            level:
+                                cn.itcast: debug
+                        spring:
+                            rabbitmq:
+                                host: 172.16.168.130 # rabbitMQ的ip地址
+                                port: 5672 # 端口
+                                username: leechenze
+                                password: 930316
+                                virtual-host: /
+                    在 http://172.16.168.130:15672 添加simple.queue队列。
+                SpringAMQP实现生产者确认：
+                    在publisher这个微服务中的application.yml中添加配置：
+                        ... here ...
+                        配置说明：
+                            publish-confirm-type: 开启publisher-confirm, 这里支持两种类型:
+                                simple: 同步等待confirm结果, 直到超时
+                                correlated: 异步回调, 定义confirmCallback, MQ返回结果时会回调这个ConfirmCallback
+                            publish-returns：开启publish-return功能（同样是基于callback机制, 不过是定义ReturnCallback）
+                            template.mandatory: 定义消息路由失败时的策略. ture：则调用ReturnCallback，才能看到路由失败的消息回执； false: 则直接丢弃消息。
+                    每个RabbitTemplate只能配置一个ReturnCallback，因此需要在项目启动过程中配置：
+                        
+                    发送消息，指定消息ID，消息ConfirmCallback：
+                        
+                
+                
+                
+                
+                
+            消息持久化
+                确保MQ的消息持久化到硬盘
+                
+            消费者消息确认
+                
+                
+            消费失败重试机制
+        
+        
+        
+        
+        
+    死信交换机：
+        
+    惰性队列：
+        
+    MQ集群：
+        
+    
+            
+                
+
+
+
+
+
+
+
+
+
 
 
 
