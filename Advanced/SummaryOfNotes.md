@@ -6137,9 +6137,78 @@
                     给消息设置ttl属性
                     两者共存时，以时间段的ttl为准
         延迟队列：
-            ... here ...
-        
-        
+            利用TTL结合死信交换机，我们实现了消息发出后，消费者延迟收到消息的效果。这种消息模式称为延迟队列（Delay Queue）模式。
+            延迟队列的使用场景包括：
+                延迟发送短信
+                用户下单，如果用户在15分钟内未支付，则自动取消。
+                预约工作会议，20分钟后自动通知所有参会人员。
+                等等...
+            因为延迟队列的需求非常多，所以RabbitMQ的官方也推出了一个插件，原生支持延迟队列的效果。
+            详细安装过程参考：lib/day9/RabbitMQ部署指南.md 的第二章节：安装DelayExchange插件
+                重新在MacOS本地Docker安装 myrabbitmq，并指定插件挂在目录：-v mq-plugins:/plugins \
+                    docker run \
+                        -e RABBITMQ_DEFAULT_USER=leechenze \
+                        -e RABBITMQ_DEFAULT_PASS=930316 \
+                        --name myrabbitmq \
+                        --hostname mq1 \
+                        -p 15672:15672 \
+                        -p 5672:5672 \
+                        -v mq-plugins:/plugins \
+                        -d \
+                        rabbitmq:3.8-management
+
+                    插件从RabbitMQ的一个官方的插件社区获取：地址为：https://www.rabbitmq.com/community-plugins.html
+                    插件名为：rabbitmq_delayed_message_exchange，从github下载后缀为.ez的文件放置到插件挂载目录下。
+                    踩坑点：
+                        如果无法成功挂载数据卷的话，请尝试如下步骤：
+                            拷贝至docker容器内
+                                docker cp rabbitmq_delayed_message_exchange-3.8.9-0199d11c.ez rabbitmq容器ID:/plugins
+                            进入docker容器内
+                                docker exec  -it myrabbitmq  bash
+                            赋予权限
+                                chmod 777 /plugins/rabbitmq_delayed_message_exchange-3.8.9-0199d11c.ez
+                            启动延时插件
+                                rabbitmq-plugins enable rabbitmq_delayed_message_exchange
+                
+                如果可以正常挂载插件，就进入容器内部后，执行下面命令开启插件，否则就看上一步即可：
+                    数据卷目录查看：
+                        docker volume inspect mq-plugins
+                    启动延时插件：
+                        docker exec -it myrabbitmq bash
+                            rabbitmq-plugins enable rabbitmq_delayed_message_exchange
+                    看到如下日志信息即为成功：
+                        Applying plugin configuration to rabbit@mq1...
+                        The following plugins have been enabled:
+                        rabbitmq_delayed_message_exchange
+                使用插件：
+                    DelayExchange插件的原理是对官方原生的Exchange做了功能的升级：
+                        将DelayExchange接收到的消息暂存在内存中（官方的Exchange是无法存储消息的）
+                        在DelayExchange中计时，超时后才投消息到队列中。
+                    在RabbitMQ的操作管理平台15672声明一个DelayExchange：
+                        Add a new exchange
+                            Name：delay.direct
+                            Type: x-delayed-message
+                            Durability: Durable
+                            Auto delete: No
+                            Internal: No
+                            Arguments: x-delayed-type = direct
+                    消息的延迟时间需要在发送消息的时候指定：
+                        Publish message
+                            Headers: x-delay = 5000
+                
+            SpringAMQP使用延迟队列插件：
+                ... here ...
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
+                
     惰性队列：
         
     MQ集群：
