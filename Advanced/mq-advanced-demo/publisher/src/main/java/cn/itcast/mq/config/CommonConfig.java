@@ -23,6 +23,13 @@ public class CommonConfig implements ApplicationContextAware {
         rabbitTemplate.setReturnCallback(new RabbitTemplate.ReturnCallback() {
             @Override
             public void returnedMessage(Message message, int replyCode, String replyText, String exchange, String routingKey) {
+
+                // 判断是否是延迟消息。
+                if (message.getMessageProperties().getReceivedDelay() > 0) {
+                    // 证明是一个延迟消息，忽略这个错误提示。
+                    return;
+                }
+
                 // 记录日志：（第一个参数为错误消息，消息中的{}是关键字，会将后续参数挨个匹配到第一个字符串中的{}关键字中去）
                 log.error("消息发送到队列失败，响应码：{}, 失败原因：{}, 交换机: {}, 路由Key: {}, 消息：{}", replyCode, replyText, exchange, routingKey, message);
                 // 如果有需要的话，重发消息。

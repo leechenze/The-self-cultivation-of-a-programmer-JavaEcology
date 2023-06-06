@@ -75,7 +75,7 @@ public class SpringAmqpTest {
     }
 
     /**
-     * 发送持久化的消息
+     * 发送延迟的消息：（ttl和dl死信交换机的方式）
      */
     @Test
     public void testTTLMessage() {
@@ -92,5 +92,25 @@ public class SpringAmqpTest {
     }
 
 
+    /**
+     * 发送延迟消息：rabbitmq_delayed_message_exchange（插件的方式）
+     * @param
+     */
+    @Test
+    public void testSendDelayMessage() {
+        // 准备发送的消息
+        Message message = MessageBuilder
+                .withBody("hello, delay plugin message".getBytes(StandardCharsets.UTF_8))
+                .setDeliveryMode(MessageDeliveryMode.PERSISTENT)
+                .setHeader("x-delay", 5000) // 设置消息的延迟时间。
+                .build();
+        // 准备CorrelationData
+        CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
+        // 发送消息
+        rabbitTemplate.convertAndSend("delay.direct", "delay.key", message, correlationData);
+
+        // 记录日志
+        log.info("通过插件的delay消息已经成功发送，延迟时间为5000ms");
+    }
 
 }

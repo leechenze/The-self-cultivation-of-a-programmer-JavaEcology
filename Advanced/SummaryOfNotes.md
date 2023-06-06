@@ -6197,19 +6197,94 @@
                             Headers: x-delay = 5000
                 
             SpringAMQP使用延迟队列插件：
-                ... here ...
+                DelayExchange的本质还是官方提供的三种交换机，只是添加了延迟功能，因此使用时只需要声明一个交换机，
+                交换机的类型可以是任意类型，然后设定delayed属性为true即可。
                 
-                
-                
-                
-                
-                
-                
-                
-                
-                
-                
+                基于注解的方式：（推荐原因：简单快捷）
+                    在SpringAmqpTest中发送消息：
+                        /**
+                         * 发送延迟消息：rabbitmq_delayed_message_exchange（插件的方式）
+                         * @param
+                         */
+                        @Test
+                        public void testSendDelayMessage() {
+                            // 准备发送的消息
+                            Message message = MessageBuilder
+                                    .withBody("hello, delay plugin message".getBytes(StandardCharsets.UTF_8))
+                                    .setDeliveryMode(MessageDeliveryMode.PERSISTENT)
+                                    .setHeader("x-delay", 5000) // 设置消息的延迟时间。
+                                    .build();
+                            // 准备CorrelationData
+                            CorrelationData correlationData = new CorrelationData(UUID.randomUUID().toString());
+                            // 发送消息
+                            rabbitTemplate.convertAndSend("delay.direct", "delay.key", message, correlationData);
+                    
+                            // 记录日志
+                            log.info("通过插件的delay消息已经成功发送，延迟时间为5000ms");
+                        }
+                    在SpringRabbitListener中接收消息：
+                        /**
+                         * Rabbit插件实现延迟消息：rabbitmq_delayed_message_exchange
+                         * @param msg
+                         */
+                        @RabbitListener(bindings = @QueueBinding(
+                                value = @Queue(name = "delay.queue", durable = "true"),
+                                exchange = @Exchange(name = "delay.direct", delayed = "true"),
+                                key = "delay.key"
+                        ))
+                        public void listenDelayExchange(String msg) {
+                            log.info("消费者接收到了delay.queue的延迟消息：" + msg);
+                        }
+                    测试：
+                        最终在SpringAmqpTest发送消息的控制台输出信息：通过插件的delay消息已经成功发送，延迟时间为5000ms
+                        在SpringRabbitListener接收消息的控制台输出信息：消费者接收到了delay.queue的延迟消息：hello, delay plugin message
+                        并且事件间隔确认是在我们设置的5000ms，至此验证成功！
+                        注意：SpringAmqpTest的控制台发送消息后，会有一个并不影响执行的错误输出：
+                            消息发送到队列失败，响应码：312, 失败原因：NO_ROUTE, 交换机: delay.direct, 路由Key: delay.key, 消息：(Body:'[B@3caab672(byte[27])' MessageProperties ......
+                            错误原因：
+                                因为消息发到延迟交换机后，它是在官方的交换机的基础上做了改造，理论上官方的交换机是立即转发消息的，交换机不具备存储功能。
+                                但是延迟交换机会把消息存起来，那么因为消息没有做转发，也没有做路由，所以会得到这个失败原因：NO_ROUTE 的错误，即消息没有到达队列。
+                                但是实际上消息是被暂存到交换机了，并没有错，只是过了我们给定的5秒钟后才到达了队列。
+                                但是这个错误需要被禁止，因为编写ReturnCallback目的是为了消息失败后做重发，所以如果这个错误不处理的话
+                                这一类的延迟消息全部被认为是失败，全部都要被重发，所以需要处理的就是：延迟类的错误禁止重发。
+                                可以通过 receiveDelay 属性进行判断。如果有值就是延迟的消息，就不需要做重发了。
+                            错误处理：（publisher/../config/CommonConfig）
+                                // 判断是否是延迟消息。
+                                if (message.getMessageProperties().getReceivedDelay() > 0) {
+                                    // 证明是一个延迟消息，忽略这个错误提示。
+                                    return;
+                                }
+                    总结：
+                        延迟队列插件的使用步骤包括哪些？
+                            声明一个交换机，添加delayed属性为true。
+                            发送消息时，添加x-dealy头，值为超时时间。
+
+                基于Bean的方式：（没有代码演示，只有以下代码片段记录）
+                    @Bean
+                    public DirectExchange delayedExchange() {
+                        return ExchangeBuilder
+                            .directExchange("delay.direct") // 指定交换机类型和名称
+                            .delayed() // 设置delayed属性
+                            .durable(true) // 持久化
+                            .build();
+                    }
+                    @Bean
+                    public Queue delayedQueue() {
+                        return new Queue("delay.queue");
+                    }
+                    @Bean
+                    public Binding delayedBinding() {
+                        return BindingBuilder.bind(delayedQueue()).to(delayedExchange()).with("delayed.key");
+                    }
+
     惰性队列：
+        ... here ...
+        
+        
+        
+        
+        
+        
         
     MQ集群：
         
