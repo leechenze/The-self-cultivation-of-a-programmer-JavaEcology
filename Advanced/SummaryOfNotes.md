@@ -6278,16 +6278,101 @@
                     }
 
     惰性队列：
-        ... here ...
-        
-        
-        
-        
-        
-        
-        
+        消息堆积问题：
+            当生产者发送消息的速度超过了消费者处理消息的速度，就会导致队列中的消息堆积，直到队列存储消息达到上限，最早接收到的消息，可能就会成为死信，会被丢弃，这就是消息堆积的问题。
+        解决消息堆积有三种思路：
+            增加更多的消费者，提高消费速度。
+            在消费者内开启线程池，加快消息处理速度。
+            扩大队列容积，提高堆积上限。
+            使用惰性队列，可以在mq中保存更多消息。
+        惰性队列：
+            从RabbitMQ从3.6.0版本开始，增加了Lazy Queues的概念，也就是惰性队列。
+            惰性队列的特征如下：
+                接收到消息后直接写入磁盘而非内存。
+                消费者要消费消息时才会从磁盘中读取并加载到内存。
+                支持数百万条的消息存储。
+            而要设置一个队列为惰性队列，只需要只声明队列时，指定x-queue-mode属性为lazy即可，
+            可以通过命令行将一个运行中的队列修改为惰性队列：
+                rabbitmqctl set_policy Lazy "^lazy-queue$" '{"queue-mode":"lazy"}' --apply-to queues
+        用SpringAMQP声明惰性队列：
+            Bean的方式：（consumer/../config/LazyConfig）
+                在consumer的config下新建 LazyConfig.java：
+                    @Configuration
+                    public class LazyConfig {
+                        /**
+                        * 声明一个惰性队列
+                        * @return
+                        */
+                        @Bean
+                        public Queue lazyQueue() {
+                            return QueueBuilder.durable("lazy.queue")
+                                .lazy()
+                                .build();
+                        }
+                        /**
+                         * 声明一个普通队列
+                         * @return
+                         */
+                        @Bean
+                        public Queue normalQueue() {
+                            return QueueBuilder.durable("normal.queue")
+                                .build();
+                        }
+                    }
+                在SpringAmqpTest中进行对上面声明的两个队列发消息：
+                    /**
+                     * 向惰性队列发消息。
+                     *
+                     * @param
+                     */
+                    @Test
+                    public void testLazyMessage() {
+                        for (int i = 0; i < 1000000; i++) {
+                            // 准备发送的消息
+                            Message message = MessageBuilder
+                                    .withBody("hello, lazy queue message".getBytes(StandardCharsets.UTF_8))
+                                    .setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT)
+                                    .build();
+                            // 发送消息
+                            rabbitTemplate.convertAndSend("lazy.queue", message);
+                        }
+                    }
+                    /**
+                     * 向惰性队列发消息。
+                     *
+                     * @param
+                     */
+                    @Test
+                    public void testNormalMessage() {
+                        for (int i = 0; i < 1000000; i++) {
+                            // 准备发送的消息
+                            Message message = MessageBuilder
+                                    .withBody("hello, normal queue message".getBytes(StandardCharsets.UTF_8))
+                                    .setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT)
+                                    .build();
+                            // 发送消息
+                            rabbitTemplate.convertAndSend("normal.queue", message);
+                        }
+                    }
+                打开RabbitMQ的控制台分别进入到 lazy.queue 和 normal.queue 两个队列中查看：
+                    可以发现：lazy的队列的In memory始终都是0。而normal队列的In memory是有处理消息的。
+                    证明了惰性队列处理消息确实都是在磁盘中操作的。内存是不处理消息的。
+            注解的方式：（没有运行演示，只有以下代码片段）
+                @RabbitListener(queuesToDeclare = @Queue(
+                    name = "lazy.queue",
+                    durable = "true",
+                    arguments = @Argument(name = "x-queue-mode", value = "lazy")
+                ))
+                public void listenLazyQueue(String msg) {
+                    log.info("接收到 lazy.queue 的消息：{}", msg);
+                }
+        总结：
+            惰性队列优点：基于磁盘存储，消息上限高，没有间歇性的page-out，性能比较稳定。
+            惰性队列缺点：基于磁盘存储，消息时效性会降低，性能会受限于磁盘的IO。
+            
+
     MQ集群：
-        
+        ... here ...
     
             
                 

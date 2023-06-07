@@ -113,4 +113,42 @@ public class SpringAmqpTest {
         log.info("通过插件的delay消息已经成功发送，延迟时间为5000ms");
     }
 
+
+    /**
+     * 向惰性队列发消息。
+     *
+     * @param
+     */
+    @Test
+    public void testLazyMessage() {
+        for (int i = 0; i < 1000000; i++) {
+            // 准备发送的消息
+            Message message = MessageBuilder
+                    .withBody("hello, lazy queue message".getBytes(StandardCharsets.UTF_8))
+                    .setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT)
+                    .build();
+            // 发送消息
+            rabbitTemplate.convertAndSend("lazy.queue", message);
+        }
+    }
+
+    /**
+     * 向惰性队列发消息。
+     *
+     * @param
+     */
+    @Test
+    public void testNormalMessage() {
+        for (int i = 0; i < 1000000; i++) {
+            // 准备发送的消息
+            Message message = MessageBuilder
+                    .withBody("hello, normal queue message".getBytes(StandardCharsets.UTF_8))
+                    .setDeliveryMode(MessageDeliveryMode.NON_PERSISTENT)
+                    .build();
+            // 发送消息
+            rabbitTemplate.convertAndSend("normal.queue", message);
+        }
+    }
+
+
 }
