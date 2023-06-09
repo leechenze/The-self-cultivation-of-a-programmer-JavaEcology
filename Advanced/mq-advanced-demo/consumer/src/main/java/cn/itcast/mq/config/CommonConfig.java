@@ -9,7 +9,7 @@ import org.springframework.context.annotation.Configuration;
 /**
  * 在消费者中编码，因为消费者（consumer）在启动时可以创建队列和交换机。
  */
-@Configuration
+// @Configuration
 public class CommonConfig {
     @Bean
     public DirectExchange simpleDirect() {

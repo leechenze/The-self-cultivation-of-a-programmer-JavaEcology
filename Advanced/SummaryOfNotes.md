@@ -6387,8 +6387,20 @@
                 当访问集群某节点时，如果队列不在该节点，会从数据所在节点传递到当前节点并返回。
                 队列所在节点宕机，队列中的消息就会丢失。
             详细搭建步骤参考：lib/day9/RabbitMQ部署指南.md
-                
-                
+                这里相关的配置目录在：/lib/day9/tmp
+                注意参考的md文档中的步骤如有错误，请用以下命令创建集群：（集群之后的操作还是参考前面的md文档）
+                    在线文档参考：https://blog.csdn.net/qq_31745863/article/details/122946551?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522168632567816800185847872%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=168632567816800185847872&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~sobaiduend~default-1-122946551-null-null.142^v88^control_2,239^v2^insert_chatgpt&utm_term=rabbitmq%20%E9%9B%86%E7%BE%A4&spm=1018.2226.3001.4187Ï
+                    docker run -d --net mq-net \
+                        -v ${PWD}/mq1:/var/lib/rabbitmq \
+                        -e RABBITMQ_DEFAULT_USER=leechenze \
+                        -e RABBITMQ_DEFAULT_PASS=930316 \
+                        -e RABBITMQ_ERLANG_COOKIE='FLKJERJQBHFZKJZARLHK%' \
+                        --name mq1 \
+                        --hostname mq1 \
+                        -p 8071:5672 \
+                        -p 8081:15672 \
+                        rabbitmq:3.8.2-management
+                    mq2，mq3的docker运行命令同上，注意修改映射端口和主机名，COOKIE不用改，要保证集群的cookie一致。
         镜像集群：（这个章节可以跳过，直接看仲裁队列章节）
             镜像集群本质是主从模式，具备以下特征：
                 交换机，队列，队列中的消息会在各个mq的镜像节点之间同步备份。
@@ -6398,7 +6410,6 @@
                 所有操作都是由主节点完成的，然后同步给镜像节点。
                 主节点宕机后，镜像节点会代替其为新的主节点，不多说因为这也是主从的必备功能。
             详细搭建步骤参考：lib/day9/RabbitMQ部署指南.md
-        
         仲裁队列：
             仲裁队列是3.8版本以后的新功能，用来代替镜像队列，具备以下特征：    
                 与镜像队列一样，都是主从模式，至此主从数据同步。    
@@ -6406,35 +6417,33 @@
                 主从同步基于Raft协议，强一致。    
             详细设置步骤参考：lib/day9/RabbitMQ部署指南.md
             SpringAMQP创建仲裁队列：
-                声明仲裁队列：
-                    
+                声明仲裁队列：（consumer/../config/QuorumConfig）
+                    @Configuration
+                    public class QuorumConfig {
+                        @Bean
+                        public Queue quorumQueue() {
+                            return QueueBuilder.durable("quorum.queue2").quorum().build();
+                        }
+                    }
                 SpringAMQP连接集群，在yaml中配置即可：
-                
-                
-                    
+                    在consumer/../application.yml配置文件中修改如下两行配置：
+                        # host: 127.0.0.1 # rabbitMQ的ip地址
+                        # port: 5672 # 端口
+                        addresses: 127.0.0.1:8071, 127.0.0.1:8072, 127.0.0.1:8073
+                启动前工作：
+                    之前写了很多配置，每个配置里面都有很多Queue，包括还有一些用到mq的插件的，但是现在配置文件已经改为集群了
+                    所以现在启动这些配置是会冲突的。所以为了避免冲突，把之前写的配置类中的配置都干掉（把@Configuration这个注解注释掉即可）
+                    要注释的配置：CommonConfig，ErrorMessageConfig，LazyConfig，TTLMessageConfig
+                    还有listener包下的队列也要注释：
+                        但是注意要保留一个，因为不保留的话就联系不上mq了，所以我们保留一个dl.queue的队列，并在mq控制台创建以下相对应的交换机dl.direct
+                成功启动后：
+                    再次查看控制台
+                        http://127.0.0.1:8081/#/queues
+                        http://127.0.0.1:8082/#/queues
+                        http://127.0.0.1:8083/#/queues
+                    三个mq都有了quorum.queue2这个用代码方式创建的队列。并且Node节点rabbit@mq1 +2 后面有个+2字样划过后可以看到这个队列的两个镜像mq。
+                    发消息就不演示了，或手动或在SpringAmqpTest中以代码方式发一次都可。
+                    至此验证完毕，所有章节完毕！撒花🎉～～～。
             
             
             
-            
-            
-        仲裁队列：
-            
-    
-            
-                
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

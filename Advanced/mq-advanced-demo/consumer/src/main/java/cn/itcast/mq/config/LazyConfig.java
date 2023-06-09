@@ -7,7 +7,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 
-@Configuration
+// @Configuration
 public class LazyConfig {
     /**
      * 声明一个惰性队列

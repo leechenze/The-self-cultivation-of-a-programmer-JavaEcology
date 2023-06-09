@@ -22,6 +22,7 @@ Advanced/lib/day2/custom-docker/**
 Advanced/lib/day2/local-docker/**
 Advanced/lib/day2/cloud-demo/mysql
 Advanced/lib/day2/cloud-demo/**/*.jar
+Advanced/lib/day9/tmp/**
 
 .mvn
 
@@ -35,3 +36,6 @@ Sentinel-1.8.6
 Sentinel-1.8.6.zip
 seata-server-1.4.2
 seata-server-1.4.2.zip
+
+
+
