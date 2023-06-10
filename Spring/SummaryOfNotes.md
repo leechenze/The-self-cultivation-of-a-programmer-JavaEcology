@@ -2660,12 +2660,66 @@
             }
         注意service层的其他配置这里不在叙述了。
     自定义登录页面：
-        
-        
-        
-        
-        
-        
-        
-        
-        
+        在templates中声明自定义的登录页面：
+            login_view.html
+        IndexController中声明Controller：
+            @RequestMapping("/login_view")
+            public String loginView() {
+                return "login_view";
+            }
+        在Security中修改配置：
+            // 关闭csrf的功能，这是一个网络安全方面的配置（自定义登录页）
+            .csrf().disable()
+            // security默认会自动生成一个名为 user的账号，密码会在控制台打印：
+            // Using generated security password: bf301dcf-db3d-42f1-bb6c-2f6d9c3b17d6
+            // 开启登录（开启登录后才会正常访问 /login 路径）
+            .formLogin()
+            // 配置自定义的登录页面，无条件开放所有权限给 /login_view 页面。
+            .loginPage("/login_view").permitAll()
+            // 设置登录处理地址，即 login_view 中的form的action属性的值
+            .loginProcessingUrl("/login")
+    登录过期时间设置：
+        在application.properties中配置:
+            server.servlet.session.timeout=60
+        登录状态过期后转发到自定义的页面（默认过期后跳转到登录页面）：（SecurityConfig）
+            // 开放 timeout 请求的权限，允许在没有登录的情况下也可以访问。
+            .antMatchers("/timeout").permitAll()
+            // 当登录过期后，指定跳转的页面。
+            .sessionManagement().invalidSessionUrl("/timeout");
+        新建一timeout页面。
+        新建timeout的controller。
+            @RequestMapping("/timeout")
+            public String timeout() {
+                return "timeout";
+            }
+    记住我功能（基本模式，内存模式）：
+        原理：用户登录后，服务端为用户生成一个token，并放入客户端cookie中，下次用户登录，服务端验证Cookie中的Token，并自动登录。
+        SpringSecurity包含两种实现方式：基本模式（内存模式），数据库模式。
+        二者区别：基本模式的token与用户的对应关系是在内存中存储的。当我们重启应用后，登录状态不能保持，如果将token存储到数据库中，重启引用也不会收到影响。
+        实现：
+            SecurityConfig中修改：
+                // 设置记住我的功能，并设置有效时间是2000秒，注意这个单位是秒，而不是毫秒。
+                .rememberMe().tokenValiditySeconds(2000);
+        测试：
+            成功登录后，访问 index，关闭浏览器再次访问，直接到 index页，不用重新登录。
+            但是如果重启服务后，再次访问就会失效，跳转到登录页。因为是token是基于内存存储的。
+    记住我功能（数据库模式）：
+        这里就不演示了。有需要的话查询CSDN吧，作用就是为了对记住我的功能做持久化。服务重启后保证记住我的功能仍是可用的。
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+柒.JWT
+    
+    

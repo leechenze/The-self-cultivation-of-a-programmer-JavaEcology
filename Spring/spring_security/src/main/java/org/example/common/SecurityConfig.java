@@ -27,10 +27,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        // security默认会自动生成一个名为 user的账号，密码会在控制台打印：
-        // Using generated security password: bf301dcf-db3d-42f1-bb6c-2f6d9c3b17d6
-        // 开启登录（开启登录后才会正常访问 /login 路径）
-        http.formLogin()
+        http
+                // 关闭csrf的功能，这是一个网络安全方面的配置（自定义登录页）
+                .csrf().disable()
+                // security默认会自动生成一个名为 user的账号，密码会在控制台打印：
+                // Using generated security password: bf301dcf-db3d-42f1-bb6c-2f6d9c3b17d6
+                // 开启登录（开启登录后才会正常访问 /login 路径）
+                .formLogin()
+                // 配置自定义的登录页面，无条件开放所有权限给 /login_view 页面。
+                .loginPage("/login_view").permitAll()
+                // 设置登录处理地址，即 login_view 中的form的action属性的值
+                .loginProcessingUrl("/login")
                 // 登录成功之后转发到 /index 页面
                 .successForwardUrl("/index")
                 // 返回 HttpSecurity 对象
@@ -44,8 +51,17 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/**/*.jpg", "/**/*.png").hasRole("user")
                 // 指定 /**/*.jpg 和 /**/*.png 这种静态资源请求只有 拥有img权限的用户可以访问。注意这里 antMatchers 的规则和上面相同就会覆盖。导致上面的规则不生效，即 user 用户无法访问 aa/1.jpg
                 .antMatchers("/**/*.jpg", "/**/*.png").hasAuthority("img")
+                // 开放 timeout 请求的权限，允许在没有登录的情况下也可以访问。
+                .antMatchers("/timeout").permitAll()
                 // 声明任何请求都必须登录才能访问 /index 页面，否则无需登录也可以访问 /index 页面。
-                .anyRequest().authenticated();
+                .anyRequest().authenticated()
+                .and()
+                // 当登录过期后，指定跳转的页面。
+                .sessionManagement().invalidSessionUrl("/timeout")
+                .and()
+                // 设置记住我的功能，并设置有效时间是2000秒，注意这个单位是秒，而不是毫秒。
+                .rememberMe().tokenValiditySeconds(2000);
+
 
     }
 
