@@ -2592,8 +2592,80 @@
                                 }
                             }
                         }
-                    
-                    
 
 
-完结撒花！！！
+
+
+
+
+
+
+
+
+
+
+
+陆.Spring Security
+
+    SpringSecurity是一个专注于为Java应用程序提供身份认证和授权的框架。
+    关联的项目（spring_security）
+    
+    集成Security
+        向pom.xml中引入依赖：
+            <dependency>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-starter-security</artifactId>
+            </dependency>
+        继承WebSecurityConfigurerAdapter类, 添加@EnableWebSecurity, 并重写以下方法:
+            @Override
+            protected void configure(HttpSecurity http) throws Exception {}
+        启动：
+            可以看到控制台输出一段信息为：
+                Using generated security password: 0f1a303a-a6c2-48b4-b623-605dfec4b6f0
+            当没有添加任何账号时，security会自动生成一个账号名为 user，密码就是：0f1a303a-a6c2-48b4-b623-605dfec4b6f0
+            访问：http://localhost:8080/login 可以看到一个登陆页，项目没有任何页面，这个登陆页是security提供的。
+            
+    登录和认证：
+        注释说明都在代码中，详见：common/SecurityConfig
+    URL访问控制：
+        注释说明都在代码中，详见：common/SecurityConfig
+        ant表达式规则：
+            ？：匹配一个字符
+            *：匹配零个或多个字符
+            **：匹配零个或多个目录
+    角色与授权的关系：
+        注释说明都在代码中，详见：common/SecurityConfig
+        总结：角色和授权的关系：
+            通过查看Roles方法的源码可以看到 roles 实际上底层是对 authorities 的调用
+            只不过在名称之前加了一个 ROLE_ 的前缀作为标记，所以roles和authorities是相同的，是通用的。
+            在authorities声明的名称加个ROLE_它就是roles。
+    连接数据库认证登录：
+        需要实现 UserDetailsService 接口，并实现 loadUserByUsername 方法：（service/UserService）
+            @Service
+            public class UserService implements UserDetailsService {
+            
+                @Autowired
+                private UserInfoMapper userInfoMapper;
+            
+                @Override
+                public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+                    UserInfo userInfo = this.userInfoMapper.selectByUsername(username);
+                    return User.withUsername(userInfo.getUsername()).password(userInfo.getPassword()).roles(userInfo.getRole().split(",")).build();
+                }
+            }
+        在configure方法中设置 UserService：（SecurityConfig）
+            @Override
+            protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+                auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
+            }
+        注意service层的其他配置这里不在叙述了。
+    自定义登录页面：
+        
+        
+        
+        
+        
+        
+        
+        
+        
