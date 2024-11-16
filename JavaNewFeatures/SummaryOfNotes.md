@@ -19,5 +19,33 @@
     interface
         接口默认方法的使用(InterfaceDefaultFunctionUse)
         接口的静态方法(InterfaceStaticFunctionUse)
-        
+            接口默认方法可以被继承和重写
+            接口静态方法不可以被继承和重写
+        常用内置函数式接口(FunctionalInterface)
+            Supplier接口(SupplierInterface)
+                无参数有返回值(供给型接口)
+                public interface Supplier<T> {
+                    T get();
+                }
+            Consumer接口(ConsumerInterface)(ConsumerInterfaceAndThen)
+                有参数无返回值(消费型接口)
+                public interface Consumer<T> {
+                    void accept(T t);
+                }
+            Function接口(FunctionInterface)(FunctionInterfaceAndThen)
+                有参数有返回值(类型转化接口)
+                public interface Function<T, R> {
+                    R apply(T t);
+                }
+            Predicate接口(PredicateInterface)(PredicateInterfaceAndOrNegate)
+                有参数返回值布尔值
+                public interface Predicate<T> {
+                    boolean test(T t);
+                }
     
+    Lambda方法引用
+        
+
+
+
+
