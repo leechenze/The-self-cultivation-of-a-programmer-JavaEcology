@@ -43,9 +43,20 @@
                     boolean test(T t);
                 }
     
-    Lambda方法引用
+    Lambda method reference
+        Lambda方法引用介绍(LambdaReferenceIntro)
+            :: 称为方法引用运算符
+                printSum(ints -> LambdaReferenceIntro.getSum(ints))
+                等价于
+                printSum(LambdaReferenceIntro::getSum)
+            常见的引用方式
+                InstanceName::methodName    (实例名::实例方法)
+                ClassName::staticMethodName (类名::静态方法)
+                ClassName::methodName       (类名::实例方法)
+                ClassName::new              (类名::new)(new调用构造器)
+                TypeName[]::new             (String[]::new)
+        对象名引用成员方法(InstanceNameRefMethodName)
+        类名引用静态方法(ClassNameRefStaticMethodName)
         
-
-
 
 
