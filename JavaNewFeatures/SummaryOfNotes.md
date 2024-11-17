@@ -57,6 +57,12 @@
                 TypeName[]::new             (String[]::new)
         对象名引用成员方法(InstanceNameRefMethodName)
         类名引用静态方法(ClassNameRefStaticMethodName)
-        
+        类名引用普通方法(ClassNameRefMethodName)
+        类名引用普通方法(ClassNameRefMethodName)
+        类名引用New构造器(ClassNameRefNewConstruct)
+        数组引用New构造器(ArrayTypeNameRefNewConstruct)
+
+
+
 
 
