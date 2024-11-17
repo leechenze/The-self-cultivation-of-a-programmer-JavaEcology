@@ -16,7 +16,7 @@
             接口中有且仅有一个抽象方法
             只有一个抽象方法的接口称为函数式接口,这种接口可以使用Lambda表达式
     
-    interface
+    Interface
         接口默认方法的使用(InterfaceDefaultFunctionUse)
         接口的静态方法(InterfaceStaticFunctionUse)
             接口默认方法可以被继承和重写
@@ -62,7 +62,9 @@
         类名引用New构造器(ClassNameRefNewConstruct)
         数组引用New构造器(ArrayTypeNameRefNewConstruct)
 
-
+    Stream
+        Stream介绍(StreamIntro)
+        
 
 
 
