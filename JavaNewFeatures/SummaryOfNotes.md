@@ -64,7 +64,15 @@
 
     Stream
         Stream介绍(StreamIntro)
-        
-
-
-
+        获取Stream流主要的两种方式(GetStreamWays)
+            方式一: 根据Collection接口获取流
+                default Stream<E> stream() {
+            方式二: Stream中的静态方法of获取流
+                public static<T> Stream<T> of(T... values)
+        Stream流的注意事项(StreamAttentionMatters)
+            注意事项:
+                1.Stream流的方法只能操作一次(否则错误信息为: stream has already been operated upon or closed)
+                2.Stream流的非终结方法返回的是新的流
+                3.Stream流不调用终结方法,中间的操作不会执行
+        Stream流的常用方法(StreamFrequentlyUsedMethod）
+            
