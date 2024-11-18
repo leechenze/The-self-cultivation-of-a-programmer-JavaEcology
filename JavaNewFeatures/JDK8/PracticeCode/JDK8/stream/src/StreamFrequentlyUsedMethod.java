@@ -219,12 +219,18 @@ public class StreamFrequentlyUsedMethod {
 
     @Test
     public void concat() {
-        // TODO
+        Stream<String> stream1 = Stream.of("张三");
+        Stream<String> stream2 = Stream.of("李四");
 
+        // 合并称一个Stream流
+        Stream<String> newStream = Stream.concat(stream1, stream2);
+        newStream.forEach(System.out::println);
     }
 
+    /** 综合案例 */
     @Test
-    public void ssss7() {
+    public void comprehensiveCase() {
+        // TODO
 
     }
 
