@@ -1,9 +1,11 @@
 import org.junit.Test;
 
-import java.sql.Array;
 import java.util.*;
+import java.util.stream.Collector;
+import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
+
 
 public class StreamFrequentlyUsedMethod {
     public static void main(String[] args) {
@@ -227,26 +229,70 @@ public class StreamFrequentlyUsedMethod {
         newStream.forEach(System.out::println);
     }
 
-    /** 综合案例 */
+    /**
+     * 综合案例
+     */
     @Test
     public void comprehensiveCase() {
-        // TODO
+        // 第一个队伍
+        List<String> one = List.of("迪丽热巴", "宋远桥", "苏星河", "老子", "庄子", "孙子", "洪七公");
+        // 第二个队伍
+        List<String> two = List.of("古力娜扎", "张无忌", "张三丰", "赵丽颖", "张二狗", "张天爱", "张三");
+
+        // 1.第一个队伍只要名字为3个字的成员姓名;
+        // 2.第一个队伍筛选之后只要前3个人;
+        Stream<String> streamA = one.stream().filter(e -> e.length() == 3).limit(3);
+        // 3.第二个队伍只要姓张的成员姓名;
+        // 4.第二个队伍筛选之后不要前2个人;
+        Stream<String> streamB = two.stream().filter(e -> e.startsWith("张")).skip(2);
+        // 5.将两个队伍合并为一个队伍;
+        Stream<String> streamAB = Stream.concat(streamA, streamB);
+        // 6.根据姓名创建`Person`对象;
+        // 7.打印整个队伍的Person对象信息。
+        streamAB.map(e -> new Person(e, 1)).forEach(System.out::println);
+    }
+
+    /**
+     * 收集Stream流中的结果到集合中
+     */
+    @Test
+    public void collect() {
+        Stream<String> stream = Stream.of("aa", "bb", "cc");
+        // collect收集流中的数据到集合中
+        // List<String> list = stream.collect(Collectors.toList());
+        // System.out.println("list = " + list);
+
+        // collect收集流中的数据到set中
+        // Set<String> set = stream.collect(Collectors.toSet());
+        // System.out.println("set = " + set);
+
+        // collect收集流中的数据到指定的集合中(ArrayList）
+        // ArrayList<String> arrayList = stream.collect(Collectors.toCollection(() -> new ArrayList<>()));
+        ArrayList<String> arrayList = stream.collect(Collectors.toCollection(ArrayList::new));
+        System.out.println("arrayList = " + arrayList);
 
     }
 
+    /**
+     * 收集Stream流中的结果到数组中
+     */
     @Test
-    public void ssss8() {
+    public void toArray() {
+        Stream<String> stream = Stream.of("aa", "bb", "cc");
 
-    }
+        // Object[] objects = stream.toArray();
+        // for (Object object : objects) {
+        //     System.out.println("object = " + object);
+        // }
 
-    @Test
-    public void ssss9() {
-
+        // String[] strings = stream.toArray((size) -> new String[size]);
+        String[] strings = stream.toArray(String[]::new);
+        System.out.println(Arrays.toString(strings));
     }
 
     @Test
     public void ssss10() {
-
+        
     }
 
     @Test
