@@ -1,6 +1,7 @@
 import org.junit.Test;
 
 import java.util.*;
+import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
@@ -101,7 +102,7 @@ public class StreamFrequentlyUsedMethod {
     public void distinct() {
         Stream<Integer> integerStream = Stream.of(11, 22, 22, 66, 33, 33, 22, 11);
         Stream<String> strStream = Stream.of("aa", "bb", "aa");
-        Stream<Person> personStream = Stream.of(new Person("貂蝉", 22), new Person("西施", 23), new Person("西施", 23), new Person("杨玉环", 22), new Person("王昭君", 28), new Person("王昭君", 28));
+        Stream<Person> personStream = Stream.of(new Person("貂蝉", 22, 100), new Person("西施", 23, 100), new Person("西施", 23, 100), new Person("杨玉环", 22, 100), new Person("王昭君", 28, 100), new Person("王昭君", 28, 100));
 
         // 对integerStream进行去重
         integerStream.distinct().forEach(System.out::println);
@@ -173,7 +174,7 @@ public class StreamFrequentlyUsedMethod {
 
     @Test
     public void mapUniteReduce() {
-        Stream<Person> allPerson = Stream.of(new Person("刘德华", 58), new Person("张学友", 56), new Person("郭富城", 54), new Person("黎明", 52));
+        Stream<Person> allPerson = Stream.of(new Person("刘德华", 58, 100), new Person("张学友", 56, 97), new Person("郭富城", 54, 98), new Person("黎明", 52, 89));
         Stream<String> strStream = Stream.of("a", "b", "c", "a", "a");
 
         /** 求出所有人的年龄总和 */
@@ -249,7 +250,7 @@ public class StreamFrequentlyUsedMethod {
         Stream<String> streamAB = Stream.concat(streamA, streamB);
         // 6.根据姓名创建`Person`对象;
         // 7.打印整个队伍的Person对象信息。
-        streamAB.map(e -> new Person(e, 1)).forEach(System.out::println);
+        streamAB.map(e -> new Person(e, 1, 1)).forEach(System.out::println);
     }
 
     /**
@@ -290,9 +291,48 @@ public class StreamFrequentlyUsedMethod {
         System.out.println(Arrays.toString(strings));
     }
 
+    /**
+     * 对流中的数据进行聚合计算
+     */
     @Test
-    public void ssss10() {
-        
+    public void polymerizationOpera() {
+        Stream<Person> personStream = Stream.of(new Person("赵丽颖", 58, 95),
+                new Person("杨颖", 48, 99),
+                new Person("迪丽热巴", 38, 93),
+                new Person("古力娜扎", 34, 89));
+
+        // personStream.forEach(System.out::println);
+
+        // 获取最大值方式一
+        // Optional<Person> max = personStream.collect(Collectors.maxBy((p1, p2) -> p1.getScore() - p2.getScore()));
+        // System.out.println("max.get() = " + max.get());
+        // 获取最大值方式二
+        // Optional<Person> max = personStream.max((p1, p2) -> p1.getScore() - p2.getScore());
+        // System.out.println("max.get() = " + max.get());
+
+        // 获取最小值方式一
+        // Optional<Person> min = personStream.collect(Collectors.minBy((p1, p2) -> p1.getScore() - p2.getScore()));
+        // System.out.println("min.get() = " + min.get());
+        // 获取最小值方式二
+        // Optional<Person> min = personStream.min((p1, p2) -> p1.getScore() - p2.getScore());
+        // System.out.println("min.get() = " + min.get());
+
+        // 求总和方式一
+        // Integer sum = personStream.collect(Collectors.summingInt(new ToIntFunction<Person>() {
+        //     @Override
+        //     public int applyAsInt(Person value) {
+        //         return value.getScore();
+        //     }
+        // }));
+        // Integer sum = personStream.collect(Collectors.summingInt(e -> e.getScore()));
+        // System.out.println("sum = " + sum);
+        // 求总和方式二
+        // int sum = personStream.mapToInt(e -> e.getScore()).sum();
+        // System.out.println("sum = " + sum);
+
+        // 平均值
+        // TODO
+
     }
 
     @Test
