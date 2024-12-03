@@ -1,5 +1,6 @@
 import org.junit.Test;
 
+import java.lang.reflect.Array;
 import java.util.*;
 import java.util.function.ToIntFunction;
 import java.util.stream.Collector;
@@ -296,10 +297,7 @@ public class StreamFrequentlyUsedMethod {
      */
     @Test
     public void polymerizationOpera() {
-        Stream<Person> personStream = Stream.of(new Person("赵丽颖", 58, 95),
-                new Person("杨颖", 48, 99),
-                new Person("迪丽热巴", 38, 93),
-                new Person("古力娜扎", 34, 89));
+        Stream<Person> personStream = Stream.of(new Person("赵丽颖", 58, 95), new Person("杨颖", 48, 99), new Person("迪丽热巴", 38, 61), new Person("古力娜扎", 58, 63));
 
         // personStream.forEach(System.out::println);
 
@@ -331,12 +329,122 @@ public class StreamFrequentlyUsedMethod {
         // System.out.println("sum = " + sum);
 
         // 平均值
-        // TODO
+        // Double avg = personStream.collect(Collectors.averagingInt(e -> e.getScore()));
+        // Double avg = personStream.collect(Collectors.averagingInt(Person::getScore));
+        // System.out.println("avg = " + avg);
+
+        // 统计数量
+        // Long counting = personStream.collect(Collectors.counting());
+        // System.out.println("counting = " + counting);
+
+        // 分组
+        // Map<Integer, List<Person>> map = personStream.collect(Collectors.groupingBy((e -> e.getAge())));
+        // map.forEach((key, val) -> {
+        //     System.out.println("key = " + key + ", val = " + val);
+        // });
+
+        // 多级分组
+        // 先根据年龄分组,再根据成绩进行分组
+        // Map<Integer, Map<String, List<Person>>> map = personStream.collect(Collectors.groupingBy((e) -> e.getAge(), Collectors.groupingBy((ele) -> {
+        //     if (ele.getScore() > 80) {
+        //         return "Qualified";
+        //     } else {
+        //         return "UnQualified";
+        //     }
+        // })));
+        // map.forEach((key, val) -> {
+        //     System.out.println("key = " + key);
+        //     val.forEach((innerKey, innerVal) -> {
+        //         System.out.println("\t" + "innerKey = " + innerKey + ", innerVal = " + innerVal);
+        //     });
+        // });
+
+        // 分区(和分组没啥区别)
+        // Map<Boolean, List<Person>> map = personStream.collect(Collectors.partitioningBy(e -> e.getScore() > 80));
+        // map.forEach((k, v) -> {
+        //     System.out.println("k = " + k + ", v = " + v);
+        // });
+
+        // 拼接
+        // String joining = personStream.map(Person::getName).collect(Collectors.joining());
+        // String joining = personStream.map(Person::getName).collect(Collectors.joining(","));
+        // String joining = personStream.map(Person::getName).collect(Collectors.joining(",", "前缀___", "___后缀"));
+        // System.out.println("joining = " + joining);
+
+    }
+
+    /**
+     * 并行Stream流
+     */
+    @Test
+    public void parallelStream() {
+
+        ArrayList<String> strings = new ArrayList<>();
+        // 方式一: 直接获取并行流
+        Stream<String> strParallelStream1 = strings.parallelStream();
+        // 方式二: 串行流转换为并行流
+        Stream<String> strParallelStream2 = strings.stream().parallel();
+
+        // 测试并行流
+        Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 0).parallel().filter(e -> {
+            System.out.println(Thread.currentThread() + ": e = " + e);
+            return e > 3;
+        }).count();
+        // 测试串行流
+        Stream.of(1, 2, 3, 4, 5, 6, 7, 8, 9, 0).filter(e -> {
+            System.out.println(Thread.currentThread() + ": e = " + e);
+            return e > 3;
+        }).count();
+    }
+
+    /**
+     * 并行流线程安全问题
+     */
+    @Test
+    public void parallelStreamThreadSafetyPloblem() {
+        ArrayList<Integer> list = new ArrayList<>();
+        Object obj = new Object();
+
+        /** 线程安全问题演示: */
+        // IntStream.rangeClosed(1, 1000).parallel().forEach(e -> {
+        //     list.add(e);
+        // });
+        // // list的size应该是1000,但由于是多线程,所以存在安全问题,list的size实际上并做不到1000
+        // System.out.println("list.size() = " + list.size());
+
+        /** 解决parallelStream线程安全问题方案一: 使用同步代码块 */
+        // IntStream.rangeClosed(1, 1000).parallel().forEach(e -> {
+        //     synchronized (obj) {
+        //         list.add(e);
+        //     }
+        // });
+        // // 现在list.size()结果正确了
+        // System.out.println("list.size() = " + list.size());
+
+        /** 解决parallelStream线程安全问题方案二: 使用线程安全的List */
+        // Vector<Integer> vector = new Vector<>();
+        // IntStream.rangeClosed(1, 1000).parallel().forEach(e -> {
+        //     vector.add(e);
+        // });
+        // System.out.println("vector.size() = " + vector.size());
+
+        /** 解决parallelStream线程安全问题方案三: 使用线程安全的List二 */
+        // List<Integer> syncList = Collections.synchronizedList(list);
+        // IntStream.rangeClosed(1, 1000).parallel().forEach(e -> {
+        //     syncList.add(e);
+        // });
+        // System.out.println("syncList.size() = " + syncList.size());
+
+        /** 解决parallelStream线程安全问题方案四: 调用Stream的collect或toArray方法 */
+        // List<Integer> collect = IntStream.rangeClosed(1, 1000).parallel().boxed().collect(Collectors.toList());
+        // System.out.println("collect.size() = " + collect.size());
+        Object[] array = IntStream.rangeClosed(1, 1000).parallel().boxed().toArray();
+        // System.out.println("array.length = " + array.length);
 
     }
 
     @Test
-    public void ssss11() {
+    public void ssss13() {
 
     }
 
