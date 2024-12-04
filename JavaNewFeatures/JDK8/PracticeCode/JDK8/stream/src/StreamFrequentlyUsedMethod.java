@@ -1,9 +1,6 @@
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.util.*;
-import java.util.function.ToIntFunction;
-import java.util.stream.Collector;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 import java.util.stream.Stream;
@@ -438,14 +435,8 @@ public class StreamFrequentlyUsedMethod {
         /** 解决parallelStream线程安全问题方案四: 调用Stream的collect或toArray方法 */
         // List<Integer> collect = IntStream.rangeClosed(1, 1000).parallel().boxed().collect(Collectors.toList());
         // System.out.println("collect.size() = " + collect.size());
-        Object[] array = IntStream.rangeClosed(1, 1000).parallel().boxed().toArray();
+        // Object[] array = IntStream.rangeClosed(1, 1000).parallel().boxed().toArray();
         // System.out.println("array.length = " + array.length);
 
     }
-
-    @Test
-    public void ssss13() {
-
-    }
-
 }
