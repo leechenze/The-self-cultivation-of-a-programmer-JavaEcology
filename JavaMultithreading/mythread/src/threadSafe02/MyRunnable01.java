@@ -1,6 +1,5 @@
 package threadSafe02;
 
-import threadMethod02.MyRunnable;
 
 public class MyRunnable01 implements Runnable{
     /**
